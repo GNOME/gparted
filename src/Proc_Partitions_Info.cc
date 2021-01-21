@@ -61,66 +61,69 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 	if ( proc_partitions )
 	{
 		std::string line ;
-		Glib::ustring device;
 
 		while ( getline( proc_partitions, line ) )
 		{
-			// Pre-populate BlockSpecial cache with major, minor numbers of
-			// all names found from /proc/partitions.
 			Glib::ustring name = Utils::regexp_label( line,
 			        "^[[:blank:]]*[[:digit:]]+[[:blank:]]+[[:digit:]]+[[:blank:]]+[[:digit:]]+[[:blank:]]+([[:graph:]]+)$" );
 			if ( name == "" )
 				continue;
+
+			// Pre-populate BlockSpecial cache to avoid stat() call for all
+			// entries from /proc/partitions.
 			unsigned long maj;
 			unsigned long min;
 			if ( sscanf( line.c_str(), "%lu %lu", &maj, &min ) != 2 )
 				continue;
 			BlockSpecial::register_block_special( "/dev/" + name, maj, min );
 
-			// Recognise only whole disk device names, excluding partitions,
-			// from /proc/partitions and save in this cache.
-
-			//Whole disk devices are the ones we want.
-			//Device names without a trailing digit refer to the whole disk.
-			device = Utils::regexp_label( name, "^([^0-9]+)$" );
-
-			//Recognize /dev/md* devices (Linux software RAID - mdadm).
-			//E.g., device = /dev/md127, partition = /dev/md127p1
-			if ( device == "" )
-				device = Utils::regexp_label( name, "^(md[0-9]+)$" );
-
-			//Recognize /dev/mmcblk* devices.
-			//E.g., device = /dev/mmcblk0, partition = /dev/mmcblk0p1
-			if ( device == "" )
-				device = Utils::regexp_label( name, "^(mmcblk[0-9]+)$" );
-
-			// Recognise /dev/nvme*n* devices
-			// (Non-Volatile Memory Express devices.  SSD type devices which
-			// plug directly into PCIe sockets).
-			// E.g., device = /dev/nvme0n1, partition = /dev/nvme0n1p1
-			if ( device == "" )
-				device = Utils::regexp_label( name, "^(nvme[0-9]+n[0-9]+)$" );
-
-			//Device names that end with a #[^p]# are HP Smart Array Devices (disks)
-			//  E.g., device = /dev/cciss/c0d0, partition = /dev/cciss/c0d0p1
-			//  (linux-x.y.z/Documentation/blockdev/cciss.txt)
-			//Device names for Compaq SMART2 Intelligent Disk Array
-			//  E.g., device = /dev/ida/c0d0, partition = /dev/ida/c0d0p1
-			//  (linux-x.y.z/Documentation/blockdev/cpqarray.txt)
-			//Device names for Mylex DAC960/AcceleRAID/eXtremeRAID PCI RAID
-			//  E.g., device = /dev/rd/c0d0, partition = /dev/rd/c0d0p1
-			//  (linux-x.y.z/Documentation/blockdev/README.DAC960)
-			if ( device == "" )
-				device = Utils::regexp_label( name, "^([a-z]+/c[0-9]+d[0-9]+)$" );
-
-			if ( device != "" )
-			{
-				//add potential device to the list
-				device_paths_cache.push_back( "/dev/" + device );
-			}
+			// Save recognised whole disk device names for later returning as
+			// the default GParted partitionable devices.
+			if (is_whole_disk_device_name(name))
+				device_paths_cache.push_back("/dev/" + name);
 		}
 		proc_partitions .close() ;
 	}
 }
 
-}//GParted
+
+// True only for whole disk device names which GParted will present by default as
+// partitionable.
+bool Proc_Partitions_Info::is_whole_disk_device_name(const Glib::ustring& name)
+{
+	// Match ordinary whole disk device names.
+	// E.g.: device = sda (partition = sda1)
+	if (Utils::regexp_label(name, "^([^0-9]+)$") != "")
+		return true;
+
+	// Match Linux software RAID (mdadm) device names.
+	// E.g.: device = md127 (partition = md127p1)
+	if (Utils::regexp_label(name, "^(md[0-9]+)$") != "")
+
+	// Match SD/MMC card whole disk devices names.
+	// E.g.: device = mmcblk0 (partition = mmcblk0p1)
+	if (Utils::regexp_label(name, "^(md[0-9]+)$") != "")
+		return true;
+
+	// Match NVME (Non-Volatile Memory Express) whole disk device names.
+	// E.g.: device = nvme0n1 (partition = nvme0n1p1)
+	if (Utils::regexp_label(name, "^(nvme[0-9]+n[0-9]+)$") != "")
+		return true;
+
+	// Match hardware RAID controller whole disk device names.
+	// * HP Smart Array (linux-x.y.z/Documentation/scsi/hpsa.rst).
+	//   E.g.: device = cciss/c0d0 (partition = cciss/c0d0p1)
+	// * Compaq SMART2 Intelligent Disk Array
+	//   (linux-x.y.z/Documentation/admin-guide/devices.txt)
+	//   E.g.: device = ida/c0d0 (partition = ida/c0d0p1)
+	// * Mylex DAC960/AcceleRAID/eXtremeRAID PCI RAID
+	//   (linux-x.y.z/Documentation/admin-guide/devices.txt)
+	//   E.g.: device = rd/c0d0 (partition = rd/c0d0p1)
+	if (Utils::regexp_label(name, "^([a-z]+/c[0-9]+d[0-9]+)$") != "")
+		return true;
+
+	return false;
+}
+
+
+} //GParted

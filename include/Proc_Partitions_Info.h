@@ -39,6 +39,8 @@ public:
 private:
 	static void initialize_if_required();
 	static void load_proc_partitions_info_cache();
+	static bool is_whole_disk_device_name(const Glib::ustring& name);
+
 	static bool proc_partitions_info_cache_initialized ;
 	static std::vector<Glib::ustring> device_paths_cache ;
 };
