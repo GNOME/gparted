@@ -24,8 +24,12 @@
 #ifndef GPARTED_PROC_PARTITIONS_INFO_H
 #define GPARTED_PROC_PARTITIONS_INFO_H
 
+
+#include "BlockSpecial.h"
+
 #include <glibmm/ustring.h>
 #include <vector>
+
 
 namespace GParted
 {
@@ -35,13 +39,18 @@ class Proc_Partitions_Info
 public:
 	static void load_cache();
 	static const std::vector<Glib::ustring> & get_device_paths();
+	static std::vector<Glib::ustring> get_device_and_partition_paths_for(
+	                const std::vector<Glib::ustring>& device_paths);
 
 private:
 	static void initialize_if_required();
 	static void load_proc_partitions_info_cache();
 	static bool is_whole_disk_device_name(const Glib::ustring& name);
+	static std::vector<Glib::ustring> get_partition_paths_for(const Glib::ustring& name);
+	static bool is_partition_of_device(const Glib::ustring& partname, const Glib::ustring& devname);
 
 	static bool proc_partitions_info_cache_initialized ;
+	static std::vector<BlockSpecial> all_entries_cache;
 	static std::vector<Glib::ustring> device_paths_cache ;
 };
 

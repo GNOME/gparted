@@ -247,6 +247,18 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 		}
 	}
 
+	std::cout << "DEBUG: device_paths=[";
+	for (unsigned int i = 0; i < device_paths.size(); i++)
+		std::cout << (i>0?",":"") << "\"" << device_paths[i] << "\"";
+	std::cout << "]" << std::endl;
+
+	const std::vector<Glib::ustring>& device_and_partition_paths =
+			Proc_Partitions_Info::get_device_and_partition_paths_for(device_paths);
+	std::cout << "DEBUG: device_and_partition_paths=[";
+	for (unsigned int i = 0; i < device_and_partition_paths.size(); i++)
+		std::cout << (i>0?",":"") << "\"" << device_and_partition_paths[i] << "\"";
+	std::cout << "]" << std::endl;
+
 	// Initialise and load caches needed for content discovery.
 	FS_Info::load_cache_for_paths(device_paths);
 	Mount_Info::load_cache();

@@ -22,13 +22,24 @@
 #include <vector>
 #include <fstream>
 #include <stdio.h>
+#include <ctype.h>
+
 
 namespace GParted
 {
 
 //Initialize static data elements
 bool Proc_Partitions_Info::proc_partitions_info_cache_initialized = false ;
+
+// Cache of all entries from /proc/partitions.
+// E.g. [BlockSpecial("/dev/sda"), BlockSpecial("/dev/sda1"), BlockSpecial("/dev/sda2"), ...]
+std::vector<BlockSpecial> Proc_Partitions_Info::all_entries_cache;
+
+// Cache of device names read from /proc/partitions that GParted will present by default
+// as partitionable.
+// E.g. ["/dev/sda", "/dev/sdb", "/dev/md1"]
 std::vector<Glib::ustring> Proc_Partitions_Info::device_paths_cache ;
+
 
 void Proc_Partitions_Info::load_cache()
 {
@@ -42,6 +53,23 @@ const std::vector<Glib::ustring> & Proc_Partitions_Info::get_device_paths()
 	return device_paths_cache;
 }
 
+
+// E.g. ["/dev/sda", "/tmp/fs.img"] -> ["/dev/sda", "/dev/sda1", "/dev/sda2", "/tmp/fs.img"]
+std::vector<Glib::ustring> Proc_Partitions_Info::get_device_and_partition_paths_for(
+                const std::vector<Glib::ustring>& device_paths)
+{
+	initialize_if_required();
+	std::vector<Glib::ustring> all_paths;
+	for (unsigned int i = 0; i < device_paths.size(); i++)
+	{
+		all_paths.push_back(device_paths[i]);
+		const std::vector<Glib::ustring>& part_paths = get_partition_paths_for(device_paths[i]);
+		all_paths.insert(all_paths.end(), part_paths.begin(), part_paths.end());
+	}
+	return all_paths;
+}
+
+
 // Private Methods
 
 void Proc_Partitions_Info::initialize_if_required()
@@ -53,9 +81,11 @@ void Proc_Partitions_Info::initialize_if_required()
 	}
 }
 
+
 void Proc_Partitions_Info::load_proc_partitions_info_cache()
 {
-	device_paths_cache .clear() ;
+	all_entries_cache.clear();
+	device_paths_cache.clear();
 
 	std::ifstream proc_partitions( "/proc/partitions" ) ;
 	if ( proc_partitions )
@@ -69,13 +99,15 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 			if ( name == "" )
 				continue;
 
-			// Pre-populate BlockSpecial cache to avoid stat() call for all
-			// entries from /proc/partitions.
+			// Pre-populate BlockSpecial cache to avoid stat() call and save
+			// all entries from /proc/partitions for device to partition
+			// mapping.
 			unsigned long maj;
 			unsigned long min;
 			if ( sscanf( line.c_str(), "%lu %lu", &maj, &min ) != 2 )
 				continue;
 			BlockSpecial::register_block_special( "/dev/" + name, maj, min );
+			all_entries_cache.push_back(BlockSpecial("/dev/" + name));
 
 			// Save recognised whole disk device names for later returning as
 			// the default GParted partitionable devices.
@@ -123,6 +155,77 @@ bool Proc_Partitions_Info::is_whole_disk_device_name(const Glib::ustring& name)
 		return true;
 
 	return false;
+}
+
+
+// Return all partitions for a whole disk device.
+// E.g.  get_partitions_for("/dev/sda") -> ["/dev/sda1", "/dev/sda2"]
+std::vector<Glib::ustring> Proc_Partitions_Info::get_partition_paths_for(const Glib::ustring& device)
+{
+	// Assumes that entries from /proc/partitions are:
+	// 1. Always ordered with whole device followed by any partitions for that device.
+	// 2. Partition names are the whole device names appended with optional "p" and
+	//    partition number.
+	// This is confirmed by checking Linux kernel block/genhd.c:show_partition()
+	// function which prints the content of /proc/partitions.
+	// https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/block/genhd.c?h=v5.10.12#n1175
+
+	std::vector<Glib::ustring> partitions;
+	BlockSpecial bs = BlockSpecial(device);
+
+	// Find matching whole disk device entry from /proc/partitions cache.
+	unsigned int i = 0;
+	bool found_device = false;
+	for (; i < all_entries_cache.size(); i++)
+	{
+		if (bs == all_entries_cache[i])
+		{
+			found_device = true;
+			break;
+		}
+	}
+	if (! found_device)
+		return partitions;  // Empty vector
+
+	// Find following partition entries from /proc/partitions cache.
+	for (i++; i < all_entries_cache.size(); i++)
+	{
+		if (is_partition_of_device(all_entries_cache[i].m_name, bs.m_name))
+			partitions.push_back(all_entries_cache[i].m_name);
+		else
+			// No more partitions for this whole disk device.
+			break;
+	}
+
+	return partitions;
+}
+
+
+// True if and only if devname is a leading substring of partname and the remainder
+// consists of optional "p" and digits.
+// E.g. ("/dev/sda1", "/dev/sda") -> true   ("/dev/md1p2", "/dev/md1") -> true
+bool Proc_Partitions_Info::is_partition_of_device(const Glib::ustring& partname, const Glib::ustring& devname)
+{
+	// Linux kernel function block/genhd.c:disk_name() formats device and partition
+	// names written to /proc/partitions.
+	// https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/block/genhd.c?h=v5.10.12#n73
+	size_t devname_len = devname.length();
+	if (partname.compare(0, devname_len, devname) != 0)
+		return false;
+	size_t i = devname_len;
+	if (partname.length() <= i)
+		return false;
+	if (partname[i] == 'p')
+		i ++;
+	if (partname.length() <= i)
+		return false;
+	for (i++; i < partname.length(); i++)
+	{
+		if (! isdigit(partname[i]))
+			return false;
+	}
+
+	return true;
 }
 
 
