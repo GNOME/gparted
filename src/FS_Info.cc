@@ -252,35 +252,40 @@ bool FS_Info::run_blkid_load_cache( const Glib::ustring & path )
 	//     /dev/sdb1: LABEL="test-ext3" UUID="f218c3b8-237e-4fbe-92c5-76623bba4062" SEC_TYPE="ext2" TYPE="ext3" PARTUUID="71b3e059-30c5-492e-a526-9251dff7bbeb"
 	//     /dev/sdb2: SEC_TYPE="msdos" LABEL="TEST-FAT16" UUID="9F87-1061" TYPE="vfat" PARTUUID="9d07ad9a-d468-428f-9bfd-724f5efae4fb"
 	//     /dev/sdb3: PARTUUID="bb8438e1-d9f1-45d3-9888-e990b598900d"
+
+	if (! blkid_found)
+		return false;
+
 	Glib::ustring cmd = "blkid";
 	if ( path.size() )
 		cmd = cmd + " " + Glib::shell_quote( path );
+
 	Glib::ustring output;
 	Glib::ustring error;
+	if (Utils::execute_command(cmd, output, error, true) != 0)
+		return false;
+
 	bool loaded_entries = false;
-	if ( blkid_found                                          &&
-	     ! Utils::execute_command( cmd, output, error, true )    )
+	std::vector<Glib::ustring> lines;
+	Utils::split(output, lines, "\n");
+	for (unsigned int i = 0; i < lines.size(); i++)
 	{
-		std::vector<Glib::ustring> lines;
-		Utils::split( output, lines, "\n" );
-		for ( unsigned int i = 0 ; i < lines.size() ; i ++ )
+		FS_Entry fs_entry = {BlockSpecial(), "", "", "", false, ""};
+		Glib::ustring entry_path = Utils::regexp_label(lines[i], "^(.*): ");
+		if (entry_path.length() > 0)
 		{
-			FS_Entry fs_entry = {BlockSpecial(), "", "", "", false, ""};
-			Glib::ustring entry_path = Utils::regexp_label( lines[i], "^(.*): " );
-			if ( entry_path.length() > 0 )
-			{
-				fs_entry.path = BlockSpecial( entry_path );
-				fs_entry.type = Utils::regexp_label( lines[i], " TYPE=\"([^\"]*)\"" );
-				fs_entry.sec_type = Utils::regexp_label( lines[i], " SEC_TYPE=\"([^\"]*)\"" );
-				fs_entry.uuid = Utils::regexp_label( lines[i], " UUID=\"([^\"]*)\"" );
-				fs_info_cache.push_back( fs_entry );
-				loaded_entries = true;
-			}
+			fs_entry.path     = BlockSpecial(entry_path);
+			fs_entry.type     = Utils::regexp_label(lines[i], " TYPE=\"([^\"]*)\"");
+			fs_entry.sec_type = Utils::regexp_label(lines[i], " SEC_TYPE=\"([^\"]*)\"");
+			fs_entry.uuid     = Utils::regexp_label(lines[i], " UUID=\"([^\"]*)\"");
+			fs_info_cache.push_back(fs_entry);
+			loaded_entries = true;
 		}
 	}
 
 	return loaded_entries;
 }
+
 
 void FS_Info::update_fs_info_cache_all_labels()
 {
