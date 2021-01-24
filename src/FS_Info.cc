@@ -14,15 +14,16 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "FS_Info.h"
 #include "BlockSpecial.h"
-#include "Proc_Partitions_Info.h"
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
 #include <vector>
+
 
 namespace GParted
 {
@@ -208,24 +209,9 @@ const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
 void FS_Info::load_fs_info_cache(const std::vector<Glib::ustring>& paths)
 {
 	fs_info_cache.clear();
-	// Run "blkid" and load entries into the cache.
 	run_blkid_load_cache(paths);
-
-	// (#771244) Ensure the cache has entries for all whole disk devices, even if
-	// those entries are blank.  Needed so that an ISO9660 image stored on a whole
-	// disk device is detected before any embedded partitions within the image.
-	const BlockSpecial empty_bs = BlockSpecial();
-	std::vector<Glib::ustring> all_devices = Proc_Partitions_Info::get_device_paths();
-	for ( unsigned int i = 0 ; i < all_devices.size() ; i ++ )
-	{
-		const FS_Entry & fs_entry = get_cache_entry_by_path( all_devices[i] );
-		if ( fs_entry.path == empty_bs )
-		{
-			// Run "blkid PATH" and load entry into cache for missing entries.
-			load_fs_info_cache_extra_for_path( all_devices[i] );
-		}
-	}
 }
+
 
 void FS_Info::load_fs_info_cache_extra_for_path( const Glib::ustring & path )
 {
