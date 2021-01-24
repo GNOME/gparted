@@ -38,7 +38,7 @@ struct FS_Entry
 class FS_Info
 {
 public:
-	static void load_cache_for_paths( const std::vector<Glib::ustring> &device_paths );
+	static void load_cache_for_paths(const std::vector<Glib::ustring>& paths);
 	static Glib::ustring get_fs_type( const Glib::ustring & path );
 	static Glib::ustring get_label( const Glib::ustring & path, bool & found );
 	static Glib::ustring get_uuid( const Glib::ustring & path );
@@ -49,9 +49,9 @@ private:
 	static void initialize_if_required();
 	static void set_commands_found();
 	static const FS_Entry & get_cache_entry_by_path( const Glib::ustring & path );
-	static void load_fs_info_cache();
+	static void load_fs_info_cache(const std::vector<Glib::ustring>& paths);
 	static void load_fs_info_cache_extra_for_path( const Glib::ustring & path );
-	static bool run_blkid_load_cache( const Glib::ustring & path = "" );
+	static bool run_blkid_load_cache(const std::vector<Glib::ustring>& paths);
 	static void update_fs_info_cache_all_labels();
 	static bool run_blkid_update_cache_one_label( FS_Entry & fs_entry );
 
