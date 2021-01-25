@@ -1,4 +1,52 @@
 ============================
+GParted 1.2.0   (2021-01-25)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes enhancements, bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Add exFAT support using exfatprogs
+  * Wait for udev change on /dev/DISK when erasing signatures
+  * Don't try to mask non-existent Systemd \xe2\x97\x8f.service
+
+Bug Fixes
+---------
+  * Add exFAT support using exfatprogs (!30)
+  * Fix gparted not launching when PS_FORMAT environment variable set (!54)
+  * Wait for udev change on /dev/DISK when erasing signatures(#83, !55)
+  * Raise minimum supported dosfstools to 3.0.18 (!57)
+  * Fix formatting directive in it.po (!58)
+  * Fix GNOME GitLab CI test job failures because of missing /dev entries (!59)
+  * Fix GitLab CI job failures following Ubuntu docker image updates (!60)
+  * Fix CentOS 7 CI test job fails because of zero sized /etc/machine-id (!62)
+  * Set default alignment to cylinder for amiga partition table (#116, !63)
+  * Don't try to mask non-existent Systemd \xe2\x97\x8f.service (#129, !64)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood, Antoine Viallon and
+  Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  be(Аляксей), ca(Jordi Mas), cs(Marek Černocký), de(Philipp Kiemle),
+  es(Daniel Mustieles), fr(Thibault Martin), fur(Fabio Tomat),
+  it(Daniele Forsi !58), kk(Baurzhan Muftakhidinov), lt(Aurimas Černius),
+  lv(Rudolfs Mazurs), nl(Nathan Follens), pl(Piotr Drąg),
+  pt_BR(Rafael Fontenelle), ro(Daniel Șerbănescu), sk(Dušan Kazik),
+  sr(Мирослав Николић), sv(Anders Jonsson),
+  uk(Daniel Korostil, Yuri Chornoivan), zh_CN(Boyuan Yang), zh_TW(Yi-Jyun Pan)
+
+Dependencies (new/updated)
+--------------------------
+  * exfatprogs package is required for optional exfat file system support.
+
+
+============================
 GParted 1.1.0   (2020-01-20)
 ============================
 
