@@ -55,18 +55,8 @@ void FS_Info::load_cache_for_paths(const std::vector<Glib::ustring>& paths)
 	set_commands_found();
 	load_fs_info_cache(paths);
 	fs_info_cache_initialized = true;
-
-	const BlockSpecial empty_bs = BlockSpecial();
-	for (unsigned int i = 0; i < paths.size(); i++)
-	{
-		const FS_Entry& fs_entry = get_cache_entry_by_path(paths[i]);
-		if ( fs_entry.path == empty_bs )
-		{
-			// Run "blkid PATH" and load entry into cache for missing entries.
-			load_fs_info_cache_extra_for_path(paths[i]);
-		}
-	}
 }
+
 
 // Retrieve the file system type for the path
 Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
@@ -112,8 +102,7 @@ Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 			{
 				// Already have the label or this is a blank cache entry
 				// for a whole disk device containing a partition table,
-				// so no label (as created by
-				// load_fs_info_cache_extra_for_path()).
+				// so no label.
 				found = fs_info_cache[i].have_label;
 				return fs_info_cache[i].label;
 			}
@@ -210,21 +199,6 @@ void FS_Info::load_fs_info_cache(const std::vector<Glib::ustring>& paths)
 {
 	fs_info_cache.clear();
 	run_blkid_load_cache(paths);
-}
-
-
-void FS_Info::load_fs_info_cache_extra_for_path( const Glib::ustring & path )
-{
-	std::vector<Glib::ustring> one_path;
-	one_path.push_back(path);
-	bool entry_added = run_blkid_load_cache(one_path);
-	if ( ! entry_added )
-	{
-		// Ran "blkid PATH" but didn't find details suitable for loading as a
-		// cache entry so add a blank entry for PATH name here.
-		FS_Entry fs_entry = {BlockSpecial( path ), "", "", "", false, ""};
-		fs_info_cache.push_back( fs_entry );
-	}
 }
 
 
