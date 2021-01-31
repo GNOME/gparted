@@ -19,6 +19,7 @@
 #include "BlockSpecial.h"
 #include "Utils.h"
 
+#include <iostream>
 #include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
@@ -61,7 +62,9 @@ void FS_Info::load_cache_for_paths(const std::vector<Glib::ustring>& paths)
 // Retrieve the file system type for the path
 Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 {
-	initialize_if_required();
+	if (not_initialised_then_error())
+		return "";
+
 	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
 	Glib::ustring fs_type = fs_entry.type;
 	Glib::ustring fs_sec_type = fs_entry.sec_type;
@@ -93,7 +96,12 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 // Retrieve the label and set found indicator for the path
 Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 {
-	initialize_if_required();
+	if (not_initialised_then_error())
+	{
+		found = false;
+		return "";
+	}
+
 	BlockSpecial bs = BlockSpecial( path );
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( bs == fs_info_cache[i].path )
@@ -119,7 +127,9 @@ Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 // Retrieve the uuid given for the path
 Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 {
-	initialize_if_required();
+	if (not_initialised_then_error())
+		return "";
+
 	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
 	return fs_entry.uuid;
 }
@@ -127,7 +137,9 @@ Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 // Retrieve the path given the uuid
 Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
 {
-	initialize_if_required();
+	if (not_initialised_then_error())
+		return "";
+
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( uuid == fs_info_cache[i].uuid )
 			return fs_info_cache[i].path.m_name;
@@ -138,7 +150,9 @@ Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
 // Retrieve the path given the label
 Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
 {
-	initialize_if_required();
+	if (not_initialised_then_error())
+		return "";
+
 	update_fs_info_cache_all_labels();
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( label == fs_info_cache[i].label )
@@ -149,16 +163,13 @@ Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
 
 // Private methods
 
-void FS_Info::initialize_if_required()
+bool FS_Info::not_initialised_then_error()
 {
-	if ( ! fs_info_cache_initialized )
-	{
-		set_commands_found();
-		std::vector<Glib::ustring> empty;
-		load_fs_info_cache(empty);
-		fs_info_cache_initialized = true;
-	}
+	if (! fs_info_cache_initialized)
+		std::cerr << "GParted Bug: FS_Info (blkid) cache not loaded before use" << std::endl;
+	return ! fs_info_cache_initialized;
 }
+
 
 void FS_Info::set_commands_found()
 {

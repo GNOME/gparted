@@ -46,7 +46,7 @@ public:
 	static Glib::ustring get_path_by_label( const Glib::ustring & label );
 
 private:
-	static void initialize_if_required();
+	static bool not_initialised_then_error();
 	static void set_commands_found();
 	static const FS_Entry & get_cache_entry_by_path( const Glib::ustring & path );
 	static void load_fs_info_cache(const std::vector<Glib::ustring>& paths);
