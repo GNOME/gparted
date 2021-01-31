@@ -54,7 +54,8 @@ std::vector<FS_Entry> FS_Info::fs_info_cache;
 void FS_Info::load_cache_for_paths(const std::vector<Glib::ustring>& paths)
 {
 	set_commands_found();
-	load_fs_info_cache(paths);
+	fs_info_cache.clear();
+	run_blkid_load_cache(paths);
 	fs_info_cache_initialized = true;
 }
 
@@ -203,13 +204,6 @@ const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
 
 	static FS_Entry not_found = {BlockSpecial(), "", "", "", false, ""};
 	return not_found;
-}
-
-
-void FS_Info::load_fs_info_cache(const std::vector<Glib::ustring>& paths)
-{
-	fs_info_cache.clear();
-	run_blkid_load_cache(paths);
 }
 
 
