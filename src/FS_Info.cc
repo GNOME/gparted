@@ -207,7 +207,7 @@ const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
 }
 
 
-bool FS_Info::run_blkid_load_cache(const std::vector<Glib::ustring>& paths)
+void FS_Info::run_blkid_load_cache(const std::vector<Glib::ustring>& paths)
 {
 	// Parse blkid output line by line extracting mandatory field: path and optional
 	// fields: type, sec_type, uuid.  Label is not extracted here because of blkid's
@@ -224,7 +224,7 @@ bool FS_Info::run_blkid_load_cache(const std::vector<Glib::ustring>& paths)
 	//     /dev/sdb3: PARTUUID="bb8438e1-d9f1-45d3-9888-e990b598900d"
 
 	if (! blkid_found)
-		return false;
+		return;
 
 	Glib::ustring cmd = "blkid";
 	for (unsigned int i = 0; i < paths.size(); i++)
@@ -233,9 +233,8 @@ bool FS_Info::run_blkid_load_cache(const std::vector<Glib::ustring>& paths)
 	Glib::ustring output;
 	Glib::ustring error;
 	if (Utils::execute_command(cmd, output, error, true) != 0)
-		return false;
+		return;
 
-	bool loaded_entries = false;
 	std::vector<Glib::ustring> lines;
 	Utils::split(output, lines, "\n");
 	for (unsigned int i = 0; i < lines.size(); i++)
@@ -249,11 +248,10 @@ bool FS_Info::run_blkid_load_cache(const std::vector<Glib::ustring>& paths)
 			fs_entry.sec_type = Utils::regexp_label(lines[i], " SEC_TYPE=\"([^\"]*)\"");
 			fs_entry.uuid     = Utils::regexp_label(lines[i], " UUID=\"([^\"]*)\"");
 			fs_info_cache.push_back(fs_entry);
-			loaded_entries = true;
 		}
 	}
 
-	return loaded_entries;
+	return;
 }
 
 
