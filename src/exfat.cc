@@ -38,7 +38,11 @@ FS exfat::get_filesystem_support()
 	fs .online_read = FS::GPARTED ;
 
 	if (! Glib::find_program_in_path("mkfs.exfat").empty())
-		fs.create = FS::EXTERNAL;
+	{
+		Utils::execute_command("mkfs.exfat -V", output, error, true);
+		if (output.compare(0, 18, "exfatprogs version") == 0)
+			fs.create = FS::EXTERNAL;
+	}
 
 	if (! Glib::find_program_in_path("tune.exfat").empty())
 	{
@@ -47,7 +51,11 @@ FS exfat::get_filesystem_support()
 	}
 
 	if (! Glib::find_program_in_path("fsck.exfat").empty())
-		fs.check = FS::EXTERNAL;
+	{
+		Utils::execute_command("fsck.exfat -V", output, error, true);
+		if (output.compare(0, 18, "exfatprogs version") == 0)
+			fs.check = FS::EXTERNAL;
+	}
 
 	return fs;
 }
