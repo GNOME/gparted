@@ -1392,8 +1392,7 @@ void Win_GParted::set_valid_operations()
 	{
 		allow_format( true ) ;
 
-		// only allow deletion of partitions within a partition table
-		// Also exclude open LUKS mappings until open/close is supported
+		// Only allow deletion of inactive partitions within a partition table.
 		if ( ( selected_partition_ptr->type == TYPE_PRIMARY ||
 		       selected_partition_ptr->type == TYPE_LOGICAL    ) &&
 		     ! selected_partition_ptr->busy                         )
