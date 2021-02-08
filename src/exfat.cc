@@ -37,6 +37,9 @@ FS exfat::get_filesystem_support()
 	fs .move = FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;
 
+	if (! Glib::find_program_in_path("dump.exfat").empty())
+		fs.read = FS::EXTERNAL;
+
 	if (! Glib::find_program_in_path("mkfs.exfat").empty())
 	{
 		Utils::execute_command("mkfs.exfat -V", output, error, true);
@@ -58,6 +61,70 @@ FS exfat::get_filesystem_support()
 	}
 
 	return fs;
+}
+
+
+void exfat::set_used_sectors(Partition& partition)
+{
+	Utils::execute_command("dump.exfat " + Glib::shell_quote(partition.get_path()), output, error, true);
+	// dump.exfat returns non-zero status for both success and failure.  Instead use
+	// non-empty stderr to identify failure.
+	if (! error.empty())
+	{
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
+	}
+
+	// Example output (lines of interest only):
+	//     $ dump.exfat /dev/sdb1
+	//     Volume Length(sectors):                  524288
+	//     Sector Size Bits:                        9
+	//     Sector per Cluster bits:                 3
+	//     Free Clusters: 	                        23585
+	//
+	// "exFAT file system specification"
+	// https://docs.microsoft.com/en-us/windows/win32/fileio/exfat-specification
+	// Section 3.1.5 VolumeLength field
+	// Section 3.1.14 BytesPerSectorShift field
+	// Section 3.1.15 SectorsPerClusterShift field
+
+	// FS size in [FS] sectors
+	long long volume_length = -1;
+	Glib::ustring::size_type index = output.find("Volume Length(sectors):");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Volume Length(sectors): %lld", &volume_length);
+
+	// FS sector size = 2^(bytes_per_sector_shift)
+	long long bytes_per_sector_shift = -1;
+	index = output.find("Sector Size Bits:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Sector Size Bits: %lld", &bytes_per_sector_shift);
+
+	// Cluster size = sector_size * 2^(sectors_per_cluster_shift)
+	long long sectors_per_cluster_shift = -1;
+	index = output.find("Sector per Cluster bits:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Sector per Cluster bits: %lld", &sectors_per_cluster_shift);
+
+	// Free clusters
+	long long free_clusters = -1;
+	index = output.find("Free Clusters:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Free Clusters: %lld", &free_clusters);
+
+	if ( volume_length             > -1 && bytes_per_sector_shift > -1 &&
+	     sectors_per_cluster_shift > -1 && free_clusters          > -1   )
+	{
+		Byte_Value sector_size = 1 << bytes_per_sector_shift;
+		Byte_Value cluster_size = sector_size * (1 << sectors_per_cluster_shift);
+		Sector fs_free = free_clusters * cluster_size / partition.sector_size;
+		Sector fs_size = volume_length * sector_size / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		partition.fs_block_size = cluster_size;
+	}
 }
 
 
