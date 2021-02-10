@@ -51,6 +51,15 @@ FS exfat::get_filesystem_support()
 	{
 		fs.read_label = FS::EXTERNAL;
 		fs.write_label = FS::EXTERNAL;
+
+		// Get/set exFAT Volume Serial Number support was added to exfatprogs
+		// 1.1.0.  Check the help text for the feature before enabling.
+		Utils::execute_command("tune.exfat", output, error, true);
+		if (error.find("Set volume serial") < error.length())
+		{
+			fs.read_uuid  = FS::EXTERNAL;
+			fs.write_uuid  = FS::EXTERNAL;
+		}
 	}
 
 	if (! Glib::find_program_in_path("fsck.exfat").empty())
@@ -161,10 +170,60 @@ bool exfat::write_label(const Partition& partition, OperationDetail& operationde
 }
 
 
+void exfat::read_uuid(Partition& partition)
+{
+	exit_status = Utils::execute_command("tune.exfat -i " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
+	{
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! output.empty())
+			partition.push_back_message(error);
+		return;
+	}
+
+	partition.uuid = serial_to_blkid_uuid(
+	                Utils::regexp_label(output, "volume serial : (0x[[:xdigit:]][[:xdigit:]]*)"));
+}
+
+
+bool exfat::write_uuid(const Partition& partition, OperationDetail& operationdetail)
+{
+	return ! execute_command("tune.exfat -I " + random_serial() + " " + Glib::shell_quote(partition.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS);
+}
+
+
 bool exfat::check_repair(const Partition& partition, OperationDetail& operationdetail)
 {
 	return ! execute_command("fsck.exfat -v " + Glib::shell_quote(partition.get_path()),
 	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+}
+
+
+// Private methods
+
+// Reformat exfat printed serial into the same format which blkid reports and GParted
+// displays to users.  Returns "" if source is not correctly formatted.
+// E.g. "0x772ffe5d" -> "772F-FE5D"
+Glib::ustring exfat::serial_to_blkid_uuid(const Glib::ustring& serial)
+{
+	Glib::ustring verified_serial = Utils::regexp_label(serial, "^(0x[[:xdigit:]][[:xdigit:]]*)$");
+	if (verified_serial.empty())
+		return verified_serial;
+
+	Glib::ustring canonical_uuid = verified_serial.substr(2, 4).uppercase() + "-" +
+	                               verified_serial.substr(6, 4).uppercase();
+	return canonical_uuid;
+}
+
+
+// Generate a random exfat serial.
+// E.g. -> "0x772ffe5d"
+Glib::ustring exfat::random_serial()
+{
+	return "0x" + Utils::generate_uuid().substr(0, 8);
 }
 
 
