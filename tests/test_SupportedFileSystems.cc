@@ -238,7 +238,7 @@ protected:
 	SupportedFileSystemsTest();
 
 	virtual void SetUp();
-	virtual void extra_setup(Byte_Value size = IMAGESIZE_Default);
+	virtual void create_image_file(Byte_Value size = IMAGESIZE_Default);
 	virtual void TearDown();
 
 public:
@@ -294,7 +294,7 @@ void SupportedFileSystemsTest::SetUp()
 }
 
 
-void SupportedFileSystemsTest::extra_setup(Byte_Value size)
+void SupportedFileSystemsTest::create_image_file(Byte_Value size)
 {
 	// Create new image file to work with.
 	unlink(s_image_name);
@@ -485,7 +485,7 @@ TEST_P(SupportedFileSystemsTest, Create)
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
-	extra_setup();
+	create_image_file();
 	// Call create, check for success and print operation details on failure.
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 }
@@ -499,7 +499,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUsage)
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
-	extra_setup();
+	create_image_file();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	reload_partition();
@@ -530,7 +530,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadLabel)
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	const char* fs_label = "TEST_LABEL";
-	extra_setup();
+	create_image_file();
 	m_partition.set_filesystem_label(fs_label);
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
@@ -552,7 +552,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUUID)
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
-	extra_setup();
+	create_image_file();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	if (m_fstype == FS_JFS)
@@ -580,7 +580,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteLabel)
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
-	extra_setup();
+	create_image_file();
 	m_partition.set_filesystem_label("FIRST");
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
@@ -597,7 +597,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteUUID)
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
-	extra_setup();
+	create_image_file();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test writing a new random UUID is successful.
@@ -612,7 +612,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndCheck)
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 	SKIP_IF_TEST_DISABLED_FOR_FS(FS_MINIX);  // FIXME: Enable when util-linux >= 2.27 is available everywhere
 
-	extra_setup();
+	create_image_file();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test checking the file system is successful.
@@ -626,7 +626,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndRemove)
 	SKIP_IF_FS_DOESNT_SUPPORT(remove);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
-	extra_setup();
+	create_image_file();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test removing the file system is successful.  Note that most file systems don't
@@ -645,7 +645,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndGrow)
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_XFS);
 
-	extra_setup(IMAGESIZE_Default);
+	create_image_file(IMAGESIZE_Default);
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test growing the file system is successful.
@@ -663,7 +663,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndShrink)
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
-	extra_setup(IMAGESIZE_Larger);
+	create_image_file(IMAGESIZE_Larger);
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test shrinking the file system is successful.
