@@ -260,6 +260,10 @@ gunichar PipeCapture::get_utf8_char_validated(const char *p, gssize max_len)
 	gunichar uc = g_utf8_get_char_validated(p, max_len);
 	if (uc == UTF8_PARTIAL && max_len > 0)
 	{
+		// Report NUL character as such.
+		if (*p == '\0')
+			return '\0';
+
 		// If g_utf8_get_char_validated() found a NUL byte in the middle of a
 		// multi-byte character, even when there are more bytes available as
 		// specified by max_len, it reports a partial UTF-8 character.  Report
