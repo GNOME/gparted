@@ -30,6 +30,11 @@ namespace GParted {
 
 const size_t READBUF_SIZE = 64*KIBIBYTE;
 
+
+const gunichar UTF8_PARTIAL = (gunichar)-2;
+const gunichar UTF8_INVALID = (gunichar)-1;
+
+
 PipeCapture::PipeCapture( int fd, Glib::ustring &buffer ) : fill_offset( 0 ),
                                                             cursor( 0 ),
                                                             line_start( 0 ),
@@ -125,21 +130,7 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 		fill_offset = 0;
 		while ( read_ptr < end_ptr )
 		{
-			const gunichar UTF8_PARTIAL = (gunichar)-2;
-			const gunichar UTF8_INVALID = (gunichar)-1;
-			gunichar uc = g_utf8_get_char_validated( read_ptr, end_ptr - read_ptr );
-			if ( uc == UTF8_PARTIAL )
-			{
-				// Workaround bug in g_utf8_get_char_validated() in which
-				// it reports an partial UTF-8 char when a NUL byte is
-				// encountered in the middle of a multi-byte character,
-				// yet there are more bytes available in the length
-				// specified buffer.  Report as invalid character instead.
-				int len = utf8_char_length( *read_ptr );
-				if ( len == -1 || read_ptr + len <= end_ptr )
-					uc = UTF8_INVALID;
-			}
-
+			gunichar uc = get_utf8_char_validated(read_ptr, end_ptr - read_ptr);
 			if ( uc == UTF8_PARTIAL )
 			{
 				// Partial UTF-8 character at end of read buffer.  Copy to
@@ -257,6 +248,29 @@ void PipeCapture::append_unichar_vector_to_utf8( std::string & str, const std::v
 		str.append( buf, bytes_written );
 	}
 }
+
+
+// GLib's g_utf8_get_char_validated() always considers strings as being NUL terminated,
+// even when max_len is specified, hence can't read NUL characters.  This wrapper can read
+// NUL characters when max_len is specified.
+// Reference:
+//     https://developer.gnome.org/glib/stable/glib-Unicode-Manipulation.html#g-utf8-get-char-validated
+gunichar PipeCapture::get_utf8_char_validated(const char *p, gssize max_len)
+{
+	gunichar uc = g_utf8_get_char_validated(p, max_len);
+	if (uc == UTF8_PARTIAL && max_len > 0)
+	{
+		// If g_utf8_get_char_validated() found a NUL byte in the middle of a
+		// multi-byte character, even when there are more bytes available as
+		// specified by max_len, it reports a partial UTF-8 character.  Report
+		// this case as an invalid character instead.
+		int len = utf8_char_length(*p);
+		if (len == -1 || (gssize)len <= max_len)
+			uc = UTF8_INVALID;
+	}
+	return uc;
+}
+
 
 int PipeCapture::utf8_char_length( unsigned char firstbyte )
 {
