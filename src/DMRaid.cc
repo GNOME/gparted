@@ -435,7 +435,7 @@ void DMRaid::get_partition_dev_map_entries( const Partition & partition, std::ve
 
 bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, OperationDetail & operationdetail )
 {
-	//Delete all affected dev mapper entries (logical partitions >= specificied partition)
+	// Delete all affected dev mapper entries (logical partitions >= specified partition)
 
 	std::vector<Glib::ustring> affected_entries ;
 	Glib::ustring command ;

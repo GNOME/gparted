@@ -3557,7 +3557,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			if ( constraint )
 			{
 				//FIXME: if we insert a weird partitionnew geom here (e.g. start > end) 
-				//ped_disk_set_partition_geom() will still return true (althoug an lp exception is written
+				//ped_disk_set_partition_geom() will still return true (although an lp exception is written
 				//to stdout.. see if this also affect create_partition and resize_move_partition
 				//sended a patch to fix this to libparted list. will probably be in 1.7.2
 				if ( ped_disk_set_partition_geom( lp_disk,

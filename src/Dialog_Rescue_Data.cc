@@ -436,7 +436,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 
 
 /*
- * Checks if the guessed partition is overlaping some active partition
+ * Checks if the guessed partition is overlapping some active partition
  */
 bool Dialog_Rescue_Data::is_overlaping(int nPart)
 {

@@ -108,7 +108,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	init_toolbar() ;
 	vbox_main.pack_start( hbox_toolbar, Gtk::PACK_SHRINK );
 	
-	//drawingarea_visualdisk...  ( contains the visual represenation of the disks )
+	//drawingarea_visualdisk...  ( contains the visual representation of the disks )
 	drawingarea_visualdisk .signal_partition_selected .connect( 
 			sigc::mem_fun( this, &Win_GParted::on_partition_selected ) ) ;
 	drawingarea_visualdisk .signal_partition_activated .connect( 
