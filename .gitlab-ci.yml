@@ -79,9 +79,6 @@ stages:
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndGrow/xfs'
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndShrink/btrfs'
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndShrink/lvm2pv'
-    # Exclude failing PipeCapture read NUL byte unit tests.
-    - GTEST_FILTER+=':PipeCaptureTest.ReadEmbeddedNULCharacter'
-    - GTEST_FILTER+=':PipeCaptureTest.ReadNULByteInMiddleOfMultiByteUTF8Character'
     # Create needed /dev entries for unit tests in Docker images.
     - tests/makedev.sh
     - make check
