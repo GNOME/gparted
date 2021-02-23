@@ -1119,7 +1119,8 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 	// For simple BitLocker recognition consider validation of BIOS Parameter block
 	// fields unnecessary.
 	// *   Detecting BitLocker
-	//     http://blogs.msdn.com/b/si_team/archive/2006/10/26/detecting-bitlocker.aspx
+	//     https://docs.microsoft.com/en-us/archive/blogs/si_team/detecting-bitlocker
+	//     https://web.archive.org/web/20200720030153/https://docs.microsoft.com/en-us/archive/blogs/si_team/detecting-bitlocker
 	//
 	// Recognise GRUB2 core.img just by any of the possible first 4 bytes of x86 CPU
 	// instructions it starts with.
