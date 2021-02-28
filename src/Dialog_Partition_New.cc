@@ -342,9 +342,9 @@ void Dialog_Partition_New::combobox_changed(bool type)
 		else if (combo_type.get_active_row_number() != TYPE_EXTENDED      &&
 		         combo_filesystem.items().size()    == FILESYSTEMS.size()   )
 		{
+			combo_filesystem.set_active(first_creatable_fs);
 			combo_filesystem.items().erase(combo_filesystem.items().back());
 			combo_filesystem.set_sensitive(true);
-			combo_filesystem.set_active(first_creatable_fs);
 		}
 	}
 	
