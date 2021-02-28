@@ -177,10 +177,12 @@ void Dialog_Partition_New::set_data( const Device & device,
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition.get_sector_length(),
 	                                                selected_partition.sector_size, UNIT_MIB ) );
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
-	
-	//set first enabled file system
+
+	// Set default creatable file system.
+	// (As the change signal for combo_filesystem has already been connected,
+	// combobox_changed(false) is automatically called by setting the active
+	// selection.  This is needed to initialise everything correctly).
 	combo_filesystem.set_active(first_creatable_fs);
-	combobox_changed(false);
 
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
