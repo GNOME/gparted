@@ -325,12 +325,12 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 }
 
 
-void Dialog_Partition_New::combobox_changed(bool type)
+void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 
 	// combo_type
-	if ( type )
+	if (combo_type_changed)
 	{
 		if (combo_type.get_active_row_number() == TYPE_EXTENDED      &&
 		    combo_filesystem.items().size()    <  FILESYSTEMS.size()   )
@@ -347,9 +347,9 @@ void Dialog_Partition_New::combobox_changed(bool type)
 			combo_filesystem.set_sensitive(true);
 		}
 	}
-	
+
 	// combo_filesystem and combo_alignment
-	if ( ! type )
+	if (! combo_type_changed)
 	{
 		fs = FILESYSTEMS[combo_filesystem.get_active_row_number()];
 		fs_limits = GParted_Core::get_filesystem_limits(fs.fstype, *new_partition);
