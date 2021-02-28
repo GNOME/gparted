@@ -33,7 +33,7 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
                                             bool any_extended,
                                             unsigned short new_count,
                                             const std::vector<FS> & FILESYSTEMS )
- : Dialog_Base_Partition(device)
+ : Dialog_Base_Partition(device), default_fs(-1)
 {
 	/*TO TRANSLATORS: dialogtitle */
 	this ->set_title( _("Create new Partition") ) ;
@@ -182,7 +182,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	// (As the change signal for combo_filesystem has already been connected,
 	// combobox_changed(false) is automatically called by setting the active
 	// selection.  This is needed to initialise everything correctly).
-	combo_filesystem.set_active(first_creatable_fs);
+	combo_filesystem.set_active(default_fs);
 
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
@@ -344,7 +344,7 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 		else if (combo_type.get_active_row_number() != TYPE_EXTENDED      &&
 		         combo_filesystem.items().size()    == FILESYSTEMS.size()   )
 		{
-			combo_filesystem.set_active(first_creatable_fs);
+			combo_filesystem.set_active(default_fs);
 			combo_filesystem.items().erase(combo_filesystem.items().back());
 			combo_filesystem.set_sensitive(true);
 		}
@@ -407,7 +407,6 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 	combo_filesystem.items().clear();
 
-	bool set_first=false;
 	// Fill the file system combobox
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
@@ -438,18 +437,18 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 		     FILESYSTEMS[t].fstype == FS_EXT4   )      &&
 		    combo_filesystem.items().back().sensitive()  )
 		{
-			first_creatable_fs = combo_filesystem.items().size() - 1;
-			set_first=true;
+			default_fs = combo_filesystem.items().size() - 1;
 		}
 	}
 
-	if(!set_first)
+	if (default_fs < 0)
 	{
-		//find and set first enabled file system as last choice default
+		// Find and set first enabled file system as last choice default.  Note
+		// that unformatted will always be available.
 		for (unsigned int t = 0; t < combo_filesystem.items().size(); t++)
 			if (combo_filesystem.items()[t].sensitive())
 			{
-				first_creatable_fs = t ;
+				default_fs = t;
 				break ;
 			}
 	}
