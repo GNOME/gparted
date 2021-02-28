@@ -408,16 +408,29 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 	combo_filesystem.items().clear();
 
 	bool set_first=false;
-	//fill the file system menu with the file systems (except for extended) 
+	// Fill the file system combobox
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
-		//skip extended
+		// Skip extended which is only added by combobox_changed() while partition
+		// type = extended.
 		if (FILESYSTEMS[t].fstype == FS_EXTENDED)
 			continue ;
+
 		combo_filesystem.items().push_back(Utils::get_filesystem_string(FILESYSTEMS[t].fstype));
-		combo_filesystem.items().back().set_sensitive(
-			! only_unformatted && FILESYSTEMS[ t ] .create &&
-			new_partition->get_byte_length() >= get_filesystem_min_limit(FILESYSTEMS[t].fstype));
+
+		if (FILESYSTEMS[t].fstype == FS_UNFORMATTED)
+		{
+			// Unformatted is always available
+			combo_filesystem.items().back().set_sensitive(true);
+		}
+		else
+		{
+			combo_filesystem.items().back().set_sensitive(
+				! only_unformatted                                                                  &&
+				FILESYSTEMS[t].create                                                               &&
+				new_partition->get_byte_length() >= get_filesystem_min_limit(FILESYSTEMS[t].fstype)   );
+		}
+
 		//use ext4/3/2 as first/second/third choice default file system
 		//(Depends on ordering in FILESYSTEMS for preference)
 		if ((FILESYSTEMS[t].fstype == FS_EXT2 ||
@@ -429,9 +442,6 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 			set_first=true;
 		}
 	}
-	
-	//unformatted is always available
-	combo_filesystem.items().back().set_sensitive(true);
 
 	if(!set_first)
 	{
