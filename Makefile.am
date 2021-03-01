@@ -32,7 +32,7 @@ endif
 bin_SCRIPTS = gparted
 CLEANFILES = $(bin_SCRIPTS) $(DESKTOP_IN_FILES) $(polkit_action_in_FILES)
 
-do_subst = sed -e 's,[@]sbindir[@],$(sbindir),g' \
+do_subst = sed -e 's,[@]libexecdir[@],$(libexecdir),g' \
 	-e 's,[@]bindir[@],$(bindir),g' \
 	-e 's,[@]gksuprog[@],$(GKSUPROG),g' \
 	-e 's,[@]enable_xhost_root[@],$(ENABLE_XHOST_ROOT),g'

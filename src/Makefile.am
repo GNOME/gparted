@@ -8,7 +8,7 @@ AM_CFLAGS = -Wall
 
 AM_CXXFLAGS = -Wall	
 
-sbin_PROGRAMS = gpartedbin
+libexec_PROGRAMS = gpartedbin
 
 gpartedbin_SOURCES = \
 	BlockSpecial.cc			\
