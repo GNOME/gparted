@@ -69,7 +69,7 @@ private:
 	static void load_lvm2_pv_info_cache();
 	static const LVM2_PV & get_pv_cache_entry_by_name( const Glib::ustring & pvname );
 	static const LVM2_VG & get_vg_cache_entry_by_name( const Glib::ustring & vgname );
-	static Byte_Value lvm2_pv_size_to_num( const Glib::ustring str ) ;
+	static Byte_Value lvm2_pv_size_to_num(const Glib::ustring& str);
 	static bool bit_set( const Glib::ustring & attr, unsigned int bit ) ;
 	static bool lvm2_pv_info_cache_initialized ;
 	static bool lvm_found ;

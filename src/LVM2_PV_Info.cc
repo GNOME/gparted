@@ -358,9 +358,10 @@ const LVM2_VG & LVM2_PV_Info::get_vg_cache_entry_by_name( const Glib::ustring & 
 	return vg;
 }
 
-//Return string converted to a number, or -1 for error.
-//Used to convert PVs size or free bytes.
-Byte_Value LVM2_PV_Info::lvm2_pv_size_to_num( const Glib::ustring str )
+
+// Return string converted to a number, or -1 for error.
+// Used to convert PVs size or free bytes.
+Byte_Value LVM2_PV_Info::lvm2_pv_size_to_num(const Glib::ustring& str)
 {
 	Byte_Value num = -1 ;
 	if ( str != "" )
