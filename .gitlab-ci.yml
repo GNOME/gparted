@@ -17,6 +17,7 @@ stages:
                      mtools hfsplus-tools util-linux cryptsetup device-mapper
                      lvm2 ntfsprogs udftools xfsprogs xfsdump
                      xorg-x11-server-Xvfb kmod
+    - cat /proc/version
     - cat /etc/os-release
     - systemd-machine-id-setup
 
@@ -34,6 +35,7 @@ stages:
                          hfsutils hfsprogs jfsutils util-linux cryptsetup-bin
                          dmsetup lvm2 nilfs-tools ntfs-3g reiser4progs
                          reiserfsprogs udftools xfsprogs xfsdump xvfb kmod
+    - cat /proc/version
     - cat /etc/os-release
 
 .build_stage_template: &build_stage_definition
@@ -86,10 +88,12 @@ stages:
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndShrink/btrfs'
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndShrink/lvm2pv'
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndShrink/nilfs2'
+    - fgrep -v nodev /proc/filesystems | sort
     # Create needed /dev entries for unit tests in Docker images.
     - tests/makedev.sh
     - make check
     - make distcheck
+    - fgrep -v nodev /proc/filesystems | sort
   # Save all files on job failure for investigation.
   artifacts:
     when: on_failure
