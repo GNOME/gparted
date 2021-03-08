@@ -4,14 +4,14 @@
 # Gintautas Miliauskas <gintas@akl.lt>, 2005, 2006, 2007.
 # Žygimantas Beručka <zygis@gnome.org>, 2008-2010.
 # Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2011, 2012.
-# Aurimas Černius <aurisc4@gmail.com>, 2010-2020.
+# Aurimas Černius <aurisc4@gmail.com>, 2010-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2020-05-27 16:37+0000\n"
-"PO-Revision-Date: 2020-09-06 22:51+0300\n"
+"POT-Creation-Date: 2021-01-15 20:33+0000\n"
+"PO-Revision-Date: 2021-03-08 22:34+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 3.36.0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 
 #: ../gparted.appdata.xml.in.h:1 ../gparted.desktop.in.in.h:3
 msgid "GParted Partition Editor"
@@ -50,14 +50,18 @@ msgstr ""
 "prarastų skaidinių."
 
 #: ../gparted.appdata.xml.in.h:5
+#| msgid ""
+#| "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
+#| "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, "
+#| "reiserfs, reiser4, udf, ufs, and xfs."
 msgid ""
-"GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
-"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
-"reiser4, udf, ufs, and xfs."
+"GParted works with many file systems including: btrfs, exfat, ext2, ext3, "
+"ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, "
+"reiserfs, reiser4, udf, ufs, and xfs."
 msgstr ""
-"GParted veikia su daug failų sistemų, tokių kaip: btrfs, ext2, ext3, ext4, "
-"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
-"reiser4, udf, ufs ir xfs."
+"GParted veikia su daug failų sistemų, tokių kaip: btrfs, exfat, ext2, ext3, "
+"ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, "
+"reiserfs, reiser4, udf, ufs ir xfs."
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Win_GParted.cc:87
@@ -163,19 +167,19 @@ msgstr "MiB"
 msgid "None"
 msgstr "Niekuo"
 
-#: ../src/Dialog_Base_Partition.cc:466
+#: ../src/Dialog_Base_Partition.cc:470
 msgid "Resize"
 msgstr "Keisti dydį"
 
-#: ../src/Dialog_Base_Partition.cc:466 ../src/Win_GParted.cc:323
+#: ../src/Dialog_Base_Partition.cc:470 ../src/Win_GParted.cc:323
 msgid "Resize/Move"
 msgstr "Keisti dydį / perkelti"
 
-#: ../src/Dialog_Base_Partition.cc:484
+#: ../src/Dialog_Base_Partition.cc:488
 msgid "Minimum size: %1 MiB"
 msgstr "Mažiausias dydis: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:485
+#: ../src/Dialog_Base_Partition.cc:489
 msgid "Maximum size: %1 MiB"
 msgstr "Didžiausias dydis: %1 MiB"
 
@@ -572,7 +576,6 @@ msgstr "GParted informacija"
 
 #. Device overview information
 #: ../src/Dialog_Progress.cc:427
-#| msgid "_Device"
 msgid "Device:"
 msgstr "Įrenginys:"
 
@@ -629,7 +632,6 @@ msgid "Flags"
 msgstr "Žymės"
 
 #: ../src/Dialog_Progress.cc:456
-#| msgid "Partition name:"
 msgid "Partition Name"
 msgstr "Skaidinio pavadinimas"
 
@@ -955,14 +957,12 @@ msgstr "Ieškoma %1 skaidinių"
 #. TO TRANSLATORS: looks like   A partition cannot start (-2048)
 #. * before the start of the device
 #: ../src/GParted_Core.cc:303
-#| msgid "A partition cannot have a length of %1 sectors"
 msgid "A partition cannot start (%1) before the start of the device"
 msgstr "Skaidinys negali prasidėti (%1) prieš įrenginio pradžią"
 
 #. TO TRANSLATORS: looks like   A partition cannot end (2099199)
 #. * after the end of the device (2097151)
 #: ../src/GParted_Core.cc:313
-#| msgid "A partition cannot have a length of %1 sectors"
 msgid "A partition cannot end (%1) after the end of the device (%2)"
 msgstr "Skaidinys negali baigtis (%1) ppo įrenginio pabaigos (%2)"
 
@@ -1066,23 +1066,23 @@ msgstr "kurti tuščią skaidinį"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:1826 ../src/GParted_Core.cc:3489
+#: ../src/GParted_Core.cc:1826 ../src/GParted_Core.cc:3497
 msgid "path: %1 (%2)"
 msgstr "kelias: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1827 ../src/GParted_Core.cc:3493
+#: ../src/GParted_Core.cc:1827 ../src/GParted_Core.cc:3501
 msgid "partition"
 msgstr "skaidinys"
 
-#: ../src/GParted_Core.cc:1828 ../src/GParted_Core.cc:3494
+#: ../src/GParted_Core.cc:1828 ../src/GParted_Core.cc:3502
 msgid "start: %1"
 msgstr "pradžia: %1"
 
-#: ../src/GParted_Core.cc:1829 ../src/GParted_Core.cc:3495
+#: ../src/GParted_Core.cc:1829 ../src/GParted_Core.cc:3503
 msgid "end: %1"
 msgstr "pabaiga: %1"
 
-#: ../src/GParted_Core.cc:1830 ../src/GParted_Core.cc:3496
+#: ../src/GParted_Core.cc:1830 ../src/GParted_Core.cc:3504
 msgid "size: %1 (%2)"
 msgstr "dydis: %1 (%2)"
 
@@ -1277,27 +1277,27 @@ msgstr "ankstesnė pabaiga: %1"
 msgid "old size: %1 (%2)"
 msgstr "ankstesnis dydis: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2603 ../src/GParted_Core.cc:3577
+#: ../src/GParted_Core.cc:2603 ../src/GParted_Core.cc:3585
 msgid "new start: %1"
 msgstr "nauja pradžia: %1"
 
-#: ../src/GParted_Core.cc:2604 ../src/GParted_Core.cc:3578
+#: ../src/GParted_Core.cc:2604 ../src/GParted_Core.cc:3586
 msgid "new end: %1"
 msgstr "nauja pabaiga: %1"
 
-#: ../src/GParted_Core.cc:2605 ../src/GParted_Core.cc:3579
+#: ../src/GParted_Core.cc:2605 ../src/GParted_Core.cc:3587
 msgid "new size: %1 (%2)"
 msgstr "naujas dydis: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2619 ../src/GParted_Core.cc:3530
+#: ../src/GParted_Core.cc:2619 ../src/GParted_Core.cc:3538
 msgid "requested start: %1"
 msgstr "paprašyta pradžia: %1"
 
-#: ../src/GParted_Core.cc:2620 ../src/GParted_Core.cc:3531
+#: ../src/GParted_Core.cc:2620 ../src/GParted_Core.cc:3539
 msgid "requested end: %1"
 msgstr "paprašyta pabaiga: %1"
 
-#: ../src/GParted_Core.cc:2621 ../src/GParted_Core.cc:3532
+#: ../src/GParted_Core.cc:2621 ../src/GParted_Core.cc:3540
 msgid "requested size: %1 (%2)"
 msgstr "paprašytas dydis: %1 (%2)"
 
@@ -1474,134 +1474,134 @@ msgid "set partition type on %1"
 msgstr "nustatyti %1 skaidinio tipą"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3383
+#: ../src/GParted_Core.cc:3391
 msgid "new partition type: %1"
 msgstr "naujas skaidinio tipas: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3398
+#: ../src/GParted_Core.cc:3406
 msgid "new partition flag: %1"
 msgstr "naujas skaidinio požymis: %1"
 
-#: ../src/GParted_Core.cc:3427
+#: ../src/GParted_Core.cc:3435
 msgid "calibrate %1"
 msgstr "kalibruoti %1"
 
-#: ../src/GParted_Core.cc:3492
+#: ../src/GParted_Core.cc:3500
 msgid "device"
 msgstr "įrenginys"
 
-#: ../src/GParted_Core.cc:3506
+#: ../src/GParted_Core.cc:3514
 msgid "encryption path: %1"
 msgstr "šifravimo kelias: %1"
 
-#: ../src/GParted_Core.cc:3526
+#: ../src/GParted_Core.cc:3534
 msgid "calculate new size and position of %1"
 msgstr "paskaičiuoti naują %1 dydį ir poziciją"
 
-#: ../src/GParted_Core.cc:3654
+#: ../src/GParted_Core.cc:3662
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
 msgstr ""
 "skaidinys turi atvirą LUKS šifravimą tik failų sistemos parašų žingsnyje"
 
-#: ../src/GParted_Core.cc:3661
+#: ../src/GParted_Core.cc:3669
 msgid "clear old file system signatures in %1"
 msgstr "Išvalyti senus failų sistemų parašus iš %1"
 
-#: ../src/GParted_Core.cc:3867
+#: ../src/GParted_Core.cc:3875
 msgid "flush operating system cache of %1"
 msgstr "ištuštinti operacinės sistemos %1 podėlį"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3906
+#: ../src/GParted_Core.cc:3914
 msgid "update boot sector of %1 file system on %2"
 msgstr "atnaujinti %1 failų sistemos paleidimo sektorių skaidinyje %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3942
+#: ../src/GParted_Core.cc:3950
 msgid "Error trying to write to boot sector in %1"
 msgstr "Klaida rašant į paleidimo sektorių skaidinyje %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3948
+#: ../src/GParted_Core.cc:3956
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Klaida ieškant pozicijos 0x1c skaidinyje %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3955
+#: ../src/GParted_Core.cc:3963
 msgid "Error trying to open %1"
 msgstr "Klaida atveriant %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3965
+#: ../src/GParted_Core.cc:3973
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Nepavyko nustatyti NTFS paleidimo įraše paslėptų sektorių skaičiaus į %1."
 
-#: ../src/GParted_Core.cc:3967
+#: ../src/GParted_Core.cc:3975
 msgid "You might try the following command to correct the problem:"
 msgstr "Galite pabandyti ištaisyti problemą šia komanda:"
 
-#: ../src/GParted_Core.cc:3985
+#: ../src/GParted_Core.cc:3993
 msgid "libparted messages"
 msgstr "libparted pranešimai"
 
-#: ../src/GParted_Core.cc:4181
+#: ../src/GParted_Core.cc:4189
 msgid "Libparted Information"
 msgstr "Libparted informacija"
 
-#: ../src/GParted_Core.cc:4185
+#: ../src/GParted_Core.cc:4193
 msgid "Libparted Warning"
 msgstr "Libparted įspėjimas"
 
-#: ../src/GParted_Core.cc:4189
+#: ../src/GParted_Core.cc:4197
 msgid "Libparted Error"
 msgstr "Libparted klaida"
 
-#: ../src/GParted_Core.cc:4192
+#: ../src/GParted_Core.cc:4200
 msgid "Libparted Fatal"
 msgstr "Libparted kritinė"
 
-#: ../src/GParted_Core.cc:4195
+#: ../src/GParted_Core.cc:4203
 msgid "Libparted Bug"
 msgstr "Libparted klaida"
 
-#: ../src/GParted_Core.cc:4198
+#: ../src/GParted_Core.cc:4206
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted nepalaikoma savybė"
 
-#: ../src/GParted_Core.cc:4201
+#: ../src/GParted_Core.cc:4209
 msgid "Libparted unknown exception"
 msgstr "Libparted nežinoma klaida"
 
-#: ../src/GParted_Core.cc:4205
+#: ../src/GParted_Core.cc:4213
 msgid "Fix"
 msgstr "Taisyti"
 
-#: ../src/GParted_Core.cc:4207
+#: ../src/GParted_Core.cc:4215
 msgid "Yes"
 msgstr "Taip"
 
-#: ../src/GParted_Core.cc:4209
+#: ../src/GParted_Core.cc:4217
 msgid "Ok"
 msgstr "Gerai"
 
-#: ../src/GParted_Core.cc:4211
+#: ../src/GParted_Core.cc:4219
 msgid "Retry"
 msgstr "Bandyti dar kartą"
 
-#: ../src/GParted_Core.cc:4213
+#: ../src/GParted_Core.cc:4221
 msgid "No"
 msgstr "Ne"
 
-#: ../src/GParted_Core.cc:4215
+#: ../src/GParted_Core.cc:4223
 msgid "Cancel"
 msgstr "Nutraukti"
 
-#: ../src/GParted_Core.cc:4217
+#: ../src/GParted_Core.cc:4225
 msgid "Ignore"
 msgstr "Nepaisyti"
 
@@ -1756,7 +1756,6 @@ msgstr "Pirminis"
 #. * A "Logical" type of partition on a partitioned drive.
 #.
 #: ../src/Partition.cc:408
-#| msgid "Logical Volumes:"
 msgid "Logical"
 msgstr "Loginis"
 
@@ -1764,7 +1763,6 @@ msgstr "Loginis"
 #. * An "Extended" type of partition on a partitioned drive.
 #.
 #: ../src/Partition.cc:413
-#| msgid "Extended Partition"
 msgid "Extended"
 msgstr "Išplėstinis"
 
@@ -1772,7 +1770,6 @@ msgstr "Išplėstinis"
 #. * Unused space outside of any partition on a partitioned drive.
 #.
 #: ../src/Partition.cc:418
-#| msgid "Unallocated:"
 msgid "Unallocated"
 msgstr "Nepaskirstyta"
 
@@ -1780,7 +1777,6 @@ msgstr "Nepaskirstyta"
 #. * A drive which has no partition table.
 #.
 #: ../src/Partition.cc:423
-#| msgid "partition"
 msgid "Unpartitioned"
 msgstr "Nesuskaidyta"
 
@@ -1862,23 +1858,23 @@ msgstr "laisva"
 msgid "Encrypted"
 msgstr "Užšifruota"
 
-#: ../src/Utils.cc:523
+#: ../src/Utils.cc:524
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:528
+#: ../src/Utils.cc:529
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:533
+#: ../src/Utils.cc:534
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:538
+#: ../src/Utils.cc:539
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:543
+#: ../src/Utils.cc:544
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -2097,7 +2093,6 @@ msgid "Documentation is available at the project web site."
 msgstr "Dokumentacija prieinama projekto tinklapyje."
 
 #: ../src/Win_GParted.cc:1848
-#| msgid "GParted Bug"
 msgid "GParted Manual"
 msgstr "GParted žinynas"
 
