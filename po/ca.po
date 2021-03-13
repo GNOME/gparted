@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2020-05-27 16:37+0000\n"
+"POT-Creation-Date: 2021-01-15 20:33+0000\n"
 "PO-Revision-Date: 2017-08-07 18:06+0100\n"
 "Last-Translator: Carles Ferrando Garcia <carles.ferrando@gmail.com>\n"
 "Language-Team: Catalan <info@softcatala.org>\n"
@@ -42,23 +42,23 @@ msgstr ""
 #: ../gparted.appdata.xml.in.h:4
 msgid ""
 "With GParted you can resize, copy, label, and move partitions without data "
-"loss. These actions enable you to grow or shrink your C: drive, create space "
-"for new operating systems, or attempt data rescue from lost partitions."
+"loss. These actions enable you to grow or shrink your C: drive, create space"
+" for new operating systems, or attempt data rescue from lost partitions."
 msgstr ""
 "Amb Gparted podeu canviar la mida, copiar, etiquetar, i moure particions "
-"sense pèrdua de dades. Aquestes accions us permetran engrandir o encongir el "
-"vostre disc C:, crear espai per nous sistemes operatius, o intentar "
+"sense pèrdua de dades. Aquestes accions us permetran engrandir o encongir el"
+" vostre disc C:, crear espai per nous sistemes operatius, o intentar "
 "recuperar dades de particions perdudes."
 
 #: ../gparted.appdata.xml.in.h:5
 msgid ""
-"GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
-"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
-"reiser4, udf, ufs, and xfs."
+"GParted works with many file systems including: btrfs, exfat, ext2, ext3, "
+"ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, "
+"reiserfs, reiser4, udf, ufs, and xfs."
 msgstr ""
-"Gparted funciona amb molts sistemes de fitxers incloent-hi: btrfs, ext2, "
-"ext3, ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, "
-"ntfs, reiserfs, reiser4, udf, ufs, i xfs."
+"Gparted funciona amb molts sistemes de fitxers incloent-hi: btrfs, exfat, "
+"ext2, ext3, ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, "
+"nilfs2, ntfs, reiserfs, reiser4, udf, ufs, i xfs."
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Win_GParted.cc:87
@@ -165,19 +165,19 @@ msgstr "MiB"
 msgid "None"
 msgstr "Cap"
 
-#: ../src/Dialog_Base_Partition.cc:466
+#: ../src/Dialog_Base_Partition.cc:470
 msgid "Resize"
 msgstr "Redimensiona"
 
-#: ../src/Dialog_Base_Partition.cc:466 ../src/Win_GParted.cc:323
+#: ../src/Dialog_Base_Partition.cc:470 ../src/Win_GParted.cc:323
 msgid "Resize/Move"
 msgstr "Redimensiona/Mou"
 
-#: ../src/Dialog_Base_Partition.cc:484
+#: ../src/Dialog_Base_Partition.cc:488
 msgid "Minimum size: %1 MiB"
 msgstr "Mida mínima: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:485
+#: ../src/Dialog_Base_Partition.cc:489
 msgid "Maximum size: %1 MiB"
 msgstr "Mida màxima: %1 MiB"
 
@@ -594,8 +594,8 @@ msgstr "Mida de sector:"
 msgid "Heads:"
 msgstr "Capçaleres:"
 
-# Tracks? jm.
 #. Sectors / track
+# Tracks? jm.
 #: ../src/Dialog_Progress.cc:436 ../src/Win_GParted.cc:631
 msgid "Sectors/track:"
 msgstr "Sectors/pista:"
@@ -722,11 +722,11 @@ msgstr ""
 
 #: ../src/DialogFeatures.cc:90
 msgid ""
-"Not all actions are available on all file systems, in part due to the nature "
-"of file systems and limitations in the required software."
+"Not all actions are available on all file systems, in part due to the nature"
+" of file systems and limitations in the required software."
 msgstr ""
-"No totes les accions estan disponibles en tots els sistemes de fitxers. Això "
-"és degut en part a la natura dels sistemes de fitxers i a les limitacions "
+"No totes les accions estan disponibles en tots els sistemes de fitxers. Això"
+" és degut en part a la natura dels sistemes de fitxers i a les limitacions "
 "del programari requerit."
 
 #. TO TRANSLATORS:  Available offline and online
@@ -806,7 +806,8 @@ msgstr ""
 #: ../src/Dialog_Rescue_Data.cc:86
 msgid "All mounted views will be unmounted when you close this dialog."
 msgstr ""
-"Totes les visualitzacions muntades es desmuntaran quan tanqueu aquest diàleg."
+"Totes les visualitzacions muntades es desmuntaran quan tanqueu aquest "
+"diàleg."
 
 #: ../src/Dialog_Rescue_Data.cc:109
 msgid "File systems"
@@ -826,8 +827,8 @@ msgid ""
 "An error occurred while creating a temporary directory for use as a mount "
 "point."
 msgstr ""
-"S'ha produït un error en crear un directori temporal per a fer-lo servir com "
-"a punt de muntatge."
+"S'ha produït un error en crear un directori temporal per a fer-lo servir com"
+" a punt de muntatge."
 
 #: ../src/Dialog_Rescue_Data.cc:171
 msgid "Error"
@@ -953,16 +954,12 @@ msgstr "S'estan cercant les particions de %1"
 #. TO TRANSLATORS: looks like   A partition cannot start (-2048)
 #. * before the start of the device
 #: ../src/GParted_Core.cc:303
-#, fuzzy
-#| msgid "A partition cannot have a length of %1 sectors"
 msgid "A partition cannot start (%1) before the start of the device"
-msgstr "La partició no pot ser de %1 sectors de llargada"
+msgstr "Una partició no pot iniciar (%1) abans de l'inici del dispositiu"
 
 #. TO TRANSLATORS: looks like   A partition cannot end (2099199)
 #. * after the end of the device (2097151)
 #: ../src/GParted_Core.cc:313
-#, fuzzy
-#| msgid "A partition cannot have a length of %1 sectors"
 msgid "A partition cannot end (%1) after the end of the device (%2)"
 msgstr "La partició no pot ser de %1 sectors de llargada"
 
@@ -1070,23 +1067,23 @@ msgstr "crea una partició buida"
 #. * This is showing the name and whether it
 #. * is a whole disk device or a partition
 #. * within a device.
-#: ../src/GParted_Core.cc:1826 ../src/GParted_Core.cc:3489
+#: ../src/GParted_Core.cc:1826 ../src/GParted_Core.cc:3497
 msgid "path: %1 (%2)"
 msgstr "camí: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1827 ../src/GParted_Core.cc:3493
+#: ../src/GParted_Core.cc:1827 ../src/GParted_Core.cc:3501
 msgid "partition"
 msgstr "partició"
 
-#: ../src/GParted_Core.cc:1828 ../src/GParted_Core.cc:3494
+#: ../src/GParted_Core.cc:1828 ../src/GParted_Core.cc:3502
 msgid "start: %1"
 msgstr "inici: %1"
 
-#: ../src/GParted_Core.cc:1829 ../src/GParted_Core.cc:3495
+#: ../src/GParted_Core.cc:1829 ../src/GParted_Core.cc:3503
 msgid "end: %1"
 msgstr "final: %1"
 
-#: ../src/GParted_Core.cc:1830 ../src/GParted_Core.cc:3496
+#: ../src/GParted_Core.cc:1830 ../src/GParted_Core.cc:3504
 msgid "size: %1 (%2)"
 msgstr "mida: %1 (%2)"
 
@@ -1286,27 +1283,27 @@ msgstr "final anterior: %1"
 msgid "old size: %1 (%2)"
 msgstr "mida anterior: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2603 ../src/GParted_Core.cc:3577
+#: ../src/GParted_Core.cc:2603 ../src/GParted_Core.cc:3585
 msgid "new start: %1"
 msgstr "inici nou: %1"
 
-#: ../src/GParted_Core.cc:2604 ../src/GParted_Core.cc:3578
+#: ../src/GParted_Core.cc:2604 ../src/GParted_Core.cc:3586
 msgid "new end: %1"
 msgstr "final nou: %1"
 
-#: ../src/GParted_Core.cc:2605 ../src/GParted_Core.cc:3579
+#: ../src/GParted_Core.cc:2605 ../src/GParted_Core.cc:3587
 msgid "new size: %1 (%2)"
 msgstr "mida nova: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2619 ../src/GParted_Core.cc:3530
+#: ../src/GParted_Core.cc:2619 ../src/GParted_Core.cc:3538
 msgid "requested start: %1"
 msgstr "inici demanat: %1"
 
-#: ../src/GParted_Core.cc:2620 ../src/GParted_Core.cc:3531
+#: ../src/GParted_Core.cc:2620 ../src/GParted_Core.cc:3539
 msgid "requested end: %1"
 msgstr "final demanat: %1"
 
-#: ../src/GParted_Core.cc:2621 ../src/GParted_Core.cc:3532
+#: ../src/GParted_Core.cc:2621 ../src/GParted_Core.cc:3540
 msgid "requested size: %1 (%2)"
 msgstr "mida demanada: %1 (%2)"
 
@@ -1328,8 +1325,8 @@ msgstr "mida original: %1 (%2)"
 
 #: ../src/GParted_Core.cc:2738
 msgid ""
-"partition does not contain open LUKS encryption for a shrink encryption only "
-"step"
+"partition does not contain open LUKS encryption for a shrink encryption only"
+" step"
 msgstr ""
 "la partició no conté xifratge Luks desxifrat per a encongir la mida del "
 "xifratge en un sol pas"
@@ -1421,8 +1418,8 @@ msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
 msgstr ""
-"la partició de destinació conté xifratge Luks desxifrat per a una còpia d'un "
-"sistema de fitxers en un sol pas"
+"la partició de destinació conté xifratge Luks desxifrat per a una còpia d'un"
+" sistema de fitxers en un sol pas"
 
 #: ../src/GParted_Core.cc:3008
 msgid "copy file system from %1 to %2"
@@ -1462,7 +1459,7 @@ msgstr "s'han copiat %1 (%2 B)"
 
 #: ../src/GParted_Core.cc:3228
 msgid "rollback failed file system move"
-msgstr ""
+msgstr "ha fallat l'operació de desfer el moviment del sistema de fitxers"
 
 #: ../src/GParted_Core.cc:3251
 msgid ""
@@ -1489,32 +1486,32 @@ msgid "set partition type on %1"
 msgstr "defineix el tipus de partició a %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3383
+#: ../src/GParted_Core.cc:3391
 msgid "new partition type: %1"
 msgstr "tipus de partició nou: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3398
+#: ../src/GParted_Core.cc:3406
 msgid "new partition flag: %1"
 msgstr "senyalador de partició nou: %1"
 
-#: ../src/GParted_Core.cc:3427
+#: ../src/GParted_Core.cc:3435
 msgid "calibrate %1"
 msgstr "calibra %1"
 
-#: ../src/GParted_Core.cc:3492
+#: ../src/GParted_Core.cc:3500
 msgid "device"
 msgstr "Dispositiu"
 
-#: ../src/GParted_Core.cc:3506
+#: ../src/GParted_Core.cc:3514
 msgid "encryption path: %1"
 msgstr "camí al xifratge: %1"
 
-#: ../src/GParted_Core.cc:3526
+#: ../src/GParted_Core.cc:3534
 msgid "calculate new size and position of %1"
 msgstr "calcula la mida i posició nova de %1"
 
-#: ../src/GParted_Core.cc:3654
+#: ../src/GParted_Core.cc:3662
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
@@ -1522,106 +1519,107 @@ msgstr ""
 "la partició conté xifratge Luks desxifrat per a un suprimit de les "
 "signatures del sistema de fitxers en un sol pas"
 
-#: ../src/GParted_Core.cc:3661
+#: ../src/GParted_Core.cc:3669
 msgid "clear old file system signatures in %1"
 msgstr "suprimeix signatures del sistema de fitxers  a %1"
 
-#: ../src/GParted_Core.cc:3867
+#: ../src/GParted_Core.cc:3875
 msgid "flush operating system cache of %1"
 msgstr "descarrega la memòria cau del sistema operatiu de %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3906
+#: ../src/GParted_Core.cc:3914
 msgid "update boot sector of %1 file system on %2"
 msgstr "actualitza el sector d'arrencada del sistema de fitxers %1 a %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in
 #. /dev/sdd1
-#: ../src/GParted_Core.cc:3942
+#: ../src/GParted_Core.cc:3950
 msgid "Error trying to write to boot sector in %1"
-msgstr "S'ha produït un error en intentar escriure al sector d'arrencada de %1"
+msgstr ""
+"S'ha produït un error en intentar escriure al sector d'arrencada de %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in
 #. /dev/sdd1
-#: ../src/GParted_Core.cc:3948
+#: ../src/GParted_Core.cc:3956
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "S'ha produït un error en intentar anar a la posició 0x1C a %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3955
+#: ../src/GParted_Core.cc:3963
 msgid "Error trying to open %1"
 msgstr "S'ha produït un error en intentar obrir %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to
 #. 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3965
+#: ../src/GParted_Core.cc:3973
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "No s'han pogut establir el nombre de sectors ocults com a %1 al registre "
 "d'arrencada NTFS."
 
-#: ../src/GParted_Core.cc:3967
+#: ../src/GParted_Core.cc:3975
 msgid "You might try the following command to correct the problem:"
 msgstr "Podeu provar l'ordre següent per corregir el problema:"
 
-#: ../src/GParted_Core.cc:3985
+#: ../src/GParted_Core.cc:3993
 msgid "libparted messages"
 msgstr "missatges de la libparted"
 
-#: ../src/GParted_Core.cc:4181
+#: ../src/GParted_Core.cc:4189
 msgid "Libparted Information"
 msgstr "Informació de la Libparted"
 
-#: ../src/GParted_Core.cc:4185
+#: ../src/GParted_Core.cc:4193
 msgid "Libparted Warning"
 msgstr "Avís de la Libparted"
 
-#: ../src/GParted_Core.cc:4189
+#: ../src/GParted_Core.cc:4197
 msgid "Libparted Error"
 msgstr "Error de la Libparted"
 
-#: ../src/GParted_Core.cc:4192
+#: ../src/GParted_Core.cc:4200
 msgid "Libparted Fatal"
 msgstr "Fatal Libparted"
 
-#: ../src/GParted_Core.cc:4195
+#: ../src/GParted_Core.cc:4203
 msgid "Libparted Bug"
 msgstr "Error de Libparted"
 
-#: ../src/GParted_Core.cc:4198
+#: ../src/GParted_Core.cc:4206
 msgid "Libparted Unsupported Feature"
 msgstr "Característica de Libparted no suportada"
 
-#: ../src/GParted_Core.cc:4201
+#: ../src/GParted_Core.cc:4209
 msgid "Libparted unknown exception"
 msgstr "Excepció de Libparted desconeguda"
 
-#: ../src/GParted_Core.cc:4205
+#: ../src/GParted_Core.cc:4213
 msgid "Fix"
 msgstr "Corregeix"
 
-#: ../src/GParted_Core.cc:4207
+#: ../src/GParted_Core.cc:4215
 msgid "Yes"
 msgstr "Sí"
 
-#: ../src/GParted_Core.cc:4209
+#: ../src/GParted_Core.cc:4217
 msgid "Ok"
 msgstr "D'acord"
 
-#: ../src/GParted_Core.cc:4211
+#: ../src/GParted_Core.cc:4219
 msgid "Retry"
 msgstr "Torna a provar"
 
-#: ../src/GParted_Core.cc:4213
+#: ../src/GParted_Core.cc:4221
 msgid "No"
 msgstr "No"
 
-#: ../src/GParted_Core.cc:4215
+#: ../src/GParted_Core.cc:4223
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: ../src/GParted_Core.cc:4217
+#: ../src/GParted_Core.cc:4225
 msgid "Ignore"
 msgstr "Ignora"
 
@@ -1658,8 +1656,8 @@ msgstr "No hauríeu de modificar cap partició LVM2 de volums físics."
 #: ../src/OperationChangeUUID.cc:56
 msgid "Set half the UUID to a new random value on %1 file system on %2"
 msgstr ""
-"Estableix la meitat de la UUID a un valor aleatori nou al sistema de fitxers "
-"%1 a %2"
+"Estableix la meitat de la UUID a un valor aleatori nou al sistema de fitxers"
+" %1 a %2"
 
 #. TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on
 #. /dev/sda1
@@ -1702,10 +1700,9 @@ msgstr "Suprimeix de %1 (%2, %3) de %4"
 #. * information being added will be visible in the details of the
 #. * applied operations.
 #: ../src/OperationDetail.cc:154
-#, fuzzy
 msgid ""
-"Adding more information to the results of this step after it has been marked "
-"as completed"
+"Adding more information to the results of this step after it has been marked"
+" as completed"
 msgstr ""
 "S'està afegint més informació als resultats d'aquest pas després que s'hagi "
 "marcat com a completat"
@@ -1875,23 +1872,23 @@ msgstr "no utilitzat"
 msgid "Encrypted"
 msgstr "Xifrat"
 
-#: ../src/Utils.cc:523
+#: ../src/Utils.cc:524
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:528
+#: ../src/Utils.cc:529
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:533
+#: ../src/Utils.cc:534
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:538
+#: ../src/Utils.cc:539
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:543
+#: ../src/Utils.cc:544
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -2081,23 +2078,20 @@ msgstr "Dispositiu --> Crea una taula de particions."
 #. TO TRANSLATORS: looks like   Unable to resize read-only file system
 #. /dev/sda1
 #: ../src/Win_GParted.cc:1765
-#, fuzzy
 msgid "Unable to resize read-only file system %1"
-msgstr ""
-"No s'ha pogut redimensionar el sistema de fitxers de només lectura un 1%"
+msgstr "No s'ha pogut redimensionar el sistema de fitxers de només lectura 1%"
 
 #: ../src/Win_GParted.cc:1770
-#, fuzzy
 msgid "The file system can not be resized while it is mounted read-only."
 msgstr ""
 "El sistema de fitxers no es pot canviar de mida mentre està muntat només de "
 "lectura."
 
 #: ../src/Win_GParted.cc:1772
-#, fuzzy
 msgid "Either unmount the file system or remount it read-write."
 msgstr ""
-"Desmunteu el sistema de fitxers o torneu-lo a muntar de lectura a escriptura."
+"Desmunteu el sistema de fitxers o torneu-lo a muntar com a lectura-"
+"escriptura."
 
 #: ../src/Win_GParted.cc:1816
 msgid "Unable to open GParted Manual help file"
@@ -2143,8 +2137,8 @@ msgstr[1] "No es poden crear més de %1 particions primàries"
 #: ../src/Win_GParted.cc:1959
 msgid ""
 "If you want more partitions you should first create an extended partition. "
-"Such a partition can contain other partitions. Because an extended partition "
-"is also a primary partition it might be necessary to remove a primary "
+"Such a partition can contain other partitions. Because an extended partition"
+" is also a primary partition it might be necessary to remove a primary "
 "partition first."
 msgstr ""
 "Si voleu més particions, hauríeu de crear una partició estesa. Una "
@@ -2162,8 +2156,8 @@ msgstr ""
 #: ../src/Win_GParted.cc:2091
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
-"Heu posat a la cua una operació per a moure el sector inicial de la partició "
-"%1."
+"Heu posat a la cua una operació per a moure el sector inicial de la partició"
+" %1."
 
 #: ../src/Win_GParted.cc:2093
 msgid ""
@@ -2238,28 +2232,20 @@ msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Una partició amb un sistema de fitxers %1 té una mida màxima de %2."
 
 #: ../src/Win_GParted.cc:2641
-#, fuzzy
-#| msgid "encryption path: %1"
 msgid "Opening encryption on %1"
-msgstr "camí al xifratge: %1"
+msgstr "S'està obrint el xifratge a %1"
 
 #: ../src/Win_GParted.cc:2655
-#, fuzzy
-#| msgid "impossible to shrink a closed LUKS encryption volume"
 msgid "Failed to open LUKS encryption"
-msgstr "impossible encongir un volum xifrat amb Luks"
+msgstr "No s'ha pogut obrir el xifratge LUKS"
 
 #: ../src/Win_GParted.cc:2677
-#, fuzzy
-#| msgid ""
-#| "The swapon action cannot be performed when there are operations pending "
-#| "for the partition."
 msgid ""
 "The close encryption action cannot be performed when there are operations "
 "pending for the partition."
 msgstr ""
-"No es pot realitzar l'acció d'activar la partició d'intercanvi si hi ha una "
-"operació pendent per a la partició."
+"L'acció de tancament de l'encriptatge no es pot realitzar quan hi ha "
+"operacions pendents per a la partició."
 
 #: ../src/Win_GParted.cc:2678
 msgid "Closing encryption on %1"
@@ -2270,16 +2256,12 @@ msgid "Could not close encryption"
 msgstr "No s'ha pogut tancar el xifratge"
 
 #: ../src/Win_GParted.cc:2684
-#, fuzzy
-#| msgid ""
-#| "The swapon action cannot be performed when there are operations pending "
-#| "for the partition."
 msgid ""
 "The open encryption action cannot be performed when there are operations "
 "pending for the partition."
 msgstr ""
-"No es pot realitzar l'acció d'activar la partició d'intercanvi si hi ha una "
-"operació pendent per a la partició."
+"L'acció d'encriptatge obert no es pot realitzar quan hi ha operacions "
+"pendents per a la partició."
 
 #: ../src/Win_GParted.cc:2782
 msgid "The partition could not be unmounted from the following mount points:"
@@ -2309,8 +2291,8 @@ msgstr ""
 
 #: ../src/Win_GParted.cc:2855
 msgid ""
-"The swapoff action cannot be performed when there are operations pending for "
-"the partition."
+"The swapoff action cannot be performed when there are operations pending for"
+" the partition."
 msgstr ""
 "No es pot realitzar l'acció de desactivar la partició d'intercanvi si hi ha "
 "una operació pendent per a la partició."
@@ -2361,8 +2343,8 @@ msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
 msgstr ""
-"No es pot realitzar l'acció d'activar el grup de volum si hi ha una operació "
-"pendent per a la partició."
+"No es pot realitzar l'acció d'activar el grup de volum si hi ha una operació"
+" pendent per a la partició."
 
 #: ../src/Win_GParted.cc:2878
 msgid "Activating Volume Group %1"
@@ -2375,11 +2357,11 @@ msgstr "No s'ha pogut activar el grup de volum"
 
 #: ../src/Win_GParted.cc:2885
 msgid ""
-"The unmount action cannot be performed when there are operations pending for "
-"the partition."
+"The unmount action cannot be performed when there are operations pending for"
+" the partition."
 msgstr ""
-"No es pot realitzar l'acció de desmuntar si hi ha una operació pendent per a "
-"la partició."
+"No es pot realitzar l'acció de desmuntar si hi ha una operació pendent per a"
+" la partició."
 
 #: ../src/Win_GParted.cc:2886
 msgid "Unmounting %1"
@@ -2396,8 +2378,8 @@ msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
-"No es pot realitzar l'acció de muntar si hi ha una operació pendent per a la "
-"partició."
+"No es pot realitzar l'acció de muntar si hi ha una operació pendent per a la"
+" partició."
 
 #: ../src/Win_GParted.cc:2964
 msgid "mounting %1 on %2"
@@ -2585,9 +2567,9 @@ msgid ""
 "C:, might invalidate the WPA key. An invalid WPA key will prevent login "
 "until you reactivate Windows."
 msgstr ""
-"En sistemes de fitxers FAT o NTFS, el número de sèrie del volum es fa servir "
-"com l'UUID. El canvi del número de sèrie del volum a la partició de sistema "
-"Windows, normalment C:, pot invalidar la clau WPA. Una clau WPA no vàlida "
+"En sistemes de fitxers FAT o NTFS, el número de sèrie del volum es fa servir"
+" com l'UUID. El canvi del número de sèrie del volum a la partició de sistema"
+" Windows, normalment C:, pot invalidar la clau WPA. Una clau WPA no vàlida "
 "pot desactivar l'entrada fins que reactiveu el Windows."
 
 #: ../src/fat16.cc:38 ../src/ntfs.cc:43
@@ -2636,32 +2618,28 @@ msgstr "Desac_tiva"
 
 #: ../src/lvm2_pv.cc:35
 msgid ""
-"The LVM2 Physical Volume can not currently be resized because it is a member "
-"of an exported Volume Group."
+"The LVM2 Physical Volume can not currently be resized because it is a member"
+" of an exported Volume Group."
 msgstr ""
 "El volum físic LVM2 no es pot redimensionar en aquest moment perquè és "
 "membre d'un grup de volum exportat."
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
 #: ../src/luks.cc:32
-#, fuzzy
-#| msgid "Encryption"
 msgid "Open Encryption"
-msgstr "Xifratge"
+msgstr "Obre el xifratge"
 
 #: ../src/luks.cc:33
-#, fuzzy
-#| msgid "Encryption"
 msgid "Close Encryption"
-msgstr "Xifratge"
+msgstr "Tanca el xifratge"
 
 #: ../src/luks.cc:147
 msgid ""
 "Maximize closed LUKS encryption skipped because it will automatically fill "
 "the partition when opened"
 msgstr ""
-"Maximitza el xifratge Luks xifrat omès perquè de forma automàtica omplirà la "
-"partició quan s'obri"
+"Maximitza el xifratge Luks xifrat omès perquè de forma automàtica omplirà la"
+" partició quan s'obri"
 
 #: ../src/main.cc:47
 msgid "Root privileges are required for running GParted"
@@ -2672,8 +2650,8 @@ msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
 msgstr ""
-"Atès que el GParted és una eina molt potent i és capaç de destruir taules de "
-"particions i grans quantitats de dades, només l'usuari primari el pot "
+"Atès que el GParted és una eina molt potent i és capaç de destruir taules de"
+" particions i grans quantitats de dades, només l'usuari primari el pot "
 "executar."
 
 #: ../src/ntfs.cc:41
@@ -2681,8 +2659,8 @@ msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
 msgstr ""
-"En un intent d'evitar la invalidació de la clau WPA, als sistemes de fitxers "
-"NTFS només s'estableix un valor aleatori a la meitat de l'UUID."
+"En un intent d'evitar la invalidació de la clau WPA, als sistemes de fitxers"
+" NTFS només s'estableix un valor aleatori a la meitat de l'UUID."
 
 #. simulation..
 #: ../src/ntfs.cc:202
@@ -2709,4 +2687,3 @@ msgid ""
 msgstr ""
 "Els mkudffs anteriors a la versió 1.1 no admeten caràcters que no siguin "
 "ASCII a l'etiqueta."
-
