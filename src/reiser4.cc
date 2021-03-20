@@ -141,7 +141,12 @@ void reiser4::read_uuid( Partition & partition )
 		return;
 	}
 
-	partition.uuid = Utils::regexp_label(output, "uuid:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")");
+	Glib::ustring pattern = "uuid:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")";
+	// Reiser4progs >= 2.0.3 supports subvolumes.  Ensure the volume UUID, rather than
+	// subvolume UUID, is reported.
+	if (output.find("volume uuid:") != Glib::ustring::npos)
+		pattern = "volume " + pattern;
+	partition.uuid = Utils::regexp_label(output, pattern);
 }
 
 
