@@ -72,7 +72,7 @@ void LUKS_Info::load_cache()
 	// _status() function:
 	//     https://git.fedorahosted.org/cgit/lvm2.git/tree/tools/dmsetup.c?id=v2_02_118#n1715
 	// Field 5 onwards are called parameters and documented in the kernel source:
-	//     https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/device-mapper/dm-crypt.txt?id=v4.0
+	//     https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/device-mapper/dm-crypt.txt?id=v5.0
 
 	std::vector<Glib::ustring> lines;
 	Utils::tokenize( output, lines, "\n" );
@@ -83,6 +83,7 @@ void LUKS_Info::load_cache()
 		Utils::tokenize( lines[i], fields, " " );
 		const unsigned DMCRYPT_FIELD_Name    = 0;
 		const unsigned DMCRYPT_FIELD_length  = 2;
+		const unsigned DMCRYPT_FIELD_key     = 5;
 		const unsigned DMCRYPT_FIELD_devpath = 7;
 		const unsigned DMCRYPT_FIELD_offset  = 8;
 
@@ -125,6 +126,16 @@ void LUKS_Info::load_cache()
 		}
 		else
 			continue;
+
+		// Extract LUKS mapping master key location.  Following the cryptsetup
+		// implementation method; first character of KEY field is ":" means the
+		// master key was stored in the kernel key ring, otherwise it is stored in
+		// the Device-Mapper crypt target itself.
+		// * cryptsetup/v2.3.5/lib/libdevmapper.c:_dm_target_query_crypt()
+		//   https://gitlab.com/cryptsetup/cryptsetup/-/blob/v2.3.5/lib/libdevmapper.c#L2031
+		// * cryptsetup/v2.3.5/src/cryptsetup.c:action_status()
+		//   https://gitlab.com/cryptsetup/cryptsetup/-/blob/v2.3.5/src/cryptsetup.c#L839
+		luks_map.key_loc = (fields[DMCRYPT_FIELD_key][0] == ':') ? KEYLOC_KeyRing : KEYLOC_DMCrypt;
 
 		luks_mapping_cache.push_back( luks_map );
 	}

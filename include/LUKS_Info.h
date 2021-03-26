@@ -34,12 +34,19 @@
 namespace GParted
 {
 
+enum KeyLocation
+{
+	KEYLOC_DMCrypt = 0,  // Master encryption key is stored in DeviceMapper crypt target
+	KEYLOC_KeyRing       // Master encryption key was stored in kernel Key Ring
+};
+
 struct LUKS_Mapping
 {
 	Glib::ustring name;       // Name of the dm-crypt mapping
 	BlockSpecial  container;  // Underlying block device containing the LUKS mapping
 	Byte_Value    offset;     // Offset to the start of the mapping in the underlying block device
 	Byte_Value    length;     // Length of the mapping in the underlying block device
+	KeyLocation   key_loc;    // Location where the master encryption key is stored
 };
 
 class LUKS_Info
