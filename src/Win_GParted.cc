@@ -45,6 +45,7 @@
 #include "PartitionVector.h"
 #include "PasswordRAMStore.h"
 #include "LVM2_PV_Info.h"
+#include "LUKS_Info.h"
 #include "Utils.h"
 #include "../config.h"
 
@@ -2038,7 +2039,8 @@ void Win_GParted::activate_resize()
 	delete working_ptn;
 	working_ptn = NULL;
 
-	if ( dialog .run() == Gtk::RESPONSE_OK )
+	if (dialog.run() == Gtk::RESPONSE_OK                                           &&
+	    ask_for_password_for_encrypted_resize_as_required(*selected_partition_ptr)   )
 	{
 		dialog .hide() ;
 
@@ -2106,6 +2108,82 @@ void Win_GParted::activate_resize()
 
 	show_operationslist() ;
 }
+
+
+bool Win_GParted::ask_for_password_for_encrypted_resize_as_required(const Partition& partition)
+{
+	if (partition.fstype != FS_LUKS || ! partition.busy)
+		// Not active LUKS so won't need a password.
+		return true;
+
+	LUKS_Mapping mapping = LUKS_Info::get_cache_entry(partition.get_path());
+	if (mapping.name.empty() || mapping.key_loc == KEYLOC_DMCrypt)
+		// LUKS volume key stored in crypt Device-Mapper target so won't require a
+		// password for encryption mapping resize.
+		return true;
+
+	const char *pw = PasswordRAMStore::lookup(partition.uuid);
+	if (pw != NULL)
+		// GParted already has a password for this encryption mapping which was
+		// previously used successfully or tested for correctness.
+		//
+		// The password will still be correct, unless it was changed by someone
+		// outside GParted while running and since the last time the password was
+		// used.  Re-testing the password takes 2-3 seconds which would pause the
+		// UI after the [Resize/Move] button was pressed in the Resize/Move dialog
+		// but before the dialog closes.  With no trivial way to provide feedback
+		// that the password is being re-tested, don't spend coding effort to
+		// support this use case.  So just assume the known password is still
+		// correct and don't re-prompt when it will be correct 99.9% of the time.
+		return true;
+
+	DialogPasswordEntry dialog(partition);
+	dialog.set_transient_for(*this);
+	bool success = false;
+	do
+	{
+		if (dialog.run() != Gtk::RESPONSE_OK)
+			// Password dialog cancelled or closed without having confirmed
+			// the LUKS mapping passphrase.
+			return false;
+
+		pw = dialog.get_password();
+		if (strlen(pw) == 0)
+		{
+			// cryptsetup won't accept a zero length password.
+			dialog.set_error_message("");
+			continue;
+		}
+
+		// Create LUKS mapping name from partition name:
+		// "/dev/sdb1" -> "sdb1_crypt"
+		Glib::ustring mapping_name = selected_partition_ptr->get_path();
+		Glib::ustring::size_type last_slash = mapping_name.rfind("/");
+		if (last_slash != Glib::ustring::npos)
+			mapping_name = mapping_name.substr(last_slash + 1);
+		mapping_name += "_crypt";
+
+		// Test the password can open the encryption mapping.
+		Glib::ustring cmd = "cryptsetup luksOpen --test-passphrase " +
+		                    Glib::shell_quote(partition.get_path()) + " " +
+		                    Glib::shell_quote(mapping_name);
+		Glib::ustring output;
+		Glib::ustring error;
+		success = ! Utils::execute_command(cmd, pw, output, error);
+
+		Glib::ustring message = (success) ? "" : _("LUKS encryption passphrase check failed");
+		dialog.set_error_message(message);
+	}
+	while (! success);
+
+	// Save the password just entered and successfully tested on the LUKS mapping.
+	PasswordRAMStore::store(partition.uuid, pw);
+
+	dialog.hide();
+
+	return true;
+}
+
 
 void Win_GParted::activate_copy()
 {

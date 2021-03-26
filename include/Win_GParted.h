@@ -176,6 +176,7 @@ private:
 	bool max_amount_prim_reached() ;
 	
 	void activate_resize(); 
+	bool ask_for_password_for_encrypted_resize_as_required(const Partition& partition);
 	void activate_copy();
 	void activate_paste();
 	void activate_new();
