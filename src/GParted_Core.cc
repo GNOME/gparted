@@ -248,6 +248,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	}
 
 	// Initialise and load caches needed for content discovery.
+	FS_Info::clear_cache();
 	const std::vector<Glib::ustring>& device_and_partition_paths =
 			Proc_Partitions_Info::get_device_and_partition_paths_for(device_paths);
 	FS_Info::load_cache_for_paths(device_and_partition_paths);

@@ -51,12 +51,20 @@ bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
 std::vector<FS_Entry> FS_Info::fs_info_cache;
 
 
-void FS_Info::load_cache_for_paths(const std::vector<Glib::ustring>& paths)
+void FS_Info::clear_cache()
 {
 	set_commands_found();
 	fs_info_cache.clear();
-	run_blkid_load_cache(paths);
 	fs_info_cache_initialized = true;
+}
+
+
+void FS_Info::load_cache_for_paths(const std::vector<Glib::ustring>& paths)
+{
+	if (not_initialised_then_error())
+		return;
+
+	run_blkid_load_cache(paths);
 }
 
 
