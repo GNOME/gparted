@@ -1072,6 +1072,11 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 FSType GParted_Core::detect_filesystem_in_encryption_mapping(const Glib::ustring& path,
                                                              std::vector<Glib::ustring>& messages)
 {
+	// Run blkid identification on this one encryption mapping.
+	std::vector<Glib::ustring> one_path;
+	one_path.push_back(path);
+	FS_Info::load_cache_for_paths(one_path);
+
 	FSType fstype = FS_UNKNOWN;
 
 	PedDevice *lp_device = NULL;
