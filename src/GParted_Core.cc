@@ -1082,8 +1082,19 @@ FSType GParted_Core::detect_filesystem_in_encryption_mapping(const Glib::ustring
 	PedDevice *lp_device = NULL;
 	if (get_device(path, lp_device))
 	{
-		fstype = detect_filesystem(lp_device, NULL, messages);
+		// Run libparted partition table and file system identification.  Only use
+		// (get the first partition) if it's a "loop" table; because GParted only
+		// supports one block device to one encryption mapping to one file system.
 		PedDisk *lp_disk = NULL;
+		PedPartition *lp_partition = NULL;
+		if (get_disk(lp_device, lp_disk) && lp_disk->type && lp_disk->type->name &&
+		    strcmp(lp_disk->type->name, "loop") == 0                               )
+		{
+			lp_partition = ped_disk_next_partition(lp_disk, NULL);
+		}
+
+		fstype = detect_filesystem(lp_device, lp_partition, messages);
+
 		destroy_device_and_disk(lp_device, lp_disk);
 	}
 
