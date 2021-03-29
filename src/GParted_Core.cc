@@ -1007,15 +1007,8 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 		return;
 
 	Glib::ustring mapping_path = DEV_MAPPER_PATH + mapping.name;
-	PedDevice* lp_device = NULL;
 	std::vector<Glib::ustring> detect_messages;
-	FSType fstype = FS_UNKNOWN;
-	if ( get_device( mapping_path, lp_device ) )
-	{
-		fstype = detect_filesystem( lp_device, NULL, detect_messages );
-		PedDisk* lp_disk = NULL;
-		destroy_device_and_disk( lp_device, lp_disk );
-	}
+	FSType fstype = detect_filesystem_in_encryption_mapping(mapping_path, detect_messages);
 	bool fs_busy = is_busy( fstype, mapping_path );
 
 	partition.set_luks( mapping_path,
@@ -1073,6 +1066,23 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 	{
 		read_uuid( partition );
 	}
+}
+
+
+FSType GParted_Core::detect_filesystem_in_encryption_mapping(const Glib::ustring& path,
+                                                             std::vector<Glib::ustring>& messages)
+{
+	FSType fstype = FS_UNKNOWN;
+
+	PedDevice *lp_device = NULL;
+	if (get_device(path, lp_device))
+	{
+		fstype = detect_filesystem(lp_device, NULL, messages);
+		PedDisk *lp_disk = NULL;
+		destroy_device_and_disk(lp_device, lp_disk);
+	}
+
+	return fstype;
 }
 
 
