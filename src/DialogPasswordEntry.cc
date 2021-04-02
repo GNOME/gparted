@@ -27,7 +27,7 @@
 namespace GParted
 {
 
-DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
+DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib::ustring& reason)
 {
 	this->set_resizable( false );
 	this->set_size_request( 400, -1 );
@@ -41,10 +41,8 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 	vbox->set_spacing( 5 );
 	get_vbox()->pack_start( *vbox, Gtk::PACK_SHRINK );
 
-	// Line 1: "Enter LUKS passphrase to open /dev/sda1"
-	vbox->pack_start( *Utils::mk_label(
-			Glib::ustring::compose( _("Enter LUKS passphrase to open %1"), partition.get_path() ) ),
-			Gtk::PACK_SHRINK );
+	// Line 1: Reason message, e.g. "Enter LUKS passphrase to open /dev/sda1"
+	vbox->pack_start(*Utils::mk_label(reason), Gtk::PACK_SHRINK);
 
 	// Line 2: "Passphrase: [              ]"
 	// (Horizontal box holding prompt and entry box)

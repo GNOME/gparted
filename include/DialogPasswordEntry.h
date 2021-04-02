@@ -30,7 +30,7 @@ namespace GParted
 class DialogPasswordEntry : public Gtk::Dialog
 {
 public:
-	DialogPasswordEntry( const Partition & partition );
+	DialogPasswordEntry(const Partition& partition, const Glib::ustring& reason);
 	~DialogPasswordEntry();
 	const char * get_password();
 	void set_error_message( const Glib::ustring & message );

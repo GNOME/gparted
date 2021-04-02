@@ -2137,7 +2137,10 @@ bool Win_GParted::ask_for_password_for_encrypted_resize_as_required(const Partit
 		// correct and don't re-prompt when it will be correct 99.9% of the time.
 		return true;
 
-	DialogPasswordEntry dialog(partition);
+	DialogPasswordEntry dialog(partition,
+	                           /* TO TRANSLATORS: looks like   Enter LUKS passphrase to resize /dev/sda1 */
+	                           Glib::ustring::compose(_("Enter LUKS passphrase to resize %1"),
+	                                                  partition.get_path()));
 	dialog.set_transient_for(*this);
 	bool success = false;
 	do
@@ -2781,7 +2784,12 @@ void Win_GParted::toggle_crypt_busy_state()
 				break;
 
 			// Open password dialog and attempt to unlock LUKS mapping.
-			DialogPasswordEntry dialog( *selected_partition_ptr );
+			DialogPasswordEntry dialog(*selected_partition_ptr,
+			                           /* TO TRANSLATORS: looks like
+						    * Enter LUKS passphrase to open /dev/sda1
+						    */
+			                           Glib::ustring::compose(_("Enter LUKS passphrase to open %1"),
+			                                                  selected_partition_ptr->get_path()));
 			dialog.set_transient_for( *this );
 			do
 			{
