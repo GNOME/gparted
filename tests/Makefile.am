@@ -40,6 +40,7 @@ test_SupportedFileSystems_LDADD   =  \
 	$(top_builddir)/src/Partition.$(OBJEXT)             \
 	$(top_builddir)/src/PartitionLUKS.$(OBJEXT)         \
 	$(top_builddir)/src/PartitionVector.$(OBJEXT)       \
+	$(top_builddir)/src/PasswordRAMStore.$(OBJEXT)      \
 	$(top_builddir)/src/PipeCapture.$(OBJEXT)           \
 	$(top_builddir)/src/Proc_Partitions_Info.$(OBJEXT)  \
 	$(top_builddir)/src/ProgressBar.$(OBJEXT)           \
