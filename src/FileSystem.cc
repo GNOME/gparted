@@ -85,6 +85,7 @@ static void setup_child()
 }
 
 
+// Execute command and capture stdout and stderr to operation details.
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
                                  ExecFlags flags )
 {
@@ -94,6 +95,8 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 }
 
 
+// Execute command, pass string to stdin and capture stdout and stderr to operation
+// details.
 int FileSystem::execute_command(const Glib::ustring& command, const char *input, OperationDetail& operationdetail,
                                 ExecFlags flags)
 {
@@ -103,6 +106,9 @@ int FileSystem::execute_command(const Glib::ustring& command, const char *input,
 }
 
 
+// Execute command, capture stdout and stderr to operation details and run progress
+// tracking callback when either stdout or stderr is updated (as requested by flag
+// EXEC_PROGRESS_STDOUT or EXEC_PROGRESS_STDERR respectively).
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
                                  ExecFlags flags,
                                  StreamSlot stream_progress_slot )
@@ -112,6 +118,8 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 }
 
 
+// Execute command, capture stdout and stderr to operation details and run progress
+// tracking callback periodically (when requested by flag EXEC_PROGRESS_TIMED).
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
                                  ExecFlags flags,
                                  TimedSlot timed_progress_slot )
