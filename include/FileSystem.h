@@ -146,6 +146,8 @@ protected:
 
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
 	                     ExecFlags flags = EXEC_NONE );
+	int execute_command(const Glib::ustring& command, const char *input, OperationDetail& operationdetail,
+	                    ExecFlags flags = EXEC_NONE);
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
 	                     ExecFlags flags,
 	                     StreamSlot stream_progress_slot );
@@ -167,10 +169,11 @@ protected:
 	int exit_status ;
 
 private:
-	int execute_command_internal( const Glib::ustring & command, OperationDetail & operationdetail,
-	                              ExecFlags flags,
-	                              StreamSlot stream_progress_slot,
-	                              TimedSlot timed_progress_slot );
+	int execute_command_internal(const Glib::ustring& command, const char *input,
+	                             OperationDetail& operationdetail,
+	                             ExecFlags flags,
+	                             StreamSlot stream_progress_slot,
+	                             TimedSlot timed_progress_slot);
 	void store_exit_status( GPid pid, int status );
 	bool running;
 	int pipecount;

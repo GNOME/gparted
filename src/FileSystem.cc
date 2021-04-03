@@ -84,38 +84,53 @@ static void setup_child()
 	setpgrp();
 }
 
+
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
                                  ExecFlags flags )
 {
 	StreamSlot empty_stream_slot;
 	TimedSlot empty_timed_slot;
-	return execute_command_internal( command, operationdetail, flags, empty_stream_slot, empty_timed_slot );
+	return execute_command_internal(command, NULL, operationdetail, flags, empty_stream_slot, empty_timed_slot);
 }
+
+
+int FileSystem::execute_command(const Glib::ustring& command, const char *input, OperationDetail& operationdetail,
+                                ExecFlags flags)
+{
+	StreamSlot empty_stream_slot;
+	TimedSlot empty_timed_slot;
+	return execute_command_internal(command, input, operationdetail, flags, empty_stream_slot, empty_timed_slot);
+}
+
 
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
                                  ExecFlags flags,
                                  StreamSlot stream_progress_slot )
 {
 	TimedSlot empty_timed_slot;
-	return execute_command_internal( command, operationdetail, flags, stream_progress_slot, empty_timed_slot );
+	return execute_command_internal(command, NULL, operationdetail, flags, stream_progress_slot, empty_timed_slot);
 }
+
 
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
                                  ExecFlags flags,
                                  TimedSlot timed_progress_slot )
 {
 	StreamSlot empty_stream_slot;
-	return execute_command_internal( command, operationdetail, flags, empty_stream_slot, timed_progress_slot );
+	return execute_command_internal(command, NULL, operationdetail, flags, empty_stream_slot, timed_progress_slot);
 }
 
-int FileSystem::execute_command_internal( const Glib::ustring & command, OperationDetail & operationdetail,
-                                          ExecFlags flags,
-                                          StreamSlot stream_progress_slot,
-                                          TimedSlot timed_progress_slot )
+
+int FileSystem::execute_command_internal(const Glib::ustring& command, const char *input,
+                                         OperationDetail& operationdetail,
+                                         ExecFlags flags,
+                                         StreamSlot stream_progress_slot,
+                                         TimedSlot timed_progress_slot)
 {
 	operationdetail.add_child( OperationDetail( command, STATUS_EXECUTE, FONT_BOLD_ITALIC ) );
 	OperationDetail & cmd_operationdetail = operationdetail.get_last_child();
 	Glib::Pid pid;
+	int in = -1;
 	// set up pipes for capture
 	int out, err;
 	// spawn external process
@@ -127,7 +142,7 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
 			sigc::ptr_fun(setup_child),
 			&pid,
-			0,
+			(input != NULL) ? &in : 0,
 			&out,
 			&err );
 	} catch (Glib::SpawnError &e) {
@@ -170,6 +185,23 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 			sigc::ptr_fun( cancel_command ),
 			pid,
 			flags & EXEC_CANCEL_SAFE ) );
+
+	if (input != NULL && in != -1)
+	{
+		// Write small amount of input to pipe to the child process.  Linux will
+		// always accept up to 4096 bytes without blocking.  See pipe(7).
+		size_t len = strlen(input);
+		ssize_t written = write(in, input, len);
+		if (written == -1 || (size_t)written < len)
+		{
+			int e = errno;
+			std::cerr << "Write to child failed: " << Glib::strerror(e) << std::endl;
+			cmd_operationdetail.add_child(OperationDetail("Write to child failed: " + Glib::strerror(e),
+			                                              STATUS_NONE, FONT_ITALIC));
+		}
+		close(in);
+	}
+
 	Gtk::Main::run();
 
 	if ( flags & EXEC_CHECK_STATUS )
