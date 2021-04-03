@@ -308,7 +308,7 @@ int Utils::get_filesystem_label_maxlength(FSType fstype)
 
 
 // Return libparted file system name / GParted display name
-Glib::ustring Utils::get_filesystem_string(FSType fstype)
+const Glib::ustring Utils::get_filesystem_string(FSType fstype)
 {
 	switch (fstype)
 	{
@@ -428,7 +428,7 @@ const Glib::ustring Utils::get_filesystem_kernel_name( FSType fstype )
 }
 
 
-Glib::ustring Utils::get_filesystem_software(FSType fstype)
+const Glib::ustring Utils::get_filesystem_software(FSType fstype)
 {
 	switch (fstype)
 	{
