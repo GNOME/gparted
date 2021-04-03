@@ -2155,15 +2155,9 @@ bool Win_GParted::ask_for_password_for_encrypted_resize_as_required(const Partit
 			continue;
 		}
 
-		// Create LUKS mapping name from partition name:
-		// "/dev/sdb1" -> "sdb1_crypt"
-		Glib::ustring mapping_name = selected_partition_ptr->get_path();
-		Glib::ustring::size_type last_slash = mapping_name.rfind("/");
-		if (last_slash != Glib::ustring::npos)
-			mapping_name = mapping_name.substr(last_slash + 1);
-		mapping_name += "_crypt";
-
 		// Test the password can open the encryption mapping.
+		const Glib::ustring mapping_name = Utils::generate_encryption_mapping_name(
+		                                           selected_partition_ptr->get_path());
 		Glib::ustring cmd = "cryptsetup luksOpen --test-passphrase " +
 		                    Glib::shell_quote(partition.get_path()) + " " +
 		                    Glib::shell_quote(mapping_name);
@@ -2703,14 +2697,7 @@ bool Win_GParted::open_encrypted_partition( const Partition & partition,
 		}
 	}
 
-	// Create LUKS mapping name from partition name:
-	// "/dev/sdb1" -> "sdb1_crypt"
-	Glib::ustring mapping_name = selected_partition_ptr->get_path();
-	Glib::ustring::size_type last_slash = mapping_name.rfind( "/" );
-	if ( last_slash != Glib::ustring::npos )
-		mapping_name = mapping_name.substr( last_slash + 1 );
-	mapping_name += "_crypt";
-
+	const Glib::ustring mapping_name = Utils::generate_encryption_mapping_name(selected_partition_ptr->get_path());
 	Glib::ustring cmd = "cryptsetup luksOpen " +
 	                    Glib::shell_quote( partition.get_path() ) + " " +
 	                    Glib::shell_quote( mapping_name );

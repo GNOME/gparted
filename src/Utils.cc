@@ -458,6 +458,21 @@ Glib::ustring Utils::get_filesystem_software(FSType fstype)
 }
 
 
+// Return the encryption mapping name GParted will use when opening it, given it's block
+// device name.
+// E.g., generate_encryption_mapping_name("/dev/sdb1") -> "sdb1_crypt"
+const Glib::ustring Utils::generate_encryption_mapping_name(const Glib::ustring& path)
+{
+	Glib::ustring mapping_name = path;
+
+	Glib::ustring::size_type last_slash = path.rfind("/");
+	if (last_slash != Glib::ustring::npos)
+		mapping_name = path.substr(last_slash + 1);
+
+	return mapping_name + "_crypt";
+}
+
+
 //Report whether or not the kernel supports a particular file system
 bool Utils::kernel_supports_fs( const Glib::ustring & fs )
 {
