@@ -3238,11 +3238,17 @@ void Win_GParted::activate_manage_flags()
 	if ( dialog .any_change )
 		menu_gparted_refresh_devices() ;
 }
-	
+
+
 void Win_GParted::activate_check() 
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
+
+	if (! ask_for_password_for_encrypted_resize_as_required(*selected_partition_ptr))
+		// Open encryption mapping needing a passphrase to resize but the password
+		// dialog was cancelled or closed without providing a working passphrase.
+		return;
 
 	// FIXME: Consider constructing new partition object with zero unallocated and
 	// messages cleared to represent how applying a check operation also grows the
