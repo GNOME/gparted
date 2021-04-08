@@ -1087,8 +1087,8 @@ FSType GParted_Core::detect_filesystem_in_encryption_mapping(const Glib::ustring
 		// supports one block device to one encryption mapping to one file system.
 		PedDisk *lp_disk = NULL;
 		PedPartition *lp_partition = NULL;
-		if (get_disk(lp_device, lp_disk) && lp_disk->type && lp_disk->type->name &&
-		    strcmp(lp_disk->type->name, "loop") == 0                               )
+		if (get_disk(lp_device, lp_disk, false) && lp_disk && lp_disk->type &&
+		    lp_disk->type->name && strcmp(lp_disk->type->name, "loop") == 0   )
 		{
 			lp_partition = ped_disk_next_partition(lp_disk, NULL);
 		}
