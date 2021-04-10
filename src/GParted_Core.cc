@@ -687,7 +687,7 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 			set_device_one_partition( device, lp_device, fstype, messages );
 		}
 		// Partitioned drive
-		else if ( get_disk( lp_device, lp_disk, false ) )
+		else if (get_disk(lp_device, lp_disk))
 		{
 			// Partitioned drive (excluding "loop"), as recognised by libparted
 			if ( lp_disk && lp_disk->type && lp_disk->type->name &&
@@ -1089,7 +1089,7 @@ FSType GParted_Core::detect_filesystem_in_encryption_mapping(const Glib::ustring
 		// supports one block device to one encryption mapping to one file system.
 		PedDisk *lp_disk = NULL;
 		PedPartition *lp_partition = NULL;
-		if (get_disk(lp_device, lp_disk, false) && lp_disk && lp_disk->type &&
+		if (get_disk(lp_device, lp_disk) && lp_disk && lp_disk->type        &&
 		    lp_disk->type->name && strcmp(lp_disk->type->name, "loop") == 0   )
 		{
 			lp_partition = ped_disk_next_partition(lp_disk, NULL);
@@ -4104,40 +4104,37 @@ bool GParted_Core::get_device( const Glib::ustring & device_path, PedDevice *& l
 	return false;
 }
 
-bool GParted_Core::get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict )
+
+bool GParted_Core::get_disk(PedDevice *lp_device, PedDisk*& lp_disk)
 {
-	if ( lp_device )
-	{
-		lp_disk = ped_disk_new( lp_device );
+	g_assert(lp_device != NULL);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
 
-		// (#762941)(!46) After ped_disk_new() wait for triggered udev rules to
-		// to complete which remove and re-add all the partition specific /dev
-		// entries to avoid FS specific commands failing because they happen to
-		// be running when the needed /dev/PTN entries don't exist.
-		settle_device(SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
+	lp_disk = ped_disk_new(lp_device);
 
-		// if ! disk and writable it's probably a HD without disklabel.
-		// We return true here and deal with them in
-		// GParted_Core::set_device_from_disk().
-		if ( lp_disk || ( ! strict && ! lp_device ->read_only ) )
-			return true;
+	// (#762941)(!46) After ped_disk_new() wait for triggered udev rules to complete
+	// which remove and re-add all the partition specific /dev entries to avoid FS
+	// specific commands failing because they happen to be running when the needed
+	// /dev/PTN entries don't exist.
+	settle_device(SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
 
-		destroy_device_and_disk( lp_device, lp_disk );
-	}
-
-	return false;
+	return (lp_disk != NULL);
 }
 
-bool GParted_Core::get_device_and_disk( const Glib::ustring & device_path,
-                                        PedDevice*& lp_device, PedDisk*& lp_disk, bool strict, bool flush )
+
+bool GParted_Core::get_device_and_disk(const Glib::ustring& device_path,
+                                       PedDevice*& lp_device, PedDisk*& lp_disk, bool flush)
 {
 	if ( get_device( device_path, lp_device, flush ) )
 	{
-		return get_disk( lp_device, lp_disk, strict );
+		if (get_disk(lp_device, lp_disk))
+			return true;
+
+		destroy_device_and_disk(lp_device, lp_disk);
 	}
 
 	return false;
 }
+
 
 void GParted_Core::destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk )
 {

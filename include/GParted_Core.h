@@ -222,9 +222,9 @@ private:
 
 	static bool flush_device( PedDevice * lp_device );
 	static bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
-	static bool get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict = true );
-	static bool get_device_and_disk( const Glib::ustring & device_path,
-	                                 PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true, bool flush = false );
+	static bool get_disk(PedDevice *lp_device, PedDisk*& lp_disk);
+	static bool get_device_and_disk(const Glib::ustring& device_path,
+	                                PedDevice*& lp_device, PedDisk*& lp_disk, bool flush = false);
 	static void destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk );
 	static bool commit( PedDisk* lp_disk );
 	static bool commit_to_os( PedDisk* lp_disk, std::time_t timeout );
