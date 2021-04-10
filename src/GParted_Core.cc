@@ -618,8 +618,10 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 
 //private functions...
 
-Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
+Glib::ustring GParted_Core::get_partition_path(const PedPartition *lp_partition)
 {
+	g_assert(lp_partition != NULL);  // Bug: Not initialised by suitable ped_disk_*partition*() call
+
 	char * lp_path;  //we have to free the result of ped_partition_get_path()
 	Glib::ustring partition_path = "Partition path not found";
 
@@ -1218,9 +1220,12 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 	return fstype;
 }
 
-FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
-                                        std::vector<Glib::ustring> & messages )
+
+FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPartition *lp_partition,
+                                       std::vector<Glib::ustring> &messages)
 {
+	g_assert(lp_device != NULL);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
+
 	Glib::ustring fsname = "";
 	Glib::ustring path;
 	DMRaid dmraid;

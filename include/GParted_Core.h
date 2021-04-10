@@ -82,7 +82,7 @@ public:
 private:
 	//detectionstuff..
 	void set_thread_status_message( Glib::ustring msg ) ;
-	static Glib::ustring get_partition_path( PedPartition * lp_partition );
+	static Glib::ustring get_partition_path(const PedPartition *lp_partition);
 	void set_device_from_disk( Device & device, const Glib::ustring & device_path );
 	void set_device_serial_number( Device & device );
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
@@ -93,8 +93,8 @@ private:
 	static FSType detect_filesystem_in_encryption_mapping(const Glib::ustring& path,
 	                                                      std::vector<Glib::ustring>& messages);
 	static FSType detect_filesystem_internal(const Glib::ustring& path, Byte_Value sector_size);
-	static FSType detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
-	                                 std::vector<Glib::ustring> & messages );
+	static FSType detect_filesystem(const PedDevice *lp_device, const PedPartition *lp_partition,
+	                                std::vector<Glib::ustring> &messages);
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
 	void set_mountpoints( Partition & partition );
