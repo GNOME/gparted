@@ -687,8 +687,10 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 			set_device_one_partition( device, lp_device, fstype, messages );
 		}
 		// Partitioned drive
-		else if (get_disk(lp_device, lp_disk))
+		else
 		{
+			get_disk(lp_device, lp_disk);
+
 			// Partitioned drive (excluding "loop"), as recognised by libparted
 			if ( lp_disk && lp_disk->type && lp_disk->type->name &&
 			     strcmp( lp_disk->type->name, "loop" ) != 0         )
