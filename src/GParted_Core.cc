@@ -1104,6 +1104,9 @@ FSType GParted_Core::detect_filesystem_in_encryption_mapping(const Glib::ustring
 		{
 			lp_partition = ped_disk_next_partition(lp_disk, NULL);
 		}
+		// Clear the "unrecognised disk label" message reported when libparted
+		// fails to detect anything.
+		libparted_messages.clear();
 
 		fstype = detect_filesystem(lp_device, lp_partition, messages);
 
