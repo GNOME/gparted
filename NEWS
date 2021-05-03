@@ -1,4 +1,54 @@
 ============================
+GParted 1.3.0   (2021-05-03)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes enhancements, bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Support resizing open LUKS2 encryption mappings
+  * Improve exFAT support such as read FS usage and set UUID
+  * Fix crash in Create New Partition dialog when changing type
+  * Avoid GParted hanging when non-named device is hung
+
+Bug Fixes
+---------
+  * Stop GParted hanging when non-named device is hung (#131, !65)
+  * Avoid detecting exfat-utils commands as exfatprogs commands (#137, !66)
+  * Add support for reading exFAT usage and updating the UUID (!67)
+  * Fix minor typos in docs (!68) and comments (!71)
+  * Add Ukrainian translation of docs (!69, !70)
+  * Fix test suite failing in test_PipeCapture (#136, !72)
+  * Fix crash in Create New Partition dialog when changing type (#101, !73)
+  * Install gpartedbin under /usr/libexec instead of /usr/sbin (#85, !75)
+  * Exclude more GitLab CI file system tests needing loop devices (#147, !76)
+  * Ignore test failure when reiser4 reports null UUID (#145, !77)
+  * Restore detection of encrypted file systems (#148, !78)
+  * Fix crash probing libparted unrecognised encrypted file system (#152, !79)
+  * Support resizing open LUKS2 encryption mappings with passphrase (#59, !80)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Yuri Chornoivan and Mike Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  ca(Jordi Mas), es(Daniel Mustieles), fi(Jiri Grönroos),
+  fr(Claude Paroz), gl(Fran Dieguez), hu(Balázs Úr),
+  id(Kukuh Syafaat), kk(Baurzhan Muftakhidinov), lt(Aurimas Černius),
+  nl(Hannie Dumoleyn), pl(Piotr Drąg), pt(Hugo Carvalho),
+  pt_BR(Rafael Fontenelle), ro(Daniel Șerbănescu), sk(Dušan Kazik),
+  sv(Anders Jonsson), uk(Yuri Chornoivan), vi(Ngọc Quân Trần)
+
+Dependencies (new/updated)
+--------------------------
+  * n/a
+
+
+============================
 GParted 1.2.0   (2021-01-25)
 ============================
 
