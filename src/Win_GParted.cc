@@ -1778,52 +1778,55 @@ void Win_GParted::show_resize_readonly( const Glib::ustring & path )
 void Win_GParted::show_help(const Glib::ustring & filename /* E.g., "gparted" */,
                             const Glib::ustring & link_id  /* For context sensitive help */)
 {
-	GError *error1 = NULL;
-	GdkScreen *gscreen = NULL ;
-
+	// Build uri string
 	Glib::ustring uri = "help:" + filename;
 	if (link_id.size() > 0)
 		uri = uri + "/" + link_id;
 
-	gscreen = get_window()->get_screen()->gobj();
-	gtk_show_uri(gscreen, uri.c_str(), gtk_get_current_event_time(), &error1);
-	if (error1 != NULL)
+	// Check if yelp is available to provide a useful error message.
+	// Missing yelp is the most common cause of failure to display help.
+	//
+	// This early check is performed because failure of gtk_show_uri*()
+	// method only provides a generic "Operation not permitted" message.
+	if (Glib::find_program_in_path("yelp").empty())
 	{
-		//Try opening yelp application directly
-
-		Glib::RefPtr<Gio::AppInfo> yelp
-			= Gio::AppInfo::create_from_commandline("yelp", "", Gio::APP_INFO_CREATE_SUPPORTS_URIS);
-
-		Glib::RefPtr<Gdk::AppLaunchContext> context
-			= get_window()->get_display()->get_app_launch_context();
-
-		context->set_timestamp(gtk_get_current_event_time());
-
-		bool launched = false;
-		Glib::ustring error2_msg;
-		try
-		{
-			launched = yelp->launch_uris(std::vector<std::string>(1, uri), context);
-		}
-		catch (Glib::Error& e)
-		{
-			error2_msg = e.what();
-		}
-
-		if (!launched)
-		{
-			Gtk::MessageDialog dialog(*this,
-			                          _( "Unable to open GParted Manual help file" ),
-			                          false,
-			                          Gtk::MESSAGE_ERROR,
-			                          Gtk::BUTTONS_OK,
-			                          true);
-			dialog.set_secondary_text(error2_msg);
-			dialog.run();
-		}
-
-		g_clear_error(&error1);
+		Gtk::MessageDialog errorDialog(*this,
+		                               _("Unable to open GParted Manual help file"),
+		                               false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
+		Glib::ustring sec_text(_("Command yelp not found."));
+		sec_text.append("\n");
+		sec_text.append("\n");
+		sec_text.append(_("Install yelp and try again."));
+		errorDialog.set_secondary_text(sec_text, true);
+		errorDialog.run();
+		return;
 	}
+
+	GError *error = NULL;
+
+	// Display help window
+#if HAVE_GTK_SHOW_URI_ON_WINDOW
+	// NULL is provided for the gtk_show_uri_on_window() parent window
+	// so that failures to launch yelp are reported.
+	// https://gitlab.gnome.org/GNOME/gparted/-/merge_requests/82#note_1106114
+	gtk_show_uri_on_window(NULL, uri.c_str(), gtk_get_current_event_time(), &error);
+#else
+	GdkScreen *gscreen = gscreen = gdk_screen_get_default();
+	gtk_show_uri(gscreen, uri.c_str(), gtk_get_current_event_time(), &error);
+#endif
+	if (error != NULL)
+	{
+		Gtk::MessageDialog errorDialog(*this,
+		                               _("Failed to open GParted Manual help file"),
+		                               false,
+		                               Gtk::MESSAGE_ERROR,
+		                               Gtk::BUTTONS_OK,
+		                               true);
+		errorDialog.set_secondary_text(error->message);
+		errorDialog.run();
+	}
+
+	g_clear_error(&error);
 }
 
 void Win_GParted::menu_help_contents()

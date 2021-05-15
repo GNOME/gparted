@@ -266,6 +266,18 @@ PKG_CHECK_EXISTS(
 )
 
 
+dnl Check for gtk+-3.0 >= 3.22 to determine availability of gtk_show_uri_on_window() function.
+AC_MSG_CHECKING([for gtk_show_uri_on_window() function])
+PKG_CHECK_EXISTS(
+	[gtk+-3.0 >= 3.22.0],
+	[AC_DEFINE([HAVE_GTK_SHOW_URI_ON_WINDOW], 1,
+	           [Define to 1 if gtk provides gtk_show_uri_on_window function.])
+	 AC_MSG_RESULT([yes])
+	],
+	[AC_MSG_RESULT([no])]
+)
+
+
 dnl Definitions for building of and with gtest.  Gets flags for pthread via earlier
 dnl gthread package check.
 GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"
