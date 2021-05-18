@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2021-04-25 16:09+0000\n"
-"PO-Revision-Date: 2021-04-25 18:47+0200\n"
+"POT-Creation-Date: 2021-05-17 20:51+0000\n"
+"PO-Revision-Date: 2021-05-18 22:09+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -60,7 +60,7 @@ msgstr ""
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Win_GParted.cc:88
-#: ../src/Win_GParted.cc:1635 ../src/Win_GParted.cc:1860
+#: ../src/Win_GParted.cc:1635 ../src/Win_GParted.cc:1863
 msgid "GParted"
 msgstr "GParted"
 
@@ -327,12 +327,12 @@ msgstr "Inte monterad"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:417 ../src/Win_GParted.cc:3572
+#: ../src/Dialog_Partition_Info.cc:417 ../src/Win_GParted.cc:3575
 msgid "Volume Group:"
 msgstr "Volymgrupp:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:428 ../src/Win_GParted.cc:3573
+#: ../src/Dialog_Partition_Info.cc:428 ../src/Win_GParted.cc:3576
 msgid "Members:"
 msgstr "Medlemmar:"
 
@@ -2075,33 +2075,45 @@ msgstr ""
 "Avmontera antingen filsystemet eller montera om det för läsning och "
 "skrivning."
 
-#: ../src/Win_GParted.cc:1816
+#: ../src/Win_GParted.cc:1794
 msgid "Unable to open GParted Manual help file"
 msgstr "Kunde inte öppna hjälpfilen för GParted"
 
-#: ../src/Win_GParted.cc:1837
+#: ../src/Win_GParted.cc:1796
+msgid "Command yelp not found."
+msgstr "Kommandot yelp hittades inte."
+
+#: ../src/Win_GParted.cc:1799
+msgid "Install yelp and try again."
+msgstr "Installera yelp och försök igen."
+
+#: ../src/Win_GParted.cc:1820
+msgid "Failed to open GParted Manual help file"
+msgstr "Misslyckades med att öppna hjälpfilen för GParted"
+
+#: ../src/Win_GParted.cc:1840
 msgid "Documentation is not available"
 msgstr "Dokumentationen finns inte tillgänglig"
 
-#: ../src/Win_GParted.cc:1842
+#: ../src/Win_GParted.cc:1845
 msgid "This build of gparted is configured without documentation."
 msgstr "Detta bygge av gparted är konfigurerat utan dokumentation."
 
-#: ../src/Win_GParted.cc:1844
+#: ../src/Win_GParted.cc:1847
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentationen finns tillgänglig på projektets webbplats."
 
-#: ../src/Win_GParted.cc:1848
+#: ../src/Win_GParted.cc:1851
 msgid "GParted Manual"
 msgstr "Handbok för GParted"
 
-#: ../src/Win_GParted.cc:1863
+#: ../src/Win_GParted.cc:1866
 msgid "GNOME Partition Editor"
 msgstr "Partitionsredigerare för GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1900
+#: ../src/Win_GParted.cc:1903
 msgid "translator-credits"
 msgstr ""
 "Josef Andersson\n"
@@ -2112,13 +2124,13 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "<tp-sv@listor.tp-sv.se>."
 
-#: ../src/Win_GParted.cc:1947
+#: ../src/Win_GParted.cc:1950
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Det är inte möjligt att skapa fler än %1 primär partition"
 msgstr[1] "Det är inte möjligt att skapa fler än %1 primära partitioner"
 
-#: ../src/Win_GParted.cc:1959
+#: ../src/Win_GParted.cc:1962
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -2130,18 +2142,18 @@ msgstr ""
 "utökad partition också är en primär partition kan det vara nödvändigt att ta "
 "bort en primär partition först."
 
-#: ../src/Win_GParted.cc:2085
+#: ../src/Win_GParted.cc:2088
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "Att flytta en partition kan medföra att ditt operativsystem inte kan startas "
 "upp"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:2092
+#: ../src/Win_GParted.cc:2095
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "Du har kölagt en åtgärd att flytta startsektorn för partition %1."
 
-#: ../src/Win_GParted.cc:2094
+#: ../src/Win_GParted.cc:2097
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -2149,90 +2161,90 @@ msgstr ""
 "  En misslyckad uppstart är trolig om du flyttar GNU/Linux-partitionen "
 "innehållandes /boot, eller om du flyttar Windows-systempartitionen C:."
 
-#: ../src/Win_GParted.cc:2096
+#: ../src/Win_GParted.cc:2099
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "Du kan läsa mer om hur man reparerar uppstartskonfigurationen i GParted FAQ."
 
-#: ../src/Win_GParted.cc:2100
+#: ../src/Win_GParted.cc:2103
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Att flytta en partition kan ta mycket lång tid."
 
 #. TO TRANSLATORS: looks like   Enter LUKS passphrase to resize /dev/sda1
-#: ../src/Win_GParted.cc:2142
+#: ../src/Win_GParted.cc:2145
 msgid "Enter LUKS passphrase to resize %1"
 msgstr "Ange LUKS-lösenfras för att ändra storlek på %1"
 
-#: ../src/Win_GParted.cc:2171
+#: ../src/Win_GParted.cc:2174
 msgid "LUKS encryption passphrase check failed"
 msgstr "Kontroll av krypteringslösenfras för LUKS misslyckades"
 
-#: ../src/Win_GParted.cc:2249
+#: ../src/Win_GParted.cc:2252
 msgid "Copy of %1"
 msgstr "Kopia av %1"
 
-#: ../src/Win_GParted.cc:2350
+#: ../src/Win_GParted.cc:2353
 msgid "You have pasted into an existing partition"
 msgstr "Du har klistrat in i en befintlig partition"
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:2358
+#: ../src/Win_GParted.cc:2361
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Data på %1 kommer att gå förlorad om du verkställer denna åtgärd."
 
-#: ../src/Win_GParted.cc:2432
+#: ../src/Win_GParted.cc:2435
 msgid "Unable to delete %1!"
 msgstr "Kunde inte ta bort %1!"
 
-#: ../src/Win_GParted.cc:2439
+#: ../src/Win_GParted.cc:2442
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Vänligen avmontera alla logiska partitioner som har en siffra högre än %1"
 
-#: ../src/Win_GParted.cc:2450
+#: ../src/Win_GParted.cc:2453
 msgid "Are you sure you want to delete %1?"
 msgstr "Är du säker på att du vill ta bort %1?"
 
-#: ../src/Win_GParted.cc:2457
+#: ../src/Win_GParted.cc:2460
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 "Efter borttagning är denna partition inte längre tillgänglig för kopiering."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2460
+#: ../src/Win_GParted.cc:2463
 msgid "Delete %1 (%2, %3)"
 msgstr "Ta bort %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2616
+#: ../src/Win_GParted.cc:2619
 msgid "Cannot format this file system to %1"
 msgstr "Kan inte formatera detta filsystem till %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2628
+#: ../src/Win_GParted.cc:2631
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Ett %1-filsystem kräver en partition på åtminstone %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2636
+#: ../src/Win_GParted.cc:2639
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "En partition med ett %1-filsystem har en maximal storlek på %2."
 
-#: ../src/Win_GParted.cc:2708
+#: ../src/Win_GParted.cc:2711
 msgid "Opening encryption on %1"
 msgstr "Öppnar kryptering på %1"
 
-#: ../src/Win_GParted.cc:2722
+#: ../src/Win_GParted.cc:2725
 msgid "Failed to open LUKS encryption"
 msgstr "Misslyckades med att öppna LUKS-kryptering"
 
-#: ../src/Win_GParted.cc:2744
+#: ../src/Win_GParted.cc:2747
 msgid ""
 "The close encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2240,15 +2252,15 @@ msgstr ""
 "Åtgärden stäng kryptering kan inte genomföras om åtgärder väntar på "
 "partitionen."
 
-#: ../src/Win_GParted.cc:2745
+#: ../src/Win_GParted.cc:2748
 msgid "Closing encryption on %1"
 msgstr "Stänger kryptering på %1"
 
-#: ../src/Win_GParted.cc:2746
+#: ../src/Win_GParted.cc:2749
 msgid "Could not close encryption"
 msgstr "Kunde inte stänga kryptering"
 
-#: ../src/Win_GParted.cc:2751
+#: ../src/Win_GParted.cc:2754
 msgid ""
 "The open encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2259,15 +2271,15 @@ msgstr ""
 #. TO TRANSLATORS: looks like
 #. * Enter LUKS passphrase to open /dev/sda1
 #.
-#: ../src/Win_GParted.cc:2791
+#: ../src/Win_GParted.cc:2794
 msgid "Enter LUKS passphrase to open %1"
 msgstr "Ange LUKS-lösenfras för att öppna %1"
 
-#: ../src/Win_GParted.cc:2854
+#: ../src/Win_GParted.cc:2857
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Partitionen kunde inte avmonteras från följande monteringspunkter:"
 
-#: ../src/Win_GParted.cc:2856
+#: ../src/Win_GParted.cc:2859
 msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
@@ -2276,19 +2288,19 @@ msgstr ""
 "monteringspunkter. Det rekommenderas att du avmonterar dem manuellt."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: ../src/Win_GParted.cc:2869
+#: ../src/Win_GParted.cc:2872
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 åtgärd väntar för närvarande på partition %2"
 msgstr[1] "%1 åtgärder väntar för närvarande på partition %2"
 
-#: ../src/Win_GParted.cc:2884
+#: ../src/Win_GParted.cc:2887
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
 "Använd Redigera-menyn för att ångra, tömma eller verkställa väntande "
 "åtgärder."
 
-#: ../src/Win_GParted.cc:2927
+#: ../src/Win_GParted.cc:2930
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
@@ -2296,15 +2308,15 @@ msgstr ""
 "Åtgärden inaktivera växling kan inte genomföras om åtgärder väntar på "
 "partitionen."
 
-#: ../src/Win_GParted.cc:2928
+#: ../src/Win_GParted.cc:2931
 msgid "Deactivating swap on %1"
 msgstr "Inaktiverar växlingsutrymme på %1"
 
-#: ../src/Win_GParted.cc:2929
+#: ../src/Win_GParted.cc:2932
 msgid "Could not deactivate swap"
 msgstr "Kunde inte inaktivera växlingsutrymme"
 
-#: ../src/Win_GParted.cc:2934
+#: ../src/Win_GParted.cc:2937
 msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
@@ -2312,15 +2324,15 @@ msgstr ""
 "Åtgärden aktivera växling kan inte genomföras om åtgärder väntar på "
 "partitionen."
 
-#: ../src/Win_GParted.cc:2935
+#: ../src/Win_GParted.cc:2938
 msgid "Activating swap on %1"
 msgstr "Aktiverar växlingsutrymme på %1"
 
-#: ../src/Win_GParted.cc:2936
+#: ../src/Win_GParted.cc:2939
 msgid "Could not activate swap"
 msgstr "Kunde inte aktivera växlingsutrymme"
 
-#: ../src/Win_GParted.cc:2941
+#: ../src/Win_GParted.cc:2944
 msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2328,16 +2340,16 @@ msgstr ""
 "Åtgärden inaktivera volymgrupp kan inte genomföras om åtgärder väntar på "
 "partitionen."
 
-#: ../src/Win_GParted.cc:2942
+#: ../src/Win_GParted.cc:2945
 msgid "Deactivating Volume Group %1"
 msgstr "Inaktiverar volymgrupp %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2944
+#: ../src/Win_GParted.cc:2947
 msgid "Could not deactivate Volume Group"
 msgstr "Kunde inte inaktivera volymgrupp"
 
-#: ../src/Win_GParted.cc:2949
+#: ../src/Win_GParted.cc:2952
 msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2345,61 +2357,61 @@ msgstr ""
 "Åtgärden aktivera volymgrupp kan inte genomföras om åtgärder väntar på "
 "partitionen."
 
-#: ../src/Win_GParted.cc:2950
+#: ../src/Win_GParted.cc:2953
 msgid "Activating Volume Group %1"
 msgstr "Aktiverar volymgrupp på %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2952
+#: ../src/Win_GParted.cc:2955
 msgid "Could not activate Volume Group"
 msgstr "Kunde inte aktivera volymgrupp"
 
-#: ../src/Win_GParted.cc:2957
+#: ../src/Win_GParted.cc:2960
 msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
 "Avmonteringsåtgärden kan inte genomföras om åtgärder väntar på partitionen."
 
-#: ../src/Win_GParted.cc:2958
+#: ../src/Win_GParted.cc:2961
 msgid "Unmounting %1"
 msgstr "Avmonterar %1"
 
-#: ../src/Win_GParted.cc:2959
+#: ../src/Win_GParted.cc:2962
 msgid "Could not unmount %1"
 msgstr "Kunde inte avmontera %1"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: ../src/Win_GParted.cc:3023
+#: ../src/Win_GParted.cc:3026
 msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
 "Monteringsåtgärden kan inte genomföras om en åtgärd väntar på partitionen."
 
-#: ../src/Win_GParted.cc:3036
+#: ../src/Win_GParted.cc:3039
 msgid "mounting %1 on %2"
 msgstr "monterar %1 på %2"
 
-#: ../src/Win_GParted.cc:3064
+#: ../src/Win_GParted.cc:3067
 msgid "Could not mount %1 on %2"
 msgstr "Kunde inte montera %1 på %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:3083
+#: ../src/Win_GParted.cc:3086
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 partition är för närvarande aktiv på enheten %2"
 msgstr[1] "%1 partitioner är för närvarande aktiva på enheten %2"
 
-#: ../src/Win_GParted.cc:3098
+#: ../src/Win_GParted.cc:3101
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "En ny partitionstabell kan inte skapas när det finns aktiva partitioner."
 
-#: ../src/Win_GParted.cc:3100
+#: ../src/Win_GParted.cc:3103
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2407,7 +2419,7 @@ msgstr ""
 "Aktiva partitioner är de som används, såsom ett monterat filsystem, eller "
 "aktiverat växlingsutrymme."
 
-#: ../src/Win_GParted.cc:3102
+#: ../src/Win_GParted.cc:3105
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2416,19 +2428,19 @@ msgstr ""
 "växling, för att inaktivera alla partitioner på denna enhet innan en ny "
 "partitionstabell kan skapas."
 
-#: ../src/Win_GParted.cc:3114
+#: ../src/Win_GParted.cc:3117
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 åtgärd väntar för närvarande"
 msgstr[1] "%1 åtgärder väntar för närvarande"
 
-#: ../src/Win_GParted.cc:3127
+#: ../src/Win_GParted.cc:3130
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "En ny partitionstabell kan inte skapas när det finns väntande åtgärder."
 
-#: ../src/Win_GParted.cc:3129
+#: ../src/Win_GParted.cc:3132
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2436,28 +2448,28 @@ msgstr ""
 "Använd Redigera-menyn för att antingen tömma eller verkställa alla åtgärder "
 "innan en ny partitionstabell skapas."
 
-#: ../src/Win_GParted.cc:3144
+#: ../src/Win_GParted.cc:3147
 msgid "Error while creating partition table"
 msgstr "Fel vid skapandet av partitionstabell"
 
-#: ../src/Win_GParted.cc:3164
+#: ../src/Win_GParted.cc:3167
 msgid "Command gpart was not found"
 msgstr "Kommandot gpart hittades inte"
 
-#: ../src/Win_GParted.cc:3165
+#: ../src/Win_GParted.cc:3168
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "Denna funktion använder gpart. Installera gpart och försök igen."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:3173
+#: ../src/Win_GParted.cc:3176
 msgid "A full disk scan is needed to find file systems."
 msgstr "En fullständig avsökning krävs för att hitta filsystem."
 
-#: ../src/Win_GParted.cc:3175
+#: ../src/Win_GParted.cc:3178
 msgid "The scan might take a very long time."
 msgstr "Avsökningen kan ta mycket lång tid."
 
-#: ../src/Win_GParted.cc:3177
+#: ../src/Win_GParted.cc:3180
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2465,62 +2477,62 @@ msgstr ""
 "Efter avsökningen kan du montera de filsystem som upptäckts och kopiera "
 "deras data till andra media."
 
-#: ../src/Win_GParted.cc:3179
+#: ../src/Win_GParted.cc:3182
 msgid "Do you want to continue?"
 msgstr "Vill du fortsätta?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:3183
+#: ../src/Win_GParted.cc:3186
 msgid "Search for file systems on %1"
 msgstr "Sök efter filsystem på %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:3194
+#: ../src/Win_GParted.cc:3197
 msgid "Searching for file systems on %1"
 msgstr "Söker efter filsystem på %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:3210
+#: ../src/Win_GParted.cc:3213
 msgid "No file systems found on %1"
 msgstr "Inga filsystem hittades på %1"
 
-#: ../src/Win_GParted.cc:3211
+#: ../src/Win_GParted.cc:3214
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
 msgstr ""
 "Diskavsökningen av gpart hittade inte några kända filsystem på denna disk."
 
-#: ../src/Win_GParted.cc:3488
+#: ../src/Win_GParted.cc:3491
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Är du säker på att du vill verkställa de väntande åtgärderna?"
 
-#: ../src/Win_GParted.cc:3494
+#: ../src/Win_GParted.cc:3497
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Redigering av partitioner kan innebära att DATA går FÖRLORAT."
 
-#: ../src/Win_GParted.cc:3496
+#: ../src/Win_GParted.cc:3499
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "Det rekommenderas att du säkerhetskopierar dina data innan du fortsätter."
 
-#: ../src/Win_GParted.cc:3498
+#: ../src/Win_GParted.cc:3501
 msgid "Apply operations to device"
 msgstr "Verkställ åtgärder till enheten"
 
-#: ../src/Win_GParted.cc:3541
+#: ../src/Win_GParted.cc:3544
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Du tar bort icke-tomma LVM2 fysiska volymen %1"
 
-#: ../src/Win_GParted.cc:3545
+#: ../src/Win_GParted.cc:3548
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Du formaterar över icke-tom LVM2 fysisk volym %1"
 
-#: ../src/Win_GParted.cc:3549
+#: ../src/Win_GParted.cc:3552
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Du kopierar över icke-tom LVM2 fysisk volym %1"
 
-#: ../src/Win_GParted.cc:3558
+#: ../src/Win_GParted.cc:3561
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2528,7 +2540,7 @@ msgstr ""
 "Att ta bort eller skriva över den fysiska volymen är oåterkalleligt och "
 "kommer att förstöra volymgruppen."
 
-#: ../src/Win_GParted.cc:3561
+#: ../src/Win_GParted.cc:3564
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2538,7 +2550,7 @@ msgstr ""
 "att avbryta och använda externa LVM-kommandon för att frigöra den fysiska "
 "volymen innan du provar denna åtgärd."
 
-#: ../src/Win_GParted.cc:3564
+#: ../src/Win_GParted.cc:3567
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Vill du fortsätta att med tvång ta bort den fysiska volymen?"
 
