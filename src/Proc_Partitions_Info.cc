@@ -131,10 +131,11 @@ bool Proc_Partitions_Info::is_whole_disk_device_name(const Glib::ustring& name)
 	// Match Linux software RAID (mdadm) device names.
 	// E.g.: device = md127 (partition = md127p1)
 	if (Utils::regexp_label(name, "^(md[0-9]+)$") != "")
+		return true;
 
 	// Match SD/MMC card whole disk devices names.
 	// E.g.: device = mmcblk0 (partition = mmcblk0p1)
-	if (Utils::regexp_label(name, "^(md[0-9]+)$") != "")
+	if (Utils::regexp_label(name, "^(mmcblk[0-9]+)$") != "")
 		return true;
 
 	// Match NVME (Non-Volatile Memory Express) whole disk device names.
