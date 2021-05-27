@@ -228,8 +228,9 @@ bool xfs::copy( const Partition & src_part,
 {
 	bool success = true ;
 
-	success &= ! execute_command( "mkfs.xfs -f " + Glib::shell_quote( dest_part.get_path() ),
-	                              operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	success &= ! execute_command("mkfs.xfs -f -L " + Glib::shell_quote(dest_part.get_filesystem_label()) +
+	                             " " + Glib::shell_quote(dest_part.get_path()),
+	                             operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 	if ( ! success )
 		return false ;
 
