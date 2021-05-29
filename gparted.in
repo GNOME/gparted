@@ -102,15 +102,20 @@ for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 done
 
 #
-#  Check if udisks2-inhibit exists in known location
+#  Check if udisks2-inhibit exists in a known location
 #  and if appropriate daemon is running.
 #
 HAVE_UDISKS2_INHIBIT=no
-if test -x "/usr/lib/udisks2/udisks2-inhibit"; then
-	if pidof udisksd 1> /dev/null; then
-		HAVE_UDISKS2_INHIBIT=yes
+for k in /usr/libexec/udisks2/udisks2-inhibit \
+         /usr/lib/udisks2/udisks2-inhibit; do
+	if test -x $k; then
+		if pidof udisksd 1> /dev/null; then
+			HAVE_UDISKS2_INHIBIT=yes
+			UDISKS2_INHIBIT_BIN=$k
+			break
+		fi
 	fi
-fi
+done
 
 #
 #  Search PATH to determine if udisks program can be found
@@ -206,7 +211,7 @@ done
 #  If the above checks fail then simply run gpartedbin.
 #
 if test "x$HAVE_UDISKS2_INHIBIT" = "xyes"; then
-	/usr/lib/udisks2/udisks2-inhibit $BASE_CMD
+	$UDISKS2_INHIBIT_BIN $BASE_CMD
 elif test "x$HAVE_UDISKS" = "xyes" && test "x$HAVE_HAL_LOCK" = "xyes"; then
 	udisks --inhibit -- \
 		hal-lock --interface org.freedesktop.Hal.Device.Storage --exclusive \
