@@ -229,6 +229,7 @@ bool xfs::copy( const Partition & src_part,
 	bool success = true ;
 
 	success &= ! execute_command("mkfs.xfs -f -L " + Glib::shell_quote(dest_part.get_filesystem_label()) +
+	                             " -m uuid=" + Glib::shell_quote(dest_part.uuid) +
 	                             " " + Glib::shell_quote(dest_part.get_path()),
 	                             operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 	if ( ! success )
@@ -259,9 +260,9 @@ bool xfs::copy( const Partition & src_part,
 
 	if ( success )
 	{
-		success &= ! execute_command( "mount -v -t xfs " + Glib::shell_quote( dest_part.get_path() ) +
-		                              " " + Glib::shell_quote( dest_mount_point ),
-		                              operationdetail, EXEC_CHECK_STATUS );
+		success &= ! execute_command("mount -v -t xfs -o nouuid " + Glib::shell_quote(dest_part.get_path()) +
+		                             " " + Glib::shell_quote(dest_mount_point),
+		                             operationdetail, EXEC_CHECK_STATUS);
 
 		if ( success )
 		{
