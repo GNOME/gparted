@@ -63,6 +63,7 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > check ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > label ;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> online_label;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > uuid ;
 		Gtk::TreeModelColumn<Glib::ustring> software ;
 				
@@ -78,6 +79,7 @@ private:
 			add( copy ) ;
 			add( check ) ;
 			add( label ) ;
+			add(online_label);
 			add( uuid ) ;
 			add( software ) ;
 		}
