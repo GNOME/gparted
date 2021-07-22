@@ -2053,7 +2053,9 @@ bool GParted_Core::label_filesystem( const Partition & partition, OperationDetai
 
 	bool succes = false ;
 	FileSystem* p_filesystem = NULL ;
-	switch (get_fs(partition.fstype).write_label)
+	const FS& fs_cap = get_fs(partition.fstype);
+	FS::Support support = (partition.busy) ? fs_cap.online_write_label : fs_cap.write_label;
+	switch (support)
 	{
 		case FS::EXTERNAL:
 			succes =    (p_filesystem = get_filesystem_object(partition.fstype))

@@ -1299,6 +1299,14 @@ void Win_GParted::set_valid_operations()
 	}
 #endif
 
+	// Allow labelling of mounted file systems that support it.
+	if (selected_filesystem.busy                    &&
+	    selected_partition_ptr->status == STAT_REAL &&
+	    fs_cap.online_write_label                     )
+	{
+		allow_label_filesystem(true);
+	}
+
 	// Only unmount/swapoff/VG deactivate or online actions allowed if busy
 	if ( selected_filesystem.busy )
 		return ;

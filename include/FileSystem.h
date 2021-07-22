@@ -79,12 +79,13 @@ struct FS
 	Support online_read;        // Can and how to read sector usage while active
 	Support online_grow;
 	Support online_shrink;
+	Support online_write_label;
 
 	FS(FSType fstype_ = FS_UNSUPPORTED) : fstype(fstype_)
 	{
 		busy = read = read_label = write_label = read_uuid = write_uuid = create =
 		create_with_label = grow = shrink = move = check = copy = remove = online_read =
-		online_grow = online_shrink = NONE;
+		online_grow = online_shrink = online_write_label = NONE;
 	}
 };
 

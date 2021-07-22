@@ -66,6 +66,7 @@ FS btrfs::get_filesystem_support()
 		fs .read_uuid = FS::EXTERNAL ;
 		fs.check = FS::EXTERNAL;
 		fs.write_label = FS::EXTERNAL;
+		fs.online_write_label = FS::EXTERNAL;
 
 		//Resizing of btrfs requires mount, umount and kernel
 		//  support as well as btrfs filesystem resize
@@ -261,12 +262,24 @@ void btrfs::set_used_sectors( Partition & partition )
 	}
 }
 
+
 bool btrfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfs filesystem label " + Glib::shell_quote( partition.get_path() ) +
-	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	// Use the mount point when labelling a mounted btrfs, or block device containing
+	// the unmounted btrfs.
+	//     btrfs filesystem label '/dev/PTN' 'NEWLABEL'
+	//     btrfs filesystem label '/MNTPNT' 'NEWLABEL'
+	Glib::ustring path;
+	if (partition.busy)
+		path = partition.get_mountpoint();
+	else
+		path = partition.get_path();
+
+	return ! execute_command("btrfs filesystem label " + Glib::shell_quote(path) +
+	                         " " + Glib::shell_quote(partition.get_filesystem_label()),
+	                         operationdetail, EXEC_CHECK_STATUS);
 }
+
 
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
