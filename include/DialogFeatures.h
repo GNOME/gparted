@@ -34,61 +34,63 @@
 namespace GParted
 {
 
+
 class DialogFeatures : public Gtk::Dialog
 {
 public:
-	DialogFeatures() ;
-	~DialogFeatures() ;
+	DialogFeatures();
+	~DialogFeatures();
 
 	void load_filesystems(const std::vector<FS>& fss);
 
 private:
 	void load_one_filesystem(const FS& fs);
 
-	Gtk::Frame legend_frame ;
+	Gtk::Frame legend_frame;
 	Gtk::TreeView treeview_filesystems;
 	Gtk::TreeRow treerow;
 	Gtk::ScrolledWindow filesystems_scrolled ;
 	Glib::RefPtr<Gtk::ListStore> liststore_filesystems;
-	
-	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord             
+
+	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord
 	{
 		Gtk::TreeModelColumn<Glib::ustring> fsname;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > create ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > grow ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > online_grow ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > shrink ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > online_shrink ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > move ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > check ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > label ;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> create;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> grow;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> online_grow;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> shrink;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> online_shrink;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> move;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> copy;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> check;
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> label;
 		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> online_label;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > uuid ;
-		Gtk::TreeModelColumn<Glib::ustring> software ;
-				
-		treeview_filesystems_Columns() 
+		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> uuid;
+		Gtk::TreeModelColumn<Glib::ustring> software;
+
+		treeview_filesystems_Columns()
 		{ 
 			add(fsname);
-			add( create ) ;
-			add( grow ) ;
-			add( online_grow ) ;
-			add( shrink ) ;
-			add( online_shrink ) ;
-			add( move ) ;
-			add( copy ) ;
-			add( check ) ;
-			add( label ) ;
+			add(create);
+			add(grow);
+			add(online_grow);
+			add(shrink);
+			add(online_shrink);
+			add(move);
+			add(copy);
+			add(check);
+			add(label);
 			add(online_label);
-			add( uuid ) ;
-			add( software ) ;
+			add(uuid);
+			add(software);
 		}
 	};
-	
-	treeview_filesystems_Columns treeview_filesystems_columns ;
 
-	Glib::RefPtr<Gdk::Pixbuf> icon_yes, icon_no, icon_blank ;
+	treeview_filesystems_Columns treeview_filesystems_columns;
+
+	Glib::RefPtr<Gdk::Pixbuf> icon_yes, icon_no, icon_blank;
 };
+
 
 } //GParted
 
