@@ -98,6 +98,7 @@ FS ext2::get_filesystem_support()
 	{
 		fs.read_label = FS::EXTERNAL;
 		fs.write_label = FS::EXTERNAL;
+		fs.online_write_label = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "e2fsck" ).empty() )
@@ -247,6 +248,7 @@ void ext2::read_label( Partition & partition )
 
 bool ext2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
+	// Called when file system is unmounted *and* when mounted.
 	return ! execute_command( "e2label " + Glib::shell_quote( partition.get_path() ) +
 	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
