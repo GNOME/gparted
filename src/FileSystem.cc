@@ -282,8 +282,8 @@ void FileSystem::rm_temp_dir( const Glib::ustring dir_name, OperationDetail & op
 	                                             STATUS_EXECUTE, FONT_BOLD_ITALIC ) ) ;
 	if ( rmdir( dir_name .c_str() ) )
 	{
-		//Don't mark operation as errored just because rmdir
-		//  failed.  Set to Warning (N/A) instead.
+		// Don't mark operation as errored just because rmdir failed.  Set to
+		// Warning instead.
 		int e = errno ;
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				Glib::ustring::compose( "rmdir(%1): ", dir_name ) + Glib::strerror( e ), STATUS_NONE ) ) ;
