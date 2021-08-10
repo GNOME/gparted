@@ -147,18 +147,26 @@ void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, Mou
 
 		Glib::ustring uuid = Utils::regexp_label( node, "^UUID=(.*)" );
 		if ( ! uuid.empty() )
-			node = FS_Info::get_path_by_uuid( uuid );
+		{
+			Glib::ustring temp = FS_Info::get_path_by_uuid(uuid);
+			if (! temp.empty())
+				node = temp;
+		}
 
 		Glib::ustring label = Utils::regexp_label( node, "^LABEL=(.*)" );
 		if ( ! label.empty() )
-			node = FS_Info::get_path_by_label( label );
+		{
+			Glib::ustring temp = FS_Info::get_path_by_label(label);
+			if (! temp.empty())
+				node = temp;
+		}
 
-		if ( ! node.empty() )
-			add_mountpoint_entry( map, node, mountpoint, parse_readonly_flag( p->mnt_opts ) );
+		add_mountpoint_entry(map, node, mountpoint, parse_readonly_flag(p->mnt_opts));
 	}
 
 	endmntent( fp );
 }
+
 
 void Mount_Info::add_mountpoint_entry( MountMapping & map,
                                        Glib::ustring & node,
