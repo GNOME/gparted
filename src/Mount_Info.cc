@@ -254,11 +254,61 @@ void Mount_Info::read_mountpoints_from_mount_command( MountMapping & map )
 	}
 }
 
-const MountEntry & Mount_Info::find( const MountMapping & map, const Glib::ustring & path )
+
+const MountEntry& Mount_Info::find(MountMapping& map, const Glib::ustring& path)
 {
-	MountMapping::const_iterator iter_mp = map.find( BlockSpecial( path ) );
+	BlockSpecial bs_path = BlockSpecial(path);
+
+	// 1) Key look up by path.  E.g. BlockSpecial("/dev/sda1").
+	MountMapping::const_iterator iter_mp = map.find(bs_path);
 	if ( iter_mp != map.end() )
 		return iter_mp->second;
+
+	// 2) Not found so iterate over all mount entries resolving UUID= and LABEL=
+	//    references; checking after each for the requested mount entry.
+	//    (Unresolved UUID= and LABEL= references are added by
+	//    read_mountpoints_from_file("/etc/fstab", fstab_info) for open encryption
+	//    mappings as the file system details are only added later into the FS_Info
+	//    cache by GParted_Core::detect_filesystem_in_encryption_mappings()).
+	std::vector<BlockSpecial> ref_nodes;
+	for (iter_mp = map.begin(); iter_mp != map.end(); ++iter_mp)
+	{
+		if (iter_mp->first.m_name.compare(0, 5, "UUID=")  == 0 ||
+		    iter_mp->first.m_name.compare(0, 6, "LABEL=") == 0   )
+		{
+			ref_nodes.push_back(iter_mp->first);
+		}
+	}
+	for (unsigned i = 0; i < ref_nodes.size(); i++)
+	{
+		Glib::ustring node;
+		Glib::ustring uuid = Utils::regexp_label(ref_nodes[i].m_name, "^UUID=(.*)");
+		if (! uuid.empty())
+		{
+			Glib::ustring temp = FS_Info::get_path_by_uuid(uuid);
+			if (! temp.empty())
+				node = temp;
+		}
+
+		Glib::ustring label = Utils::regexp_label(ref_nodes[i].m_name, "^LABEL=(.*)");
+		if (! label.empty())
+		{
+			Glib::ustring temp = FS_Info::get_path_by_label(label);
+			if (! temp.empty())
+				node = temp;
+		}
+
+		if (! node.empty())
+		{
+			// Insert new mount entry and delete the old one.
+			map[BlockSpecial(node)] = map[ref_nodes[i]];
+			map.erase(ref_nodes[i]);
+
+			if (BlockSpecial(node) == bs_path)
+				// This resolved mount entry is the one being searched for.
+				return map[bs_path];
+		}
+	}
 
 	static MountEntry not_mounted = MountEntry();
 	return not_mounted;

@@ -66,7 +66,7 @@ private:
 	                                              MountMapping & map );
 	static bool have_rootfs_dev( MountMapping & map );
 	static void read_mountpoints_from_mount_command( MountMapping & map );
-	static const MountEntry & find( const MountMapping & map, const Glib::ustring & path );
+	static const MountEntry& find(MountMapping& map, const Glib::ustring& path);
 };
 
 } //GParted
