@@ -148,7 +148,7 @@ void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, Mou
 
 		Glib::ustring mountpoint = p->mnt_dir;
 
-		add_mountpoint_entry(map, node, mountpoint, parse_readonly_flag(p->mnt_opts));
+		add_mountpoint_entry(map, node, parse_readonly_flag(p->mnt_opts), mountpoint);
 	}
 
 	endmntent( fp );
@@ -157,8 +157,8 @@ void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, Mou
 
 void Mount_Info::add_mountpoint_entry( MountMapping & map,
                                        Glib::ustring & node,
-                                       Glib::ustring & mountpoint,
-                                       bool readonly )
+                                       bool readonly,
+                                       Glib::ustring& mountpoint)
 {
 	// Only add node path if mount point exists
 	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
@@ -236,7 +236,7 @@ void Mount_Info::read_mountpoints_from_mount_command( MountMapping & map )
 			Glib::ustring mountpoint = Utils::regexp_label( lines[ i ], "^[^[:blank:]]+ on ([^[:blank:]]+) " );
 			Glib::ustring mntopts = Utils::regexp_label( lines[i], " type [^[:blank:]]+ \\(([^\\)]*)\\)" );
 			if ( ! node.empty() )
-				add_mountpoint_entry( map, node, mountpoint, parse_readonly_flag( mntopts ) );
+				add_mountpoint_entry(map, node, parse_readonly_flag(mntopts), mountpoint);
 		}
 	}
 }
