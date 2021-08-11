@@ -14,7 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "Mount_Info.h"
+#include "BlockSpecial.h"
 #include "FS_Info.h"
 #include "Utils.h"
 
@@ -26,6 +28,9 @@
 #include <mntent.h>
 #include <string>
 #include <fstream>
+#include <vector>
+#include <algorithm>
+
 
 namespace GParted
 {
