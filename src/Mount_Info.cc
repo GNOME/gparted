@@ -142,24 +142,11 @@ void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, Mou
 	struct mntent* p = NULL;
 	while ( ( p = getmntent( fp ) ) != NULL )
 	{
-		Glib::ustring node = p->mnt_fsname;
+		Glib::ustring node = lookup_uuid_or_label(p->mnt_fsname);
+		if (node.empty())
+			node = p->mnt_fsname;
+
 		Glib::ustring mountpoint = p->mnt_dir;
-
-		Glib::ustring uuid = Utils::regexp_label( node, "^UUID=(.*)" );
-		if ( ! uuid.empty() )
-		{
-			Glib::ustring temp = FS_Info::get_path_by_uuid(uuid);
-			if (! temp.empty())
-				node = temp;
-		}
-
-		Glib::ustring label = Utils::regexp_label( node, "^LABEL=(.*)" );
-		if ( ! label.empty() )
-		{
-			Glib::ustring temp = FS_Info::get_path_by_label(label);
-			if (! temp.empty())
-				node = temp;
-		}
 
 		add_mountpoint_entry(map, node, mountpoint, parse_readonly_flag(p->mnt_opts));
 	}
@@ -281,23 +268,7 @@ const MountEntry& Mount_Info::find(MountMapping& map, const Glib::ustring& path)
 	}
 	for (unsigned i = 0; i < ref_nodes.size(); i++)
 	{
-		Glib::ustring node;
-		Glib::ustring uuid = Utils::regexp_label(ref_nodes[i].m_name, "^UUID=(.*)");
-		if (! uuid.empty())
-		{
-			Glib::ustring temp = FS_Info::get_path_by_uuid(uuid);
-			if (! temp.empty())
-				node = temp;
-		}
-
-		Glib::ustring label = Utils::regexp_label(ref_nodes[i].m_name, "^LABEL=(.*)");
-		if (! label.empty())
-		{
-			Glib::ustring temp = FS_Info::get_path_by_label(label);
-			if (! temp.empty())
-				node = temp;
-		}
-
+		Glib::ustring node = lookup_uuid_or_label(ref_nodes[i].m_name);
 		if (! node.empty())
 		{
 			// Insert new mount entry and delete the old one.
@@ -313,5 +284,20 @@ const MountEntry& Mount_Info::find(MountMapping& map, const Glib::ustring& path)
 	static MountEntry not_mounted = MountEntry();
 	return not_mounted;
 }
+
+
+// Return file system's block device given a UUID=... or LABEL=... reference, or return
+// the empty string when not found.
+Glib::ustring Mount_Info::lookup_uuid_or_label(const Glib::ustring& ref)
+{
+	if (ref.compare(0, 5, "UUID=") == 0)
+		return FS_Info::get_path_by_uuid(ref.substr(5));
+
+	if (ref.compare(0, 6, "LABEL=") == 0)
+		return FS_Info::get_path_by_label(ref.substr(6));
+
+	return "";
+}
+
 
 } //GParted
