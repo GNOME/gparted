@@ -2845,7 +2845,7 @@ bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring 
 			// a case to write such complicated code for.
 			skipped_mountpoints.push_back( fs_mountpoints[i] );
 		}
-		else
+		else if ( i == ( fs_mountpoints.size() - 1) )
 		{
 			Glib::ustring cmd = "umount -v " + Glib::shell_quote( fs_mountpoints[i] );
 			Glib::ustring dummy;
