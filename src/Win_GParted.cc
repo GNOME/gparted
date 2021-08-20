@@ -2847,11 +2847,17 @@ bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring 
 		}
 		else
 		{
+			Glib::ustring checkmount = "grep -w " + Glib::shell_quote(fs_mountpoints[i]) + " /proc/mounts";
 			Glib::ustring cmd = "umount -v " + Glib::shell_quote( fs_mountpoints[i] );
 			Glib::ustring dummy;
 			Glib::ustring umount_error;
-			if ( Utils::execute_command( cmd, dummy, umount_error ) )
-				umount_errors.push_back( "# " + cmd + "\n" + umount_error );
+
+			// Check mount point is still mounted
+			if (! Utils::execute_command(checkmount, dummy, umount_error))
+			{
+				if (Utils::execute_command(cmd, dummy, umount_error))
+					umount_errors.push_back("# " + cmd + "\n" + umount_error);
+			}
 		}
 	}
 
