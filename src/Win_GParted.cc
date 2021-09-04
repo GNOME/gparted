@@ -1819,7 +1819,7 @@ void Win_GParted::show_help(const Glib::ustring & filename /* E.g., "gparted" */
 	// https://gitlab.gnome.org/GNOME/gparted/-/merge_requests/82#note_1106114
 	gtk_show_uri_on_window(NULL, uri.c_str(), gtk_get_current_event_time(), &error);
 #else
-	GdkScreen *gscreen = gscreen = gdk_screen_get_default();
+	GdkScreen *gscreen = gdk_screen_get_default();
 	gtk_show_uri(gscreen, uri.c_str(), gtk_get_current_event_time(), &error);
 #endif
 	if (error != NULL)
