@@ -136,6 +136,18 @@ const std::vector<Glib::ustring> & Mount_Info::get_fstab_mountpoints( const Glib
 	return find( fstab_info, path ).mountpoints;
 }
 
+
+// Return whether the device path, such as /dev/sda3, is mounted at mount point or not
+bool Mount_Info::is_dev_mounted_at(const Glib::ustring& path, const Glib::ustring& mountpoint)
+{
+	const std::vector<Glib::ustring>& mountpoints = get_mounted_mountpoints(path);
+	for (unsigned i = 0; i < mountpoints.size(); i++)
+		if (mountpoint == mountpoints[i])
+			return true;
+	return false;
+}
+
+
 // Private methods
 
 void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, MountMapping & map )
