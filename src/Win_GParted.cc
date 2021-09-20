@@ -1102,22 +1102,19 @@ void Win_GParted::Refresh_Visual()
 
 	set_valid_operations() ;
 
-	// Process Gtk events to redraw visuals with reloaded partition details
-	while ( Gtk::Main::events_pending() )
-		Gtk::Main::iteration();
-
 	if ( largest_unalloc_size >= 0 )
 	{
-		// Flashing redraw work around.  Inform visuals of selection of the
-		// largest unallocated partition after drawing those visuals above.
+		// Inform visuals of selection of the largest unallocated partition.
 		drawingarea_visualdisk.set_selected( selected_partition_ptr );
 		treeview_detail.set_selected( selected_partition_ptr );
-
-		// Process Gtk events to draw selection
-		while ( Gtk::Main::events_pending() )
-			Gtk::Main::iteration();
 	}
+
+	// Process Gtk events to redraw visuals with reloaded partition details.
+	while (Gtk::Main::events_pending())
+		Gtk::Main::iteration();
+
 }
+
 
 // Confirms that the pointer points to one of the partition objects in the vector of
 // displayed partitions, Win_GParted::display_partitions[].
