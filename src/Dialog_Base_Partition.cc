@@ -21,6 +21,8 @@
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
+#include <gtkmm/label.h>
+#include <atkmm/relation.h>
 
 
 namespace GParted
@@ -61,8 +63,9 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 	vbox_resize_move.pack_start(hbox_grid, Gtk::PACK_SHRINK);
 
 	// Add spinbutton_before
-	grid_resize.attach(*Utils::mk_label(Glib::ustring(_("Free space preceding (MiB):")) + " \t"),
-	                   0, 0, 1, 1);
+	Gtk::Label *label_before = Utils::mk_label(Glib::ustring(_("Free space preceding (MiB):")) + " \t");
+	grid_resize.attach(*label_before, 0, 0, 1, 1);
+	spinbutton_before.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_before->get_accessible());
 
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
@@ -70,7 +73,9 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 	grid_resize.attach(spinbutton_before, 1, 0, 1, 1);
 
 	// Add spinbutton_size
-	grid_resize.attach(*Utils::mk_label(_("New size (MiB):")), 0, 1, 1, 1);
+	Gtk::Label *label_size = Utils::mk_label(_("New size (MiB):"));
+	grid_resize.attach(*label_size, 0, 1, 1, 1);
+	spinbutton_size.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_size->get_accessible());
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
@@ -78,7 +83,9 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 	grid_resize.attach(spinbutton_size, 1, 1, 1, 1);
 
 	// Add spinbutton_after
-	grid_resize.attach(*Utils::mk_label(_("Free space following (MiB):")), 0, 2, 1, 1);
+	Gtk::Label *label_after = Utils::mk_label(_("Free space following (MiB):"));
+	grid_resize.attach(*label_after, 0, 2, 1, 1);
+	spinbutton_after.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_after->get_accessible());
 
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
@@ -106,7 +113,9 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 
 	// Add alignment
 	/* TO TRANSLATORS: used as label for a list of choices.  Align to: <combo box with choices> */
-	grid_resize.attach(*Utils::mk_label(Glib::ustring(_("Align to:")) + "\t"), 0, 3, 1, 1);
+	Gtk::Label *label_alignment = Utils::mk_label(Glib::ustring(_("Align to:")) + "\t");
+	grid_resize.attach(*label_alignment, 0, 3, 1, 1);
+	combo_alignment.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_alignment->get_accessible());
 
 	// Fill partition alignment combo
 	/* TO TRANSLATORS: Option for combo box "Align to:" */

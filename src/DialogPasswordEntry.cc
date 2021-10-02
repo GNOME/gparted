@@ -19,6 +19,8 @@
 
 #include <glibmm/ustring.h>
 #include <gtkmm/box.h>
+#include <gtkmm/label.h>
+#include <atkmm/relation.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/button.h>
 #include <gtk/gtk.h>
@@ -47,12 +49,14 @@ DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib:
 	// Line 2: "Passphrase: [              ]"
 	// (Horizontal box holding prompt and entry box)
 	Gtk::Box *entry_hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
-	entry_hbox->pack_start( *Utils::mk_label( "<b>"+ Glib::ustring( _("Passphrase:") ) + "</b>" ) );
+	Gtk::Label *label_passphrase = Utils::mk_label("<b>" + Glib::ustring(_("Passphrase:")) + "</b>");
+	entry_hbox->pack_start(*label_passphrase);
 	entry = manage( new Gtk::Entry() );
 	entry->set_width_chars( 30 );
 	entry->set_visibility( false );
 	entry->set_activates_default( true );
 	entry->grab_focus();
+	entry->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_passphrase->get_accessible());
 	entry_hbox->pack_start( *entry );
 	vbox->pack_start( *entry_hbox );
 

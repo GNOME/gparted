@@ -58,6 +58,8 @@
 #include <gtkmm/main.h>
 #include <gtkmm/separator.h>
 #include <gtkmm/grid.h>
+#include <gtkmm/label.h>
+#include <atkmm/relation.h>
 #include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
@@ -583,28 +585,36 @@ void Win_GParted::init_device_info()
 	grid->set_column_spacing(10);
 
 	// Model
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Model:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_model = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Model:")) + "</b>");
+	grid->attach(*label_model, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_model->get_accessible());
 
 	// Serial number
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Serial:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_serial = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Serial:")) + "</b>");
+	grid->attach(*label_serial, 0, top, 1, 1);
 	device_info.push_back( Utils::mk_label( "", true, false, true ) );
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_serial->get_accessible());
 
 	// Size
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Size:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_size = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Size:")) + "</b>");
+	grid->attach(*label_size, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_size->get_accessible());
 
 	// Path
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Path:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_path = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Path:")) + "</b>");
+	grid->attach(*label_path, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_path->get_accessible());
 
 	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 
@@ -617,40 +627,52 @@ void Win_GParted::init_device_info()
 	grid->attach(*Utils::mk_label(""), 1, top++, 1, 1);
 
 	// Disktype
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Partition table:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_disktype = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Partition table:")) + "</b>");
+	grid->attach(*label_disktype, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_disktype->get_accessible());
 
 	// Heads
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Heads:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_heads = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Heads:")) + "</b>");
+	grid->attach(*label_heads, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_heads->get_accessible());
 
 	// Sectors / track
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sectors/track:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_sectors_track = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sectors/track:")) + "</b>");
+	grid->attach(*label_sectors_track, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_sectors_track->get_accessible());
 
 	// Cylinders
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Cylinders:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_cylinders = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Cylinders:")) + "</b>");
+	grid->attach(*label_cylinders, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_cylinders->get_accessible());
 
 	// Total sectors
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Total sectors:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_total_sectors = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Total sectors:")) + "</b>");
+	grid->attach(*label_total_sectors, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_total_sectors->get_accessible());
 
 	// Sector size
-	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sector size:")) + "</b>"),
-	             0, top, 1, 1);
+	Gtk::Label *label_sector_size = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sector size:")) + "</b>");
+	grid->attach(*label_sector_size, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
+	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_sector_size->get_accessible());
 
 	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 }
@@ -3602,15 +3624,17 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	msg_area->pack_start(*grid);
 
 	// Volume Group
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(vgname_label) + "</b>"),
-	             0, 0, 1, 1);
-	grid->attach(*Utils::mk_label(vgname, true, false, true),
-	             1, 0, 1, 1);
+	Gtk::Label *label_vgname = Utils::mk_label("<b>" + Glib::ustring(vgname_label) + "</b>");
+	grid->attach(*label_vgname, 0, 0, 1, 1);
+	Gtk::Label *value_vgname = Utils::mk_label(vgname, true, false, true);
+	grid->attach(*value_vgname, 1, 0, 1, 1);
+	value_vgname->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                 label_vgname->get_accessible());
 
 	// Members
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(members_label) + "</b>",
-	                              true, false, false, Gtk::ALIGN_START),
-	             0, 1, 1, 1);
+	Gtk::Label *label_members = Utils::mk_label("<b>" + Glib::ustring(members_label) + "</b>",
+	                                            true, false, false, Gtk::ALIGN_START);
+	grid->attach(*label_members, 0, 1, 1, 1);
 
 	Glib::ustring members_str = "" ;
 	if ( ! members .empty() )
@@ -3622,8 +3646,10 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 			members_str += members[i] ;
 		}
 	}
-	grid->attach(*Utils::mk_label(members_str, true, false, true, Gtk::ALIGN_START),
-	             1, 1, 1, 1);
+	Gtk::Label *value_members = Utils::mk_label(members_str, true, false, true, Gtk::ALIGN_START);
+	grid->attach(*value_members, 1, 1, 1, 1);
+	value_members->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                  label_members->get_accessible());
 
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );

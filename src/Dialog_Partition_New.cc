@@ -23,6 +23,8 @@
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
+#include <gtkmm/label.h>
+#include <atkmm/relation.h>
 
 
 namespace GParted
@@ -101,8 +103,9 @@ void Dialog_Partition_New::set_data( const Device & device,
 	hbox_main.pack_start(grid_create, Gtk::PACK_SHRINK);
 
 	/* TO TRANSLATORS: used as label for a list of choices.  Create as: <combo box with choices> */
-	grid_create.attach(*Utils::mk_label(Glib::ustring(_("Create as:")) + "\t"),
-	                   0, 0, 1, 1);
+	Gtk::Label *label_type = Utils::mk_label(Glib::ustring(_("Create as:")) + "\t");
+	grid_create.attach(*label_type, 0, 0, 1, 1);
+	combo_type.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_type->get_accessible());
 
 	// Fill partition type combo.
 	combo_type.items().push_back(_("Primary Partition"));
@@ -139,8 +142,10 @@ void Dialog_Partition_New::set_data( const Device & device,
 	grid_create.attach(combo_type, 1, 0, 1, 1);
 
 	// Partition name
-	grid_create.attach(*Utils::mk_label(Glib::ustring(_("Partition name:")) + "\t"),
-	                   0, 1, 1, 1);
+	Gtk::Label *partition_name_label = Utils::mk_label(Glib::ustring(_("Partition name:")) + "\t");
+	grid_create.attach(*partition_name_label, 0, 1, 1, 1);
+	partition_name_entry.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                        partition_name_label->get_accessible());
 	// Initialise text entry box
 	partition_name_entry.set_width_chars( 20 );
 	partition_name_entry.set_sensitive( device.partition_naming_supported() );
@@ -149,8 +154,10 @@ void Dialog_Partition_New::set_data( const Device & device,
 	grid_create.attach(partition_name_entry, 1, 1, 1, 1);
 
 	// File systems to choose from
-	grid_create.attach(*Utils::mk_label(Glib::ustring(_("File system:")) + "\t"),
-	                   0, 1, 2, 3);
+	Gtk::Label *label_filesystem = Utils::mk_label(Glib::ustring(_("File system:")) + "\t");
+	grid_create.attach(*label_filesystem, 0, 1, 2, 3);
+	combo_filesystem.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                    label_filesystem->get_accessible());
 
 	build_filesystems_combo(device.readonly);
 
@@ -159,7 +166,10 @@ void Dialog_Partition_New::set_data( const Device & device,
 	grid_create.attach(combo_filesystem, 1, 2, 1, 1);
 
 	// Label
-	grid_create.attach(*Utils::mk_label(_("Label:")), 0, 3, 1, 1);
+	Gtk::Label *filesystem_label_label = Utils::mk_label(_("Label:"));
+	grid_create.attach(*filesystem_label_label, 0, 3, 1, 1);
+	filesystem_label_entry.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                          filesystem_label_label->get_accessible());
 	//Create Text entry box
 	filesystem_label_entry.set_width_chars( 20 );
 	// Add entry box to table

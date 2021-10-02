@@ -21,6 +21,9 @@
 #include <gtkmm/box.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/label.h>
+#include <atkmm/relation.h>
+
 
 namespace GParted
 {
@@ -40,8 +43,8 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
 
 	// Only line: "Name: [EXISTINGNAME  ]"
-	hbox->pack_start( *Utils::mk_label( "<b>" + Glib::ustring(_("Name:")) + "</b>" ),
-	                  Gtk::PACK_SHRINK );
+	Gtk::Label *label_name = Utils::mk_label("<b>" + Glib::ustring(_("Name:")) + "</b>");
+	hbox->pack_start(*label_name, Gtk::PACK_SHRINK);
 
 	entry = manage( new Gtk::Entry() );
 	// NOTE: This limits the Gtk::Entry size in UTF-8 characters but partition names
@@ -54,6 +57,7 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	entry->set_activates_default( true );
 	entry->set_text( partition.name );
 	entry->select_region( 0, entry->get_text_length() );
+	entry->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_name->get_accessible());
 	hbox->pack_start( *entry, Gtk::PACK_SHRINK );
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );

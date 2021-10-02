@@ -19,6 +19,8 @@
 
 #include <glibmm/ustring.h>
 #include <gtkmm/box.h>
+#include <gtkmm/label.h>
+#include <atkmm/relation.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
 
@@ -40,14 +42,15 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
 
 	// Only line: "Label: [EXISTINGLABEL ]"
-	hbox->pack_start( *Utils::mk_label("<b>" + Glib::ustring( _("Label:") ) + "</b>"),
-	                  Gtk::PACK_SHRINK );
+	Gtk::Label *label_label = Utils::mk_label("<b>" + Glib::ustring(_("Label:")) + "</b>");
+	hbox->pack_start(*label_label, Gtk::PACK_SHRINK);
 	entry = manage( new Gtk::Entry() );
 	entry->set_max_length(Utils::get_filesystem_label_maxlength(partition.fstype));
 	entry->set_width_chars( 30 );
 	entry->set_activates_default( true );
 	entry->set_text( partition.get_filesystem_label() );
 	entry->select_region( 0, entry->get_text_length() );
+	entry->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_label->get_accessible());
 	hbox->pack_start( *entry, Gtk::PACK_SHRINK );
 
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ;

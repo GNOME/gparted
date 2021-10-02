@@ -26,7 +26,10 @@
 #include <gtkmm/alignment.h>
 #include <gtkmm/viewport.h>
 #include <gtkmm/grid.h>
+#include <gtkmm/label.h>
+#include <atkmm/relation.h>
 #include <gdkmm/general.h>
+
 
 namespace GParted
 {
@@ -256,23 +259,30 @@ void Dialog_Partition_Info::Display_Info()
 
 	// Left field & value pair area
 	// File system
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("File system:")) + "</b>"), 1, top, 1, 1);
+	Gtk::Label *label_filesystem = Utils::mk_label("<b>" + Glib::ustring(_("File system:")) + "</b>");
+	grid->attach(*label_filesystem, 1, top, 1, 1);
 	if ( filesystem_accessible )
 	{
-		grid->attach(*Utils::mk_label(Utils::get_filesystem_string(filesystem_ptn.fstype), true, false, true),
-		             2, top, 1, 1);
+		Gtk::Label *value_filesystem = Utils::mk_label(Utils::get_filesystem_string(filesystem_ptn.fstype),
+		                                               true, false, true);
+		grid->attach(*value_filesystem, 2, top, 1, 1);
+		value_filesystem->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                     label_filesystem->get_accessible());
 	}
 	top++;
 
 	//label
 	if (filesystem_ptn.fstype != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED)
 	{
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Label:")) + "</b>"),
-		             1, top, 1, 1);
+		Gtk::Label *label_label = Utils::mk_label("<b>" + Glib::ustring(_("Label:")) + "</b>");
+		grid->attach(*label_label, 1, top, 1, 1);
 		if ( filesystem_accessible )
 		{
-			grid->attach(*Utils::mk_label(filesystem_ptn.get_filesystem_label(), true, false, true),
-			             2, top, 1, 1);
+			Gtk::Label *value_label = Utils::mk_label(filesystem_ptn.get_filesystem_label(),
+			                                          true, false, true);
+			grid->attach(*value_label, 2, top, 1, 1);
+			value_label->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+			                                                label_label->get_accessible());
 		}
 		top++;
 	}
@@ -280,12 +290,14 @@ void Dialog_Partition_Info::Display_Info()
 	// file system uuid
 	if (filesystem_ptn.fstype != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED)
 	{
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("UUID:")) + "</b>"),
-		             1, top, 1, 1);
+		Gtk::Label *label_uuid = Utils::mk_label("<b>" + Glib::ustring(_("UUID:")) + "</b>");
+		grid->attach(*label_uuid, 1, top, 1, 1);
 		if ( filesystem_accessible )
 		{
-			grid->attach(*Utils::mk_label(filesystem_ptn.uuid, true, false, true),
-			             2, top, 1, 1);
+			Gtk::Label *value_uuid = Utils::mk_label(filesystem_ptn.uuid, true, false, true);
+			grid->attach(*value_uuid, 2, top, 1, 1);
+			value_uuid->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+			                                               label_uuid->get_accessible());
 		}
 		top++;
 	}
@@ -304,9 +316,9 @@ void Dialog_Partition_Info::Display_Info()
 	{
 		//status
 		Glib::ustring str_temp ;
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Status:")) + "</b>",
-		                              true, false, false, Gtk::ALIGN_START),
-		             1, top, 1, 1);
+		Gtk::Label *label_status = Utils::mk_label("<b>" + Glib::ustring(_("Status:")) + "</b>",
+		                                           true, false, false, Gtk::ALIGN_START);
+		grid->attach(*label_status, 1, top, 1, 1);
 		if ( ! filesystem_accessible )
 		{
 			/* TO TRANSLATORS:   Not accessible (Encrypted)
@@ -407,17 +419,22 @@ void Dialog_Partition_Info::Display_Info()
 			str_temp = _("Not mounted") ;
 		}
 
-		grid->attach(*Utils::mk_label(str_temp, true, true, true), 2, top++, 1, 1);
+		Gtk::Label *value_status = Utils::mk_label(str_temp, true, true, true);
+		grid->attach(*value_status, 2, top++, 1, 1);
+		value_status->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                 label_status->get_accessible());
 	}
 
 	//Optional, LVM2 Volume Group name
 	if (filesystem_ptn.fstype == FS_LVM2_PV)
 	{
 		// Volume Group
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Volume Group:")) + "</b>"),
-		             1, top, 1, 1);
-		grid->attach(*Utils::mk_label(vgname, true, false, true),
-		             2, top++, 1, 1);
+		Gtk::Label *label_volume_group = Utils::mk_label("<b>" + Glib::ustring(_("Volume Group:")) + "</b>");
+		grid->attach(*label_volume_group, 1, top, 1, 1);
+		Gtk::Label *value_volume_group = Utils::mk_label(vgname, true, false, true);
+		grid->attach(*value_volume_group, 2, top++, 1, 1);
+		value_volume_group->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                       label_volume_group->get_accessible());
 	}
 
 	//Optional, members of multi-device file systems
@@ -425,8 +442,9 @@ void Dialog_Partition_Info::Display_Info()
 	    filesystem_ptn.fstype == FS_BTRFS     )
 	{
 		// Members
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Members:")) + "</b>", true, false, false, Gtk::ALIGN_START),
-		             1, top, 1, 1);
+		Gtk::Label *label_members = Utils::mk_label("<b>" + Glib::ustring(_("Members:")) + "</b>",
+		                                            true, false, false, Gtk::ALIGN_START);
+		grid->attach(*label_members, 1, top, 1, 1);
 
 		std::vector<Glib::ustring> members ;
 		switch (filesystem_ptn.fstype)
@@ -442,19 +460,24 @@ void Dialog_Partition_Info::Display_Info()
 				break ;
 		}
 
-		grid->attach(*Utils::mk_label(Glib::build_path("\n", members), true, false, true),
-		              2, top++, 1, 1);
+		Gtk::Label *value_members = Utils::mk_label(Glib::build_path("\n", members), true, false, true);
+		grid->attach(*value_members, 2, top++, 1, 1);
+		value_members->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                  label_members->get_accessible());
 	}
 
 	if (filesystem_ptn.fstype == FS_LVM2_PV)
 	{
 		// Logical Volumes
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Logical Volumes:")) + "</b>", true, false, false, Gtk::ALIGN_START),
-		             1, top, 1, 1);
+		Gtk::Label *label_logical_volumes = Utils::mk_label("<b>" + Glib::ustring(_("Logical Volumes:")) + "</b>",
+		                                                    true, false, false, Gtk::ALIGN_START);
+		grid->attach(*label_logical_volumes, 1, top, 1, 1);
 
 		std::vector<Glib::ustring> lvs = LVM2_PV_Info::get_vg_lvs( vgname );
-		grid->attach(*Utils::mk_label(Glib::build_path("\n", lvs), true, false, true),
-		             2, top++, 1, 1);
+		Gtk::Label *value_logical_volumes = Utils::mk_label(Glib::build_path("\n", lvs), true, false, true);
+		grid->attach(*value_logical_volumes, 2, top++, 1, 1);
+		value_logical_volumes->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                          label_logical_volumes->get_accessible());
 	}
 
 	// Initialize grid top attach tracker (right side of the grid)
@@ -468,39 +491,49 @@ void Dialog_Partition_Info::Display_Info()
 		partition .get_usage_triple( 100, percent_used, percent_unused, percent_unallocated ) ;
 
 		// Used
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Used:")) + "</b>"),
-		             3, topright, 1, 1);
-		grid->attach(*Utils::mk_label(Utils::format_size(partition.get_sectors_used(), partition.sector_size), true, false, true),
-		             4, topright, 1, 1);
+		Gtk::Label *label_used = Utils::mk_label("<b>" + Glib::ustring(_("Used:")) + "</b>");
+		grid->attach(*label_used, 3, topright, 1, 1);
+		Gtk::Label *value_used = Utils::mk_label(Utils::format_size(partition.get_sectors_used(), partition.sector_size),
+		                                         true, false, true);
+		grid->attach(*value_used, 4, topright, 1, 1);
 		grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_used) + "% )"),
 		             5, topright++, 1, 1);
+		value_used->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_used->get_accessible());
 
 		// Unused
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Unused:")) + "</b>"),
-		             3, topright, 1, 1);
-		grid->attach(*Utils::mk_label(Utils::format_size(partition.get_sectors_unused(), partition.sector_size), true, false, true),
-		             4, topright, 1, 1);
+		Gtk::Label *label_unused = Utils::mk_label("<b>" + Glib::ustring(_("Unused:")) + "</b>");
+		grid->attach(*label_unused, 3, topright, 1, 1);
+		Gtk::Label *value_unused = Utils::mk_label(Utils::format_size(partition.get_sectors_unused(), partition.sector_size),
+		                                           true, false, true);
+		grid->attach(*value_unused, 4, topright, 1, 1);
 		grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_unused) + "% )"),
 		             5, topright++, 1, 1);
+		value_unused->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                 label_unused->get_accessible());
 
 		//unallocated
 		Sector sectors_unallocated = partition .get_sectors_unallocated() ;
 		if ( sectors_unallocated > 0 )
 		{
-			grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Unallocated:")) + "</b>"),
-			             3, topright, 1, 1);
-			grid->attach(*Utils::mk_label(Utils::format_size(sectors_unallocated, partition.sector_size), true, false, true),
-			             4, topright, 1, 1);
+			Gtk::Label *label_unallocated = Utils::mk_label("<b>" + Glib::ustring(_("Unallocated:")) + "</b>");
+			grid->attach(*label_unallocated, 3, topright, 1, 1);
+			Gtk::Label *value_unallocated = Utils::mk_label(Utils::format_size(sectors_unallocated, partition.sector_size),
+			                                                true, false, true);
+			grid->attach(*value_unallocated, 4, topright, 1, 1);
 			grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_unallocated) + "% )"),
 			             5, topright++, 1, 1);
+			value_unallocated->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+			                                                      label_unallocated->get_accessible());
 		}
 	}
 
 	// Size
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Size:")) + "</b>"),
-	             3, topright, 1, 1);
-	grid->attach(*Utils::mk_label(Utils::format_size(ptn_sectors, partition.sector_size), true, false, true),
-	             4, topright++, 1, 1);
+	Gtk::Label *label_size = Utils::mk_label("<b>" + Glib::ustring(_("Size:")) + "</b>");
+	grid->attach(*label_size, 3, topright, 1, 1);
+	Gtk::Label *value_size = Utils::mk_label(Utils::format_size(ptn_sectors, partition.sector_size),
+	                                         true, false, true);
+	grid->attach(*value_size, 4, topright++, 1, 1);
+	value_size->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_size->get_accessible());
 
 	//ensure left row tracker set to largest side (left/right)
 	top = std::max( top, topright );
@@ -516,34 +549,45 @@ void Dialog_Partition_Info::Display_Info()
 		             0, top++, 6, 1);
 
 		// Encryption
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Encryption:")) + "</b>"),
-		             1, top, 1, 1);
-		grid->attach(*Utils::mk_label(Utils::get_filesystem_string(partition.fstype), true, false, true),
-		             2, top++, 1, 1);
+		Gtk::Label *label_encryption = Utils::mk_label("<b>" + Glib::ustring(_("Encryption:")) + "</b>");
+		grid->attach(*label_encryption, 1, top, 1, 1);
+		Gtk::Label *value_encryption = Utils::mk_label(Utils::get_filesystem_string(partition.fstype),
+		                                               true, false, true);
+		grid->attach(*value_encryption, 2, top++, 1, 1);
+		value_encryption->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                     label_encryption->get_accessible());
 
 		// LUKS path
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Path:")) + "</b>"),
-		             1, top, 1, 1);
-		if ( partition.busy )
-			grid->attach(*Utils::mk_label(partition.get_mountpoint(), true, false, true),
-			             2, top, 1, 1);
+		Gtk::Label *label_path = Utils::mk_label("<b>" + Glib::ustring(_("Path:")) + "</b>");
+		grid->attach(*label_path, 1, top, 1, 1);
+		if ( partition.busy ) {
+			Gtk::Label *value_path = Utils::mk_label(partition.get_mountpoint(), true, false, true);
+			grid->attach(*value_path, 2, top, 1, 1);
+			value_path->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+			                                               label_path->get_accessible());
+		}
 		top++;
 
 		// LUKS uuid
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("UUID:")) + "</b>"),
-		             1, top, 1, 1);
-		grid->attach(*Utils::mk_label(partition.uuid, true, false, true),
-		             2, top++, 1, 1);
+		Gtk::Label *label_uuid = Utils::mk_label("<b>" + Glib::ustring(_("UUID:")) + "</b>");
+		grid->attach(*label_uuid, 1, top, 1, 1);
+		Gtk::Label *value_uuid = Utils::mk_label(partition.uuid, true, false, true);
+		grid->attach(*value_uuid, 2, top++, 1, 1);
+		value_uuid->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                               label_uuid->get_accessible());
 
 		// LUKS status
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Status:")) + "</b>"),
-		             1, top, 1, 1);
+		Gtk::Label *label_status = Utils::mk_label("<b>" + Glib::ustring(_("Status:")) + "</b>");
+		grid->attach(*label_status, 1, top, 1, 1);
 		Glib::ustring str_temp;
 		if ( partition.busy )
 			str_temp = luks_open;
 		else
 			str_temp = luks_closed;
-		grid->attach(*Utils::mk_label(str_temp, true, false, true), 2, top++, 1, 1);
+		Gtk::Label *value_status = Utils::mk_label(str_temp, true, false, true);
+		grid->attach(*value_status, 2, top++, 1, 1);
+		value_status->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                 label_status->get_accessible());
 
 		// One blank line
 		grid->attach(*Utils::mk_label(""), 0, top++, 6, 1);
@@ -559,45 +603,56 @@ void Dialog_Partition_Info::Display_Info()
 
 	// Left field & value pair area
 	// Path
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Path:")) + "</b>"),
-	             1, top, 1, 1);
-	grid->attach(*Utils::mk_label(partition.get_path(), true, false, true),
-	             2, top++, 1, 1);
+	Gtk::Label *label_path = Utils::mk_label("<b>" + Glib::ustring(_("Path:")) + "</b>");
+	grid->attach(*label_path, 1, top, 1, 1);
+	Gtk::Label *value_path = Utils::mk_label(partition.get_path(), true, false, true);
+	grid->attach(*value_path, 2, top++, 1, 1);
+	value_path->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_path->get_accessible());
 
 	if (partition.fstype != FS_UNALLOCATED && partition.status != STAT_NEW)
 	{
 		// Name
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Name:")) + "</b>"),
-		             1, top, 1, 1);
-		grid->attach(*Utils::mk_label(partition.name, true, false, true),
-		             2, top++, 1, 1);
+		Gtk::Label *label_name = Utils::mk_label("<b>" + Glib::ustring(_("Name:")) + "</b>");
+		grid->attach(*label_name, 1, top, 1, 1);
+		Gtk::Label *value_name = Utils::mk_label(partition.name, true, false, true);
+		grid->attach(*value_name, 2, top++, 1, 1);
+		value_name->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_name->get_accessible());
 
 		// Flags
-		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Flags:")) + "</b>"),
-		             1, top, 1, 1);
-		grid->attach(*Utils::mk_label(Glib::build_path(", ", partition.flags), true, false, true),
-		             2, top++, 1, 1);
+		Gtk::Label *label_flags = Utils::mk_label("<b>" + Glib::ustring(_("Flags:")) + "</b>");
+		grid->attach(*label_flags, 1, top, 1, 1);
+		Gtk::Label *value_flags = Utils::mk_label(Glib::build_path(", ", partition.flags), true, false, true);
+		grid->attach(*value_flags, 2, top++, 1, 1);
+		value_flags->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                label_flags->get_accessible());
 	}
 
 	// Right field & value pair area
 	// First sector
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("First sector:")) + "</b>"),
-	              3, topright, 1, 1);
-	grid->attach(*Utils::mk_label(Utils::num_to_str(partition.sector_start), true, false, true),
-	              4, topright++, 1, 1);
+	Gtk::Label *label_first_sector = Utils::mk_label("<b>" + Glib::ustring(_("First sector:")) + "</b>");
+	grid->attach(*label_first_sector, 3, topright, 1, 1);
+	Gtk::Label *value_first_sector = Utils::mk_label(Utils::num_to_str(partition.sector_start), true, false, true);
+	grid->attach(*value_first_sector, 4, topright++, 1, 1);
+	value_first_sector->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_first_sector->get_accessible());
 
 	// Last sector
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Last sector:")) + "</b>"),
-	             3, topright, 1, 1);
-	grid->attach(*Utils::mk_label(Utils::num_to_str(partition.sector_end), true, false, true),
-	             4, topright++, 1, 1);
+	Gtk::Label *label_last_sector = Utils::mk_label("<b>" + Glib::ustring(_("Last sector:")) + "</b>");
+	grid->attach(*label_last_sector, 3, topright, 1, 1);
+	Gtk::Label *value_last_sector = Utils::mk_label(Utils::num_to_str(partition.sector_end), true, false, true);
+	grid->attach(*value_last_sector, 4, topright++, 1, 1);
+	value_last_sector->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                      label_last_sector->get_accessible());
 
 	// Total sectors
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Total sectors:")) + "</b>"),
-	             3, topright, 1, 1);
-	grid->attach(*Utils::mk_label(Utils::num_to_str(ptn_sectors), true, false, true),
-	             4, topright++, 1, 1);
+	Gtk::Label *label_total_sectors = Utils::mk_label("<b>" + Glib::ustring(_("Total sectors:")) + "</b>");
+	grid->attach(*label_total_sectors, 3, topright, 1, 1);
+	Gtk::Label *value_total_sectors = Utils::mk_label(Utils::num_to_str(ptn_sectors), true, false, true);
+	grid->attach(*value_total_sectors, 4, topright++, 1, 1);
+	value_total_sectors->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                        label_total_sectors->get_accessible());
 }
+
 
 Dialog_Partition_Info::~Dialog_Partition_Info()
 {
