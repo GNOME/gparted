@@ -510,7 +510,7 @@ int Dialog_Base_Partition::MB_Needed_for_Boot_Record( const Partition & partitio
 	       )
 	    || ( partition .type == TYPE_LOGICAL )
 	                                     /* Beginning of disk device */
-	    || ( partition .sector_start <= (MEBIBYTE / partition .sector_size) )
+	    || (partition.sector_start < (MEBIBYTE / partition.sector_size))
 	   )
 		return 1 ;
 	else

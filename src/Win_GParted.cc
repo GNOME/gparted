@@ -1363,7 +1363,7 @@ void Win_GParted::set_valid_operations()
 			       )
 			    || ( selected_partition_ptr->type == TYPE_LOGICAL )
 			                                     /* Beginning of disk device */
-			    || ( selected_partition_ptr->sector_start <= (MEBIBYTE / selected_partition_ptr->sector_size) )
+			    || (selected_partition_ptr->sector_start < (MEBIBYTE / selected_partition_ptr->sector_size))
 			   )
 				required_size += MEBIBYTE;
 
