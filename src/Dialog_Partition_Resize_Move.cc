@@ -159,7 +159,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 		MIN_SPACE_BEFORE_MB = 0 ;
 	else
 	{
-		if ( START <= MEBIBYTE / new_partition->sector_size )
+		if (START < MEBIBYTE / new_partition->sector_size)
 			MIN_SPACE_BEFORE_MB = 1 ;
 		else
 			MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( *new_partition );
