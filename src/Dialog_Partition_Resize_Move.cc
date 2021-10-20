@@ -265,7 +265,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	if ( previous <= 0 )
 		MIN_SPACE_BEFORE_MB = 0 ;
 	else
-		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( *new_partition );
+	{
+		if (START < MEBIBYTE / new_partition->sector_size)
+			MIN_SPACE_BEFORE_MB = 1;
+		else
+			MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record(*new_partition);
+	}
 	total_length = previous + new_partition->get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, new_partition->sector_size, UNIT_MIB ) );
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
