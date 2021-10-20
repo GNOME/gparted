@@ -118,11 +118,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 
 	Sector previous, next ;
 	previous = next = 0 ;
+	const Partition* prev_unalloc_partition = NULL;
 	//also check the partitions file system ( if this is a 'resize-only' then previous should be 0 )	
 	if (t >= 1 && partitions[t-1].type == TYPE_UNALLOCATED && ! this->fixed_start)
 	{ 
 		previous = partitions[t -1] .get_sector_length() ;
 		START = partitions[t -1] .sector_start ;
+		prev_unalloc_partition = &partitions[t-1];
 	} 
 	else
 		START = new_partition->sector_start;
@@ -152,18 +154,14 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 		}
 	}
 
-	//Only calculate MIN_SPACE_BEFORE_MB if we have a previous (unallocated) partition.
-	//  Otherwise there will not be enough graphical space to reserve a full 1 MiB for MBR/EBR.
-	//  Since this is an existing partition, if an MBR/EBR was needed then it already exists with enough space.
-	if ( previous <= 0 )
+	// Only need to use MIN_SPACE_BEFORE_MB to reserve 1 MiB to protect the partition
+	// table or EBR if there is a previous unallocated partition allowing the start of
+	// this selected partition to be resize/moved to the left.
+	if (prev_unalloc_partition == NULL)
 		MIN_SPACE_BEFORE_MB = 0 ;
 	else
-	{
-		if (START < MEBIBYTE / new_partition->sector_size)
-			MIN_SPACE_BEFORE_MB = 1 ;
-		else
-			MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( *new_partition );
-	}
+		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record(*prev_unalloc_partition);
+
 	total_length = previous + new_partition->get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, new_partition->sector_size, UNIT_MIB ) );
 	
@@ -245,11 +243,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 
 	Sector previous, next ;
 	previous = next = 0 ;
+	const Partition* prev_unalloc_partition = NULL;
 	//calculate length and start of previous
 	if (t > 0 && partitions[t-1].type == TYPE_UNALLOCATED)
 	{
 		previous = partitions[t -1] .get_sector_length() ;
 		START = partitions[t -1] .sector_start ;
+		prev_unalloc_partition = &partitions[t-1];
 	} 
 	else
 		START = new_partition->sector_start;
@@ -259,18 +259,15 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 		next = partitions[ t +1 ] .get_sector_length() ;
 		
 	//now we have enough data to calculate some important values..
-	//Only calculate MIN_SPACE_BEFORE_MB if we have a previous (unallocated) partition.
-	//  Otherwise there will not be enough graphical space to reserve a full 1 MiB for MBR/EBR.
-	//  Since this is an existing partition, if an MBR/EBR was needed then it already exists with enough space.
-	if ( previous <= 0 )
+
+	// Only need to use MIN_SPACE_BEFORE_MB to reserve 1 MiB to protect the partition
+	// table or EBR if there is a previous unallocated partition allowing the start of
+	// this selected partition to be resize/moved to the left.
+	if (prev_unalloc_partition == NULL)
 		MIN_SPACE_BEFORE_MB = 0 ;
 	else
-	{
-		if (START < MEBIBYTE / new_partition->sector_size)
-			MIN_SPACE_BEFORE_MB = 1;
-		else
-			MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record(*new_partition);
-	}
+		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record(*prev_unalloc_partition);
+
 	total_length = previous + new_partition->get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, new_partition->sector_size, UNIT_MIB ) );
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
