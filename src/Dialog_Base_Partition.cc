@@ -499,19 +499,15 @@ void Dialog_Base_Partition::Set_MinMax_Text( Sector min, Sector max )
 	label_minmax .set_text( str_temp ) ; 
 }
 
+
 int Dialog_Base_Partition::MB_Needed_for_Boot_Record( const Partition & partition )
 {
-	//Determine if space is needed for the Master Boot Record or
-	//  the Extended Boot Record.  Generally an an additional track or MEBIBYTE
-	//  is required so for our purposes reserve a MEBIBYTE in front of the partition.
-	//  NOTE:  This logic also contained in Win_GParted::set_valid_operations
-	if (   (   partition .inside_extended
-	        && partition .type == TYPE_UNALLOCATED
-	       )
-	    || ( partition .type == TYPE_LOGICAL )
-	                                     /* Beginning of disk device */
-	    || (partition.sector_start < (MEBIBYTE / partition.sector_size))
-	   )
+	// Determine if space needs reserving for the partition table or the EBR (Extended
+	// Boot Record).  Generally a track or MEBIBYTE is reserved.  For our purposes
+	// reserve a MEBIBYTE at the start of the partition.
+	// NOTE: This logic also contained in Win_GParted::set_valid_operations()
+	if (partition.inside_extended                                 ||
+	    partition.sector_start < MEBIBYTE / partition.sector_size   )
 		return 1 ;
 	else
 		return 0 ;

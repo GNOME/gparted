@@ -1354,17 +1354,12 @@ void Win_GParted::set_valid_operations()
 			else
 				required_size = copied_filesystem_ptn.get_byte_length();
 
-			//Determine if space is needed for the Master Boot Record or
-			//  the Extended Boot Record.  Generally an an additional track or MEBIBYTE
-			//  is required so for our purposes reserve a MEBIBYTE in front of the partition.
-			//  NOTE:  This logic also contained in Dialog_Base_Partition::MB_Needed_for_Boot_Record
-			if (   (   selected_partition_ptr->inside_extended
-			        && selected_partition_ptr->type == TYPE_UNALLOCATED
-			       )
-			    || ( selected_partition_ptr->type == TYPE_LOGICAL )
-			                                     /* Beginning of disk device */
-			    || (selected_partition_ptr->sector_start < (MEBIBYTE / selected_partition_ptr->sector_size))
-			   )
+			// Determine if space needs reserving for the partition table or the EBR (Extended
+			// Boot Record).  Generally a track or MEBIBYTE is reserved.  For our purposes
+			// reserve a MEBIBYTE at the start of the partition.
+			// NOTE: This logic also contained in Dialog_Base_Partition::MB_Needed_for_Boot_Record()
+			if (selected_partition_ptr->inside_extended                                               ||
+			    selected_partition_ptr->sector_start < MEBIBYTE / selected_partition_ptr->sector_size   )
 				required_size += MEBIBYTE;
 
 			//Determine if space is needed for the Extended Boot Record for a logical partition
