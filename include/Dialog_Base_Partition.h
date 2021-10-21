@@ -86,7 +86,7 @@ protected:
 	//used to reserve space for Master or Extended Boot Record (1 MiB)
 	int MIN_SPACE_BEFORE_MB ;
 
-	int MB_Needed_for_Boot_Record( const Partition & partition ) ;
+	static int MB_Needed_for_Boot_Record(const Partition& partition);
 
 	//signal handlers
 	void on_signal_move( int, int );
