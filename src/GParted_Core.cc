@@ -2994,9 +2994,6 @@ bool GParted_Core::copy( const Partition & partition_src,
 		return false ;
 	}
 
-	if ( ! check_repair_filesystem( filesystem_ptn_src, operationdetail ) )
-		return false;
-
 	if ( partition_dst.status == STAT_COPY )
 	{
 		// Handle situation where src sector size is smaller than dst sector size
@@ -3024,14 +3021,18 @@ bool GParted_Core::copy( const Partition & partition_src,
 		// linux-swap is recreated, not copied
 		return recreate_linux_swap_filesystem( filesystem_ptn_dst, operationdetail );
 	}
-	else if ( filesystem_ptn_dst.get_byte_length() > filesystem_ptn_src.get_byte_length() )
+
+	if (! check_repair_filesystem(filesystem_ptn_dst, operationdetail))
+		return false;
+
+	if (filesystem_ptn_dst.get_byte_length() > filesystem_ptn_src.get_byte_length())
 	{
 		// Copied into a bigger partition so maximise file system
-		return    check_repair_filesystem( filesystem_ptn_dst, operationdetail )
-		       && maximize_filesystem( filesystem_ptn_dst, operationdetail );
+		return maximize_filesystem(filesystem_ptn_dst, operationdetail);
 	}
 	return true;
 }
+
 
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
                                     Partition & partition_dst,
