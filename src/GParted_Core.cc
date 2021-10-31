@@ -4021,7 +4021,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 			/*TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record. */
 			error_message += Glib::ustring::compose( _("Failed to set the number of hidden sectors to %1 in the NTFS boot record."), reversed_hex ) ;
 			error_message += "\n" ;
-			error_message += Glib::ustring::compose( _("You might try the following command to correct the problem:"), reversed_hex ) ;
+			error_message += _("You might try the following command to correct the problem:");
 			error_message += "\n" ;
 			error_message += Glib::ustring::compose( "echo %1 | xxd -r -p | dd conv=notrunc of=%2 bs=1 seek=28", reversed_hex, partition .get_path() ) ;
 			operationdetail .get_last_child() .add_child( OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
