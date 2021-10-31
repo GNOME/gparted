@@ -115,7 +115,7 @@ public:
 	void add_mountpoints( const std::vector<Glib::ustring> & mountpoints );
 	const Glib::ustring& get_mountpoint() const;
 	void clear_mountpoints() ;
-	std::vector<Glib::ustring> get_mountpoints() const ;
+	const std::vector<Glib::ustring>& get_mountpoints() const;
 	Sector get_sector() const ;
 	bool test_overlap( const Partition & partition ) const ;
 	bool filesystem_label_known() const;

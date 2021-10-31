@@ -1467,7 +1467,7 @@ void Win_GParted::set_valid_operations()
 			partitionmenu_items[MENU_MOUNT]->unset_submenu();
 
 			Gtk::Menu *menu = manage(new Gtk::Menu());
-			std::vector<Glib::ustring> temp_mountpoints = selected_filesystem.get_mountpoints();
+			const std::vector<Glib::ustring>& temp_mountpoints = selected_filesystem.get_mountpoints();
 			for ( unsigned int t = 0 ; t < temp_mountpoints.size() ; t++ )
 			{
 				Gtk::MenuItem *item;
@@ -2843,7 +2843,7 @@ void Win_GParted::toggle_crypt_busy_state()
 
 bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring & error )
 {
-	const std::vector<Glib::ustring> fs_mountpoints = partition.get_mountpoints();
+	const std::vector<Glib::ustring>& fs_mountpoints = partition.get_mountpoints();
 	const std::vector<Glib::ustring> all_mountpoints = Mount_Info::get_all_mountpoints();
 
 	std::vector<Glib::ustring> skipped_mountpoints;

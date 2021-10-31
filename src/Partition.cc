@@ -374,7 +374,8 @@ const Glib::ustring& Partition::get_mountpoint() const
 	return unknown_mountpoint;
 }
 
-std::vector<Glib::ustring> Partition::get_mountpoints() const 
+
+const std::vector<Glib::ustring>& Partition::get_mountpoints() const
 {
 	return mountpoints ;
 }
