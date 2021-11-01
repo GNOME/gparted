@@ -1760,7 +1760,8 @@ void Win_GParted::menu_view_operations()
 		close_operationslist() ;
 }
 
-void Win_GParted::show_disklabel_unrecognized ( Glib::ustring device_name )
+
+void Win_GParted::show_disklabel_unrecognized (const Glib::ustring& device_name)
 {
 	//Display dialog box indicating that no partition table was found on the device
 	Gtk::MessageDialog dialog( *this,

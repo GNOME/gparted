@@ -25,7 +25,7 @@ namespace GParted
 
 Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 {
-	const Glib::ustring device_path = device .get_path() ;
+	const Glib::ustring& device_path = device.get_path();
 
 	/*TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda */
 	this ->set_title( Glib::ustring::compose( _("Create partition table on %1"), device_path ) );

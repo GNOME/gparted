@@ -474,7 +474,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 
 bool GParted_Core::set_disklabel( const Device & device, const Glib::ustring & disklabel )
 {
-	Glib::ustring device_path = device.get_path();
+	const Glib::ustring& device_path = device.get_path();
 
 	// FIXME: Should call file system specific removal actions
 	// (to remove LVM2 PVs before deleting the partitions).

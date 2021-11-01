@@ -37,7 +37,7 @@ public:
 
 	Device get_copy_without_partitions() const;
 	void set_path( const Glib::ustring & path );
-	Glib::ustring get_path() const ;
+	const Glib::ustring& get_path() const;
 	void enable_partition_naming( int length );  // > 0 => enable partition naming support
 	bool partition_naming_supported() const;
 	int get_max_partition_name_length() const;

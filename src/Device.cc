@@ -66,7 +66,8 @@ void Device::set_path( const Glib::ustring & path )
 	this->path = path;
 }
 
-Glib::ustring Device::get_path() const
+
+const Glib::ustring& Device::get_path() const
 {
 	return path;
 }
