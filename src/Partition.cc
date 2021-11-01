@@ -260,7 +260,8 @@ Sector Partition::get_sector_length() const
 		return -1 ;
 }
 
-Glib::ustring Partition::get_path() const
+
+const Glib::ustring& Partition::get_path() const
 {
 	return path;
 }

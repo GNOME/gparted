@@ -1040,7 +1040,7 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 {
-	Glib::ustring partition_path = partition.get_path();
+	const Glib::ustring& partition_path = partition.get_path();
 
 	// For SWRaid members only get the label and UUID from SWRaid_Info.  Never use
 	// values from FS_Info to avoid showing incorrect information in cases where blkid
@@ -3479,7 +3479,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 	if ( partition.type == TYPE_PRIMARY  || partition.type == TYPE_LOGICAL       ||
 	     partition.type == TYPE_EXTENDED || partition.type == TYPE_UNPARTITIONED    )
 	{
-		Glib::ustring curr_path = partition.get_path();
+		const Glib::ustring& curr_path = partition.get_path();
 		operationdetail.add_child( OperationDetail( Glib::ustring::compose( _("calibrate %1"), curr_path ) ) );
 	
 		bool success = false;

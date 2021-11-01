@@ -110,7 +110,7 @@ public:
 	void set_path( const Glib::ustring & path );
 	Byte_Value get_byte_length() const ;
 	Sector get_sector_length() const ; 
-	Glib::ustring get_path() const ;
+	const Glib::ustring& get_path() const;
 	void add_mountpoint( const Glib::ustring & mountpoint );
 	void add_mountpoints( const std::vector<Glib::ustring> & mountpoints );
 	Glib::ustring get_mountpoint() const ; 

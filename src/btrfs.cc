@@ -284,7 +284,7 @@ bool btrfs::write_label( const Partition & partition, OperationDetail & operatio
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool success = true ;
-	Glib::ustring path = partition_new .get_path() ;
+	const Glib::ustring& path = partition_new.get_path();
 
 	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
 	if ( btrfs_dev .devid == -1 )
