@@ -285,8 +285,8 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 {
 	bool success = true ;
 	const Glib::ustring& path = partition_new.get_path();
+	const BTRFS_Device& btrfs_dev = get_cache_entry(path);
 
-	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
 	if ( btrfs_dev .devid == -1 )
 	{
 		operationdetail .add_child( OperationDetail(
@@ -400,7 +400,8 @@ void btrfs::clear_cache()
 //  Return empty string if not found (not mounted).
 Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
 {
-	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
+	const BTRFS_Device& btrfs_dev = get_cache_entry(path);
+
 	if ( btrfs_dev .devid == -1 || btrfs_dev .members .empty() )
 	{
 		//WARNING:
@@ -421,7 +422,7 @@ Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
 
 std::vector<Glib::ustring> btrfs::get_members( const Glib::ustring & path )
 {
-	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
+	const BTRFS_Device& btrfs_dev = get_cache_entry(path);
 	std::vector<Glib::ustring> membs;
 	for ( unsigned int i = 0 ; i < btrfs_dev.members.size() ; i ++ )
 		membs.push_back( btrfs_dev.members[i].m_name );
