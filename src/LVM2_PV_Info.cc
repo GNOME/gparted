@@ -90,7 +90,7 @@ void LVM2_PV_Info::clear_cache()
 Glib::ustring LVM2_PV_Info::get_vg_name( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
 	return pv.vg_name;
 }
 
@@ -98,7 +98,7 @@ Glib::ustring LVM2_PV_Info::get_vg_name( const Glib::ustring & path )
 Byte_Value LVM2_PV_Info::get_size_bytes( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
 	return pv.pv_size;
 }
 
@@ -106,7 +106,7 @@ Byte_Value LVM2_PV_Info::get_size_bytes( const Glib::ustring & path )
 Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
 	return pv.pv_free;
 }
 
@@ -114,7 +114,7 @@ Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
 bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
 	if ( pv.vg_name == "" )
 		// PV not yet included in any VG or PV not found in cache
 		return false ;
@@ -189,7 +189,7 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring
 	Glib::ustring temp ;
 
 	//Check for partition specific message: partial VG
-	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
 	LVM2_VG vg = get_vg_cache_entry_by_name( pv.vg_name );
 	if ( bit_set( vg.vg_attr, VGBIT_PARTIAL ) )
 	{
