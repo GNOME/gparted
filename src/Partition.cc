@@ -364,12 +364,14 @@ void Partition::add_mountpoints( const std::vector<Glib::ustring> & mountpoints 
 	this ->mountpoints .insert( this ->mountpoints .end(), mountpoints .begin(), mountpoints .end() ) ;
 }
 
-Glib::ustring Partition::get_mountpoint() const 
+
+const Glib::ustring& Partition::get_mountpoint() const
 {
 	if ( mountpoints .size() > 0 )
 		return mountpoints .front() ;
 
-	return "" ;
+	static Glib::ustring unknown_mountpoint;
+	return unknown_mountpoint;
 }
 
 std::vector<Glib::ustring> Partition::get_mountpoints() const 

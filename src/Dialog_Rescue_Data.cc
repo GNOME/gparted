@@ -264,7 +264,7 @@ void Dialog_Rescue_Data::check_overlaps(int nPart)
 		for(unsigned int i=0;i<this->overlappedPartitions.size(); i++)
 		{
 			const Glib::ustring& ovrDevPath = this->device->partitions[i].get_path();
-			Glib::ustring ovrDevMountPoint=this->device->partitions[i].get_mountpoint();
+			const Glib::ustring& ovrDevMountPoint = this->device->partitions[i].get_mountpoint();
 
 			sec_text+="\n"+ovrDevPath+" mounted on "+ovrDevMountPoint;
 		}
@@ -275,7 +275,7 @@ void Dialog_Rescue_Data::check_overlaps(int nPart)
 		{
 			for(unsigned int i=0;i<this->overlappedPartitions.size(); i++)
 			{
-				Glib::ustring mountP=this->device->partitions[i].get_mountpoint();
+				const Glib::ustring& mountP=this->device->partitions[i].get_mountpoint();
 
 				Glib::ustring commandUmount = "umount " + Glib::shell_quote(mountP);
 				Utils::execute_command(commandUmount);
