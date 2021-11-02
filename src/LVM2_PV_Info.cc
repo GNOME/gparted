@@ -136,7 +136,7 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
 {
 	initialize_if_required() ;
-	LVM2_VG vg = get_vg_cache_entry_by_name( vgname );
+	const LVM2_VG& vg = get_vg_cache_entry_by_name(vgname);
 	return bit_set( vg.vg_attr, VGBIT_EXPORTED );
 }
 
@@ -191,7 +191,7 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring
 
 	//Check for partition specific message: partial VG
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
-	LVM2_VG vg = get_vg_cache_entry_by_name( pv.vg_name );
+	const LVM2_VG& vg = get_vg_cache_entry_by_name(pv.vg_name);
 	if ( bit_set( vg.vg_attr, VGBIT_PARTIAL ) )
 	{
 		temp = _("One or more Physical Volumes belonging to the Volume Group is missing.") ;
