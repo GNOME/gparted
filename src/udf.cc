@@ -200,7 +200,7 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 	Glib::ustring label_args;
 	if ( ! new_partition.get_filesystem_label().empty() )
 	{
-		const Glib::ustring label = new_partition.get_filesystem_label();
+		const Glib::ustring& label = new_partition.get_filesystem_label();
 
 		// Mkudffs from udftools prior to version 1.1 damages the label if it
 		// contains non-ASCII characters.  Therefore do not allow a label with

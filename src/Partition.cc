@@ -271,13 +271,17 @@ bool Partition::filesystem_label_known() const
 	return have_filesystem_label;
 }
 
+
 //Return the file system label or "" if unknown.
-Glib::ustring Partition::get_filesystem_label() const
+const Glib::ustring& Partition::get_filesystem_label() const
 {
 	if ( have_filesystem_label )
 		return filesystem_label;
-	return "";
+
+	static Glib::ustring unknown_label;
+	return unknown_label;
 }
+
 
 void Partition::set_filesystem_label( const Glib::ustring & filesystem_label )
 {

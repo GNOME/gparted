@@ -197,7 +197,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 		show_mountpoints = true;
 
 	//label
-	Glib::ustring temp_filesystem_label = filesystem_ptn.get_filesystem_label();
+	const Glib::ustring& temp_filesystem_label = filesystem_ptn.get_filesystem_label();
 	treerow[treeview_detail_columns.label] = temp_filesystem_label;
 	if ( ! temp_filesystem_label.empty() )
 		show_labels = true;
