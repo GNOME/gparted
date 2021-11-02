@@ -121,7 +121,7 @@ bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & opera
 
 bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
 {
-	Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partition.get_path() );
+	const Glib::ustring& vgname = LVM2_PV_Info::get_vg_name(partition.get_path());
 	Glib::ustring cmd ;
 	if ( vgname .empty() )
 		cmd = "lvm pvremove " + Glib::shell_quote( partition.get_path() );

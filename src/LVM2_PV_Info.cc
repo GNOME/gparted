@@ -87,7 +87,8 @@ void LVM2_PV_Info::clear_cache()
 	lvm2_pv_info_cache_initialized = false;
 }
 
-Glib::ustring LVM2_PV_Info::get_vg_name( const Glib::ustring & path )
+
+const Glib::ustring& LVM2_PV_Info::get_vg_name(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
