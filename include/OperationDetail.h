@@ -63,7 +63,7 @@ public:
 	void set_success_and_capture_errors( bool success );
 	OperationDetailStatus get_status() const ;
 	void set_treepath( const Glib::ustring & treepath ) ;
-	Glib::ustring get_treepath() const ;
+	const Glib::ustring& get_treepath() const;
 	Glib::ustring get_elapsed_time() const ;
 	
 	void add_child( const OperationDetail & operationdetail ) ;

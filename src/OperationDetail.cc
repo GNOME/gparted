@@ -125,7 +125,8 @@ void OperationDetail::set_treepath( const Glib::ustring & treepath )
 	this ->treepath = treepath ;
 }
 
-Glib::ustring OperationDetail::get_treepath() const
+
+const Glib::ustring& OperationDetail::get_treepath() const
 {
 	return treepath ;
 }
