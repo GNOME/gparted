@@ -93,9 +93,10 @@ const Glib::ustring& SWRaid_Info::get_array(const Glib::ustring& member_path)
 	return memb.array;
 }
 
+
 // Return array UUID for the specified member, or "" when failed to parse the UUID or
 // there is no such member.
-Glib::ustring SWRaid_Info::get_uuid( const Glib::ustring & member_path )
+const Glib::ustring& SWRaid_Info::get_uuid(const Glib::ustring& member_path)
 {
 	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
