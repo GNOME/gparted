@@ -1469,22 +1469,22 @@ void GParted_Core::set_mountpoints( Partition & partition )
 	}
 	else if (partition.fstype == FS_LINUX_SWRAID)
 	{
-		Glib::ustring array_path = SWRaid_Info::get_array( partition.get_path() );
+		const Glib::ustring& array_path = SWRaid_Info::get_array(partition.get_path());
 		if ( ! array_path.empty() )
 			partition.add_mountpoint( array_path );
 	}
 	else if (partition.fstype == FS_ATARAID)
 	{
-		Glib::ustring array_path = SWRaid_Info::get_array(partition.get_path());
+		const Glib::ustring& array_path = SWRaid_Info::get_array(partition.get_path());
 		if (! array_path.empty())
 		{
 			partition.add_mountpoint(array_path);
 		}
 		else
 		{
-			array_path = dmraid.get_array(partition.get_path());
-			if (! array_path.empty())
-				partition.add_mountpoint(array_path);
+			const Glib::ustring& array_path_2 = dmraid.get_array(partition.get_path());
+			if (! array_path_2.empty())
+				partition.add_mountpoint(array_path_2);
 		}
 	}
 	else if (partition.fstype == FS_LUKS)

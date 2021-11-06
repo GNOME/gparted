@@ -86,7 +86,7 @@ FSType SWRaid_Info::get_fstype(const Glib::ustring& member_path)
 
 // Return array /dev entry (e.g. "/dev/md1") containing the specified member, or "" if the
 // array is not running or there is no such member.
-Glib::ustring SWRaid_Info::get_array( const Glib::ustring & member_path )
+const Glib::ustring& SWRaid_Info::get_array(const Glib::ustring& member_path)
 {
 	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
