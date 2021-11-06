@@ -61,7 +61,7 @@ public:
 	static FSType get_fstype(const Glib::ustring& member_path);
 	static const Glib::ustring& get_array(const Glib::ustring& member_path);
 	static const Glib::ustring& get_uuid(const Glib::ustring& member_path);
-	static Glib::ustring get_label( const Glib::ustring & member_path );
+	static const Glib::ustring& get_label(const Glib::ustring& member_path);
 
 private:
 	static void initialise_if_required();

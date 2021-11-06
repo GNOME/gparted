@@ -1048,7 +1048,7 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 	if (partition.fstype == FS_LINUX_SWRAID ||
 	    partition.fstype == FS_ATARAID        )
 	{
-		Glib::ustring label = SWRaid_Info::get_label( partition_path );
+		const Glib::ustring& label = SWRaid_Info::get_label(partition_path);
 		if ( ! label.empty() )
 			partition.set_filesystem_label( label );
 

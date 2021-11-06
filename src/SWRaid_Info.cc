@@ -103,11 +103,12 @@ const Glib::ustring& SWRaid_Info::get_uuid(const Glib::ustring& member_path)
 	return memb.uuid;
 }
 
+
 // Return array label (array name in mdadm terminology) for the specified member, or ""
 // when the array has no label or there is no such member.
 // (Metadata 0.90 arrays don't have names.  Metata 1.x arrays are always named, getting a
 // default of hostname ":" array number when not otherwise specified).
-Glib::ustring SWRaid_Info::get_label( const Glib::ustring & member_path )
+const Glib::ustring& SWRaid_Info::get_label(const Glib::ustring& member_path)
 {
 	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
