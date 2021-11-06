@@ -58,7 +58,7 @@ public:
 			 OperationDetailStatus status = STATUS_EXECUTE,
 			 Font font = FONT_NORMAL ) ;
 	void set_description( const Glib::ustring & description, Font font = FONT_NORMAL ) ;
-	Glib::ustring get_description() const ;
+	const Glib::ustring& get_description() const;
 	void set_status( OperationDetailStatus status ) ;
 	void set_success_and_capture_errors( bool success );
 	OperationDetailStatus get_status() const ;

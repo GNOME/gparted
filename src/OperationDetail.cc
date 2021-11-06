@@ -75,11 +75,13 @@ void OperationDetail::set_description( const Glib::ustring & description, Font f
 	on_update( *this ) ;
 }
 
-Glib::ustring OperationDetail::get_description() const
+
+const Glib::ustring& OperationDetail::get_description() const
 {
 	return description ;
 }
-	
+
+
 void OperationDetail::set_status( OperationDetailStatus status ) 
 {	
 	if ( this ->status != STATUS_ERROR )
