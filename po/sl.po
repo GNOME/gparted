@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the gparted package.
 #
 # Matic Žgur <mr.zgur@gmail.com>, 2006.
-# Matej Urbančič <mateju@svn.gnome.org>, 2009–2019.
+# Matej Urbančič <mateju@svn.gnome.org>, 2009–2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
 "POT-Creation-Date: 2021-11-05 09:39+0000\n"
-"PO-Revision-Date: 2021-11-14 22:29+0100\n"
+"PO-Revision-Date: 2021-11-23 19:11+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -112,7 +112,7 @@ msgstr "Šifrirno geslo LUKS %1"
 
 #: ../src/DialogPasswordEntry.cc:52
 msgid "Passphrase:"
-msgstr "Šifrirno geslo"
+msgstr "Šifrirno geslo:"
 
 #: ../src/DialogPasswordEntry.cc:71
 msgid "Unlock"
@@ -1145,6 +1145,8 @@ msgid ""
 "partition contains open LUKS encryption for a change file system UUID only "
 "step"
 msgstr ""
+"razdelek vsebuje odprto šifriranje LUKS za korak spremembe UUID datotečnega "
+"sistema"
 
 #: ../src/GParted_Core.cc:2112
 msgid "Set half of the UUID on %1 to a new, random value"
@@ -1161,7 +1163,7 @@ msgstr "Nastavi UUID na %1 na novo, naključno vrednost"
 #.
 #: ../src/GParted_Core.cc:2201
 msgid "size of the partition is changing for a move only step"
-msgstr ""
+msgstr "velikost razdelka se spreminja za korak premikanja"
 
 #: ../src/GParted_Core.cc:2232
 msgid "rollback last change to the partition"
@@ -1199,21 +1201,25 @@ msgstr "z uporabo libparted"
 #.
 #: ../src/GParted_Core.cc:2428
 msgid "start of the partition is changing for a resize only step"
-msgstr ""
+msgstr "začetek razdelka se spreminja za korak prilagajanja velikosti"
 
 #: ../src/GParted_Core.cc:2446
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
+"razdelek ne vsebuje šifriranja LUKS za korak prilagajanja velikosti "
+"šifriranja"
 
 #: ../src/GParted_Core.cc:2456
 msgid "impossible to shrink a closed LUKS encryption volume"
-msgstr ""
+msgstr "ni mogoče skrčiti zaprtega nosilca šifriranja LUKS"
 
 #: ../src/GParted_Core.cc:2515
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
+"razdelek vsebuje odprto šifriranje LUKS za korak prilagajanja velikosti "
+"datotečnega sistema"
 
 #: ../src/GParted_Core.cc:2585
 msgid "resize/move partition"
@@ -1316,6 +1322,7 @@ msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
 msgstr ""
+"razdelek ne vsebuje odprtega šifriranja LUKS za korak skrčenjja šifriranja"
 
 #: ../src/GParted_Core.cc:2791
 msgid "shrink encryption volume"
@@ -1326,10 +1333,12 @@ msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
 msgstr ""
+"razdelek ne vsebuje šifriranja LUKS za korak spreminjanja šifriranja na "
+"največjo vrednost"
 
 #: ../src/GParted_Core.cc:2807
 msgid "grow encryption volume to fill the partition"
-msgstr "povečava šifriran nosilec, da zapolni razdelek"
+msgstr "poveča šifriran nosilec, da zapolni razdelek"
 
 #: ../src/GParted_Core.cc:2817
 msgid "growing is not available for this encryption volume"
@@ -1339,6 +1348,7 @@ msgstr "povečanje za ta šifriran razdelek ni na voljo"
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
+"razdelek vsebuje odprto šifriranje LUKS za korak skrčenja datotečnega sistema"
 
 #. TO TRANSLATORS:
 #. * means that GParted has encountered a programming bug and tried
@@ -1347,7 +1357,7 @@ msgstr ""
 #.
 #: ../src/GParted_Core.cc:2847
 msgid "the new partition size is larger or the same for a shrink only step"
-msgstr ""
+msgstr "nova velikost razdelka je večja ali enaka za korak skrčenja"
 
 #: ../src/GParted_Core.cc:2852
 msgid "shrink file system"
@@ -1357,10 +1367,12 @@ msgstr "skrči datotečni sistem"
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
+"razdelek vsebuje odprto šifriranje LUKS za korak povečanja datotečnega "
+"sistema"
 
 #: ../src/GParted_Core.cc:2868
 msgid "grow file system to fill the partition"
-msgstr "povečava datotečnega sistema, da zapolni razdelek"
+msgstr "povečaj datotečni sistem, da zapolni razdelek"
 
 #: ../src/GParted_Core.cc:2879
 msgid "growing is not available for this file system"
@@ -1373,7 +1385,7 @@ msgstr "povečanje datotečnega sistema trenutno ni dovoljeno"
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
 #: ../src/GParted_Core.cc:2911
 msgid "not a %1 file system for a recreate %1 only step"
-msgstr ""
+msgstr "ni datotečni sistem %1 za korak ponovnega ustvarjanja %1"
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
 #: ../src/GParted_Core.cc:2923
@@ -1389,12 +1401,16 @@ msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
 msgstr ""
+"izvorni razdelek vsebuje odprto šifriranje LUKS za korak kopiranja "
+"datotečnega sistema"
 
 #: ../src/GParted_Core.cc:3050
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
 msgstr ""
+"ciljni razdelek vsebuje odprto šifriranje LUKS za korak kopiranja "
+"datotečnega sistema"
 
 #: ../src/GParted_Core.cc:3056
 msgid "copy file system from %1 to %2"
@@ -1402,7 +1418,7 @@ msgstr "kopiraj datotečni sistem iz %1 na %2"
 
 #: ../src/GParted_Core.cc:3137
 msgid "using internal algorithm"
-msgstr "uporabljanje internega algoritma"
+msgstr "uporablja notranjega algoritma"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
 #: ../src/GParted_Core.cc:3140
@@ -1440,6 +1456,8 @@ msgstr "povrnitev premikanja datotečnega sistema je spodletelo"
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr ""
+"razdelek vsebuje odprto šifriranje LUKS za korak preverjanja datotečnega "
+"sistema"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
 #: ../src/GParted_Core.cc:3311
@@ -1486,14 +1504,16 @@ msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
 msgstr ""
+"razdelek vsebuje odprto šifriranje LUKS za korak brisanja podpisov "
+"datotečnega sistema"
 
 #: ../src/GParted_Core.cc:3717
 msgid "clear old file system signatures in %1"
-msgstr "Počisti stare podpise datotečnega sistema v %1."
+msgstr "počisti stare podpise datotečnega sistema v %1"
 
 #: ../src/GParted_Core.cc:3923
 msgid "flush operating system cache of %1"
-msgstr "Izplakni predpomnilnik operacijskega sistema za %1"
+msgstr "izplakni predpomnilnik operacijskega sistema za %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
 #: ../src/GParted_Core.cc:3962
@@ -1613,7 +1633,7 @@ msgstr "Manjkajo nekatere ali pa vse podrobnosti oziroma te niso pravilne."
 
 #: ../src/LVM2_PV_Info.cc:328
 msgid "You should NOT modify any LVM2 PV partitions."
-msgstr "Razdelkov LVM2 PV NI priporočljivo spreminjati!"
+msgstr "Razdelkov LVM2 PV NI priporočljivo spreminjati."
 
 #. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
 #: ../src/OperationChangeUUID.cc:56
@@ -2108,7 +2128,7 @@ msgstr "Urejevalnik razdelkov za GNOME"
 #: ../src/Win_GParted.cc:1925
 msgid "translator-credits"
 msgstr ""
-"Matej Urbančič <mateju@svn.gnome.org>\n"
+"Matej Urbančič <mateju@src.gnome.org>\n"
 "Matic Žgur"
 
 #: ../src/Win_GParted.cc:1972
@@ -2231,16 +2251,12 @@ msgid "Failed to open LUKS encryption"
 msgstr "Odpiranje šifriranja LUKS je spodletelo"
 
 #: ../src/Win_GParted.cc:2769
-#, fuzzy
-#| msgid ""
-#| "The swapon action cannot be performed if an operation is pending for the "
-#| "partition."
 msgid ""
 "The close encryption action cannot be performed when there are operations "
 "pending for the partition."
 msgstr ""
-"Ukaza swapon za zagon izmenjave ni mogoče izvesti, v kolikor obstajajo "
-"pripravljena opravila razdelka."
+"Ukaza za zapiranje šifriranja ni mogoče izvesti, v kolikor so za izvedbo na "
+"razdelku že pripravljena opravila."
 
 #: ../src/Win_GParted.cc:2770
 msgid "Closing encryption on %1"
@@ -2251,16 +2267,12 @@ msgid "Could not close encryption"
 msgstr "Ni mogoče zapreti šifriranja"
 
 #: ../src/Win_GParted.cc:2776
-#, fuzzy
-#| msgid ""
-#| "The mount action cannot be performed if an operation is pending for the "
-#| "partition."
 msgid ""
 "The open encryption action cannot be performed when there are operations "
 "pending for the partition."
 msgstr ""
-"Ukaza mount za priklapljanje ni mogoče izvesti, v kolikor obstajajo "
-"pripravljena opravila razdelka."
+"Ukaza za odpiranje šifriranja ni mogoče izvesti, v kolikor so za izvedbo na "
+"razdelku že pripravljena opravila."
 
 #. TO TRANSLATORS: looks like
 #. * Enter LUKS passphrase to open /dev/sda1
@@ -2278,6 +2290,8 @@ msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
 msgstr ""
+"To je zato, ker so na te točke priklopljene tudi druge priklopne točke. "
+"Priporočeno jih je odlopiti ročno."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
 #: ../src/Win_GParted.cc:2902
@@ -2291,12 +2305,16 @@ msgstr[3] "%1 opravila so trenutno pripravljena za razdelek %2."
 #: ../src/Win_GParted.cc:2917
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
+"Uporabite meni Urejanja za razveljavitev, počiščenje ali uveljavljanje "
+"opravil na čakanju."
 
 #: ../src/Win_GParted.cc:2960
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
+"Dejanja za odklop izmenjalnega razdelka ni mogoče izvesti, ko so za razdelek "
+"pripravljena opravila na čakanju."
 
 #: ../src/Win_GParted.cc:2961
 msgid "Deactivating swap on %1"
@@ -2311,6 +2329,8 @@ msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
+"Dejanja za priklop izmenjalnega razdelka ni mogoče izvesti, ko so za "
+"razdelek pripravljena opravila na čakanju."
 
 #: ../src/Win_GParted.cc:2968
 msgid "Activating swap on %1"
@@ -2325,6 +2345,8 @@ msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
 msgstr ""
+"Dejanja »odklapljanja skupine nosilcev« ni mogoče izvesti, ko so za razdelek "
+"pripravljena opravila na čakanju."
 
 #: ../src/Win_GParted.cc:2975
 msgid "Deactivating Volume Group %1"
@@ -2340,6 +2362,8 @@ msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
 msgstr ""
+"Dejanja »priklapljanja skupine nosilcev« ni mogoče izvesti, ko so za "
+"razdelek pripravljena opravila na čakanju."
 
 #: ../src/Win_GParted.cc:2983
 msgid "Activating Volume Group %1"
@@ -2355,6 +2379,8 @@ msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
+"Dejanja za odklopa razdelka ni mogoče izvesti, ko so za razdelek "
+"pripravljena opravila na čakanju."
 
 #: ../src/Win_GParted.cc:2991
 msgid "Unmounting %1"
@@ -2371,6 +2397,8 @@ msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
+"Ukaza za priklop ni mogoče izvesti, v kolikor so za izvedbo na razdelku že "
+"pripravljena opravila."
 
 #: ../src/Win_GParted.cc:3069
 msgid "mounting %1 on %2"
@@ -2549,7 +2577,7 @@ msgstr "Ali vseeno želite vsiliti izbris fizičnega nosilca?"
 
 #: ../src/btrfs.cc:293
 msgid "Failed to find devid for path %1"
-msgstr ""
+msgstr "Iskanje določila devid za pot %1 je spodletelo."
 
 #: ../src/fat16.cc:32 ../src/ntfs.cc:35
 msgid ""
@@ -2633,6 +2661,8 @@ msgid ""
 "Maximize closed LUKS encryption skipped because it will automatically fill "
 "the partition when opened"
 msgstr ""
+"Povečanje zaprtega šifriranja LUKS je preskočeno, ker bo to dejanje "
+"samodejno zapolnilo razdelek, ko bo odprta"
 
 #: ../src/main.cc:47
 msgid "Root privileges are required for running GParted"
@@ -2670,13 +2700,15 @@ msgstr "Razdelek je prevelik; največja dovoljena velikost je %1."
 
 #: ../src/udf.cc:194
 msgid "Partition is too small, minimum size is %1"
-msgstr ""
+msgstr "Razdelek je premajhen; najmanjša sprejemljiva velikost je %1."
 
 #: ../src/udf.cc:211
 msgid ""
 "mkudffs prior to version 1.1 does not support non-ASCII characters in the "
 "label."
 msgstr ""
+"Program mkudffs različice, manjše od 1.1, ne podpira ne-ASCII znakov v "
+"oznaki razdelka."
 
 #~ msgid "Libparted"
 #~ msgstr "Libparted"
