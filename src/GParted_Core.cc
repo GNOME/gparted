@@ -1323,6 +1323,8 @@ FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPart
 			return FS_UFS;
 		else if ( fsname == "apfs" )
 			return FS_APFS;
+		else if (fsname == "bcache")
+			return FS_BCACHE;
 		else if ( fsname == "BitLocker" )
 			return FS_BITLOCKER;
 		else if ( fsname == "iso9660" )
