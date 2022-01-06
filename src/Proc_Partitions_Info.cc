@@ -155,6 +155,11 @@ bool Proc_Partitions_Info::is_whole_disk_device_name(const Glib::ustring& name)
 	if (Utils::regexp_label(name, "^([a-z]+/c[0-9]+d[0-9]+)$") != "")
 		return true;
 
+	// Match block layer cache (bcache) device names.
+	// E.g.: device = bcache0 (partition = bcache0p1)
+	if (Utils::regexp_label(name, "^(bcache[0-9]+)$") != "")
+		return true;
+
 	return false;
 }
 
