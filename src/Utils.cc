@@ -166,26 +166,26 @@ Glib::ustring Utils::get_color(FSType fstype)
 		case FS_FAT32:           return "#46A046";  // Accent Green
 		case FS_HFS:             return "#D59FD4";  // Magenta Hilight [*]
 		case FS_HFSPLUS:         return "#B173B0";  // Magenta Medium [*]
-		case FS_JFS:             return "#E0C39E";  // Face Skin Medium
+		case FS_JFS:             return "#D6B129";  // Accent Yellow Dark [+]
 		case FS_LINUX_SWAP:      return "#C1665A";  // Red Medium
 		case FS_LUKS:            return "#625B81";  // Purple Dark
 		case FS_LVM2_PV:         return "#B39169";  // Face Skin Dark
 		case FS_MINIX:           return "#9DB8D2";  // Blue Highlight
-		case FS_NILFS2:          return "#826647";  // Face Skin Shadow
+		case FS_NILFS2:          return "#990000";  // Accent Red Dark
 		case FS_NTFS:            return "#70D2B1";  // Aquamarine Medium [*]
 		case FS_REISER4:         return "#887FA3";  // Purple Medium
 		case FS_REISERFS:        return "#ADA7C8";  // Purple Hilight
 		case FS_UDF:             return "#105210";  // Accent Green Shadow [+]
 		case FS_XFS:             return "#EED680";  // Accent Yellow
 		case FS_APFS:            return "#874986";  // Magenta Dark [*]
-		case FS_ATARAID:         return "#5A4733";  // Dark brown [*]
+		case FS_ATARAID:         return "#5A4733";  // Brown Dark [+]
 		case FS_BITLOCKER:       return "#494066";  // Purple Shadow
 		case FS_GRUB2_CORE_IMG:  return "#666666";  // Dark Gray [*]
 		case FS_ISO9660:         return "#D3D3D3";  // Light Gray [*]
-		case FS_LINUX_SWRAID:    return "#5A4733";  // Dark brown [*]
+		case FS_LINUX_SWRAID:    return "#826647";  // Face Skin Shadow
 		case FS_LINUX_SWSUSPEND: return "#884631";  // Red Dark
 		case FS_REFS:            return "#3EA281";  // Aquamarine Dark [*]
-		case FS_UFS:             return "#D1940C";  // Accent Yellow Dark
+		case FS_UFS:             return "#AA8F2C";  // Accent Yellow Shadow [+]
 		case FS_ZFS:             return "#C26825";  // Orange Dark [*]
 		case FS_USED:            return "#F8F8BA";  // Light Tan Yellow [*]
 		case FS_UNUSED:          return "#FFFFFF";  // White
