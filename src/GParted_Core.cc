@@ -15,9 +15,11 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "GParted_Core.h"
-#include "CopyBlocks.h"
+#include "BCache_Info.h"
 #include "BlockSpecial.h"
+#include "CopyBlocks.h"
 #include "Device.h"
 #include "DMRaid.h"
 #include "FileSystem.h"
@@ -1595,6 +1597,7 @@ bool GParted_Core::is_busy(const Glib::ustring& device_path, FSType fstype, cons
 		busy |= (fstype == FS_LINUX_SWRAID && SWRaid_Info::is_member_active(partition_path));
 		busy |= (fstype == FS_ATARAID      && (SWRaid_Info::is_member_active(partition_path) ||
 		                                       dmraid.is_member_active(partition_path)         ));
+		busy |= (fstype == FS_BCACHE       && BCache_Info::is_active(device_path, partition_path));
 	}
 
 	return busy ;

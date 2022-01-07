@@ -24,6 +24,7 @@ test_dummy_SOURCES        = test_dummy.cc
 
 test_SupportedFileSystems_SOURCES = test_SupportedFileSystems.cc
 test_SupportedFileSystems_LDADD   =  \
+	$(top_builddir)/src/BCache_Info.$(OBJEXT)           \
 	$(top_builddir)/src/BlockSpecial.$(OBJEXT)          \
 	$(top_builddir)/src/CopyBlocks.$(OBJEXT)            \
 	$(top_builddir)/src/DMRaid.$(OBJEXT)                \

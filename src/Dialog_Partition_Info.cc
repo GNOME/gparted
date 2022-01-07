@@ -340,7 +340,8 @@ void Dialog_Partition_Info::Display_Info()
 			else if (filesystem_ptn.fstype == FS_LINUX_SWAP   ||
 			         filesystem_ptn.fstype == FS_LINUX_SWRAID ||
 			         filesystem_ptn.fstype == FS_ATARAID      ||
-			         filesystem_ptn.fstype == FS_LVM2_PV        )
+			         filesystem_ptn.fstype == FS_LVM2_PV      ||
+			         filesystem_ptn.fstype == FS_BCACHE         )
 			{
 				/* TO TRANSLATORS:  Active
 				 * means that this linux swap, linux software raid partition, or
@@ -374,7 +375,8 @@ void Dialog_Partition_Info::Display_Info()
 		}
 		else if (filesystem_ptn.fstype == FS_LINUX_SWAP   ||
 		         filesystem_ptn.fstype == FS_LINUX_SWRAID ||
-		         filesystem_ptn.fstype == FS_ATARAID        )
+		         filesystem_ptn.fstype == FS_ATARAID      ||
+		         filesystem_ptn.fstype == FS_BCACHE         )
 		{
 			/* TO TRANSLATORS:  Not active
 			 *  means that this linux swap or linux software raid partition
