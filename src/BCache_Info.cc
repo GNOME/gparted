@@ -17,6 +17,8 @@
 
 #include "BCache_Info.h"
 
+#include <string.h>  // GNU version of basename()
+#include <unistd.h>
 #include <glibmm/ustring.h>
 #include <glibmm/fileutils.h>
 
@@ -29,22 +31,45 @@ namespace GParted
 // otherwise.  Equivalent to does the directory /sys/block/DEV[/PTN]/bcache exist?
 bool BCache_Info::is_active(const Glib::ustring& device_path, const Glib::ustring& partition_path)
 {
-	Glib::ustring bcache_path;
+	return file_test(get_sysfs_bcache_path(device_path, partition_path), Glib::FILE_TEST_IS_DIR);
+}
+
+
+// Return the bcache device name for a registered bcache backing device (active
+// component), or an empty string.
+// E.g.: ("/dev/sdb", "/dev/sdb1") -> "/dev/bcache0"
+Glib::ustring BCache_Info::get_bcache_device(const Glib::ustring& device_path, const Glib::ustring& partition_path)
+{
+	Glib::ustring sysfs_path = get_sysfs_bcache_path(device_path, partition_path) + "/dev";
+
+	char buf[128];  // Large enough for link target
+	                // "../../../../../../../../../../virtual/block/bcache0".
+	ssize_t len = readlink(sysfs_path.c_str(), buf, sizeof(buf)-1);
+	if (len < 0)
+		return Glib::ustring("");
+	buf[len] = '\0';
+
+	return "/dev/" + Glib::ustring(basename(buf));
+}
+
+
+// Private methods
+
+Glib::ustring BCache_Info::get_sysfs_bcache_path(const Glib::ustring& device_path, const Glib::ustring& partition_path)
+{
 	Glib::ustring dev_name = device_path.substr(5);  // Remove leading "/dev/".
 
 	if (device_path == partition_path)
 	{
 		// Whole drive
-		bcache_path = "/sys/block/" + dev_name + "/bcache";
+		return "/sys/block/" + dev_name + "/bcache";
 	}
 	else
 	{
 		// Partition on drive
 		Glib::ustring ptn_name = partition_path.substr(5);  // Remove leading "/dev/".
-		bcache_path = "/sys/block/" + dev_name + "/" + ptn_name + "/bcache";
+		return "/sys/block/" + dev_name + "/" + ptn_name + "/bcache";
 	}
-
-	return file_test(bcache_path, Glib::FILE_TEST_IS_DIR);
 }
 
 

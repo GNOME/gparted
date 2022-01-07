@@ -36,6 +36,11 @@ class BCache_Info
 {
 public:
 	static bool is_active(const Glib::ustring& device_path, const Glib::ustring& partition_path);
+	static Glib::ustring get_bcache_device(const Glib::ustring& device_path, const Glib::ustring& partition_path);
+
+private:
+	static Glib::ustring get_sysfs_bcache_path(const Glib::ustring& device_path,
+	                                           const Glib::ustring& partition_path);
 };
 
 

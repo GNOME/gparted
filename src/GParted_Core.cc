@@ -1491,6 +1491,13 @@ void GParted_Core::set_mountpoints( Partition & partition )
 				partition.add_mountpoint(array_path_2);
 		}
 	}
+	else if (partition.fstype == FS_BCACHE)
+	{
+		const Glib::ustring bcache_path = BCache_Info::get_bcache_device(partition.device_path,
+		                                                                 partition.get_path());
+		if (! bcache_path.empty())
+			partition.add_mountpoint(bcache_path);
+	}
 	else if (partition.fstype == FS_LUKS)
 	{
 		LUKS_Mapping mapping = LUKS_Info::get_cache_entry( partition.get_path() );
