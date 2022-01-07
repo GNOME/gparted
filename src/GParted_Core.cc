@@ -860,16 +860,16 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				{
 					//Try device_name + partition_number
 					Glib::ustring dmraid_path = device .get_path() + Utils::num_to_str( lp_partition ->num ) ;
-					partition_is_busy = is_busy(fstype, dmraid_path);
+					partition_is_busy = is_busy(device.get_path(), fstype, dmraid_path);
 
 					//Try device_name + p + partition_number
 					dmraid_path = device .get_path() + "p" + Utils::num_to_str( lp_partition ->num ) ;
-					partition_is_busy |= is_busy(fstype, dmraid_path);
+					partition_is_busy |= is_busy(device.get_path(), fstype, dmraid_path);
 				}
 				else
 #endif
 				{
-					partition_is_busy = is_busy(fstype, partition_path);
+					partition_is_busy = is_busy(device.get_path(), fstype, partition_path);
 				}
 
 				if (fstype == FS_LUKS)
@@ -980,7 +980,7 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	device.partitions.clear();
 
 	Glib::ustring path = lp_device->path;
-	bool partition_is_busy = is_busy( fstype, path );
+	bool partition_is_busy = is_busy(device.get_path(), fstype, path);
 
 	Partition * partition_temp = NULL;
 	if ( fstype == FS_LUKS )
@@ -1021,7 +1021,7 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 	Glib::ustring mapping_path = DEV_MAPPER_PATH + mapping.name;
 	std::vector<Glib::ustring> detect_messages;
 	FSType fstype = detect_filesystem_in_encryption_mapping(mapping_path, detect_messages);
-	bool fs_busy = is_busy( fstype, mapping_path );
+	bool fs_busy = is_busy(mapping_path, fstype, mapping_path);
 
 	partition.set_luks( mapping_path,
 	                    fstype,
@@ -1556,8 +1556,9 @@ bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::us
 	return false;
 }
 
-//Report whether the partition is busy (mounted/active)
-bool GParted_Core::is_busy( FSType fstype, const Glib::ustring & path )
+
+// Report whether the partition is busy (mounted/active)
+bool GParted_Core::is_busy(const Glib::ustring& device_path, FSType fstype, const Glib::ustring& partition_path)
 {
 	FileSystem * p_filesystem = NULL ;
 	bool busy = false ;
@@ -1568,14 +1569,14 @@ bool GParted_Core::is_busy( FSType fstype, const Glib::ustring & path )
 		{
 			case FS::GPARTED:
 				//Search GParted internal mounted partitions map
-				busy = Mount_Info::is_dev_mounted( path );
+				busy = Mount_Info::is_dev_mounted(partition_path);
 				break ;
 
 			case FS::EXTERNAL:
 				//Call file system specific method
 				p_filesystem = get_filesystem_object( fstype ) ;
 				if ( p_filesystem )
-					busy = p_filesystem -> is_busy( path ) ;
+					busy = p_filesystem -> is_busy(partition_path) ;
 				break;
 
 			default:
@@ -1588,12 +1589,12 @@ bool GParted_Core::is_busy( FSType fstype, const Glib::ustring & path )
 
 		//Still search GParted internal mounted partitions map in case an
 		//  unknown file system is mounted
-		busy = Mount_Info::is_dev_mounted( path );
+		busy = Mount_Info::is_dev_mounted(partition_path);
 
 		// Custom checks for recognised but other not-supported file system types.
-		busy |= (fstype == FS_LINUX_SWRAID && SWRaid_Info::is_member_active(path));
-		busy |= (fstype == FS_ATARAID      && (SWRaid_Info::is_member_active(path) ||
-		                                       dmraid.is_member_active(path)         ));
+		busy |= (fstype == FS_LINUX_SWRAID && SWRaid_Info::is_member_active(partition_path));
+		busy |= (fstype == FS_ATARAID      && (SWRaid_Info::is_member_active(partition_path) ||
+		                                       dmraid.is_member_active(partition_path)         ));
 	}
 
 	return busy ;
