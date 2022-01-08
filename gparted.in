@@ -176,7 +176,7 @@ fi
 
 #
 # Create temporary blank overrides for all udev rules which automatically
-# start Linux Software RAID array members.
+# start Linux Software RAID array members and Bcache devices.
 #
 # Udev stores volatile / temporary runtime rules in directory /run/udev/rules.d.
 # Older versions use /dev/.udev/rules.d instead, and even older versions don't
@@ -189,16 +189,17 @@ fi
 # found in 64-md-raid.rules and/or 65-md-incremental.rules, depending on the
 # distribution and age.  The rules may be commented out or not exist at all.
 #
-UDEV_TEMP_MDADM_RULES=''  # List of temporary override rules files.
+UDEV_TEMP_RULES=''  # List of temporary override rules files.
 for udev_temp_d in /run/udev /dev/.udev; do
 	if test -d "$udev_temp_d"; then
 		test ! -d "$udev_temp_d/rules.d" && mkdir "$udev_temp_d/rules.d"
 		udev_mdadm_rules=`egrep -l '^[^#].*mdadm (-I|--incremental)' /lib/udev/rules.d/*.rules 2> /dev/null`
-		UDEV_TEMP_MDADM_RULES=`echo "$udev_mdadm_rules" | sed 's,^/lib/udev,'"$udev_temp_d"','`
+		udev_bcache_rules=`ls /lib/udev/rules.d/*bcache*.rules 2> /dev/null`
+		UDEV_TEMP_RULES=`echo $udev_mdadm_rules $udev_bcache_rules | sed 's,/lib/udev,/run/udev,g'`
 		break
 	fi
 done
-for rule in $UDEV_TEMP_MDADM_RULES; do
+for rule in $UDEV_TEMP_RULES; do
 	touch "$rule"
 done
 
@@ -228,9 +229,9 @@ status=$?
 
 #
 # Clear any temporary override udev rules used to stop udev automatically
-# starting Linux Software RAID array members.
+# starting Linux Software RAID array members and Bcache devices.
 #
-for rule in $UDEV_TEMP_MDADM_RULES; do
+for rule in $UDEV_TEMP_RULES; do
 	rm -f "$rule"
 done
 
