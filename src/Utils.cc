@@ -183,6 +183,7 @@ Glib::ustring Utils::get_color(FSType fstype)
 		case FS_BITLOCKER:       return "#494066";  // Purple Shadow
 		case FS_GRUB2_CORE_IMG:  return "#666666";  // Dark Gray [*]
 		case FS_ISO9660:         return "#D3D3D3";  // Light Gray [*]
+		case FS_JBD:             return "#314E6C";  // Blue Shadow
 		case FS_LINUX_SWRAID:    return "#826647";  // Face Skin Shadow
 		case FS_LINUX_SWSUSPEND: return "#884631";  // Red Dark
 		case FS_REFS:            return "#3EA281";  // Aquamarine Dark [*]
@@ -376,6 +377,7 @@ const Glib::ustring Utils::get_filesystem_string(FSType fstype)
 		case FS_BITLOCKER:       return "bitlocker";
 		case FS_GRUB2_CORE_IMG:  return "grub2 core.img";
 		case FS_ISO9660:         return "iso9660";
+		case FS_JBD:             return "jbd";
 		case FS_LINUX_SWRAID:    return "linux-raid";
 		case FS_LINUX_SWSUSPEND: return "linux-suspend";
 		case FS_REFS:            return "refs";

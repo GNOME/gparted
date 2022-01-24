@@ -1331,6 +1331,8 @@ FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPart
 			return FS_BITLOCKER;
 		else if ( fsname == "iso9660" )
 			return FS_ISO9660;
+		else if ( fsname == "jbd" )
+			return FS_JBD;
 		else if ( fsname == "linux_raid_member" )
 			return FS_LINUX_SWRAID ;
 		else if ( fsname == "swsusp"    ||
