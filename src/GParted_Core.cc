@@ -1506,8 +1506,9 @@ void GParted_Core::set_mountpoints( Partition & partition )
 		if ( ! mapping.name.empty() )
 			partition.add_mountpoint( DEV_MAPPER_PATH + mapping.name );
 	}
-	// Swap spaces don't have mount points so don't bother trying to add them.
-	else if (partition.fstype != FS_LINUX_SWAP)
+	// Swap spaces and jbds don't have mount points so don't bother trying to add them.
+	else if (partition.fstype != FS_LINUX_SWAP &&
+	         partition.fstype != FS_JBD          )
 	{
 		if ( partition.busy )
 		{
