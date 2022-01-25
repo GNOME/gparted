@@ -929,6 +929,20 @@ int Utils::get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
 	return ret ;
 }
 
+
+// Report whether the kernel considers the device busy or not.
+bool Utils::is_dev_busy(const Glib::ustring& path)
+{
+	int fd = open(path.c_str(), O_RDONLY|O_EXCL);
+	if (fd == -1 && errno == EBUSY)
+		return true;
+	else if (fd >= 0)
+		close(fd);
+
+	return false;
+}
+
+
 //Round down to multiple of rounding_size
 Byte_Value Utils::floor_size( Byte_Value value, Byte_Value rounding_size )
 {

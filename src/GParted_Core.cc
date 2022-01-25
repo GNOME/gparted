@@ -1607,6 +1607,7 @@ bool GParted_Core::is_busy(const Glib::ustring& device_path, FSType fstype, cons
 		busy |= (fstype == FS_ATARAID      && (SWRaid_Info::is_member_active(partition_path) ||
 		                                       dmraid.is_member_active(partition_path)         ));
 		busy |= (fstype == FS_BCACHE       && BCache_Info::is_active(device_path, partition_path));
+		busy |= (fstype == FS_JBD          && Utils::is_dev_busy(partition_path));
 	}
 
 	return busy ;
