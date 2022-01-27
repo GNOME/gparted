@@ -1265,6 +1265,7 @@ void Win_GParted::set_valid_operations()
 	     && selected_filesystem.fstype     != FS_ATARAID
 	     && selected_filesystem.fstype     != FS_LUKS
 	     && selected_filesystem.fstype     != FS_BCACHE
+	     && selected_filesystem.fstype     != FS_JBD
 	     && (    selected_filesystem.busy
 	          || selected_filesystem.get_mountpoints().size() /* Have mount point(s) */
 	          || selected_filesystem.fstype == FS_LINUX_SWAP
