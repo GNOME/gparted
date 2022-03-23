@@ -7,18 +7,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted 0.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2015-09-07 21:57+0200\n"
-"PO-Revision-Date: 2015-09-07 21:57+0200\n"
-"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
+"POT-Creation-Date: 2019-09-20 07:54+0000\n"
+"PO-Revision-Date: 2019-10-28 18:07+0100\n"
+"Last-Translator: Kjell Cato Heskjestad <cato@heskjestad.xyz>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 2.2.4\n"
 
-#: ../gparted.appdata.xml.in.h:1
+#: ../gparted.appdata.xml.in.h:1 ../gparted.desktop.in.in.h:3
+msgid "GParted Partition Editor"
+msgstr "GParted partisjonsredigering"
+
+#: ../gparted.appdata.xml.in.h:2 ../gparted.desktop.in.in.h:4
+msgid "Create, reorganize, and delete partitions"
+msgstr "Lag, omorganiser og slett partisjoner"
+
+#: ../gparted.appdata.xml.in.h:3
 msgid ""
 "GParted is a free partition editor for graphically managing your disk "
 "partitions."
@@ -26,7 +34,7 @@ msgstr ""
 "GParted er et gratis grafisk verktøy for å redigere og administrere "
 "partisjoner."
 
-#: ../gparted.appdata.xml.in.h:2
+#: ../gparted.appdata.xml.in.h:4
 msgid ""
 "With GParted you can resize, copy, label, and move partitions without data "
 "loss. These actions enable you to grow or shrink your C: drive, create space "
@@ -37,20 +45,19 @@ msgstr ""
 "krympe C: -stasjonen, lage plass til nye operativsystemer, eller forsøke "
 "dataredning fra tapte partisjoner."
 
-#: ../gparted.appdata.xml.in.h:3
+#: ../gparted.appdata.xml.in.h:5
 msgid ""
 "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
-"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
-"reiser4, ufs, and xfs."
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
+"reiser4, udf, ufs, and xfs."
 msgstr ""
 "GParted arbeider med mange filsystemer, inkludert: btrfs, ext2, ext3, ext4, "
-"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
-"reiser4, ufs og xfs."
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
+"reiser4, udf, ufs og xfs."
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:359
-#: ../src/Win_GParted.cc:77 ../src/Win_GParted.cc:1426
-#: ../src/Win_GParted.cc:1621
+#: ../gparted.desktop.in.in.h:1 ../src/Win_GParted.cc:87
+#: ../src/Win_GParted.cc:1632 ../src/Win_GParted.cc:1857
 msgid "GParted"
 msgstr "GParted"
 
@@ -58,171 +65,205 @@ msgstr "GParted"
 msgid "Partition Editor"
 msgstr "Partisjonsredigering"
 
-#: ../gparted.desktop.in.in.h:3
-msgid "GParted Partition Editor"
-msgstr "GParted partisjonsredigering"
-
-#: ../gparted.desktop.in.in.h:4
-msgid "Create, reorganize, and delete partitions"
-msgstr "Lag, omorganiser og slett partisjoner"
-
 #: ../gparted.desktop.in.in.h:5
 msgid "Partition;"
 msgstr "Partisjon;"
 
-#: ../include/Utils.h:55
+#: ../org.gnome.gparted.policy.in.in.h:1
+msgid "Run GParted as root"
+msgstr "Kjør GParted som root"
+
+#: ../org.gnome.gparted.policy.in.in.h:2
+msgid "Authentication is required to run the GParted Partition Editor as root"
+msgstr "Autentisering kreves for å kjøre GParted partisjonsredigering som root"
+
+#: ../include/Utils.h:57
 msgid "(New UUID - will be randomly generated)"
-msgstr "(Ny UUID - vil bli tilfeldig generert)"
+msgstr "(Ny UUID – vil lages tilfeldig)"
 
-#: ../include/Utils.h:56
+#: ../include/Utils.h:58
 msgid "(Half new UUID - will be randomly generated)"
-msgstr "(Halv ny UUID - vil bli tilfeldig generert)"
-
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/Copy_Blocks.cc:67
-msgid "%1 of %2 copied (%3 remaining)"
-msgstr "%1 av %2 kopiert (%3 gjenstår)"
+msgstr "(Halv ny UUID – vil lages tilfeldig)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/Copy_Blocks.cc:74 ../src/Copy_Blocks.cc:184
+#. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
+#: ../src/CopyBlocks.cc:72 ../src/CopyBlocks.cc:177 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
 msgstr "%1 av %2 kopiert"
 
-#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/Copy_Blocks.cc:160
-msgid "copy %1 using a block size of %2"
-msgstr "kopier %1 med blokkstørrelse %2"
-
-#: ../src/Copy_Blocks.cc:222
+#: ../src/CopyBlocks.cc:217
 msgid "Operation Canceled"
 msgstr "Operasjon avbrutt"
 
-#: ../src/Copy_Blocks.cc:234
+#: ../src/CopyBlocks.cc:229
 msgid "Error while writing block at sector %1"
 msgstr "Feil ved skriving av blokk ved sektor %1"
 
-#: ../src/Copy_Blocks.cc:239
+#: ../src/CopyBlocks.cc:234
 msgid "Error while reading block at sector %1"
 msgstr "Feil ved lesing av blokk ved sektor %1"
 
-#: ../src/Dialog_Base_Partition.cc:55
+#. TO TRANSLATORS: dialog title, looks like   LUKS Passphrase /dev/sda1
+#: ../src/DialogPasswordEntry.cc:36
+msgid "LUKS Passphrase %1"
+msgstr "LUKS-adgangsfrase for %1"
+
+#: ../src/DialogPasswordEntry.cc:46
+msgid "Enter LUKS passphrase to open %1"
+msgstr "Skriv inn LUKS-adgangsfrasen for å åpne %1"
+
+#: ../src/DialogPasswordEntry.cc:52
+msgid "Passphrase:"
+msgstr "Adgangsfrase:"
+
+#: ../src/DialogPasswordEntry.cc:69
+msgid "Unlock"
+msgstr "Lås opp"
+
+#. Add spinbutton_before
+#: ../src/Dialog_Base_Partition.cc:64
 msgid "Free space preceding (MiB):"
 msgstr "Ledig plass foran (MiB):"
 
-#. add spinbutton_size
-#: ../src/Dialog_Base_Partition.cc:64
+#. Add spinbutton_size
+#: ../src/Dialog_Base_Partition.cc:73
 msgid "New size (MiB):"
 msgstr "Ny størrelse (MiB):"
 
-#. add spinbutton_after
-#: ../src/Dialog_Base_Partition.cc:71
+#. Add spinbutton_after
+#: ../src/Dialog_Base_Partition.cc:81
 msgid "Free space following (MiB):"
 msgstr "Ledig plass etterfølger (MiB):"
 
-#. add alignment
-#. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
-#: ../src/Dialog_Base_Partition.cc:98
+#. Add alignment
+#. TO TRANSLATORS: used as label for a list of choices.  Align to: <combo box with choices>
+#: ../src/Dialog_Base_Partition.cc:109
 msgid "Align to:"
 msgstr "Juster til:"
 
-#. fill partition alignment menu
-#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
-#: ../src/Dialog_Base_Partition.cc:103
+#. Fill partition alignment combo
+#. TO TRANSLATORS: Option for combo box "Align to:"
+#: ../src/Dialog_Base_Partition.cc:113
 msgid "Cylinder"
 msgstr "Sylinder"
 
-#. TO TRANSLATORS: Menu option for label "Align to:"
-#: ../src/Dialog_Base_Partition.cc:105
+#. TO TRANSLATORS: Option for combo box "Align to:"
+#: ../src/Dialog_Base_Partition.cc:115
 msgid "MiB"
 msgstr "MiB"
 
-#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
-#: ../src/Dialog_Base_Partition.cc:107
+#. TO TRANSLATORS: Option for combo box "Align to:"
+#: ../src/Dialog_Base_Partition.cc:117
 msgid "None"
 msgstr "Ingen"
 
-#: ../src/Dialog_Base_Partition.cc:244
+#: ../src/Dialog_Base_Partition.cc:466
 msgid "Resize"
 msgstr "Endre størrelse"
 
-#: ../src/Dialog_Base_Partition.cc:244 ../src/Win_GParted.cc:246
+#: ../src/Dialog_Base_Partition.cc:466 ../src/Win_GParted.cc:323
 msgid "Resize/Move"
 msgstr "Endre størrelse/Flytt"
 
-#: ../src/Dialog_Base_Partition.cc:262
+#: ../src/Dialog_Base_Partition.cc:484
 msgid "Minimum size: %1 MiB"
 msgstr "Minste størrelse: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:263
+#: ../src/Dialog_Base_Partition.cc:485
 msgid "Maximum size: %1 MiB"
 msgstr "Maksimal størrelse: %1 MiB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
-#: ../src/Dialog_Disklabel.cc:30
+#: ../src/Dialog_Disklabel.cc:31
 msgid "Create partition table on %1"
 msgstr "Lag partisjonstabell på %1"
 
 #. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
-#: ../src/Dialog_Disklabel.cc:54
+#: ../src/Dialog_Disklabel.cc:55
 msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
 msgstr "ADVARSEL: Dette vil SLETTE ALLE DATA på HELE DISKEN %1"
 
-#: ../src/Dialog_Disklabel.cc:60
+#: ../src/Dialog_Disklabel.cc:61
 msgid "Select new partition table type:"
 msgstr "Velg ny type partisjonstabell:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3
-#: ../src/Dialog_FileSystem_Label.cc:29
+#: ../src/Dialog_FileSystem_Label.cc:34
 msgid "Set file system label on %1"
 msgstr "Sett navn på filsystemet på %1"
 
+#. Only line: "Label: [EXISTINGLABEL ]"
 #. Label
-#: ../src/Dialog_FileSystem_Label.cc:40 ../src/Dialog_Partition_Info.cc:258
-#: ../src/Dialog_Partition_New.cc:145
+#: ../src/Dialog_FileSystem_Label.cc:43 ../src/Dialog_Partition_Info.cc:270
+#: ../src/Dialog_Partition_New.cc:162
 msgid "Label:"
 msgstr "Navn:"
 
-#: ../src/Dialog_Partition_Copy.cc:37
+#: ../src/Dialog_Partition_Copy.cc:51
 msgid "Paste %1"
 msgstr "Lim inn %1"
 
 #. Minimum 370 to avoid scrolling on Fedora 20
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:42
+#: ../src/Dialog_Partition_Info.cc:47
 msgid "Information about %1"
 msgstr "Informasjon om %1"
 
-#: ../src/Dialog_Partition_Info.cc:78
+#: ../src/Dialog_Partition_Info.cc:86
 msgid "Warning:"
 msgstr "Advarsel:"
 
 #. FILE SYSTEM DETAIL SECTION
-#. file system headline
-#: ../src/Dialog_Partition_Info.cc:235 ../src/DialogFeatures.cc:44
-#: ../src/TreeView_Detail.cc:36
+#. File system headline
+#: ../src/Dialog_Partition_Info.cc:252 ../src/Dialog_Progress.cc:457
+#: ../src/DialogFeatures.cc:55 ../src/TreeView_Detail.cc:47
 msgid "File System"
 msgstr "Filsystem"
 
 #. Left field & value pair area
-#. file system
-#. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:246 ../src/Dialog_Partition_New.cc:134
+#. File system
+#. File systems to choose from
+#: ../src/Dialog_Partition_Info.cc:259 ../src/Dialog_Partition_New.cc:152
 msgid "File system:"
 msgstr "Filsystem:"
 
-#: ../src/Dialog_Partition_Info.cc:271
+#. LUKS uuid
+#: ../src/Dialog_Partition_Info.cc:283 ../src/Dialog_Partition_Info.cc:531
 msgid "UUID:"
 msgstr "UUID:"
 
-#: ../src/Dialog_Partition_Info.cc:286
+#. TO TRANSLATORS:   Open
+#. * means that the LUKS encryption is open and the encrypted data within is accessible.
+#.
+#: ../src/Dialog_Partition_Info.cc:296
+msgid "Open"
+msgstr "Åpen"
+
+#. TO TRANSLATORS:   Closed
+#. * means that the LUKS encryption is closed and the encrypted data within is not accessible.
+#.
+#: ../src/Dialog_Partition_Info.cc:300
+msgid "Closed"
+msgstr "Lukket"
+
+#. LUKS status
+#: ../src/Dialog_Partition_Info.cc:307 ../src/Dialog_Partition_Info.cc:537
 msgid "Status:"
 msgstr "Status:"
+
+#. TO TRANSLATORS:   Not accessible (Encrypted)
+#. * means that the data in encrypted and hasn't been made
+#. * accessible by opening it with the passphrase.
+#.
+#: ../src/Dialog_Partition_Info.cc:316
+msgid "Not accessible (Encrypted)"
+msgstr "Utilgjengelig (kryptert)"
 
 #. TO TRANSLATORS:  Busy (At least one logical partition is mounted)
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:298
+#: ../src/Dialog_Partition_Info.cc:326
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Opptatt (Minst en logisk partisjon er montert)"
 
@@ -230,12 +271,12 @@ msgstr "Opptatt (Minst en logisk partisjon er montert)"
 #. * means that this linux swap, linux software raid partition, or
 #. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:309
+#: ../src/Dialog_Partition_Info.cc:336
 msgid "Active"
 msgstr "Aktiv"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:315
+#: ../src/Dialog_Partition_Info.cc:350
 msgid "Mounted on %1"
 msgstr "Montert på %1"
 
@@ -243,7 +284,7 @@ msgstr "Montert på %1"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:325
+#: ../src/Dialog_Partition_Info.cc:360
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Ikke opptatt (Ingen monterte logiske partisjoner)"
 
@@ -255,7 +296,7 @@ msgstr "Ikke opptatt (Ingen monterte logiske partisjoner)"
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:335 ../src/Dialog_Partition_Info.cc:359
+#: ../src/Dialog_Partition_Info.cc:369 ../src/Dialog_Partition_Info.cc:398
 msgid "Not active"
 msgstr "Ikke aktiv"
 
@@ -264,7 +305,7 @@ msgstr "Ikke aktiv"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:345
+#: ../src/Dialog_Partition_Info.cc:384
 msgid "Not active (Not a member of any volume group)"
 msgstr "Ikke aktiv (Ikke medlem av noe gruppert dataområde)"
 
@@ -274,238 +315,329 @@ msgstr "Ikke aktiv (Ikke medlem av noe gruppert dataområde)"
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:353
+#: ../src/Dialog_Partition_Info.cc:392
 msgid "Not active and exported"
 msgstr "Ikke aktiv og eksportert"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:366
+#: ../src/Dialog_Partition_Info.cc:405
 msgid "Not mounted"
 msgstr "Ikke montert"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:376 ../src/Win_GParted.cc:2975
+#: ../src/Dialog_Partition_Info.cc:415 ../src/Win_GParted.cc:3491
 msgid "Volume Group:"
 msgstr "Gruppert dataområde:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:387 ../src/Win_GParted.cc:2976
+#: ../src/Dialog_Partition_Info.cc:426 ../src/Win_GParted.cc:3492
 msgid "Members:"
 msgstr "Medlemmer:"
 
+#. Logical Volumes
+#: ../src/Dialog_Partition_Info.cc:450
+msgid "Logical Volumes:"
+msgstr "Logiske volumer:"
+
 #. Used
-#: ../src/Dialog_Partition_Info.cc:425
+#: ../src/Dialog_Partition_Info.cc:469
 msgid "Used:"
 msgstr "Brukt:"
 
-#. unused
-#: ../src/Dialog_Partition_Info.cc:439
+#. Unused
+#: ../src/Dialog_Partition_Info.cc:477
 msgid "Unused:"
 msgstr "Ubrukt:"
 
-#: ../src/Dialog_Partition_Info.cc:456
+#: ../src/Dialog_Partition_Info.cc:488
 msgid "Unallocated:"
 msgstr "Ikke allokert:"
 
-#. size
-#: ../src/Dialog_Partition_Info.cc:472 ../src/Win_GParted.cc:485
+#. Size
+#: ../src/Dialog_Partition_Info.cc:498 ../src/Win_GParted.cc:595
 msgid "Size:"
 msgstr "Størrelse:"
 
-#. PARTITION DETAIL SECTION
-#. partition headline
-#. append columns
-#: ../src/Dialog_Partition_Info.cc:490 ../src/TreeView_Detail.cc:34
-msgid "Partition"
-msgstr "Partisjon"
+#. ENCRYPTION DETAIL SECTION
+#. Encryption headline
+#: ../src/Dialog_Partition_Info.cc:513
+msgid "Encryption"
+msgstr "Kryptering"
 
+#. Encryption
+#: ../src/Dialog_Partition_Info.cc:517
+msgid "Encryption:"
+msgstr "Kryptering:"
+
+#. LUKS path
 #. Left field & value pair area
-#. path
-#: ../src/Dialog_Partition_Info.cc:501 ../src/Win_GParted.cc:493
+#. Path
+#: ../src/Dialog_Partition_Info.cc:523 ../src/Dialog_Partition_Info.cc:560
+#: ../src/Win_GParted.cc:601
 msgid "Path:"
 msgstr "Sti:"
 
-#. name
-#: ../src/Dialog_Partition_Info.cc:513 ../src/Dialog_Partition_Name.cc:40
+#. PARTITION DETAIL SECTION
+#. Partition headline
+#. append columns
+#: ../src/Dialog_Partition_Info.cc:552 ../src/Dialog_Progress.cc:451
+#: ../src/TreeView_Detail.cc:45
+msgid "Partition"
+msgstr "Partisjon"
+
+#. Name
+#. Only line: "Name: [EXISTINGNAME  ]"
+#: ../src/Dialog_Partition_Info.cc:568 ../src/Dialog_Partition_Name.cc:43
 msgid "Name:"
 msgstr "Partisjonsnavn:"
 
-#. flags
-#: ../src/Dialog_Partition_Info.cc:523
+#. Flags
+#: ../src/Dialog_Partition_Info.cc:574
 msgid "Flags:"
 msgstr "Flagg:"
 
 #. Right field & value pair area
-#. first sector
-#: ../src/Dialog_Partition_Info.cc:535
+#. First sector
+#: ../src/Dialog_Partition_Info.cc:582
 msgid "First sector:"
 msgstr "Første sektor:"
 
-#. last sector
-#: ../src/Dialog_Partition_Info.cc:545
+#. Last sector
+#: ../src/Dialog_Partition_Info.cc:588
 msgid "Last sector:"
 msgstr "Siste sektor:"
 
-#. total sectors
-#: ../src/Dialog_Partition_Info.cc:555 ../src/Win_GParted.cc:543
+#. Total sectors
+#: ../src/Dialog_Partition_Info.cc:594 ../src/Dialog_Progress.cc:431
+#: ../src/Win_GParted.cc:641
 msgid "Total sectors:"
 msgstr "Totalt antall sektorer:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
-#: ../src/Dialog_Partition_Name.cc:29
+#: ../src/Dialog_Partition_Name.cc:34
 msgid "Set partition name on %1"
 msgstr "Sett partisjonsnavn på %1"
 
 #. TO TRANSLATORS: dialogtitle
-#: ../src/Dialog_Partition_New.cc:31
+#: ../src/Dialog_Partition_New.cc:39
 msgid "Create new Partition"
 msgstr "Opprett ny partisjon"
 
-#. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:84
+#. TO TRANSLATORS: used as label for a list of choices.  Create as: <combo box with choices>
+#: ../src/Dialog_Partition_New.cc:104
 msgid "Create as:"
 msgstr "Opprett som:"
 
-#. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:89 ../src/OperationCreate.cc:74
+#. Fill partition type combo.
+#: ../src/Dialog_Partition_New.cc:108 ../src/OperationCreate.cc:58
 msgid "Primary Partition"
 msgstr "Primær partisjon"
 
-#: ../src/Dialog_Partition_New.cc:90 ../src/OperationCreate.cc:77
-#: ../src/OperationDelete.cc:76
+#: ../src/Dialog_Partition_New.cc:109 ../src/OperationCreate.cc:61
+#: ../src/OperationDelete.cc:109
 msgid "Logical Partition"
 msgstr "Logisk partisjon"
 
-#: ../src/Dialog_Partition_New.cc:91 ../src/OperationCreate.cc:80
+#: ../src/Dialog_Partition_New.cc:110 ../src/OperationCreate.cc:64
 msgid "Extended Partition"
 msgstr "Utvidet partisjon"
 
 #. Partition name
-#: ../src/Dialog_Partition_New.cc:124
+#: ../src/Dialog_Partition_New.cc:142
 msgid "Partition name:"
 msgstr "Partisjonsnavn:"
 
-#: ../src/Dialog_Partition_New.cc:208
+#: ../src/Dialog_Partition_New.cc:245
 msgid "New Partition #%1"
 msgstr "Ny partisjon #%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:82
+#. Bug: Not initialised by constructor calling set_data()
+#: ../src/Dialog_Partition_Resize_Move.cc:101
+#: ../src/Dialog_Partition_Resize_Move.cc:238
 msgid "Resize/Move %1"
 msgstr "Endre størrelse/flytt %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:87
+#: ../src/Dialog_Partition_Resize_Move.cc:106
 msgid "Resize %1"
 msgstr "Endre størrelse på %1"
 
-#: ../src/Dialog_Progress.cc:31
+#: ../src/Dialog_Progress.cc:42
 msgid "Applying pending operations"
 msgstr "Utfører ventende operasjoner"
 
-#: ../src/Dialog_Progress.cc:46
+#: ../src/Dialog_Progress.cc:57
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr "Avhengig av antall og type operasjoner kan dette ta lang tid."
 
-#: ../src/Dialog_Progress.cc:59
+#: ../src/Dialog_Progress.cc:71
 msgid "Completed Operations:"
 msgstr "Fullførte operasjoner:"
 
-#: ../src/Dialog_Progress.cc:100
+#: ../src/Dialog_Progress.cc:114
 msgid "Details"
 msgstr "Detaljer"
 
-#: ../src/Dialog_Progress.cc:203
+#: ../src/Dialog_Progress.cc:227
 msgid "%1 of %2 operations completed"
 msgstr "%1 av %2 operasjoner fullført"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:221
+#: ../src/Dialog_Progress.cc:246
 msgid "_Save Details"
 msgstr "_Lagre detaljer"
 
-#: ../src/Dialog_Progress.cc:233
+#: ../src/Dialog_Progress.cc:258
 msgid "Operation cancelled"
 msgstr "Operasjon avbrutt"
 
-#: ../src/Dialog_Progress.cc:247
+#: ../src/Dialog_Progress.cc:272
 msgid "All operations successfully completed"
 msgstr "Alle operasjoner er fullført"
 
-#: ../src/Dialog_Progress.cc:251
+#: ../src/Dialog_Progress.cc:276
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "%1 advarsel"
 msgstr[1] "%1 advarsler"
 
-#: ../src/Dialog_Progress.cc:264
+#: ../src/Dialog_Progress.cc:289
 msgid "An error occurred while applying the operations"
 msgstr "Det oppstod en feil under utføring av operasjonene"
 
-#: ../src/Dialog_Progress.cc:269
+#: ../src/Dialog_Progress.cc:294
 msgid "See the details for more information."
 msgstr "Se detaljene for mer informasjon."
 
-#: ../src/Dialog_Progress.cc:271
+#: ../src/Dialog_Progress.cc:296
 msgid "IMPORTANT"
 msgstr "VIKTIG"
 
-#: ../src/Dialog_Progress.cc:272
+#: ../src/Dialog_Progress.cc:297
 msgid "If you want support, you need to provide the saved details!"
 msgstr "Hvis du vil ha støtte, må du oppgi de lagrede detaljer!"
 
-#. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:275
+#. TO TRANSLATORS: looks like
+#. * See https://gparted.org/save-details.htm for more information.
+#.
+#: ../src/Dialog_Progress.cc:303
 msgid "See %1 for more information."
 msgstr "Se %1 for mer informasjon."
 
 #. TO TRANSLATORS: looks like  Force Cancel (5)
 #. *  where the number represents a count down in seconds until the button is enabled
-#: ../src/Dialog_Progress.cc:294 ../src/Dialog_Progress.cc:325
+#: ../src/Dialog_Progress.cc:324 ../src/Dialog_Progress.cc:355
 msgid "Force Cancel (%1)"
 msgstr "Tvungen avbrytelse (%1)"
 
-#: ../src/Dialog_Progress.cc:296 ../src/Dialog_Progress.cc:329
+#: ../src/Dialog_Progress.cc:326 ../src/Dialog_Progress.cc:359
 msgid "Force Cancel"
 msgstr "Tvungen avbrytelse"
 
-#: ../src/Dialog_Progress.cc:307
+#: ../src/Dialog_Progress.cc:337
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Er du sikker på at du vil avbryte den aktive operasjonen?"
 
-#: ../src/Dialog_Progress.cc:313
+#: ../src/Dialog_Progress.cc:343
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr ""
 "Hvis du avbryter en operasjon kan dette forårsake ALVORLIG skade på "
 "filsystemet."
 
-#: ../src/Dialog_Progress.cc:315
+#: ../src/Dialog_Progress.cc:345
 msgid "Continue Operation"
 msgstr "Fortsett operasjon"
 
-#: ../src/Dialog_Progress.cc:316
+#: ../src/Dialog_Progress.cc:346
 msgid "Cancel Operation"
 msgstr "Avbryt operasjon"
 
-#: ../src/Dialog_Progress.cc:337
+#: ../src/Dialog_Progress.cc:367
 msgid "Save Details"
 msgstr "Lagre detaljer"
 
-#: ../src/Dialog_Progress.cc:356
+#: ../src/Dialog_Progress.cc:386
 msgid "GParted Details"
 msgstr "GParted detaljer"
 
-#: ../src/Dialog_Progress.cc:367
-msgid "Libparted"
-msgstr "Libparted"
+#. Device overview information
+#: ../src/Dialog_Progress.cc:427
+msgid "Device:"
+msgstr "Enhet:"
+
+#. Model
+#: ../src/Dialog_Progress.cc:428 ../src/Win_GParted.cc:583
+msgid "Model:"
+msgstr "Modell:"
+
+#. Serial number
+#: ../src/Dialog_Progress.cc:429 ../src/Win_GParted.cc:589
+msgid "Serial:"
+msgstr "Serienummer:"
+
+#. Sector size
+#: ../src/Dialog_Progress.cc:430 ../src/Win_GParted.cc:647
+msgid "Sector size:"
+msgstr "Sektorstørrelse:"
+
+#. Heads
+#: ../src/Dialog_Progress.cc:435 ../src/Win_GParted.cc:623
+msgid "Heads:"
+msgstr "Hoder:"
+
+#. Sectors / track
+#: ../src/Dialog_Progress.cc:436 ../src/Win_GParted.cc:629
+msgid "Sectors/track:"
+msgstr "Sektorer/spor:"
+
+#. Cylinders
+#: ../src/Dialog_Progress.cc:437 ../src/Win_GParted.cc:635
+msgid "Cylinders:"
+msgstr "Sylindre:"
+
+#. Partition table type
+#. Disktype
+#: ../src/Dialog_Progress.cc:442 ../src/Win_GParted.cc:617
+msgid "Partition table:"
+msgstr "Partisjonstabell:"
+
+#: ../src/Dialog_Progress.cc:452
+msgid "Type"
+msgstr "Type"
+
+#: ../src/Dialog_Progress.cc:453
+msgid "Start"
+msgstr "Start"
+
+#: ../src/Dialog_Progress.cc:454
+msgid "End"
+msgstr "Slutt"
+
+#: ../src/Dialog_Progress.cc:455 ../src/TreeView_Detail.cc:53
+msgid "Flags"
+msgstr "Flagg"
+
+#: ../src/Dialog_Progress.cc:456
+msgid "Partition Name"
+msgstr "Partisjonsnavn"
+
+#: ../src/Dialog_Progress.cc:458 ../src/DialogFeatures.cc:68
+#: ../src/TreeView_Detail.cc:49
+msgid "Label"
+msgstr "Navngi"
+
+#: ../src/Dialog_Progress.cc:459 ../src/TreeView_Detail.cc:48
+msgid "Mount Point"
+msgstr "Monteringspunkt"
 
 #. TO TRANSLATORS:  EXECUTING
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:410
+#: ../src/Dialog_Progress.cc:525
 msgid "EXECUTING"
 msgstr "KJØRER"
 
@@ -513,7 +645,7 @@ msgstr "KJØRER"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:418
+#: ../src/Dialog_Progress.cc:533
 msgid "SUCCESS"
 msgstr "SUKSESS"
 
@@ -521,7 +653,7 @@ msgstr "SUKSESS"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:426
+#: ../src/Dialog_Progress.cc:541
 msgid "ERROR"
 msgstr "FEIL"
 
@@ -530,64 +662,62 @@ msgstr "FEIL"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:435
+#: ../src/Dialog_Progress.cc:550
 msgid "INFO"
 msgstr "INFO"
 
-#. TO TRANSLATORS:  N/A
+#. TO TRANSLATORS:  WARNING
 #. * means that the status for this operation is
-#. * not applicable because the operation is not
-#. * supported on the file system in the partition.
+#. * completed with warnings.  Either the operation
+#. * is not supported on the file system in the
+#. * partition, or the operation failed but it does
+#. * not matter that it failed.
 #.
-#: ../src/Dialog_Progress.cc:444
-msgid "N/A"
-msgstr "I/T"
+#: ../src/Dialog_Progress.cc:561
+msgid "WARNING"
+msgstr "ADVARSEL"
 
-#: ../src/DialogFeatures.cc:28
+#: ../src/DialogFeatures.cc:40
 msgid "File System Support"
 msgstr "Støtte for filsystem"
 
-#: ../src/DialogFeatures.cc:45
+#: ../src/DialogFeatures.cc:56
 msgid "Create"
 msgstr "Opprett"
 
-#: ../src/DialogFeatures.cc:46
+#: ../src/DialogFeatures.cc:57
 msgid "Grow"
 msgstr "Øke"
 
-#: ../src/DialogFeatures.cc:50
+#: ../src/DialogFeatures.cc:61
 msgid "Shrink"
 msgstr "Krymp"
 
-#: ../src/DialogFeatures.cc:54
+#: ../src/DialogFeatures.cc:65
 msgid "Move"
 msgstr "Flytt"
 
-#: ../src/DialogFeatures.cc:55
+#: ../src/DialogFeatures.cc:66
 msgid "Copy"
 msgstr "Kopier"
 
-#: ../src/DialogFeatures.cc:56
+#: ../src/DialogFeatures.cc:67
 msgid "Check"
 msgstr "Sjekk"
 
-#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:38
-msgid "Label"
-msgstr "Navngi"
-
-#: ../src/DialogFeatures.cc:58
+#: ../src/DialogFeatures.cc:69
 msgid "UUID"
 msgstr "UUID"
 
-#: ../src/DialogFeatures.cc:59
+#: ../src/DialogFeatures.cc:70
 msgid "Required Software"
 msgstr "Nødvendig programvare"
 
-#: ../src/DialogFeatures.cc:77
+#: ../src/DialogFeatures.cc:88
 msgid "This chart shows the actions supported on file systems."
 msgstr "Dette diagrammet viser handlinger som støttes på filsystemer."
 
-#: ../src/DialogFeatures.cc:79
+#: ../src/DialogFeatures.cc:90
 msgid ""
 "Not all actions are available on all file systems, in part due to the nature "
 "of file systems and limitations in the required software."
@@ -599,86 +729,94 @@ msgstr ""
 #. * means that this action is valid for this file system when
 #. * it is both unmounted and mounted.
 #.
-#: ../src/DialogFeatures.cc:96
+#: ../src/DialogFeatures.cc:109
 msgid "Available offline and online"
 msgstr "Tilgjengelig frakoblet og tilkoblet"
+
+#. TO TRANSLATORS:  Available online only
+#. * means that this action is valid for this file system only
+#. * when it is mounted.
+#.
+#: ../src/DialogFeatures.cc:122
+msgid "Available online only"
+msgstr "Kun tilgjengelig når filsystemet er montert"
 
 #. TO TRANSLATORS:  Available offline only
 #. * means that this action is valid for this file system only
 #. * when it is unmounted.
 #.
-#: ../src/DialogFeatures.cc:109
+#: ../src/DialogFeatures.cc:135
 msgid "Available offline only"
 msgstr "Tilgjengelig kun frakoblet"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:121
+#: ../src/DialogFeatures.cc:147
 msgid "Not Available"
 msgstr "Ikke tilgjengelig"
 
-#: ../src/DialogFeatures.cc:126
+#: ../src/DialogFeatures.cc:152
 msgid "Legend"
 msgstr "Forklaring"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:134
+#: ../src/DialogFeatures.cc:160
 msgid "Rescan For Supported Actions"
 msgstr "Søk på nytt etter støttede handlinger"
 
-#: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
+#: ../src/DialogManageFlags.cc:32 ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
 msgstr "Håndter flagg på %1"
 
-#: ../src/Dialog_Rescue_Data.cc:35
+#: ../src/Dialog_Rescue_Data.cc:39
 msgid "Search disk for file systems"
 msgstr "Se etter filsystemer på lagringsenheten"
 
 #. TO TRANSLATORS: looks like    File systems found on /dev/sdb
-#: ../src/Dialog_Rescue_Data.cc:52
+#: ../src/Dialog_Rescue_Data.cc:56
 msgid "File systems found on %1"
 msgstr "Filsystemer funnet på %1"
 
-#: ../src/Dialog_Rescue_Data.cc:57
+#: ../src/Dialog_Rescue_Data.cc:61
 msgid "Data found"
 msgstr "Data funnet"
 
-#: ../src/Dialog_Rescue_Data.cc:61
+#: ../src/Dialog_Rescue_Data.cc:65
 msgid "Data found with inconsistencies"
 msgstr "Data funnet med uoverensstemmelser"
 
-#: ../src/Dialog_Rescue_Data.cc:63
+#: ../src/Dialog_Rescue_Data.cc:67
 msgid "WARNING!: The file systems marked with (!) are inconsistent."
-msgstr "Advarsel!: Filsystemene merket med (!) er med uoverensstemmelser ."
+msgstr "Advarsel: Filsystemene merket med (!) har uoverensstemmelser ."
 
-#: ../src/Dialog_Rescue_Data.cc:65
+#: ../src/Dialog_Rescue_Data.cc:69
 msgid "You might encounter errors trying to view these file systems."
 msgstr "Du kan støte på feil ved å prøve å vise disse filsystemene."
 
-#: ../src/Dialog_Rescue_Data.cc:81
+#: ../src/Dialog_Rescue_Data.cc:84
 msgid "The 'View' buttons create read-only views of each file system."
-msgstr "'Vis' knappene lager skrivebeskyttede visninger av hvert filsystem."
+msgstr "«Vis»-knappene lager skrivebeskyttede visninger av hvert filsystem."
 
-#: ../src/Dialog_Rescue_Data.cc:83
+#: ../src/Dialog_Rescue_Data.cc:86
 msgid "All mounted views will be unmounted when you close this dialog."
 msgstr ""
 "Alle monterte visninger vil bli avmontert når du lukker denne dialogen."
 
-#: ../src/Dialog_Rescue_Data.cc:106
+#: ../src/Dialog_Rescue_Data.cc:109
 msgid "File systems"
 msgstr "Filsystemer"
 
 #. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
-#: ../src/Dialog_Rescue_Data.cc:128
+#: ../src/Dialog_Rescue_Data.cc:131
 msgid "#%1: %2 (%3 MiB)"
 msgstr "#%1: %2 (%3 MiB)"
 
-#: ../src/Dialog_Rescue_Data.cc:136
+#: ../src/Dialog_Rescue_Data.cc:139
 msgid "View"
 msgstr "Vis"
 
-#: ../src/Dialog_Rescue_Data.cc:166
+#: ../src/Dialog_Rescue_Data.cc:169
 msgid ""
 "An error occurred while creating a temporary directory for use as a mount "
 "point."
@@ -686,19 +824,19 @@ msgstr ""
 "Det oppstod en feil under oppretting av en midlertidig mappe for bruk som et "
 "monteringspunkt."
 
-#: ../src/Dialog_Rescue_Data.cc:168
+#: ../src/Dialog_Rescue_Data.cc:171
 msgid "Error"
 msgstr "Feil"
 
-#: ../src/Dialog_Rescue_Data.cc:174
+#: ../src/Dialog_Rescue_Data.cc:177
 msgid "Failed creating temporary directory"
 msgstr "Mislyktes å lage midlertidig mappe"
 
-#: ../src/Dialog_Rescue_Data.cc:191
+#: ../src/Dialog_Rescue_Data.cc:195
 msgid "An error occurred while creating the read-only view."
 msgstr "Det oppstod en feil ved oppretting av skrivebeskyttet visning."
 
-#: ../src/Dialog_Rescue_Data.cc:193
+#: ../src/Dialog_Rescue_Data.cc:197
 msgid ""
 "Either the file system can not be mounted (like swap), or there are "
 "inconsistencies or errors in the file system."
@@ -706,34 +844,34 @@ msgstr ""
 "Enten kan ikke filsystemet monteres (som vekselminne), eller det er "
 "uoverensstemmelser eller feil i filsystemet."
 
-#: ../src/Dialog_Rescue_Data.cc:197
+#: ../src/Dialog_Rescue_Data.cc:201
 msgid "Failed creating read-only view"
 msgstr "Mislyktes å lage skrivebeskyttet visning"
 
-#: ../src/Dialog_Rescue_Data.cc:227
+#: ../src/Dialog_Rescue_Data.cc:226
 msgid "Error:"
 msgstr "Feil:"
 
 #. TO TRANSLATORS: looks like
 #. * The file system is mounted on:
 #. * /tmp/gparted-roview-Nlhb3R.
-#: ../src/Dialog_Rescue_Data.cc:235
+#: ../src/Dialog_Rescue_Data.cc:234
 msgid "The file system is mounted on:"
 msgstr "Filsystemet er montert på:"
 
-#: ../src/Dialog_Rescue_Data.cc:240
+#: ../src/Dialog_Rescue_Data.cc:239
 msgid "Unable to open the default file manager"
-msgstr "Kan ikke åpne forvalgt fillbehandler"
+msgstr "Kan ikke åpne forvalgt filbehandler"
 
-#: ../src/Dialog_Rescue_Data.cc:259
+#: ../src/Dialog_Rescue_Data.cc:258
 msgid ""
 "Warning: The detected file system area overlaps with at least one existing "
 "partition"
 msgstr ""
-"Advarsel: Det detekterte filsystemområdet overlapper med minst en "
+"Advarsel: Det oppdagede filsystemområdet overlapper med minst en "
 "eksisterende partisjon"
 
-#: ../src/Dialog_Rescue_Data.cc:261
+#: ../src/Dialog_Rescue_Data.cc:260
 msgid ""
 "It is recommended that you do not use any overlapping file systems to avoid "
 "disturbing existing data."
@@ -741,161 +879,160 @@ msgstr ""
 "Det anbefales at du ikke bruker noen overlappende filsystemer for å unngå å "
 "forstyrre eksisterende data."
 
-#: ../src/Dialog_Rescue_Data.cc:263
+#: ../src/Dialog_Rescue_Data.cc:262
 msgid "Do you want to try to deactivate the following mount points?"
 msgstr "Vil du forsøke å deaktivere følgende monteringspunkter?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:325
+#: ../src/DMRaid.cc:327
 msgid "create missing %1 entries"
 msgstr "opprett manglende %1 oppføringer"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:424
+#: ../src/DMRaid.cc:411
 msgid "delete affected %1 entries"
 msgstr "sletting påvirket %1 oppføringer"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:447
+#: ../src/DMRaid.cc:433
 msgid "delete %1 entry"
 msgstr "slett %1 oppføring"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:497
+#: ../src/DMRaid.cc:482
 msgid "update %1 entry"
 msgstr "oppdater %1 oppføring"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/FileSystem.cc:42
+#: ../src/FileSystem.cc:46
 msgid "_Mount"
 msgstr "_Monter"
 
-#: ../src/FileSystem.cc:43
+#: ../src/FileSystem.cc:47
 msgid "_Unmount"
 msgstr "_Avmonter"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:190
+#: ../src/FileSystem.cc:230
 msgid "Created directory %1"
-msgstr "Laget katalog %1"
+msgstr "Laget mappen %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:217
+#: ../src/FileSystem.cc:256
 msgid "Removed directory %1"
-msgstr "Fjernet katalog %1"
+msgstr "Fjernet mappen %1"
+
+#. Adding a child after this OperationDetail has been set to prevent it is
+#. a programming bug.  However the best way to report it is by adding yet
+#. another child containing the bug report, and allowing the child to be
+#. added anyway.
+#: ../src/GParted_Core.cc:81 ../src/OperationDetail.cc:146
+msgid "GParted Bug"
+msgstr "Feil i GParted"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:189 ../src/GParted_Core.cc:198
+#: ../src/GParted_Core.cc:219 ../src/GParted_Core.cc:228
 msgid "Scanning %1"
 msgstr "Søker gjennom %1"
 
-#. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:221
+#. TO TRANSLATORS: looks like   Confirming /dev/sda
+#: ../src/GParted_Core.cc:247 ../src/GParted_Core.cc:272
 msgid "Confirming %1"
 msgstr "Bekrefter %1"
 
-#. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:233
-msgid "Ignoring device %1 with logical sector size of %2 bytes."
-msgstr "Ignorerer enhet %1 med logisk sektorstørrelse på %2 bytes."
-
-#: ../src/GParted_Core.cc:235
-msgid ""
-"GParted requires libparted version 2.2 or higher to support devices with "
-"sector sizes larger than 512 bytes."
-msgstr ""
-"GParted krever libparted versjon 2.2 eller høyere for å støtte enheter med "
-"sektorstørrelser større enn 512 bytes."
-
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:273
+#: ../src/GParted_Core.cc:301
 msgid "Searching %1 partitions"
 msgstr "Søker etter partisjoner på %1"
 
-#. TO TRANSLATORS:  unrecognized
-#. * means that the partition table for this
-#. * disk device is unknown or not recognized.
-#.
-#: ../src/GParted_Core.cc:378
-msgid "unrecognized"
-msgstr "ikke gjenkjent"
+#. TO TRANSLATORS: looks like   A partition cannot start (-2048)
+#. * before the start of the device
+#: ../src/GParted_Core.cc:341
+msgid "A partition cannot start (%1) before the start of the device"
+msgstr "En partisjon kan ikke starte (%1) før enhetens start"
+
+#. TO TRANSLATORS: looks like   A partition cannot end (2099199)
+#. * after the end of the device (2097151)
+#: ../src/GParted_Core.cc:351
+msgid "A partition cannot end (%1) after the end of the device (%2)"
+msgstr "En partisjon kan ikke slutte (%1) etter enhetens slutt (%2)"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:698
+#: ../src/GParted_Core.cc:362
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "En partisjon kan ikke ha en lengde på %1 sektorer"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:712
+#: ../src/GParted_Core.cc:373
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "En partisjon med brukte sektorer (%1) større enn lengden (%2), er ikke gyldig"
 
-#: ../src/GParted_Core.cc:823
-msgid "libparted messages"
-msgstr "liparted meldinger"
-
-#: ../src/GParted_Core.cc:1523
-msgid "Linux Unified Key Setup encryption is not yet supported."
-msgstr "Linux Unified Key Setup kryptering er foreløpig ikke støttet."
+#. TO TRANSLATORS:  unrecognized
+#. * means that the partition table for this disk
+#. * device is unknown or not recognized.
+#.
+#: ../src/GParted_Core.cc:786
+msgid "unrecognized"
+msgstr "ikke gjenkjent"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1627
+#: ../src/GParted_Core.cc:1338
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Kan ikke finne filsystem! Mulige årsaker er:"
 
-#: ../src/GParted_Core.cc:1629
+#: ../src/GParted_Core.cc:1340
 msgid "The file system is damaged"
 msgstr "Filsystemet er skadet"
 
-#: ../src/GParted_Core.cc:1631
+#: ../src/GParted_Core.cc:1342
 msgid "The file system is unknown to GParted"
 msgstr "Filsystemet er ukjent for GParted"
 
-#: ../src/GParted_Core.cc:1633
+#: ../src/GParted_Core.cc:1344
 msgid "There is no file system available (unformatted)"
 msgstr "Ingen filsystemer tilgjengelig (uformatert)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1636
+#: ../src/GParted_Core.cc:1347
 msgid "The device entry %1 is missing"
 msgstr "Enhetsoppføring %1 mangler"
 
-#: ../src/GParted_Core.cc:1786
+#: ../src/GParted_Core.cc:1496
 msgid "Unable to find mount point"
 msgstr "Kan ikke finne monteringspunkt"
 
-#: ../src/GParted_Core.cc:1916
+#: ../src/GParted_Core.cc:1614
 msgid "Unable to read the contents of this file system!"
-msgstr "Kan ikke lese innholdet av dette filsystemet!"
+msgstr "Kan ikke lese innholdet i dette filsystemet!"
 
-#: ../src/GParted_Core.cc:1918
+#: ../src/GParted_Core.cc:1616
 msgid "Because of this some operations may be unavailable."
 msgstr "På grunn av dette kan noen operasjoner være utilgjengelige."
 
-#: ../src/GParted_Core.cc:1922
+#: ../src/GParted_Core.cc:1620
 msgid "The cause might be a missing software package."
 msgstr "Årsaken kan være en manglende programvarepakke."
 
-#. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1925
+#. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
+#: ../src/GParted_Core.cc:1623
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr ""
 "Følgende liste over programvarepakker er påkrevd for %1 filsystem-støtte: %2."
 
-#. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1935
+#. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
+#: ../src/GParted_Core.cc:1633
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 av ledig plass innenfor partisjonen."
 
-#. TO TRANSLATORS:  To grow the file system to fill the partition, select the partition and choose the menu item:
+#. TO TRANSLATORS: To grow the file system to fill the partition, select the partition and choose the menu item:
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1946
+#: ../src/GParted_Core.cc:1643
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -903,11 +1040,11 @@ msgstr ""
 "For å øke filsystemet til å fylle partisjonen, velg partisjonen og deretter "
 "velg menyelementet:"
 
-#: ../src/GParted_Core.cc:1948
+#: ../src/GParted_Core.cc:1645
 msgid "Partition --> Check."
 msgstr "Partisjon → Sjekk."
 
-#: ../src/GParted_Core.cc:2059
+#: ../src/GParted_Core.cc:1759
 msgid "create empty partition"
 msgstr "opprett tom partisjon"
 
@@ -921,90 +1058,127 @@ msgstr "opprett tom partisjon"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:2133 ../src/GParted_Core.cc:3417
+#: ../src/GParted_Core.cc:1835 ../src/GParted_Core.cc:3498
 msgid "path: %1 (%2)"
 msgstr "sti: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2134 ../src/GParted_Core.cc:3420
+#: ../src/GParted_Core.cc:1836 ../src/GParted_Core.cc:3502
 msgid "partition"
 msgstr "partisjon"
 
-#: ../src/GParted_Core.cc:2135 ../src/GParted_Core.cc:3421
+#: ../src/GParted_Core.cc:1837 ../src/GParted_Core.cc:3503
 msgid "start: %1"
 msgstr "start: %1"
 
-#: ../src/GParted_Core.cc:2136 ../src/GParted_Core.cc:3422
+#: ../src/GParted_Core.cc:1838 ../src/GParted_Core.cc:3504
 msgid "end: %1"
 msgstr "slutt: %1"
 
-#: ../src/GParted_Core.cc:2137 ../src/GParted_Core.cc:3423
+#: ../src/GParted_Core.cc:1839 ../src/GParted_Core.cc:3505
 msgid "size: %1 (%2)"
 msgstr "størrelse: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2169 ../src/linux_swap.cc:172
+#: ../src/GParted_Core.cc:1871
+msgid ""
+"partition contains open LUKS encryption for a create file system only step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun oppretter "
+"filsystemet"
+
+#. TO TRANSLATORS: looks like create new ext3 file system
+#: ../src/GParted_Core.cc:1878
 msgid "create new %1 file system"
 msgstr "lag nytt %1 filsystem"
 
-#: ../src/GParted_Core.cc:2211
+#: ../src/GParted_Core.cc:1910
+msgid ""
+"partition contains open LUKS encryption for a format file system only step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun formaterer "
+"filsystemet"
+
+#: ../src/GParted_Core.cc:1926
 msgid "delete partition"
 msgstr "slett partisjon"
 
-#: ../src/GParted_Core.cc:2266
+#: ../src/GParted_Core.cc:1970
+msgid ""
+"partition contains open LUKS encryption for a delete file system only step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun sletter "
+"filsystemet"
+
+#: ../src/GParted_Core.cc:1985
 msgid "delete %1 file system"
 msgstr "slett %1 filsystem"
 
+#: ../src/GParted_Core.cc:2003
+msgid ""
+"partition contains open LUKS encryption for a label file system only step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun endrer "
+"filsystemets navn"
+
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2283 ../src/OperationLabelFileSystem.cc:58
+#: ../src/GParted_Core.cc:2010 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "Slett navnet på filsystemet %1"
 
-#: ../src/GParted_Core.cc:2286
+#: ../src/GParted_Core.cc:2013
 msgid "Set file system label to \"%1\" on %2"
-msgstr "Sett filsystem navn til \"%1\" på %2"
+msgstr "Sett filsystemets navn til «%1» på %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2315 ../src/OperationNamePartition.cc:59
+#: ../src/GParted_Core.cc:2038 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "Fjern navnet til partisjon %1"
 
-#: ../src/GParted_Core.cc:2318
+#: ../src/GParted_Core.cc:2041
 msgid "Set partition name to \"%1\" on %2"
-msgstr "Sett navnet \"%1\" på partisjon %2"
+msgstr "Sett navnet «%1» på partisjon %2"
 
-#: ../src/GParted_Core.cc:2343
+#: ../src/GParted_Core.cc:2066
+msgid ""
+"partition contains open LUKS encryption for a change file system UUID only "
+"step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun endrer "
+"filsystemets UUID"
+
+#: ../src/GParted_Core.cc:2073
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Sett halve UUID-verdien på %1 til en ny tilfeldig verdi"
 
-#: ../src/GParted_Core.cc:2348
+#: ../src/GParted_Core.cc:2078
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Sett UUID på %1 til en ny tilfeldig verdi"
 
-#. TO TRANSLATORS:  moving requires old and new length to be the same
-#. * means that the length in bytes of the old partition and new partition
-#. * must be the same.  If the sector sizes of the old partition and the
-#. * new partition are the same, then the length in sectors must be the same.
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to change the size of a partition when performing a move only
+#. * step which is not permitted to change the partition size.
 #.
-#: ../src/GParted_Core.cc:2431
-msgid "moving requires old and new length to be the same"
-msgstr "flytting krever at gammel og ny lengde er den samme"
+#: ../src/GParted_Core.cc:2162
+msgid "size of the partition is changing for a move only step"
+msgstr "partisjonens størrelse endres for et steg som kun flytter"
 
-#: ../src/GParted_Core.cc:2461
-msgid "rollback last change to the partition table"
-msgstr "rull tilbake siste endring i partisjonstabellen"
+#: ../src/GParted_Core.cc:2193
+msgid "rollback last change to the partition"
+msgstr "rull tilbake siste endring av partisjonen"
 
-#: ../src/GParted_Core.cc:2503
+#: ../src/GParted_Core.cc:2242
 msgid "move file system to the left"
 msgstr "flytt filsystem til venstre"
 
-#: ../src/GParted_Core.cc:2505
+#: ../src/GParted_Core.cc:2244
 msgid "move file system to the right"
 msgstr "flytt filsystem til høyre"
 
-#: ../src/GParted_Core.cc:2508
+#: ../src/GParted_Core.cc:2247
 msgid "move file system"
 msgstr "flytt filsystem"
 
-#: ../src/GParted_Core.cc:2510
+#: ../src/GParted_Core.cc:2249
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1012,51 +1186,75 @@ msgstr ""
 "nytt og gammelt filsystem har samme plassering. Hopper derfor over denne "
 "operasjonen"
 
-#: ../src/GParted_Core.cc:2573
+#: ../src/GParted_Core.cc:2315
 msgid "using libparted"
 msgstr "bruker libparted"
 
-#: ../src/GParted_Core.cc:2636
-msgid "resizing requires old and new start to be the same"
-msgstr "endring av størrelse krever at gammel og ny start er den samme"
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to move the start of the partition when performing a resize
+#. * only step which is not permitted to change the start of the
+#. * partition.
+#.
+#: ../src/GParted_Core.cc:2389
+msgid "start of the partition is changing for a resize only step"
+msgstr "partisjonens start endres for et steg som kun endrer størrelse"
 
-#: ../src/GParted_Core.cc:2706
+#: ../src/GParted_Core.cc:2407
+msgid ""
+"partition does not contain LUKS encryption for a resize encryption only step"
+msgstr ""
+"partisjonen inneholder ikke LUKS-kryptering for et steg som kun endrer "
+"størrelsen"
+
+#: ../src/GParted_Core.cc:2417
+msgid "impossible to shrink a closed LUKS encryption volume"
+msgstr "det er umulig å krympe et lukket LUKS-kryptert dataområde"
+
+#: ../src/GParted_Core.cc:2476
+msgid ""
+"partition contains open LUKS encryption for a resize file system only step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun endrer "
+"filsystemets størrelse"
+
+#: ../src/GParted_Core.cc:2546
 msgid "resize/move partition"
 msgstr "endre størrelse/flytt partisjon"
 
-#: ../src/GParted_Core.cc:2709
+#: ../src/GParted_Core.cc:2549
 msgid "move partition to the right"
 msgstr "flytt partisjonen til høyre"
 
-#: ../src/GParted_Core.cc:2712
+#: ../src/GParted_Core.cc:2552
 msgid "move partition to the left"
 msgstr "flytt partisjonen til venstre"
 
-#: ../src/GParted_Core.cc:2715
+#: ../src/GParted_Core.cc:2555
 msgid "grow partition from %1 to %2"
 msgstr "øk partisjonen fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2718
+#: ../src/GParted_Core.cc:2558
 msgid "shrink partition from %1 to %2"
 msgstr "krymp partisjonen fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2721
+#: ../src/GParted_Core.cc:2561
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "flytt partisjonen til høyre og øk den fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2724
+#: ../src/GParted_Core.cc:2564
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "flytt partisjonen til høyre og krymp den fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2727
+#: ../src/GParted_Core.cc:2567
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "flytt partisjonen til venstre og øk den fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2730
+#: ../src/GParted_Core.cc:2570
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "flytt partisjonen til venstre og krymp den fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2745
+#: ../src/GParted_Core.cc:2585
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1064,399 +1262,553 @@ msgstr ""
 "ny og gammel partisjon har samme størrelse og plassering. Hopper derfor over "
 "denne operasjonen"
 
-#: ../src/GParted_Core.cc:2755
+#: ../src/GParted_Core.cc:2595
 msgid "old start: %1"
 msgstr "gammel start: %1"
 
-#: ../src/GParted_Core.cc:2756
+#: ../src/GParted_Core.cc:2596
 msgid "old end: %1"
 msgstr "gammel slutt: %1"
 
-#: ../src/GParted_Core.cc:2757
+#: ../src/GParted_Core.cc:2597
 msgid "old size: %1 (%2)"
 msgstr "gammel størrelse: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2822 ../src/GParted_Core.cc:3501
+#: ../src/GParted_Core.cc:2612 ../src/GParted_Core.cc:3586
 msgid "new start: %1"
 msgstr "ny start: %1"
 
-#: ../src/GParted_Core.cc:2823 ../src/GParted_Core.cc:3502
+#: ../src/GParted_Core.cc:2613 ../src/GParted_Core.cc:3587
 msgid "new end: %1"
 msgstr "ny slutt: %1"
 
-#: ../src/GParted_Core.cc:2824 ../src/GParted_Core.cc:3503
+#: ../src/GParted_Core.cc:2614 ../src/GParted_Core.cc:3588
 msgid "new size: %1 (%2)"
 msgstr "ny størrelse: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2851 ../src/GParted_Core.cc:3449
+#: ../src/GParted_Core.cc:2628 ../src/GParted_Core.cc:3539
 msgid "requested start: %1"
 msgstr "forespurt start: %1"
 
-#: ../src/GParted_Core.cc:2852 ../src/GParted_Core.cc:3450
+#: ../src/GParted_Core.cc:2629 ../src/GParted_Core.cc:3540
 msgid "requested end: %1"
 msgstr "forespurt slutt: %1"
 
-#: ../src/GParted_Core.cc:2853 ../src/GParted_Core.cc:3451
+#: ../src/GParted_Core.cc:2630 ../src/GParted_Core.cc:3541
 msgid "requested size: %1 (%2)"
 msgstr "forespurt størrelse: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2878
+#: ../src/GParted_Core.cc:2642
+msgid "attempt to rollback failed change to the partition"
+msgstr "forsøk å rulle tilbake mislykket partisjonsendring"
+
+#: ../src/GParted_Core.cc:2663
+msgid "original start: %1"
+msgstr "opprinnelig start: %1"
+
+#: ../src/GParted_Core.cc:2664
+msgid "original end: %1"
+msgstr "opprinnelig slutt: %1"
+
+#: ../src/GParted_Core.cc:2665
+msgid "original size: %1 (%2)"
+msgstr "opprinnelig størrelse: %1 (%2)"
+
+#: ../src/GParted_Core.cc:2747
+msgid ""
+"partition does not contain open LUKS encryption for a shrink encryption only "
+"step"
+msgstr ""
+"partisjonen inneholder ikke åpen LUKS-kryptering for et steg som kun krymper "
+"krypteringen"
+
+#: ../src/GParted_Core.cc:2752
+msgid "shrink encryption volume"
+msgstr "krymp kryptert dataområde"
+
+#: ../src/GParted_Core.cc:2763
+msgid ""
+"partition does not contain LUKS encryption for a maximize encryption only "
+"step"
+msgstr ""
+"partisjonen inneholder ikke LUKS-kryptering for et steg som kun maksimerer "
+"krypteringen"
+
+#: ../src/GParted_Core.cc:2768
+msgid "grow encryption volume to fill the partition"
+msgstr "øk kryptert dataområde slik at det fyller partisjonen"
+
+#: ../src/GParted_Core.cc:2778
+msgid "growing is not available for this encryption volume"
+msgstr "det er ikke mulig å øke størrelsen for dette krypterte dataområdet"
+
+#: ../src/GParted_Core.cc:2796
+msgid ""
+"partition contains open LUKS encryption for a shrink file system only step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun krymper "
+"filsystemet"
+
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to grow the partition size or keep it the same when performing
+#. * a shrink partition only step.
+#.
+#: ../src/GParted_Core.cc:2808
+msgid "the new partition size is larger or the same for a shrink only step"
+msgstr ""
+"den nye partisjonsstørrelsen er større enn eller lik for et steg som kun "
+"krymper"
+
+#: ../src/GParted_Core.cc:2813
 msgid "shrink file system"
 msgstr "krymp filsystem"
 
-#: ../src/GParted_Core.cc:2882
-msgid "grow file system"
-msgstr "øk filsystem"
-
-#: ../src/GParted_Core.cc:2885
-msgid "resize file system"
-msgstr "endre størrelse på filsystem"
-
-#: ../src/GParted_Core.cc:2888
+#: ../src/GParted_Core.cc:2824
 msgid ""
-"new and old file system have the same size.  Hence skipping this operation"
+"partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
-"nytt og gammelt filsystem har samme størrelse. Hopper derfor over denne "
-"operasjonen"
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun maksimerer "
+"filsystemet"
 
-#: ../src/GParted_Core.cc:2929
+#: ../src/GParted_Core.cc:2829
 msgid "grow file system to fill the partition"
 msgstr "øk filsystemet slik at det fyller partisjonen"
 
-#: ../src/GParted_Core.cc:2934
+#: ../src/GParted_Core.cc:2840
 msgid "growing is not available for this file system"
 msgstr "det er ikke mulig å øke størrelsen for dette filsystemet"
 
-#: ../src/GParted_Core.cc:2943
+#: ../src/GParted_Core.cc:2848
 msgid "growing the file system is currently disallowed"
 msgstr "øke størrelsen på filsystemet er for tiden ikke tillatt"
 
-#: ../src/GParted_Core.cc:2969
+#. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
+#: ../src/GParted_Core.cc:2872
+msgid "not a %1 file system for a recreate %1 only step"
+msgstr "ikke et %1-filsystem for et steg som kun skulle gjendanne %1"
+
+#. TO TRANSLATORS: looks like   recreate linux-swap file system
+#: ../src/GParted_Core.cc:2884
+msgid "recreate %1 file system"
+msgstr "gjendann %1-filsystem"
+
+#: ../src/GParted_Core.cc:2953
 msgid "the destination is smaller than the source partition"
 msgstr "målet er mindre enn kildepartisjonen"
 
-#: ../src/GParted_Core.cc:2992
-msgid "copy file system of %1 to %2"
+#: ../src/GParted_Core.cc:3004
+msgid ""
+"source partition contains open LUKS encryption for a file system copy only "
+"step"
+msgstr ""
+"kildepartisjonen inneholder åpen LUKS-kryptering for et steg som kun "
+"kopierer filsystemet"
+
+#: ../src/GParted_Core.cc:3011
+msgid ""
+"destination partition contains open LUKS encryption for a file system copy "
+"only step"
+msgstr ""
+"målpartisjonen inneholder åpen LUKS-kryptering for et steg som kun kopierer "
+"filsystemet"
+
+#: ../src/GParted_Core.cc:3017
+msgid "copy file system from %1 to %2"
 msgstr "kopier filsystem fra %1 til %2"
 
-#: ../src/GParted_Core.cc:3088
+#: ../src/GParted_Core.cc:3098
 msgid "using internal algorithm"
 msgstr "bruker intern algoritme"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3091
+#: ../src/GParted_Core.cc:3101
 msgid "copy %1"
 msgstr "kopiert %1"
 
-#: ../src/GParted_Core.cc:3094
+#: ../src/GParted_Core.cc:3104
 msgid "finding optimal block size"
 msgstr "finner optimal blokkstørrelse"
 
-#: ../src/GParted_Core.cc:3135
+#. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:3135 ../src/GParted_Core.cc:3181
+msgid "copy %1 using a block size of %2"
+msgstr "kopier %1 med blokkstørrelse %2"
+
+#: ../src/GParted_Core.cc:3153
 msgid "%1 seconds"
 msgstr "%1 sekunder"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3153
+#: ../src/GParted_Core.cc:3172
 msgid "optimal block size is %1"
 msgstr "optimal blokkstørrelse er %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3170
+#: ../src/GParted_Core.cc:3199
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) kopiert"
 
-#: ../src/GParted_Core.cc:3203
-msgid "roll back last transaction"
-msgstr "rull tilbake siste transaksjon"
+#: ../src/GParted_Core.cc:3237
+msgid "rollback failed file system move"
+msgstr "rull tilbake mislykket flytting av filsystem"
+
+#: ../src/GParted_Core.cc:3260
+msgid ""
+"partition contains open LUKS encryption for a check file system only step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun sjekker "
+"filsystemet"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3217
+#: ../src/GParted_Core.cc:3272
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "sjekk filsystem på %1 for feil og (hvis mulig) rett dem"
 
-#: ../src/GParted_Core.cc:3226
+#: ../src/GParted_Core.cc:3281
 msgid "checking is not available for this file system"
 msgstr "sjekk er ikke tilgjengelig for dette filsystemet"
 
-#: ../src/GParted_Core.cc:3255
+#: ../src/GParted_Core.cc:3346
 msgid "set partition type on %1"
 msgstr "sett partisjonstype på %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3298
+#: ../src/GParted_Core.cc:3392
 msgid "new partition type: %1"
 msgstr "ny partisjonstype: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3313
+#: ../src/GParted_Core.cc:3407
 msgid "new partition flag: %1"
 msgstr "nytt partisjonsflagg: %1"
 
-#: ../src/GParted_Core.cc:3340
+#: ../src/GParted_Core.cc:3436
 msgid "calibrate %1"
 msgstr "kalibrer %1"
 
-#: ../src/GParted_Core.cc:3419
+#: ../src/GParted_Core.cc:3501
 msgid "device"
 msgstr "enhet"
 
-#: ../src/GParted_Core.cc:3445
+#: ../src/GParted_Core.cc:3515
+msgid "encryption path: %1"
+msgstr "krypteringssti: %1"
+
+#: ../src/GParted_Core.cc:3535
 msgid "calculate new size and position of %1"
 msgstr "beregn ny størrelse og plassering av %1"
 
-#: ../src/GParted_Core.cc:3561
+#: ../src/GParted_Core.cc:3664
+msgid ""
+"partition contains open LUKS encryption for an erase file system signatures "
+"only step"
+msgstr ""
+"partisjonen inneholder åpen LUKS-kryptering for et steg som kun sletter "
+"filsystem-signaturer"
+
+#: ../src/GParted_Core.cc:3671
 msgid "clear old file system signatures in %1"
 msgstr "slett gamle filsystem-signaturer i %1"
 
-#: ../src/GParted_Core.cc:3730
+#: ../src/GParted_Core.cc:3877
 msgid "flush operating system cache of %1"
 msgstr "tøm hurtiglager for operativsystem på %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3762
+#: ../src/GParted_Core.cc:3909
 msgid "update boot sector of %1 file system on %2"
 msgstr "oppdater oppstartssektor for %1 filsystem på %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3798
+#: ../src/GParted_Core.cc:3945
 msgid "Error trying to write to boot sector in %1"
 msgstr "Feil ved forsøk på å skrive til oppstartssektor i %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3804
+#: ../src/GParted_Core.cc:3951
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Feil ved forsøk på å søke til posisjon 0x1c i %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3811
+#: ../src/GParted_Core.cc:3958
 msgid "Error trying to open %1"
 msgstr "Feil ved forsøk på å åpne %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3821
+#: ../src/GParted_Core.cc:3968
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Klarte ikke å sette antall skjulte sektorer til %1 i NTFS-oppstartsposten."
 
-#: ../src/GParted_Core.cc:3823
+#: ../src/GParted_Core.cc:3970
 msgid "You might try the following command to correct the problem:"
 msgstr "Du kan prøve følgende kommando for å rette opp problemet:"
 
-#: ../src/GParted_Core.cc:4012
+#: ../src/GParted_Core.cc:4044
+msgid "libparted messages"
+msgstr "liparted meldinger"
+
+#: ../src/GParted_Core.cc:4240
 msgid "Libparted Information"
 msgstr "Informasjon fra libparted"
 
-#: ../src/GParted_Core.cc:4016
+#: ../src/GParted_Core.cc:4244
 msgid "Libparted Warning"
 msgstr "Libparted-advarsel"
 
-#: ../src/GParted_Core.cc:4020
+#: ../src/GParted_Core.cc:4248
 msgid "Libparted Error"
 msgstr "Libparted-feil"
 
-#: ../src/GParted_Core.cc:4023
+#: ../src/GParted_Core.cc:4251
 msgid "Libparted Fatal"
 msgstr "Libparted kritisk"
 
-#: ../src/GParted_Core.cc:4026
+#: ../src/GParted_Core.cc:4254
 msgid "Libparted Bug"
 msgstr "Libparted feil"
 
-#: ../src/GParted_Core.cc:4029
+#: ../src/GParted_Core.cc:4257
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted ikke støttet funksjon"
 
-#: ../src/GParted_Core.cc:4032
+#: ../src/GParted_Core.cc:4260
 msgid "Libparted unknown exception"
 msgstr "Libparted ukjent unntak"
 
-#: ../src/GParted_Core.cc:4036
+#: ../src/GParted_Core.cc:4264
 msgid "Fix"
 msgstr "Fiks"
 
-#: ../src/GParted_Core.cc:4038
+#: ../src/GParted_Core.cc:4266
 msgid "Yes"
 msgstr "Ja"
 
-#: ../src/GParted_Core.cc:4040
+#: ../src/GParted_Core.cc:4268
 msgid "Ok"
 msgstr "Ok"
 
-#: ../src/GParted_Core.cc:4042
+#: ../src/GParted_Core.cc:4270
 msgid "Retry"
 msgstr "Prøv igjen"
 
-#: ../src/GParted_Core.cc:4044
+#: ../src/GParted_Core.cc:4272
 msgid "No"
 msgstr "Nei"
 
-#: ../src/GParted_Core.cc:4046
+#: ../src/GParted_Core.cc:4274
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../src/GParted_Core.cc:4048
+#: ../src/GParted_Core.cc:4276
 msgid "Ignore"
 msgstr "Ignorer"
 
-#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:164
+#: ../src/HBoxOperations.cc:48 ../src/Win_GParted.cc:194
 msgid "_Undo Last Operation"
 msgstr "A_ngre siste operasjon"
 
-#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:170
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:202
 msgid "_Clear All Operations"
 msgstr "_Fjern alle operasjoner"
 
-#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:175
+#: ../src/HBoxOperations.cc:62 ../src/Win_GParted.cc:209
 msgid "_Apply All Operations"
 msgstr "_Utfør alle operasjoner"
 
-#: ../src/LVM2_PV_Info.cc:170
+#: ../src/LVM2_PV_Info.cc:196
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr ""
 "Et eller flere fysiske dataområder tilhørende det grupperte dataområdet "
 "mangler."
 
-#: ../src/LVM2_PV_Info.cc:298
+#: ../src/LVM2_PV_Info.cc:324
 msgid "An error occurred reading LVM2 configuration!"
-msgstr "Feil ved lesing LVM2 konfigurasjonen!"
+msgstr "Feil ved lesing av LVM2-oppsettet!"
 
-#: ../src/LVM2_PV_Info.cc:300
+#: ../src/LVM2_PV_Info.cc:326
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "Noen eller alle detaljene kan mangle eller være feil."
 
-#: ../src/LVM2_PV_Info.cc:302
+#: ../src/LVM2_PV_Info.cc:328
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "Du bør IKKE endre noen LVM2 PV-partisjoner."
 
 #. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
-#: ../src/OperationChangeUUID.cc:59
+#: ../src/OperationChangeUUID.cc:56
 msgid "Set half the UUID to a new random value on %1 file system on %2"
 msgstr "Sett halve UUIDen til en ny tilfeldig verdi på %1 filsystem på %2"
 
 #. TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on /dev/sda1
-#: ../src/OperationChangeUUID.cc:65
+#: ../src/OperationChangeUUID.cc:63
 msgid "Set a new random UUID on %1 file system on %2"
 msgstr "Sett en ny tilfeldig UUID på %1 filsystem på %2"
 
-#: ../src/OperationCopy.cc:36
-msgid "copy of %1"
-msgstr "kopi av %1"
-
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:79
+#: ../src/OperationCopy.cc:83
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "Kopier %1 til %2 (start ved %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:87
+#: ../src/OperationCopy.cc:92
 msgid "Copy %1 to %2"
 msgstr "Kopier %1 til %2"
 
+#. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
-#: ../src/OperationCheck.cc:37
+#: ../src/OperationCheck.cc:50
 msgid "Check and repair file system (%1) on %2"
 msgstr "Sjekk og reparer filsystem (%1) på %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
-#: ../src/OperationCreate.cc:87
+#: ../src/OperationCreate.cc:71
 msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "Lag %1 #%2 (%3, %4) på %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:81
+#: ../src/OperationDelete.cc:114
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Slett %1 (%2, %3) fra %4"
 
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug.  More
+#. * information about a step is being added after the step was
+#. * marked as complete.  This bug description as well as the
+#. * information being added will be visible in the details of the
+#. * applied operations.
+#.
+#: ../src/OperationDetail.cc:154
+msgid ""
+"Adding more information to the results of this step after it has been marked "
+"as completed"
+msgstr ""
+"Legger til mer informasjon til resultatet for dette trinnet etter at det "
+"markeres som fullført"
+
+#. Bug: Not initialised by constructor or reset later
+#. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
-#: ../src/OperationFormat.cc:72
+#: ../src/OperationFormat.cc:75
 msgid "Format %1 as %2"
 msgstr "Formater %1 som %2"
 
 #. TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3
-#: ../src/OperationLabelFileSystem.cc:62
+#: ../src/OperationLabelFileSystem.cc:61
 msgid "Set file system label \"%1\" on %2"
-msgstr "Sett filsystem navn \"%1\" på \"%2\""
+msgstr "Sett filsystemets navn til «%1» på «%2»"
 
 #. TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3
-#: ../src/OperationNamePartition.cc:65
+#: ../src/OperationNamePartition.cc:61
 msgid "Set partition name \"%1\" on %2"
-msgstr "Sett navnet \"%1\" på partisjon %2"
+msgstr "Sett navnet «%1» på partisjon %2"
 
-#: ../src/OperationResizeMove.cc:86
+#: ../src/OperationResizeMove.cc:104
 msgid "resize/move %1"
 msgstr "endre størrelse på/flytt %1"
 
-#: ../src/OperationResizeMove.cc:88
+#: ../src/OperationResizeMove.cc:106
 msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
 msgstr ""
-"Ny og gammel partisjon har samme størrelse og plassering. Fortsetter likevel"
+"ny og gammel partisjon har samme størrelse og plassering.  Fortsetter likevel"
 
-#: ../src/OperationResizeMove.cc:92
+#: ../src/OperationResizeMove.cc:110
 msgid "Move %1 to the right"
 msgstr "Flytt %1 til høyre"
 
-#: ../src/OperationResizeMove.cc:95
+#: ../src/OperationResizeMove.cc:113
 msgid "Move %1 to the left"
 msgstr "Flytt  %1 til venstre"
 
-#: ../src/OperationResizeMove.cc:98
+#: ../src/OperationResizeMove.cc:116
 msgid "Grow %1 from %2 to %3"
 msgstr "Øk %1 fra %2 til %3"
 
-#: ../src/OperationResizeMove.cc:101
+#: ../src/OperationResizeMove.cc:119
 msgid "Shrink %1 from %2 to %3"
 msgstr "Krymp %1 fra %2 til %3"
 
-#: ../src/OperationResizeMove.cc:104
+#: ../src/OperationResizeMove.cc:122
 msgid "Move %1 to the right and grow it from %2 to %3"
 msgstr "Flytt %1 til høyre og øk det fra %2 til %3"
 
-#: ../src/OperationResizeMove.cc:107
+#: ../src/OperationResizeMove.cc:125
 msgid "Move %1 to the right and shrink it from %2 to %3"
 msgstr "Flytt %1 til høyre og krymp det fra %2 til %3"
 
-#: ../src/OperationResizeMove.cc:110
+#: ../src/OperationResizeMove.cc:128
 msgid "Move %1 to the left and grow it from %2 to %3"
 msgstr "Flytt %1 til venstre og øk det fra %2 til %3"
 
-#: ../src/OperationResizeMove.cc:113
+#: ../src/OperationResizeMove.cc:131
 msgid "Move %1 to the left and shrink it from %2 to %3"
 msgstr "Flytt %1 til venstre og krymp det fra %2 til %3"
 
-#: ../src/TreeView_Detail.cc:35
+#. TO TRANSLATORS: Primary
+#. * A "Primary" type of partition on a partitioned drive.
+#.
+#: ../src/Partition.cc:403
+msgid "Primary"
+msgstr "Primær"
+
+#. TO TRANSLATORS: Logical
+#. * A "Logical" type of partition on a partitioned drive.
+#.
+#: ../src/Partition.cc:408
+msgid "Logical"
+msgstr "Logisk"
+
+#. TO TRANSLATORS: Extended
+#. * An "Extended" type of partition on a partitioned drive.
+#.
+#: ../src/Partition.cc:413
+msgid "Extended"
+msgstr "Utvidet"
+
+#. TO TRANSLATORS: Unallocated
+#. * Unused space outside of any partition on a partitioned drive.
+#.
+#: ../src/Partition.cc:418
+msgid "Unallocated"
+msgstr "Ikke allokert"
+
+#. TO TRANSLATORS: Unpartitioned
+#. * A drive which has no partition table.
+#.
+#: ../src/Partition.cc:423
+msgid "Unpartitioned"
+msgstr "Ikke partisjonert"
+
+#. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/ProgressBar.cc:98
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%1 av %2 kopiert (%3 gjenstår)"
+
+#: ../src/TreeView_Detail.cc:46
 msgid "Name"
 msgstr "Navn"
 
-#: ../src/TreeView_Detail.cc:37
-msgid "Mount Point"
-msgstr "Monteringspunkt"
-
-#: ../src/TreeView_Detail.cc:39
+#: ../src/TreeView_Detail.cc:50
 msgid "Size"
 msgstr "Størrelse"
 
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:51
 msgid "Used"
 msgstr "Brukt"
 
-#: ../src/TreeView_Detail.cc:41
+#: ../src/TreeView_Detail.cc:52
 msgid "Unused"
 msgstr "Ubrukt"
 
-#: ../src/TreeView_Detail.cc:42
-msgid "Flags"
-msgstr "Flagg"
-
 #. TO TRANSLATORS:  unallocated
-#. * means that this space on the disk device does
-#. * not contain a recognized file system, and is in
-#. * other words unallocated.
+#. * means that this space on the disk device is
+#. * outside any partition, so is in other words
+#. * unallocated.
 #.
-#: ../src/Utils.cc:240
+#: ../src/Utils.cc:318
 msgid "unallocated"
 msgstr "ikke allokert"
 
@@ -1465,305 +1817,306 @@ msgstr "ikke allokert"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:247
+#: ../src/Utils.cc:325
 msgid "unknown"
 msgstr "ukjent"
 
 #. TO TRANSLATORS:  unformatted
-#. * means that the space within this partition will not
-#. * be formatted with a known file system by GParted.
+#. * means that when the new partition is created by
+#. * GParted the space within it will not be formatted
+#. * with a file system.
 #.
-#: ../src/Utils.cc:253
+#: ../src/Utils.cc:332
 msgid "unformatted"
 msgstr "ikke formatert"
+
+#. TO TRANSLATORS:  other
+#. * name shown in the File System Support dialog to list
+#. * actions which can be performed on other file systems
+#. * not specifically listed as supported.
+#.
+#: ../src/Utils.cc:339
+msgid "other"
+msgstr "annen"
 
 #. TO TRANSLATORS:  cleared
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:259
+#: ../src/Utils.cc:345
 msgid "cleared"
 msgstr "fjernet"
 
-#: ../src/Utils.cc:279
+#: ../src/Utils.cc:377
 msgid "used"
 msgstr "brukt"
 
-#: ../src/Utils.cc:280
+#: ../src/Utils.cc:378
 msgid "unused"
 msgstr "ubrukt"
 
-#: ../src/Utils.cc:443
+#. TO TRANSLATORS: means that this is an encrypted file system
+#: ../src/Utils.cc:386
+msgid "Encrypted"
+msgstr "Kryptert"
+
+#: ../src/Utils.cc:517
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:448
+#: ../src/Utils.cc:522
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:453
+#: ../src/Utils.cc:527
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:458
+#: ../src/Utils.cc:532
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:463
+#: ../src/Utils.cc:537
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:148
+#: ../src/Win_GParted.cc:168
 msgid "_Refresh Devices"
 msgstr "Oppdate_r enheter"
 
-#: ../src/Win_GParted.cc:154
+#: ../src/Win_GParted.cc:176
 msgid "_Devices"
 msgstr "_Enheter"
 
-#: ../src/Win_GParted.cc:159
+#: ../src/Win_GParted.cc:188
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:179
+#: ../src/Win_GParted.cc:217
 msgid "_Edit"
 msgstr "R_ediger"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:225
 msgid "Device _Information"
 msgstr "_Informasjon om enhet"
 
-#: ../src/Win_GParted.cc:186
+#: ../src/Win_GParted.cc:230
 msgid "Pending _Operations"
 msgstr "Utestående _operasjoner"
 
-#: ../src/Win_GParted.cc:187
+#: ../src/Win_GParted.cc:235
 msgid "_View"
 msgstr "_Vis"
 
-#: ../src/Win_GParted.cc:191
+#: ../src/Win_GParted.cc:242
 msgid "_File System Support"
 msgstr "Støtte for _filsystem"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:250
 msgid "_Create Partition Table"
 msgstr "_Lag partisjonstabell"
 
-#: ../src/Win_GParted.cc:198
+#: ../src/Win_GParted.cc:255
 msgid "_Attempt Data Rescue"
 msgstr "_Forsøk gjenoppretting av data"
 
-#: ../src/Win_GParted.cc:201
+#: ../src/Win_GParted.cc:260
 msgid "_Device"
 msgstr "_Enhet"
 
-#: ../src/Win_GParted.cc:205
+#: ../src/Win_GParted.cc:268
 msgid "_Partition"
 msgstr "_Partisjon"
 
-#: ../src/Win_GParted.cc:210
+#: ../src/Win_GParted.cc:276
 msgid "_Contents"
 msgstr "_Innhold"
 
-#: ../src/Win_GParted.cc:218
+#: ../src/Win_GParted.cc:290
 msgid "_Help"
 msgstr "_Hjelp"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:230
+#: ../src/Win_GParted.cc:304
 msgid "New"
 msgstr "Ny"
 
-#: ../src/Win_GParted.cc:235
+#: ../src/Win_GParted.cc:309
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Lag en ny partisjon i valgte ikke-allokert plass"
 
-#: ../src/Win_GParted.cc:240
+#: ../src/Win_GParted.cc:317
 msgid "Delete the selected partition"
 msgstr "Slett valgt partisjon"
 
-#: ../src/Win_GParted.cc:262
+#: ../src/Win_GParted.cc:339
 msgid "Resize/Move the selected partition"
 msgstr "Endre størrelse på eller flytt valgt partisjon"
 
-#: ../src/Win_GParted.cc:271
+#: ../src/Win_GParted.cc:351
 msgid "Copy the selected partition to the clipboard"
 msgstr "Koipier valgt partisjon til utklippstavlen"
 
-#: ../src/Win_GParted.cc:276
+#: ../src/Win_GParted.cc:359
 msgid "Paste the partition from the clipboard"
 msgstr "Lim inn partisjon fra utklippstavlen"
 
-#: ../src/Win_GParted.cc:288
+#: ../src/Win_GParted.cc:374
 msgid "Undo Last Operation"
 msgstr "Angre siste operasjon"
 
-#: ../src/Win_GParted.cc:296
+#: ../src/Win_GParted.cc:385
 msgid "Apply All Operations"
 msgstr "Utfør alle operasjoner"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:320
+#: ../src/Win_GParted.cc:409
 msgid "_New"
 msgstr "_Ny"
 
-#: ../src/Win_GParted.cc:337
+#: ../src/Win_GParted.cc:428
 msgid "_Resize/Move"
 msgstr "End_re størrelse/flytt"
 
-#: ../src/Win_GParted.cc:361
+#. TO TRANSLATORS: menuitem which holds a submenu with file systems..
+#: ../src/Win_GParted.cc:455
 msgid "_Format to"
 msgstr "_Formater til"
 
-#: ../src/Win_GParted.cc:377
+#. TO TRANSLATORS: menuitem which holds a submenu with mount points..
+#: ../src/Win_GParted.cc:480
 msgid "_Mount on"
 msgstr "_Monter på"
 
-#: ../src/Win_GParted.cc:384
+#: ../src/Win_GParted.cc:488
 msgid "_Name Partition"
 msgstr "_Navngi partisjon"
 
-#: ../src/Win_GParted.cc:389
+#: ../src/Win_GParted.cc:494
 msgid "M_anage Flags"
 msgstr "H_åndter flagg"
 
-#: ../src/Win_GParted.cc:394
+#: ../src/Win_GParted.cc:500
 msgid "C_heck"
 msgstr "S_jekk"
 
 # Label = etikett eller navn?
-#: ../src/Win_GParted.cc:399
+#: ../src/Win_GParted.cc:506
 msgid "_Label File System"
 msgstr "_Navngi filsystem"
 
-#: ../src/Win_GParted.cc:404
+#: ../src/Win_GParted.cc:512
 msgid "New UU_ID"
 msgstr "Ny UU_ID"
 
-#: ../src/Win_GParted.cc:463
+#: ../src/Win_GParted.cc:575
 msgid "Device Information"
 msgstr "Informasjon om enhet"
 
-#. model
-#: ../src/Win_GParted.cc:471
-msgid "Model:"
-msgstr "Modell:"
-
-#. Serial number
-#: ../src/Win_GParted.cc:479
-msgid "Serial:"
-msgstr "Serienummer:"
-
-#. disktype
-#: ../src/Win_GParted.cc:511
-msgid "Partition table:"
-msgstr "Partisjonstabell:"
-
-#. heads
-#: ../src/Win_GParted.cc:519
-msgid "Heads:"
-msgstr "Hoder:"
-
-#. sectors/track
-#: ../src/Win_GParted.cc:527
-msgid "Sectors/track:"
-msgstr "Sektorer/spor:"
-
-#. cylinders
-#: ../src/Win_GParted.cc:535
-msgid "Cylinders:"
-msgstr "Sylindre:"
-
-#. sector size
-#: ../src/Win_GParted.cc:551
-msgid "Sector size:"
-msgstr "Sektorstørrelse:"
-
-#: ../src/Win_GParted.cc:731
+#: ../src/Win_GParted.cc:854
 msgid "Could not add this operation to the list"
-msgstr "Kunne ikke legge denne operasjonen til listen"
+msgstr "Klarte ikke legge denne operasjonen til listen"
 
-#: ../src/Win_GParted.cc:921
+#: ../src/Win_GParted.cc:1035
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 operasjon utestående"
 msgstr[1] "%1 operasjoner utestående"
 
-#: ../src/Win_GParted.cc:1041
+#: ../src/Win_GParted.cc:1145
 msgid "Quit GParted?"
 msgstr "Avslutt GParted?"
 
-#: ../src/Win_GParted.cc:1047
+#: ../src/Win_GParted.cc:1151
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 operasjon er utestående nå."
 msgstr[1] "%1 operasjoner er utestående nå."
 
-#: ../src/Win_GParted.cc:1365
+#: ../src/Win_GParted.cc:1557
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1402
+#: ../src/Win_GParted.cc:1608
 msgid "Scanning all devices..."
-msgstr "Skanner igjennom alle enheter…"
+msgstr "Leter gjennom alle enheter …"
 
-#: ../src/Win_GParted.cc:1449
+#: ../src/Win_GParted.cc:1655
 msgid "No devices detected"
-msgstr "Ingen enheter funnet"
+msgstr "Fant ingen enheter"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1534
+#: ../src/Win_GParted.cc:1743
 msgid "No partition table found on device %1"
-msgstr "Ingen partisjonstabell ble funnet på enhet %1"
+msgstr "Fant ingen partisjonstabell på enhet %1"
 
-#: ../src/Win_GParted.cc:1539
+#: ../src/Win_GParted.cc:1748
 msgid "A partition table is required before partitions can be added."
 msgstr "En partisjonstabell er nødvendig før partisjoner kan opprettes."
 
-#: ../src/Win_GParted.cc:1541
+#: ../src/Win_GParted.cc:1750
 msgid "To create a new partition table choose the menu item:"
 msgstr "Hvis du vil opprette en ny partisjonstabell velg menyelementet:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1544
+#: ../src/Win_GParted.cc:1753
 msgid "Device --> Create Partition Table."
 msgstr "Enhet → Lag partisjonstabell."
 
-#: ../src/Win_GParted.cc:1580
+#. TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1
+#: ../src/Win_GParted.cc:1762
+msgid "Unable to resize read-only file system %1"
+msgstr "Kan ikke endre størrelsen til det skrivebeskyttede filsystemet %1"
+
+#: ../src/Win_GParted.cc:1767
+msgid "The file system can not be resized while it is mounted read-only."
+msgstr ""
+"Kan ikke endre størrelsen til filsystem som er montert skrivebeskyttet."
+
+#: ../src/Win_GParted.cc:1769
+msgid "Either unmount the file system or remount it read-write."
+msgstr "Enten avmonter filsystemet eller monter det som skrivebeskyttet."
+
+#: ../src/Win_GParted.cc:1813
 msgid "Unable to open GParted Manual help file"
-msgstr "Kan ikke åpne brukerhåndbok for GParted."
+msgstr "Kan ikke åpne brukerhåndbok for GParted"
 
-#: ../src/Win_GParted.cc:1599
+#: ../src/Win_GParted.cc:1834
 msgid "Documentation is not available"
-msgstr "Dokumentasjon er ikke tilgjengelig."
+msgstr "Dokumentasjon er ikke tilgjengelig"
 
-#: ../src/Win_GParted.cc:1604
+#: ../src/Win_GParted.cc:1839
 msgid "This build of gparted is configured without documentation."
 msgstr "Dette utgaven av gparted er konfigurert uten dokumentasjon."
 
-#: ../src/Win_GParted.cc:1606
+#: ../src/Win_GParted.cc:1841
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentasjonen er tilgjengelig på webområdet for prosjektet."
 
-#: ../src/Win_GParted.cc:1624
+#: ../src/Win_GParted.cc:1845
+msgid "GParted Manual"
+msgstr "GParteds brukerhåndbok"
+
+#: ../src/Win_GParted.cc:1860
 msgid "GNOME Partition Editor"
 msgstr "GNOME partisjonsredigering"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1657
+#: ../src/Win_GParted.cc:1897
 msgid "translator-credits"
 msgstr ""
 "Kjartan Maraas <kmaraas@gnome.org>\n"
-"ProsjektX <https://launchpad.net/~prosjektx>"
+"ProsjektX <https://launchpad.net/~prosjektx>\n"
+"Kjell Cato Heskjestad <cato@heskjestad.xyz>"
 
-#: ../src/Win_GParted.cc:1699
+#: ../src/Win_GParted.cc:1944
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Det er ikke mulig å opprette flere enn %1 primærpartisjon"
 msgstr[1] "Det er ikke mulig å opprette flere enn %1 primærpartisjoner"
 
-#: ../src/Win_GParted.cc:1711
+#: ../src/Win_GParted.cc:1956
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1775,19 +2128,19 @@ msgstr ""
 "utvidet partisjon er en primærpartisjon kan det være nødvendig å fjerne en "
 "primærpartisjon først."
 
-#: ../src/Win_GParted.cc:1792
+#: ../src/Win_GParted.cc:2081
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "Flytting av en partisjon kan føre til at operativsystemet ikke kan starte"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1800
+#: ../src/Win_GParted.cc:2088
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Du har lagt en operasjon i køen for å flytte start-sektoren til partisjonen "
 "%1."
 
-#: ../src/Win_GParted.cc:1803
+#: ../src/Win_GParted.cc:2090
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1796,195 +2149,242 @@ msgstr ""
 "GNU/Linux partisjonen som inneholder /boot, eller hvis du flytter Windows-"
 "systempartisjonen C:."
 
-#: ../src/Win_GParted.cc:1805
+#: ../src/Win_GParted.cc:2092
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "Du kan lære å reparere oppstartskonfigurasjonen i GParted FAQ."
 
-#: ../src/Win_GParted.cc:1809
+#: ../src/Win_GParted.cc:2096
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Å flytte en partisjon kan ta veldig lang tid å utføre."
 
-#: ../src/Win_GParted.cc:1925
+#: ../src/Win_GParted.cc:2172
+msgid "Copy of %1"
+msgstr "Kopi av %1"
+
+#: ../src/Win_GParted.cc:2273
 msgid "You have pasted into an existing partition"
 msgstr "Du har limt inn i en eksisterende partisjon"
 
-#: ../src/Win_GParted.cc:1933
+#. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
+#: ../src/Win_GParted.cc:2281
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Dataene i %1 vil gå tapt hvis du utfører denne operasjonen."
 
-#: ../src/Win_GParted.cc:2002
+#: ../src/Win_GParted.cc:2355
 msgid "Unable to delete %1!"
 msgstr "Kan ikke slette %1!"
 
-#: ../src/Win_GParted.cc:2009
+#: ../src/Win_GParted.cc:2362
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Vennligst avmonter eventuelle logiske partisjoner som har et nummer høyere "
 "enn %1"
 
-#: ../src/Win_GParted.cc:2020
+#: ../src/Win_GParted.cc:2373
 msgid "Are you sure you want to delete %1?"
 msgstr "Er du sikker på at du vil slette %1?"
 
-#: ../src/Win_GParted.cc:2027
+#: ../src/Win_GParted.cc:2380
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 "Etter sletting er denne partisjonen ikke lenger tilgjengelig for kopiering."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2030
+#: ../src/Win_GParted.cc:2383
 msgid "Delete %1 (%2, %3)"
 msgstr "Slett %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2121
+#: ../src/Win_GParted.cc:2539
 msgid "Cannot format this file system to %1"
 msgstr "Kan ikke formatere dette filsystemet til %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2133
+#: ../src/Win_GParted.cc:2551
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Et %1 filsystem krever en partisjon på minst %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2141
+#: ../src/Win_GParted.cc:2559
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "En partisjon med et %1 filsystem har en maksimal størrelse på %2."
 
-#: ../src/Win_GParted.cc:2237
+#: ../src/Win_GParted.cc:2638
+msgid "Opening encryption on %1"
+msgstr "Åpner kryptering på %1"
+
+#: ../src/Win_GParted.cc:2652
+msgid "Failed to open LUKS encryption"
+msgstr "Klarte ikke åpne LUKS-kryptering"
+
+#: ../src/Win_GParted.cc:2674
+msgid ""
+"The close encryption action cannot be performed when there are operations "
+"pending for the partition."
+msgstr ""
+"Handlingen «lukk kryptering» kan ikke utføres dersom en operasjon venter for "
+"partisjonen."
+
+#: ../src/Win_GParted.cc:2675
+msgid "Closing encryption on %1"
+msgstr "Lukker kryptering på %1"
+
+#: ../src/Win_GParted.cc:2676
+msgid "Could not close encryption"
+msgstr "Klarte ikke lukke kryptering"
+
+#: ../src/Win_GParted.cc:2681
+msgid ""
+"The open encryption action cannot be performed when there are operations "
+"pending for the partition."
+msgstr ""
+"Handlingen «åpne kryptering» kan ikke utføres dersom operasjoner venter for "
+"partisjonen."
+
+#: ../src/Win_GParted.cc:2779
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Partisjonen kunne ikke bli avmontert fra følgende monteringspunkter:"
 
-#: ../src/Win_GParted.cc:2239
+#: ../src/Win_GParted.cc:2781
 msgid ""
-"Most likely other partitions are also mounted on these mount points. You are "
-"advised to unmount them manually."
+"This is because other partitions are also mounted on these mount points.  "
+"You are advised to unmount them manually."
 msgstr ""
-"Mest sannsynlig er andre partisjoner også montert på disse "
-"monteringspunkter. Det anbefales at du avmonterer dem manuelt."
+"Dette er fordi andre partisjoner også er montert på disse "
+"monteringspunktene.  Det anbefales at du avmonterer dem manuelt."
 
-#: ../src/Win_GParted.cc:2267 ../src/Win_GParted.cc:2391
+#. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
+#: ../src/Win_GParted.cc:2794
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 operasjon er utestående for partisjon %2"
 msgstr[1] "%1 operasjoner er utestående for partisjon %2"
 
-#: ../src/Win_GParted.cc:2283
+#: ../src/Win_GParted.cc:2809
+msgid "Use the Edit menu to undo, clear or apply pending operations."
+msgstr ""
+"Bruk Rediger-menyen til å angre, slette, eller utføre operasjoner som venter."
+
+#: ../src/Win_GParted.cc:2852
 msgid ""
-"The swapon action cannot be performed if an operation is pending for the "
-"partition."
+"The swapoff action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"Deaktivering av vekselminne kan ikke utføres dersom en operasjon venter for "
+"partisjonen."
+
+#: ../src/Win_GParted.cc:2853
+msgid "Deactivating swap on %1"
+msgstr "Deaktiverer vekselminne på %1"
+
+#: ../src/Win_GParted.cc:2854
+msgid "Could not deactivate swap"
+msgstr "Kunne ikke deaktivere vekselminne"
+
+#: ../src/Win_GParted.cc:2859
+msgid ""
+"The swapon action cannot be performed when there are operations pending for "
+"the partition."
 msgstr ""
 "Aktivering av vekselminne kan ikke utføres dersom en operasjon venter for "
 "partisjonen."
 
-#: ../src/Win_GParted.cc:2285
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using swapon "
-"with this partition."
-msgstr ""
-"Bruk Rediger-menyen til å omgjøre, fjerne eller utføre operasjoner før du "
-"aktiverer vekselminne på denne partisjonen."
-
-#: ../src/Win_GParted.cc:2289
-msgid ""
-"The activate Volume Group action cannot be performed if an operation is "
-"pending for the partition."
-msgstr ""
-"Den aktive handlingen for gruppert dataområde kan ikke utføres hvis en "
-"operasjon venter for partisjonen."
-
-#: ../src/Win_GParted.cc:2291
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using activate "
-"Volume Group with this partition."
-msgstr ""
-"Bruk Rediger-menyen til å angre, slette, eller utføre operasjoner før du "
-"aktiverer gruppert dataområde med denne partisjonen."
-
-#: ../src/Win_GParted.cc:2302
-msgid "Deactivating swap on %1"
-msgstr "Deaktiverer vekselminne på %1"
-
-#: ../src/Win_GParted.cc:2302
+#: ../src/Win_GParted.cc:2860
 msgid "Activating swap on %1"
 msgstr "Akitverer vekselminne på %1"
 
-#: ../src/Win_GParted.cc:2314
-msgid "Could not deactivate swap"
-msgstr "Kunne ikke deaktivere vekselminne"
-
-#: ../src/Win_GParted.cc:2314
+#: ../src/Win_GParted.cc:2861
 msgid "Could not activate swap"
 msgstr "Kunne ikke aktivere vekselminne"
 
-#: ../src/Win_GParted.cc:2329
+#: ../src/Win_GParted.cc:2866
+msgid ""
+"The deactivate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr ""
+"Handlingen «deaktiver gruppert dataområde» kan ikke utføres hvis en "
+"operasjon venter for partisjonen."
+
+#: ../src/Win_GParted.cc:2867
 msgid "Deactivating Volume Group %1"
 msgstr "Deaktiverer gruppert dataområde %1"
 
-#: ../src/Win_GParted.cc:2330
-msgid "Activating Volume Group %1"
-msgstr "Aktiverer gruppert dataområde %1"
-
-#: ../src/Win_GParted.cc:2345
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2869
 msgid "Could not deactivate Volume Group"
 msgstr "Kunne ikke deaktivere gruppert dataområde"
 
-#: ../src/Win_GParted.cc:2346
+#: ../src/Win_GParted.cc:2874
+msgid ""
+"The activate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr ""
+"Handlingen «aktiver gruppert dataområde» kan ikke utføres hvis en operasjon "
+"venter for partisjonen."
+
+#: ../src/Win_GParted.cc:2875
+msgid "Activating Volume Group %1"
+msgstr "Aktiverer gruppert dataområde %1"
+
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2877
 msgid "Could not activate Volume Group"
 msgstr "Kunne ikke aktivere gruppert dataområde"
 
-#: ../src/Win_GParted.cc:2359
+#: ../src/Win_GParted.cc:2882
+msgid ""
+"The unmount action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"Handlingen for avmontering kan ikke utføres dersom en operasjon venter for "
+"partisjonen."
+
+#: ../src/Win_GParted.cc:2883
 msgid "Unmounting %1"
 msgstr "Avmonterer %1"
 
-#: ../src/Win_GParted.cc:2365
+#: ../src/Win_GParted.cc:2884
 msgid "Could not unmount %1"
 msgstr "Kunne ikke avmontere %1"
 
-#: ../src/Win_GParted.cc:2405
+#. Bug: Partition callback without a selected partition
+#. Bug: Not pointing at a valid display partition object
+#: ../src/Win_GParted.cc:2948
 msgid ""
-"The mount action cannot be performed if an operation is pending for the "
+"The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
 "Handlingen for montering kan ikke utføres dersom en operasjon venter for "
 "partisjonen."
 
-#: ../src/Win_GParted.cc:2407
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using mount "
-"with this partition."
-msgstr ""
-"Bruk Rediger-menyen til å angre, slette, eller utføre operasjoner før du "
-"monterer denne partisjonen."
-
-#: ../src/Win_GParted.cc:2419
+#: ../src/Win_GParted.cc:2961
 msgid "mounting %1 on %2"
 msgstr "monterer %1 på %2"
 
-#: ../src/Win_GParted.cc:2449
+#: ../src/Win_GParted.cc:2989
 msgid "Could not mount %1 on %2"
 msgstr "Kunne ikke montere %1 på %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2475
+#: ../src/Win_GParted.cc:3008
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 partisjon er for tiden aktiv på enhet %2"
 msgstr[1] "%1 partisjoner er for tiden aktiv på enhet %2"
 
-#: ../src/Win_GParted.cc:2490
+#: ../src/Win_GParted.cc:3023
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "En ny partisjonstabell kan ikke opprettes når det er aktive partisjoner."
 
-#: ../src/Win_GParted.cc:2492
+#: ../src/Win_GParted.cc:3025
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -1992,7 +2392,7 @@ msgstr ""
 "Aktive partisjoner er de som er i bruk, for eksempel et montert filsystem, "
 "eller aktivert vekselminne."
 
-#: ../src/Win_GParted.cc:2494
+#: ../src/Win_GParted.cc:3027
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2001,19 +2401,19 @@ msgstr ""
 "Vekselminne av, for å deaktivere alle partisjoner på denne enheten før du "
 "oppretter en ny partisjonstabell."
 
-#: ../src/Win_GParted.cc:2506
+#: ../src/Win_GParted.cc:3039
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 operasjon venter"
 msgstr[1] "%1 operasjoner venter"
 
-#: ../src/Win_GParted.cc:2519
+#: ../src/Win_GParted.cc:3052
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "En ny partisjonstabell kan ikke opprettes når det er ventende operasjoner."
 
-#: ../src/Win_GParted.cc:2521
+#: ../src/Win_GParted.cc:3054
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2021,30 +2421,30 @@ msgstr ""
 "Bruk Rediger-menyen til enten å fjerne eller utføre alle operasjoner før du "
 "oppretter en ny partisjonstabell."
 
-#: ../src/Win_GParted.cc:2536
+#: ../src/Win_GParted.cc:3069
 msgid "Error while creating partition table"
 msgstr "Feil ved oppretting av partisjonstabell"
 
-#: ../src/Win_GParted.cc:2556
+#: ../src/Win_GParted.cc:3089
 msgid "Command gpart was not found"
-msgstr "Kommando gpart ble ikke funnet"
+msgstr "Fant ikke kommandoen gpart"
 
-#: ../src/Win_GParted.cc:2557
+#: ../src/Win_GParted.cc:3090
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Denne funksjonen bruker gpart. Vennligst installer gpart og prøv igjen."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2565
+#: ../src/Win_GParted.cc:3098
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 "En full skanning av lagringsenheten er nødvendig for å finne filsystemer."
 
-#: ../src/Win_GParted.cc:2567
+#: ../src/Win_GParted.cc:3100
 msgid "The scan might take a very long time."
 msgstr "Skanningen kan ta svært lang tid."
 
-#: ../src/Win_GParted.cc:2569
+#: ../src/Win_GParted.cc:3102
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2052,26 +2452,26 @@ msgstr ""
 "Etter skanningen kan du montere eventuelle oppdagede filsystemer og kopiere "
 "dataene til andre medier."
 
-#: ../src/Win_GParted.cc:2571
+#: ../src/Win_GParted.cc:3104
 msgid "Do you want to continue?"
 msgstr "Vil du fortsette?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2575
+#: ../src/Win_GParted.cc:3108
 msgid "Search for file systems on %1"
 msgstr "Søk etter filsystemer på %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2586
+#: ../src/Win_GParted.cc:3119
 msgid "Searching for file systems on %1"
 msgstr "Søker etter filsystemer på %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2602
+#: ../src/Win_GParted.cc:3135
 msgid "No file systems found on %1"
 msgstr "Ingen filsystemer funnet på %1"
 
-#: ../src/Win_GParted.cc:2603
+#: ../src/Win_GParted.cc:3136
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2079,35 +2479,35 @@ msgstr ""
 "Skanning av lagringsenhet utført av gpart fant ingen gjenkjennelige "
 "filsystemer på denne enhet."
 
-#: ../src/Win_GParted.cc:2889
+#: ../src/Win_GParted.cc:3407
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Er du sikker på at du vil aktivere utestående operasjoner?"
 
-#: ../src/Win_GParted.cc:2895
+#: ../src/Win_GParted.cc:3413
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Redigere partisjoner har potensial til å forårsake TAP av DATA."
 
-#: ../src/Win_GParted.cc:2897
+#: ../src/Win_GParted.cc:3415
 msgid "You are advised to backup your data before proceeding."
 msgstr "Det anbefales at du sikkerhetskopierer dine data før du fortsetter."
 
-#: ../src/Win_GParted.cc:2899
+#: ../src/Win_GParted.cc:3417
 msgid "Apply operations to device"
 msgstr "Utfør operasjoner på enheten"
 
-#: ../src/Win_GParted.cc:2944
+#: ../src/Win_GParted.cc:3460
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Du sletter det LVM2 fysiske dataområdet %1 som ikke er tomt"
 
-#: ../src/Win_GParted.cc:2948
+#: ../src/Win_GParted.cc:3464
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Du formaterer over det LVM2 fysiske dataområdet %1 som ikke er tomt"
 
-#: ../src/Win_GParted.cc:2952
+#: ../src/Win_GParted.cc:3468
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Du limer inn over det LVM2 fysiske dataområdet %1 som ikke er tomt"
 
-#: ../src/Win_GParted.cc:2961
+#: ../src/Win_GParted.cc:3477
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2115,7 +2515,7 @@ msgstr ""
 "Sletting eller overskriving av det fysiske dataområdet er uopprettelig og "
 "vil ødelegge eller skade det grupperte dataområdet."
 
-#: ../src/Win_GParted.cc:2964
+#: ../src/Win_GParted.cc:3480
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2125,21 +2525,21 @@ msgstr ""
 "å avbryte, og heller bruke eksterne LVM kommandoer for å frigjøre det "
 "fysiske dataområdet før du prøver denne operasjonen."
 
-#: ../src/Win_GParted.cc:2967
+#: ../src/Win_GParted.cc:3483
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Ønsker du å fortsette med å tvinge sletting av fysisk dataområde?"
 
-#: ../src/btrfs.cc:309
+#: ../src/btrfs.cc:280
 msgid "Failed to find devid for path %1"
-msgstr "Kunne ikke finne enhets-ID for sti %1"
+msgstr "Fant ikke enhets-ID for sti %1"
 
-#: ../src/fat16.cc:32 ../src/ntfs.cc:25
+#: ../src/fat16.cc:32 ../src/ntfs.cc:35
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr ""
 "Endring av UUID kan annullere nøkkelen for Windows Product Activation (WPA)"
 
-#: ../src/fat16.cc:34 ../src/ntfs.cc:27
+#: ../src/fat16.cc:34 ../src/ntfs.cc:37
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2151,7 +2551,7 @@ msgstr ""
 "nøkkel. En ugyldig WPA-nøkkel vil hindre pålogging før du aktiverer Windows "
 "på nytt."
 
-#: ../src/fat16.cc:40 ../src/ntfs.cc:37
+#: ../src/fat16.cc:38 ../src/ntfs.cc:43
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2160,16 +2560,16 @@ msgstr ""
 "trygt, men garantier kan ikke gis."
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/linux_swap.cc:29
+#: ../src/linux_swap.cc:35
 msgid "_Swapon"
 msgstr "_Vekselminne på"
 
-#: ../src/linux_swap.cc:30
+#: ../src/linux_swap.cc:36
 msgid "_Swapoff"
 msgstr "_Vekselminne av"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:194
+#: ../src/linux_swap.cc:195
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2177,7 +2577,7 @@ msgstr ""
 "inneholder data"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:213
+#: ../src/linux_swap.cc:214
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2185,15 +2585,15 @@ msgstr ""
 "inneholder data"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/lvm2_pv.cc:27
+#: ../src/lvm2_pv.cc:31
 msgid "Ac_tivate"
 msgstr "Ak_tiver"
 
-#: ../src/lvm2_pv.cc:28
+#: ../src/lvm2_pv.cc:32
 msgid "Deac_tivate"
 msgstr "Deak_tiver"
 
-#: ../src/lvm2_pv.cc:31
+#: ../src/lvm2_pv.cc:35
 msgid ""
 "The LVM2 Physical Volume can not currently be resized because it is a member "
 "of an exported Volume Group."
@@ -2201,11 +2601,28 @@ msgstr ""
 "Det LVM2 fysiske dataområdet kan foreløpig ikke endre størrelse fordi det er "
 "et medlem av et gruppert dataområde som er eksportert."
 
-#: ../src/main.cc:42
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/luks.cc:32
+msgid "Open Encryption"
+msgstr "Åpne kryptering"
+
+#: ../src/luks.cc:33
+msgid "Close Encryption"
+msgstr "Lukk kryptering"
+
+#: ../src/luks.cc:147
+msgid ""
+"Maximize closed LUKS encryption skipped because it will automatically fill "
+"the partition when opened"
+msgstr ""
+"Hoppet over maksimering av stengt LUKS-kryptering fordi partisjonen vil "
+"fylles automatisk når den åpnes"
+
+#: ../src/main.cc:47
 msgid "Root privileges are required for running GParted"
 msgstr "Root-tilgang kreves for å kjøre GParted"
 
-#: ../src/main.cc:47
+#: ../src/main.cc:52
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
@@ -2213,7 +2630,7 @@ msgstr ""
 "Siden GParted er et kraftig verktøy som kan ødelegge partisjonstabellene og "
 "store mengder data, kan bare 'root' starte det."
 
-#: ../src/ntfs.cc:33
+#: ../src/ntfs.cc:41
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
@@ -2222,11 +2639,76 @@ msgstr ""
 "bare halvparten av UUID satt til en ny tilfeldig verdi."
 
 #. simulation..
-#: ../src/ntfs.cc:214
+#: ../src/ntfs.cc:202
 msgid "run simulation"
 msgstr "kjør simulering"
 
-#. real resize
-#: ../src/ntfs.cc:221
+#. Real resize
+#: ../src/ntfs.cc:210
 msgid "real resize"
 msgstr "reell endring av størrelse"
+
+#: ../src/udf.cc:186
+msgid "Partition is too large, maximum size is %1"
+msgstr "Partisjonen er for stor, største størrelse er %1"
+
+#: ../src/udf.cc:194
+msgid "Partition is too small, minimum size is %1"
+msgstr "Partisjonen er for liten, minste størrelse er %1"
+
+#: ../src/udf.cc:211
+msgid ""
+"mkudffs prior to version 1.1 does not support non-ASCII characters in the "
+"label."
+msgstr "mkudffs før versjon 1.1 støtter kun ASCII-tegn i filsystemets navn."
+
+#~ msgid "Libparted"
+#~ msgstr "Libparted"
+
+#~ msgid "N/A"
+#~ msgstr "I/T"
+
+#~ msgid "Ignoring device %1 with logical sector size of %2 bytes."
+#~ msgstr "Ignorerer enhet %1 med logisk sektorstørrelse på %2 bytes."
+
+#~ msgid ""
+#~ "GParted requires libparted version 2.2 or higher to support devices with "
+#~ "sector sizes larger than 512 bytes."
+#~ msgstr ""
+#~ "GParted krever libparted versjon 2.2 eller høyere for å støtte enheter "
+#~ "med sektorstørrelser større enn 512 bytes."
+
+#~ msgid "Linux Unified Key Setup encryption is not yet supported."
+#~ msgstr "Linux Unified Key Setup kryptering er foreløpig ikke støttet."
+
+#~ msgid "moving requires old and new length to be the same"
+#~ msgstr "flytting krever at gammel og ny lengde er den samme"
+
+#~ msgid "resizing requires old and new start to be the same"
+#~ msgstr "endring av størrelse krever at gammel og ny start er den samme"
+
+#~ msgid "grow file system"
+#~ msgstr "øk filsystem"
+
+#~ msgid ""
+#~ "new and old file system have the same size.  Hence skipping this operation"
+#~ msgstr ""
+#~ "nytt og gammelt filsystem har samme størrelse. Hopper derfor over denne "
+#~ "operasjonen"
+
+#~ msgid "roll back last transaction"
+#~ msgstr "rull tilbake siste transaksjon"
+
+#~ msgid ""
+#~ "Use the Edit menu to undo, clear, or apply operations before using swapon "
+#~ "with this partition."
+#~ msgstr ""
+#~ "Bruk Rediger-menyen til å omgjøre, fjerne eller utføre operasjoner før du "
+#~ "aktiverer vekselminne på denne partisjonen."
+
+#~ msgid ""
+#~ "Use the Edit menu to undo, clear, or apply operations before using "
+#~ "activate Volume Group with this partition."
+#~ msgstr ""
+#~ "Bruk Rediger-menyen til å angre, slette, eller utføre operasjoner før du "
+#~ "aktiverer gruppert dataområde med denne partisjonen."
