@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gparted master\n"
+"Project-Id-Version: gparted help master\n"
 "POT-Creation-Date: 2022-03-25 15:27+0000\n"
-"PO-Revision-Date: 2022-03-27 10:49+0700\n"
+"PO-Revision-Date: 2022-03-31 11:18+0800\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -1013,7 +1013,7 @@ msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Information</guimenuitem></menuchoice>. The application "
 "opens an <guilabel>Information about <replaceable>/path-to-partition</replaceable></guilabel> dialog."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Partisi</guimenu><guimenuitem>Informasi</guimenuitem></menuchoice>. Aplikasi membuka sebuah "
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Informasi</guimenuitem></menuchoice>. Aplikasi membuka sebuah "
 "dialog <guilabel>Informasi tentang <replaceable>/path-ke-partisi</replaceable></guilabel>."
 
 #. (itstool) path: sect3/para
@@ -1083,7 +1083,7 @@ msgid ""
 "the partition from the mount point and refreshes the device partition layout in the <application>gparted</application> "
 "window."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Partisi</guimenu><guimenuitem>Lepas Kait</guimenuitem></menuchoice>. Aplikasi melepas kait "
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Lepas Kait</guimenuitem></menuchoice>. Aplikasi melepas kait "
 "partisi dari titik kait dan menyegarkan tata letak partisi perangkat di jendela <application>gparted</application>."
 
 #. (itstool) path: sect3/para
@@ -1214,7 +1214,7 @@ msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>New</guimenuitem></menuchoice>. The application displays the "
 "<guilabel>Create new Partition</guilabel> dialog."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Partisi</guimenu><guimenuitem>Baru</guimenuitem></menuchoice>. Aplikasi menampilkan dialog "
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Baru</guimenuitem></menuchoice>. Aplikasi menampilkan dialog "
 "<guilabel>Buat Partisi baru</guilabel>."
 
 #. (itstool) path: listitem/para
@@ -1272,38 +1272,34 @@ msgstr "Menghapus Partisi"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1171
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Delete</guimenuitem></menuchoice>. The application displays "
 "the delete partition operation in the <guilabel>Pending Operations</guilabel> pane."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Penghapusan</guimenu><guimenuitem>Partisi</guimenuitem></menuchoice>. Aplikasi menampilkan "
-"operasi hapus partisi di panel <guilabel>Operasi Tertunda.</guilabel>"
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Hapus</guimenuitem></menuchoice>. Aplikasi menampilkan operasi "
+"hapus partisi di panel <guilabel>Operasi Tertunda</guilabel>."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1161
-#, fuzzy
 msgid "To delete a partition: <_:orderedlist-1/>"
 msgstr "Untuk menghapus partisi: <_:orderedlist-1/>"
 
 #. (itstool) path: caution/para
 #: C/index.docbook:1181
-#, fuzzy
 msgid ""
 "If you delete a logical partition, then all existing logical partitions after the deleted logical partition will "
 "experience changes in device names."
 msgstr ""
-"Jika Anda menghapus partisi logika, maka semua partisi logika yang ada setelah partisi logika yang dihapus akan mengalami "
+"Jika Anda menghapus partisi logis, maka semua partisi logis yang ada setelah partisi logis yang dihapus akan mengalami "
 "perubahan dalam nama perangkat."
 
 #. (itstool) path: caution/para
 #: C/index.docbook:1186
-#, fuzzy
 msgid ""
 "For example, an extended partition contains four logical partitions A, B, C, and D. These logical partitions are accessed "
 "by the operating system as follows:"
 msgstr ""
-"Misalnya, partisi extended berisi empat partisi logika A, B, C, dan D. Partisi logika ini diakses oleh sistem operasi "
+"Misalnya, partisi extended berisi empat partisi logis A, B, C, dan D. Partisi logis ini diakses oleh sistem operasi "
 "sebagai berikut:"
 
 #. (itstool) path: listitem/para
@@ -1328,7 +1324,6 @@ msgstr "Partisi D sebagai /dev/sda8."
 
 #. (itstool) path: caution/para
 #: C/index.docbook:1213
-#, fuzzy
 msgid ""
 "If partition B is deleted, then the remaining logical partitions will be accessed by the operating system as follows:"
 msgstr "Jika partisi B dihapus, maka partisi logis yang tersisa akan diakses oleh sistem operasi sebagai berikut:"
@@ -1345,14 +1340,13 @@ msgstr "Partisi D sebagai /dev/sda7. Perhatikan perubahan nama perangkat."
 
 #. (itstool) path: caution/para
 #: C/index.docbook:1234
-#, fuzzy
 msgid ""
 "Changes in a device name can cause problems if a partition is mounted using a device name. You can avoid the problem by "
 "using the file system label or Universally Unique Identifier (UUID) of the partition when mounting the partition."
 msgstr ""
 "Perubahan nama perangkat dapat menyebabkan masalah jika partisi dipasang menggunakan nama perangkat. Anda dapat "
-"menghindari masalah dengan menggunakan label sistem file atau Pengidentifikasi Unik Universal (UUID) dari partisi saat "
-"memasang partisi."
+"menghindari masalah dengan menggunakan label sistem berkas atau Universally Unique Identifier (UUID) dari partisi saat "
+"mengait partisi."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1246
@@ -1367,26 +1361,23 @@ msgstr "/boot/grub/menu.lst - Berisi instruksi boot sistem operasi untuk loader 
 
 #. (itstool) path: caution/para
 #: C/index.docbook:1241
-#, fuzzy
 msgid "Changes in a device name might adversely affect the following files: <_:itemizedlist-1/>"
-msgstr "Perubahan nama perangkat mungkin berdampak buruk pada file berikut: <_:itemizedlist-1/>"
+msgstr "Perubahan nama perangkat mungkin berdampak buruk pada berkas berikut: <_:itemizedlist-1/>"
 
 #. (itstool) path: note/para
 #: C/index.docbook:1261
-#, fuzzy
 msgid ""
 "Disks with <guimenuitem>loop</guimenuitem> or <guimenuitem>none</guimenuitem> partition tables do not contain a partition "
 "table, and do not contain partitions. A file system on a disk without a partition table is represented in GParted by a "
 "virtual partition."
 msgstr ""
-"Disk dengan <guimenuitem>tabel partisi loop</guimenuitem> atau none tidak berisi tabel partisi, dan tidak berisi partisi. "
-"<guimenuitem></guimenuitem> Sistem file pada disk tanpa tabel partisi diwakili di GParted oleh partisi virtual."
+"Disk dengan tabel partisi <guimenuitem>loop</guimenuitem> atau <guimenuitem>none</guimenuitem> tidak berisi tabel "
+"partisi, dan tidak berisi partisi. Sistem berkas pada disk tanpa tabel partisi diwakili di GParted oleh partisi virtual."
 
 #. (itstool) path: note/para
 #: C/index.docbook:1268
-#, fuzzy
 msgid "To delete the file system and virtual partition, choose format to <guimenuitem>cleared</guimenuitem>."
-msgstr "Untuk menghapus sistem file dan partisi virtual, pilih format <guimenuitem>untuk dihapus</guimenuitem>."
+msgstr "Untuk menghapus sistem berkas dan partisi virtual, pilih format ke <guimenuitem>dibersihkan</guimenuitem>."
 
 #. (itstool) path: note/para
 #: C/index.docbook:1272
@@ -1400,7 +1391,6 @@ msgstr "Menamai Partisi"
 
 #. (itstool) path: note/para
 #: C/index.docbook:1282
-#, fuzzy
 msgid "Naming of partitions is only available with GUID partition tables (GPT)."
 msgstr "Penamaan partisi hanya tersedia dengan tabel partisi GUID (GPT)."
 
@@ -1416,29 +1406,26 @@ msgstr "Untuk mengatur nama partisi:"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1301
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu> <guimenuitem>Name Partition</guimenuitem></menuchoice>. The application "
 "opens a <guilabel>Set partition name on <replaceable>/path-to-partition</replaceable></guilabel> dialog."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Partisi</guimenu> <guimenuitem>Nama Partisi</guimenuitem></menuchoice>. Aplikasi membuka set "
-"<guilabel>nama partisi pada dialog <replaceable>/path-to-partition.</replaceable> </guilabel>"
+"Pilih: <menuchoice><guimenu>Partisi</guimenu> <guimenuitem>Namai Partisi</guimenuitem></menuchoice>. Aplikasi membuka "
+"dialog <guilabel>Atur nama partisi pada <replaceable>/path-ke-partisi</replaceable></guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1310
-#, fuzzy
 msgid "Type a partition name in the <guilabel>Name</guilabel> text box."
-msgstr "Ketikkan nama partisi dalam <guilabel>kotak</guilabel> teks Nama."
+msgstr "Ketikkan nama partisi dalam kotak teks <guilabel>Nama</guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1315
-#, fuzzy
 msgid ""
 "Click <guibutton>OK</guibutton>. The application displays the set partition name operation in the <guilabel>Operations "
 "Pending</guilabel> pane."
 msgstr ""
-"Klik <guibutton>OK.</guibutton> Aplikasi menampilkan operasi nama partisi set di panel <guilabel>Operasi</guilabel> "
-"Tertunda."
+"Klik <guibutton>OK</guibutton>. Aplikasi menampilkan operasi atur nama partisi di panel <guilabel>Operasi Tertunda</"
+"guilabel>."
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:1326
@@ -1447,22 +1434,22 @@ msgstr "Memformat Partisi"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1337
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Format to</guimenuitem></menuchoice>, and select a type of "
 "file system from the list. The application displays the format partition operation in the <guilabel>Operations Pending</"
 "guilabel> pane."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Format</guimenu><guimenuitem>Partisi ke</guimenuitem></menuchoice>, dan pilih jenis sistem "
-"file dari daftar. Aplikasi menampilkan operasi partisi format di panel <guilabel>Operasi</guilabel> Tertunda."
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Format ke</guimenuitem></menuchoice>, dan pilih jenis sistem "
+"berkas dari daftar. Aplikasi menampilkan operasi format partisi di panel <guilabel>Operasi Tertunda</guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1344
-#, fuzzy
 msgid ""
 "See <xref linkend=\"gparted-specify-partition-file-system\"/> for the meaning of the <guimenuitem>cleared</guimenuitem> "
 "file system type."
-msgstr "<xref j=\"0/\">Lihat untuk arti dari tipe sistem <guimenuitem>file</guimenuitem> yang dibersihkan.</xref>"
+msgstr ""
+"Lihat <xref linkend=\"gparted-specify-partition-file-system\"/> untuk arti dari tipe sistem berkas "
+"<guimenuitem>dibersihkan</guimenuitem>."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1327
@@ -1476,103 +1463,91 @@ msgstr "Mengatur Label Sistem Berkas Partisi"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1367
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu> <guimenuitem>Label File System</guimenuitem></menuchoice>. The "
 "application opens a <guilabel>Set file system label on <replaceable>/path-to-partition</replaceable></guilabel> dialog."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Sistem</guimenu> <guimenuitem>File Label Partisi</guimenuitem></menuchoice>. Aplikasi "
-"membuka label sistem file Set pada dialog <guilabel> <replaceable>/path-to-partition.</replaceable> </guilabel>"
+"Pilih: <menuchoice><guimenu>Partisi</guimenu> <guimenuitem>Labeli Sistem Berkas</guimenuitem></menuchoice>. Aplikasi "
+"membuka dialog <guilabel>Atur label sistem berkas pada <replaceable>/path-ke-partisi</replaceable></guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1376
-#, fuzzy
 msgid "Type a label name in the <guilabel>Label</guilabel> text box."
-msgstr "Ketikkan nama label dalam kotak teks <guilabel>Label.</guilabel>"
+msgstr "Ketikkan nama label dalam kotak teks <guilabel>Label</guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1381
-#, fuzzy
 msgid ""
 "Click <guibutton>OK</guibutton>. The application displays the set file system label operation in the <guilabel>Operations "
 "Pending</guilabel> pane."
 msgstr ""
-"Klik <guibutton>OK.</guibutton> Aplikasi menampilkan operasi label sistem file yang ditetapkan di <guilabel>panel "
-"Operasi</guilabel> Tertunda."
+"Klik <guibutton>OK</guibutton>. Aplikasi menampilkan operasi atur label sistem berkas dalam panel <guilabel>Operasi "
+"Tertunda</guilabel>."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1357
-#, fuzzy
 msgid "To set a label or a volume name of a file system in a partition: <_:orderedlist-1/>"
-msgstr "Untuk mengatur label atau nama volume sistem file dalam partisi: <_:orderedlist-1/>"
+msgstr "Untuk mengatur label atau nama volume sistem berkas dalam partisi: <_:orderedlist-1/>"
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:1393
-#, fuzzy
 msgid "Changing a Partition UUID"
 msgstr "Mengubah UUID Partisi"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1404
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu> <guimenuitem>New UUID</guimenuitem></menuchoice>. The application "
 "displays the set a new random UUID operation in the <guilabel>Operations Pending</guilabel> pane."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Partisi</guimenu> <guimenuitem>UUID Baru.</guimenuitem></menuchoice> Aplikasi menampilkan "
-"operasi UUID acak baru di panel <guilabel>Operasi</guilabel> Tertunda."
+"Pilih: <menuchoice><guimenu>Partisi</guimenu> <guimenuitem>UUID Baru</guimenuitem></menuchoice>. Aplikasi menampilkan "
+"operasi atur UUID acak baru di panel <guilabel>Operasi Tertunda</guilabel>."
 
 #. (itstool) path: warning/para
 #: C/index.docbook:1413
-#, fuzzy
 msgid "Changing the UUID might invalidate the Windows Product Activation key (WPA)."
-msgstr "Mengubah UUID mungkin membatalkan kunci Aktivasi Produk Windows (WPA)."
+msgstr "Mengubah UUID mungkin membatalkan kunci Windows Product Activation (WPA)."
 
 #. (itstool) path: warning/para
 #: C/index.docbook:1417
-#, fuzzy
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as UUID. Changing the Volume Serial Number on the Windows "
 "system partition, normally C:, might invalidate the WPA key. An invalid WPA key will prevent login until you reactivate "
 "Windows."
 msgstr ""
-"Pada sistem file FAT dan NTFS, Nomor Seri Volume digunakan sebagai UUID. Mengubah Nomor Seri Volume pada partisi sistem "
-"Windows, biasanya C:, mungkin membatalkan kunci WPA. Kunci WPA yang tak-sahih akan mencegah log masuk hingga Anda "
+"Pada sistem berkas FAT dan NTFS, Nomor Seri Volume digunakan sebagai UUID. Mengubah Nomor Seri Volume pada partisi sistem "
+"Windows, biasanya C:, mungkin membatalkan kunci WPA. Kunci WPA yang tidak valid akan mencegah log masuk sampai Anda "
 "mengaktifkan kembali Windows."
 
 #. (itstool) path: warning/para
 #: C/index.docbook:1424
-#, fuzzy
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only half of the UUID is set to a new random value. "
 "On FAT file systems, such a precaution is not possible."
 msgstr ""
-"Dalam upaya untuk menghindari membatalkan kunci WPA, pada sistem file NTFS hanya setengah dari UUID diatur ke nilai acak "
-"baru. Pada sistem file FAT, tindakan pencegahan semacam itu tidak mungkin dilakukan."
+"Dalam upaya untuk menghindari membatalkan kunci WPA, pada sistem berkas NTFS hanya setengah dari UUID diatur ke nilai "
+"acak baru. Pada sistem berkas FAT, tindakan pencegahan semacam itu tidak mungkin dilakukan."
 
 #. (itstool) path: warning/para
 #: C/index.docbook:1430
-#, fuzzy
 msgid ""
 "The WPA key should not be affected by changing the UUID of data partitions or removable media partitions. In rare cases, "
 "a partition that is present at boot time might be an exception to this rule."
 msgstr ""
-"Kunci WPA tidak boleh dipengaruhi oleh perubahan UUID partisi data atau partisi media yang dapat dilepas. Dalam kasus "
-"yang jarang terjadi, partisi yang hadir pada waktu boot mungkin merupakan pengecualian untuk aturan ini."
+"Kunci WPA tidak boleh dipengaruhi oleh perubahan UUID partisi data atau partisi media lepasan. Dalam kasus yang jarang "
+"terjadi, partisi yang hadir pada waktu boot mungkin merupakan pengecualian untuk aturan ini."
 
 #. (itstool) path: warning/para
 #: C/index.docbook:1438
-#, fuzzy
 msgid ""
 "Changing the UUID when there is no need to do so might cause a GNU/Linux system to fail to boot, or to fail to mount a "
 "file system."
 msgstr ""
-"Mengubah UUID ketika tidak perlu melakukannya dapat menyebabkan sistem GNU / Linux gagal boot, atau gagal memasang sistem "
-"file."
+"Mengubah UUID ketika tidak perlu melakukannya dapat menyebabkan sistem GNU/Linux gagal boot, atau gagal mengait sistem "
+"berkas."
 
 #. (itstool) path: warning/para
 #: C/index.docbook:1443
-#, fuzzy
 msgid ""
 "Changing the UUID is only required after copying a partition. The UUID change is needed to prevent duplicate UUIDs when "
 "both the source and the copy of the partition are used on the same computer."
@@ -1582,19 +1557,17 @@ msgstr ""
 
 #. (itstool) path: warning/para
 #: C/index.docbook:1449
-#, fuzzy
 msgid ""
 "If boot or mount problems occur you might need to edit configuration files, such as /etc/fstab, and regenerate the grub "
 "menu to ensure that the correct UUID is specified."
 msgstr ""
-"Jika masalah boot atau mount terjadi, Anda mungkin perlu mengedit file konfigurasi, seperti /etc/fstab, dan meregenerasi "
-"menu grub untuk memastikan bahwa UUID yang benar ditentukan."
+"Jika masalah boot atau mount terjadi, Anda mungkin perlu menyunting berkas konfigurasi, seperti /etc/fstab, dan "
+"meregenerasi menu grub untuk memastikan bahwa UUID yang benar dinyatakan."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1394
-#, fuzzy
 msgid "To change the Universally Unique Identifier (UUID) of a partition: <_:orderedlist-1/>"
-msgstr "Untuk mengubah Pengidentifikasi Unik Universal (UUID) dari partisi: <_:orderedlist-1/>"
+msgstr "Untuk mengubah Universally Unique Identifier (UUID) dari partisi: <_:orderedlist-1/>"
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:1463
@@ -1613,13 +1586,11 @@ msgstr "Menentukan Ukuran dan Lokasi Partisi"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1477
-#, fuzzy
 msgid "Click-and-hold the arrow at either end of the graphic area. Drag the arrow left or right within the display range."
 msgstr "Klik dan tahan panah di salah satu ujung area grafik. Seret panah ke kiri atau kanan di dalam rentang tampilan."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1483
-#, fuzzy
 msgid ""
 "Click-and-hold the middle of the partition in the graphic area. Drag the partition left or right within the display range."
 msgstr "Klik dan tahan bagian tengah partisi di area grafis. Seret partisi ke kiri atau kanan di dalam rentang tampilan."
@@ -1641,13 +1612,11 @@ msgstr "<guilabel>Ruang Kosong Mengikuti</guilabel>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1489
-#, fuzzy
 msgid "Click the spin button arrows, or type numeric values to adjust the following fields: <_:itemizedlist-1/>"
-msgstr "Klik panah tombol putar, atau ketik nilai numerik untuk menyesuaikan bidang berikut: <_:itemizedlist-1/>"
+msgstr "Klik panah tombol puntir, atau ketik nilai numerik untuk menyesuaikan ruas berikut: <_:itemizedlist-1/>"
 
 #. (itstool) path: sect4/para
 #: C/index.docbook:1472
-#, fuzzy
 msgid ""
 "To specify the size and the location of the partition, use one or a combination of the following: <_:itemizedlist-1/>"
 msgstr ""
@@ -1655,9 +1624,8 @@ msgstr ""
 
 #. (itstool) path: sect4/para
 #: C/index.docbook:1513
-#, fuzzy
 msgid "The application refreshes both the graphic area and the numbers beside the three field labels."
-msgstr "Aplikasi ini menyegarkan area grafis dan angka di samping tiga label bidang."
+msgstr "Aplikasi ini menyegarkan area grafis dan angka di samping tiga label ruas."
 
 #. (itstool) path: sect4/title
 #: C/index.docbook:1521
@@ -1666,55 +1634,50 @@ msgstr "Menentukan Perataan Partisi"
 
 #. (itstool) path: sect4/para
 #: C/index.docbook:1522
-#, fuzzy
 msgid ""
 "To specify the alignment of the partition, click the <guilabel>Align to</guilabel> arrow button, and select from the list."
-msgstr "Untuk menentukan perataan partisi, klik tombol <guilabel>Ratakan</guilabel> ke panah, dan pilih dari daftar."
+msgstr "Untuk menentukan perataan partisi, klik tombol panah <guilabel>Ratakan ke</guilabel>, dan pilih dari daftar."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1528
-#, fuzzy
 msgid ""
 "Use <guilabel>MiB</guilabel> alignment for modern operating systems. This setting aligns partitions to start and end on "
 "precise mebibyte (1,048,576 byte) boundaries. MiB alignment provides enhanced performance when used with RAID systems and "
 "with Solid State Drives, such as USB flash drives."
 msgstr ""
-"Gunakan <guilabel>penyelarasan MiB</guilabel> untuk sistem operasi modern. Pengaturan ini menyelaraskan partisi untuk "
-"memulai dan mengakhiri batas mebibyte (1.048.576 byte) yang tepat. Penyelarasan MiB memberikan peningkatan kinerja saat "
-"digunakan dengan sistem RAID dan dengan Solid State Drive, seperti USB flash drive."
+"Gunakan perataan <guilabel>MiB</guilabel> untuk sistem operasi modern. Pengaturan ini meratakan partisi untuk mulai dan "
+"berakhir pada batas mebibyte (1.048.576 byte) yang tepat. Penyelarasan MiB memberikan peningkatan kinerja saat digunakan "
+"dengan sistem RAID dan dengan Solid State Drive, seperti USB flash drive."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1538
-#, fuzzy
 msgid ""
 "Use <guilabel>Cylinder</guilabel> alignment to maintain compatibility with operating systems released before the year "
 "2000, such as DOS. This setting aligns partitions to start and end on disk cylinder boundaries."
 msgstr ""
-"Gunakan <guilabel>penyelarasan</guilabel> Silinder untuk mempertahankan kompatibilitas dengan sistem operasi yang dirilis "
-"sebelum tahun 2000, seperti DOS. Pengaturan ini menyelaraskan partisi untuk memulai dan mengakhiri batas silinder disk."
+"Gunakan perataan <guilabel>Silinder</guilabel> untuk mempertahankan kompatibilitas dengan sistem operasi yang dirilis "
+"sebelum tahun 2000, seperti DOS. Pengaturan ini meratakan partisi untuk mulai dan berakhir pada batas silinder disk."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1545
-#, fuzzy
 msgid ""
 "The Cylinder/Head/Sector values reported by modern disk devices no longer have a direct physical relationship to the data "
 "stored on the disk device. Hence it is no longer valid to use this alignment setting to achieve enhanced performance."
 msgstr ""
 "Nilai Cylinder/Head/Sector yang dilaporkan oleh perangkat disk modern tidak lagi memiliki hubungan fisik langsung dengan "
-"data yang tersimpan pada perangkat disk. Oleh karena itu tidak lagi valid untuk menggunakan pengaturan penyelarasan ini "
-"untuk mencapai kinerja yang ditingkatkan."
+"data yang tersimpan pada perangkat disk. Oleh karena itu tidak lagi valid untuk menggunakan pengaturan perataan ini untuk "
+"mencapai kinerja yang ditingkatkan."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1555
-#, fuzzy
 msgid ""
 "Use <guilabel>None</guilabel> only if you have an in-depth knowledge of disk structure, partition tables, and boot "
 "records. This setting places partition boundaries relative to the end of any immediately preceding partition on the disk "
 "device. This setting is not guaranteed to reserve or respect space required for boot records."
 msgstr ""
-"Gunakan <guilabel>Tidak</guilabel> Hanya jika Anda memiliki pengetahuan mendalam tentang struktur disk, tabel partisi, "
-"dan rekaman boot. Pengaturan ini menempatkan batas partisi relatif terhadap akhir partisi yang segera mendahului pada "
-"perangkat disk. Pengaturan ini tidak dijamin untuk memesan atau menghormati ruang yang diperlukan untuk catatan boot."
+"Gunakan <guilabel>Nihil</guilabel> hanya jika Anda memiliki pengetahuan mendalam tentang struktur disk, tabel partisi, "
+"dan boot record. Pengaturan ini menempatkan batas partisi relatif terhadap akhir partisi tepat sebelumnya pada perangkat "
+"disk. Pengaturan ini tidak dijamin untuk memesan atau menghormati ruang yang diperlukan untuk boot record."
 
 #. (itstool) path: sect4/title
 #: C/index.docbook:1570
@@ -1723,9 +1686,8 @@ msgstr "Menentukan Tipe Partisi"
 
 #. (itstool) path: sect4/para
 #: C/index.docbook:1571
-#, fuzzy
 msgid "To specify the partition type, click the <guilabel>Create as</guilabel> arrow button, and select from the list."
-msgstr "Untuk menentukan tipe partisi, klik tombol <guilabel>Buat</guilabel> sebagai panah, dan pilih dari daftar."
+msgstr "Untuk menentukan tipe partisi, klik tombol panah <guilabel>Buat sebagai</guilabel>, dan pilih dari daftar."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1580
@@ -1734,23 +1696,20 @@ msgstr "Maksimum 4 partisi primer."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1585
-#, fuzzy
 msgid "Maximum of 3 primary partitions, and 1 extended partition."
 msgstr "Maksimum 3 partisi primer, dan 1 partisi extended."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1588
-#, fuzzy
 msgid ""
 "The extended partition can contain multiple logical partitions. Some GNU/Linux distributions support accessing at most 15 "
 "partitions on a disk device."
 msgstr ""
-"Partisi extended dapat berisi beberapa partisi logis. Beberapa distribusi GNU /Linux mendukung akses paling banyak 15 "
+"Partisi extended dapat berisi beberapa partisi logis. Beberapa distribusi GNU/Linux mendukung mengakses paling banyak 15 "
 "partisi pada perangkat disk."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1596
-#, fuzzy
 msgid ""
 "Maximum size of a partition is 2 Tebibytes using a sector size of 512 bytes. The partition must also start within the "
 "first 2 Tebibytes of the disk device."
@@ -1760,13 +1719,11 @@ msgstr ""
 
 #. (itstool) path: note/para
 #: C/index.docbook:1576
-#, fuzzy
 msgid "The msdos partition table limits partitions as follows: <_:itemizedlist-1/>"
 msgstr "Tabel partisi msdos membatasi partisi sebagai berikut: <_:itemizedlist-1/>"
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1606
-#, fuzzy
 msgid ""
 "Primary partitions provide better data recoverability because the partition boundaries are stored at known locations on "
 "the disk device."
@@ -1781,19 +1738,17 @@ msgstr "Menentukan Nama Partisi"
 
 #. (itstool) path: note/para
 #: C/index.docbook:1618
-#, fuzzy
 msgid ""
 "Naming of partitions is only available with GUID partition tables (GPT). Therefore the field is only enabled on disk "
 "devices partitioned using GPT."
 msgstr ""
-"Penamaan partisi hanya tersedia dengan tabel partisi GUID (GPT). Oleh karena itu bidang hanya diaktifkan pada perangkat "
-"disk yang dipartisi menggunakan GPT."
+"Penamaan partisi hanya tersedia dengan tabel partisi GUID (GPT). Maka ruas tersebut hanya diaktifkan pada perangkat disk "
+"yang dipartisi menggunakan GPT."
 
 #. (itstool) path: sect4/para
 #: C/index.docbook:1627
-#, fuzzy
 msgid "To specify the partition name, type the name in the <guilabel>Partition name</guilabel> text box."
-msgstr "Untuk menentukan nama partisi, ketikkan nama dalam kotak <guilabel>teks</guilabel> Nama partisi."
+msgstr "Untuk menentukan nama partisi, ketikkan nama dalam kotak teks <guilabel>Nama partisi</guilabel>."
 
 #. (itstool) path: sect4/title
 #: C/index.docbook:1635
@@ -1802,12 +1757,11 @@ msgstr "Menentukan Sistem Berkas Partisi"
 
 #. (itstool) path: sect4/para
 #: C/index.docbook:1636
-#, fuzzy
 msgid ""
 "To specify the type of file system for the partition, click the <guilabel>File System</guilabel> arrow button, and select "
 "from the list."
 msgstr ""
-"Untuk menentukan tipe sistem file untuk partisi, klik tombol <guilabel>panah Sistem</guilabel> File, dan pilih dari "
+"Untuk menentukan tipe sistem berkas bagi partisi, klik tombol panah <guilabel>Sistem Berkas</guilabel>, dan pilih dari "
 "daftar."
 
 #. (itstool) path: listitem/para
@@ -1821,20 +1775,18 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1653
-#, fuzzy
 msgid "<guimenuitem>linux-swap</guimenuitem> can be used with GNU/Linux to increase the virtual memory of your computer."
 msgstr ""
-"<guimenuitem>linux-swap</guimenuitem> dapat digunakan dengan GNU / Linux untuk meningkatkan memori virtual komputer Anda."
+"<guimenuitem>linux-swap</guimenuitem> dapat digunakan dengan GNU/Linux untuk meningkatkan memori virtual komputer Anda."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1660
-#, fuzzy
 msgid ""
 "<guimenuitem>fat16</guimenuitem> and <guimenuitem>fat32</guimenuitem> file systems can be used to share data between free "
 "and commercial operating systems."
 msgstr ""
-"sistem file <guimenuitem>fat16</guimenuitem> <guimenuitem>dan fat32</guimenuitem> dapat digunakan untuk berbagi data "
-"antara sistem operasi gratis dan komersial."
+"Sistem berkas <guimenuitem>fat16</guimenuitem> dan <guimenuitem>fat32</guimenuitem> dapat digunakan untuk berbagi data "
+"antara sistem operasi bebas dan komersial."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1668
@@ -1847,15 +1799,13 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1675
-#, fuzzy
 msgid "<guimenuitem>unformatted</guimenuitem> can be used to just create a partition without writing a file system."
-msgstr "<guimenuitem>tidak diformat</guimenuitem> dapat digunakan untuk hanya membuat partisi tanpa menulis sistem file."
+msgstr "<guimenuitem>tidak diformat</guimenuitem> dapat digunakan untuk hanya membuat partisi tanpa menulis sistem berkas."
 
 #. (itstool) path: note/para
 #: C/index.docbook:1641
-#, fuzzy
 msgid "Examples of uses for some file systems are as follows: <_:itemizedlist-1/>"
-msgstr "Contoh penggunaan untuk beberapa sistem file adalah sebagai berikut: <_:itemizedlist-1/>"
+msgstr "Contoh penggunaan untuk beberapa sistem berkas adalah sebagai berikut: <_:itemizedlist-1/>"
 
 #. (itstool) path: sect4/title
 #: C/index.docbook:1687
@@ -1864,25 +1814,22 @@ msgstr "Menentukan Label Sistem Berkas Partisi"
 
 #. (itstool) path: sect4/para
 #: C/index.docbook:1688
-#, fuzzy
 msgid ""
 "To specify the file system label in the partition, also known as a volume label, type a label name in the "
 "<guilabel>Label</guilabel> text box."
 msgstr ""
-"Untuk menentukan label sistem file dalam partisi, juga dikenal sebagai label volume, ketikkan nama label dalam kotak teks "
-"<guilabel>Label.</guilabel>"
+"Untuk menentukan label sistem berkas dalam partisi, juga dikenal sebagai label volume, ketikkan nama label dalam kotak "
+"teks <guilabel>Label</guilabel>."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1694
-#, fuzzy
 msgid "File system labels can be used to help you remember what is stored in the partition."
-msgstr "Label sistem file dapat digunakan untuk membantu Anda mengingat apa yang disimpan dalam partisi."
+msgstr "Label sistem berkas dapat digunakan untuk membantu Anda mengingat apa yang disimpan dalam partisi."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1698
-#, fuzzy
 msgid "Unique labels can be used to mount file systems with the GNU/Linux operating system."
-msgstr "Label unik dapat digunakan untuk memasang sistem file dengan sistem operasi GNU / Linux."
+msgstr "Label unik dapat digunakan untuk mengait sistem berkas dengan sistem operasi GNU/Linux."
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:1713
@@ -1891,13 +1838,12 @@ msgstr "Tindakan Partisi Tingkat Lanjut"
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:1714
-#, fuzzy
 msgid ""
 "These actions will alter partitions on your disk device. These actions might modify the start or end boundaries of your "
 "existing partitions. These actions might cause operating systems to fail to boot."
 msgstr ""
 "Tindakan ini akan mengubah partisi pada perangkat disk Anda. Tindakan ini dapat mengubah batas awal atau akhir dari "
-"partisi yang ada. Tindakan ini dapat menyebabkan sistem operasi gagal melakukan booting."
+"partisi yang ada. Tindakan ini dapat menyebabkan sistem operasi gagal melakukan boot."
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:1723
@@ -1906,35 +1852,31 @@ msgstr "Mengubah Ukuran Partisi"
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1724
-#, fuzzy
 msgid "Resizing and moving a partition can be performed by a single <application>gparted</application> operation."
-msgstr "Mengubah ukuran dan memindahkan partisi dapat dilakukan dengan satu <application>operasi gparted.</application>"
+msgstr "Mengubah ukuran dan memindahkan partisi dapat dilakukan dengan satu operasi <application>gparted</application>."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1737
-#, fuzzy
 msgid "Unmounted or inactive partitions enable the most resize options."
-msgstr "Partisi yang tidak dilepas atau tidak aktif memungkinkan opsi yang paling mengubah ukuran."
+msgstr "Partisi yang tidak dikait atau tidak aktif memungkinkan paling banyak opsi mengubah ukuran."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1741
-#, fuzzy
 msgid ""
 "Support is available for online resize of some mounted or otherwise active partitions. However this support is often "
 "limited to grow only."
 msgstr ""
-"Dukungan tersedia untuk mengubah ukuran online beberapa partisi yang dipasang atau aktif. Namun dukungan ini sering "
-"dibatasi untuk tumbuh saja."
+"Dukungan tersedia untuk mengubah ukuran daring beberapa partisi yang dikait atau aktif. Namun dukungan ini sering "
+"dibatasi untuk memperbesar saja."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1749 C/index.docbook:1929
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Resize/Move</guimenuitem></menuchoice>. The application "
 "displays the <guilabel>Resize/Move <replaceable>/path-to-partition</replaceable></guilabel> dialog."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Mengubah</guimenu><guimenuitem>Ukuran/Memindahkan Partisi.</guimenuitem></menuchoice> "
-"Aplikasi menampilkan dialog <guilabel>Ubah Ukuran/Pindahkan <replaceable>/path-to-partition.</replaceable> </guilabel>"
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Ubuh Ukuran/Pindah</guimenuitem></menuchoice>. Aplikasi "
+"menampilkan dialog <guilabel>Ubah Ukuran/Pindah <replaceable>/path-ke-partisi</replaceable></guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1758
@@ -1943,15 +1885,14 @@ msgstr "Sesuaikan ukuran partisi. Lihat <xref linkend=\"gparted-specify-partitio
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1763
-#, fuzzy
 msgid ""
 "If you do not want the start of an existing partition to move, then do not change the <guilabel>free space preceding</"
 "guilabel> value. If the partition is mounted or otherwise active, then you will not be able to change the <guilabel>free "
 "space preceding</guilabel> value."
 msgstr ""
-"Jika Anda tidak ingin awal partisi yang ada bergerak, maka jangan ubah ruang <guilabel>kosong nilai</guilabel> "
-"sebelumnya. Jika partisi dipasang atau aktif, maka Anda tidak akan dapat mengubah nilai <guilabel>sebelumnya ruang</"
-"guilabel> kosong."
+"Jika Anda tidak ingin awal partisi yang ada bergerak, maka jangan ubah nilai <guilabel>ruang kosong sebelumnya</"
+"guilabel>. Jika partisi dikait atau aktif, maka Anda tidak akan dapat mengubah nilai <guilabel>ruang kosong sebelumnya</"
+"guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1774 C/index.docbook:1944
@@ -1960,36 +1901,31 @@ msgstr "Tentukan perataan partisi. Lihat <xref linkend=\"gparted-specify-partiti
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1780 C/index.docbook:1950
-#, fuzzy
 msgid ""
 "Click <guibutton>Resize/Move</guibutton>. The application displays the resize/move partition operation in the "
 "<guilabel>Pending Operations</guilabel> pane."
 msgstr ""
-"Klik <guibutton>Ubah Ukuran/Pindahkan.</guibutton> Aplikasi menampilkan operasi mengubah ukuran/memindahkan partisi di "
-"panel <guilabel>Operasi</guilabel> Tertunda."
+"Klik <guibutton>Ubah Ukuran/Pindah</guibutton>. Aplikasi menampilkan operasi mengubah ukuran/memindahkan partisi di panel "
+"<guilabel>Operasi Tertunda</guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1787
-#, fuzzy
 msgid "Examine the operation that was added to the <guilabel>Pending Operations</guilabel> pane."
-msgstr "Periksa operasi yang ditambahkan ke panel <guilabel>Operasi Tertunda.</guilabel>"
+msgstr "Periksa operasi yang ditambahkan ke panel <guilabel>Operasi Tertunda</guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1796
-#, fuzzy
 msgid "A move step might take a long time to complete."
-msgstr "Langkah bergerak mungkin membutuhkan waktu lama untuk diselesaikan."
+msgstr "Satu langkah memindah mungkin membutuhkan waktu lama untuk diselesaikan."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1802
-#, fuzzy
 msgid ""
 "If the partition is an operating system boot partition, then a move step might cause the operating system to fail to boot."
-msgstr "Jika partisi adalah partisi boot sistem operasi, maka langkah bergerak dapat menyebabkan sistem operasi gagal boot."
+msgstr "Jika partisi adalah partisi boot sistem operasi, maka langkah memindah dapat menyebabkan sistem operasi gagal boot."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1791
-#, fuzzy
 msgid "If the operation involves a move step, then consider the following: <_:itemizedlist-1/>"
 msgstr "Jika operasi melibatkan langkah pemindahan, maka pertimbangkan hal berikut: <_:itemizedlist-1/>"
 
@@ -2004,44 +1940,38 @@ msgstr ""
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1728
-#, fuzzy
 msgid "To resize a partition: <_:orderedlist-1/>"
 msgstr "Untuk mengubah ukuran partisi: <_:orderedlist-1/>"
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1820
-#, fuzzy
 msgid "To grow or move a partition, unallocated space must be available adjacent to the partition."
-msgstr "Untuk menumbuhkan atau memindahkan partisi, ruang yang tidak dialokasikan harus tersedia berdekatan dengan partisi."
+msgstr ""
+"Untuk menumbuhkan atau memindahkan partisi, ruang yang tidak dialokasikan harus tersedia bersebelahan dengan partisi."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1824
-#, fuzzy
 msgid "If you are growing a logical partition, then the unallocated space must be within the extended partition."
 msgstr "Jika Anda menumbuhkan partisi logis, maka ruang yang tidak dialokasikan harus berada dalam partisi extended."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1828
-#, fuzzy
 msgid "If you are growing a primary partition, then the unallocated space must not be within the extended partition."
 msgstr "Jika Anda menumbuhkan partisi primer, maka ruang yang tidak dialokasikan tidak boleh berada dalam partisi extended."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1832
-#, fuzzy
 msgid ""
 "You can move unallocated space to be inside or outside of the extended partition by resizing the extended partition "
 "boundaries."
 msgstr ""
-"Anda dapat memindahkan ruang yang tidak dialokasikan untuk berada di dalam atau di luar partisi yang diperluas dengan "
-"mengubah ukuran batas partisi yang diperluas."
+"Anda dapat memindahkan ruang yang tidak dialokasikan untuk berada di dalam atau di luar partisi extended dengan mengubah "
+"ukuran batas partisi extended."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1838
-#, fuzzy
 msgid "A LUKS encrypted partition and the file system within can only be resized when the encryption mapping is open."
-msgstr ""
-"Partisi terenkripsi LUKS dan sistem file di dalamnya hanya dapat di mengubah ukuran ketika pemetaan enkripsi terbuka."
+msgstr "Partisi terenkripsi LUKS dan sistem berkas di dalamnya hanya dapat diubah ukuran ketika pemetaan enkripsi terbuka."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1849
@@ -2050,13 +1980,12 @@ msgstr "Mendefragmentasi sistem berkas."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1852
-#, fuzzy
 msgid ""
 "Booting into Safe Mode with the commercial operating system that uses NTFS can improve the ability to defragment the file "
 "system. To enter Safe Mode press <keycap>F8</keycap> while your computer is booting the operating system."
 msgstr ""
-"Booting ke Safe Mode dengan sistem operasi komersial yang menggunakan NTFS dapat meningkatkan kemampuan untuk "
-"mendefragmentasi sistem file. Untuk memasuki Mode Aman tekan <keycap>F8</keycap> saat komputer Anda sedang mem-boot "
+"Boot ke Mode Aman dengan sistem operasi komersial yang menggunakan NTFS dapat meningkatkan kemampuan untuk "
+"mendefragmentasi sistem berkas. Untuk memasuki Mode Aman tekan <keycap>F8</keycap> saat komputer Anda sedang mem-boot "
 "sistem operasi."
 
 #. (itstool) path: para/screen
@@ -2067,44 +1996,39 @@ msgstr "<prompt>C:&gt; </prompt><command>chkdsk</command> /f /r"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1863
-#, fuzzy
 msgid ""
 "Check the partition for errors with the following command: <_:screen-1/> Remember to reboot back into the commercial "
 "operating system that uses NTFS to allow the <command>chkdsk</command> command to execute."
 msgstr ""
 "Periksa partisi untuk kesalahan dengan perintah berikut: <_:screen-1/> Ingatlah untuk me-reboot kembali ke sistem operasi "
-"komersial yang menggunakan NTFS untuk <command>memungkinkan perintah chkdsk</command> untuk mengeksekusi."
+"komersial yang menggunakan NTFS agar memungkinkan perintah <command>chkdsk</command> dieksekusi."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1872
-#, fuzzy
 msgid ""
 "Temporarily disable the paging file. The paging file occupies a fixed location in the partition that the defragmentation "
 "process is unable to move."
 msgstr ""
-"Nonaktifkan berkas halaman untuk sementara. File halaman menempati lokasi tetap dalam partisi yang proses defragmentasi "
-"tidak dapat bergerak."
+"Nonaktifkan berkas paging untuk sementara. Berkas paging menempati lokasi tetap dalam partisi yang proses defragmentasi "
+"tidak dapat memindah."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1880
-#, fuzzy
 msgid ""
 "Temporarily move large files to another partition or disk device. Large files are defined as greater than a few hundred "
 "Megabytes (MB)."
 msgstr ""
-"Pindahkan berkas besar untuk sementara ke partisi atau perangkat diska lainnya. File besar didefinisikan sebagai lebih "
+"Pindahkan berkas besar untuk sementara ke partisi atau perangkat diska lainnya. Berkas besar didefinisikan sebagai lebih "
 "besar dari beberapa ratus Megabyte (MB)."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1887
-#, fuzzy
 msgid "Ensure a proper shut down of the commercial operating system that uses NTFS before you resize the NTFS partition"
 msgstr ""
 "Pastikan matikan sistem operasi komersial yang tepat yang menggunakan NTFS sebelum Anda mengubah ukuran partisi NTFS"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1894
-#, fuzzy
 msgid ""
 "Leave at least 10 percent unused space in the NTFS partition. If you shrink the partition too much, then the commercial "
 "operating system might have difficulty functioning properly."
@@ -2114,13 +2038,11 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1902
-#, fuzzy
 msgid "Reboot twice into the commercial operating system that uses NTFS after shrinking the NTFS partition."
 msgstr "Reboot dua kali ke dalam sistem operasi komersial yang menggunakan NTFS setelah menyusutkan partisi NTFS."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1844
-#, fuzzy
 msgid ""
 "To improve the ability to shrink NTFS partitions, you might consider one or more of the following: <_:itemizedlist-1/>"
 msgstr ""
@@ -2134,9 +2056,8 @@ msgstr "Memindahkan Partisi"
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1915
-#, fuzzy
 msgid "Moving and resizing a partition can be performed by a single <application>gparted</application> operation."
-msgstr "Memindahkan dan mengubah ukuran partisi dapat dilakukan dengan satu <application>operasi gparted.</application>"
+msgstr "Memindahkan dan mengubah ukuran partisi dapat dilakukan dengan satu operasi <application>gparted</application>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1938
@@ -2150,23 +2071,20 @@ msgstr "Untuk memindahkan partisi: <_:orderedlist-1/>"
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1959
-#, fuzzy
 msgid ""
 "If the partition is an operating system boot partition, then the operating system might not boot after the move operation "
 "is applied."
 msgstr ""
-"Jika partisi adalah partisi boot sistem operasi, maka sistem operasi mungkin tidak boot setelah operasi pemindahan "
+"Jika partisi adalah partisi boot sistem operasi, maka sistem operasi mungkin tidak bisa boot setelah operasi pemindahan "
 "diterapkan."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1964
-#, fuzzy
 msgid "If the operating system fails to boot, see <xref linkend=\"gparted-fix-operating-system-boot-problems\"/>."
-msgstr "Jika sistem operasi gagal untuk boot, lihat <xref j=\"0/\">.</xref>"
+msgstr "Jika sistem operasi gagal boot, lihat <xref linkend=\"gparted-fix-operating-system-boot-problems\"/>."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:1970
-#, fuzzy
 msgid "A LUKS encrypted partition can only be moved when the encryption mapping is closed."
 msgstr "Partisi terenkripsi LUKS hanya dapat dipindahkan ketika pemetaan enkripsi ditutup."
 
@@ -2177,17 +2095,15 @@ msgstr "Menyalin dan Menempelkan Partisi"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:1990
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Copy</guimenuitem></menuchoice>. The application marks the "
 "partition as the source partition."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Salinan</guimenu><guimenuitem>Partisi</guimenuitem></menuchoice>. Aplikasi menandai partisi "
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Salin</guimenuitem></menuchoice>. Aplikasi menandai partisi "
 "sebagai partisi sumber."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1980
-#, fuzzy
 msgid "To copy a partition: <_:orderedlist-1/>"
 msgstr "Untuk menyalin partisi: <_:orderedlist-1/>"
 
@@ -2198,13 +2114,12 @@ msgstr "Pilih ruang yang tidak dialokasikan pada perangkat diska. Lihat <xref li
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2009
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Paste</guimenuitem></menuchoice>. The application displays "
 "the <guilabel>Paste <replaceable>/path-to-partition</replaceable></guilabel> dialog."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Partition</guimenu><guimenuitem>Paste</guimenuitem></menuchoice>. Aplikasi menampilkan "
-"dialog <guilabel>Tempel <replaceable>/path-to-partition.</replaceable> </guilabel>"
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Tempel</guimenuitem></menuchoice>. Aplikasi menampilkan dialog "
+"<guilabel>Tempel <replaceable>/path-ke-partisi</replaceable></guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2018
@@ -2222,35 +2137,31 @@ msgstr "Jika mau, Anda dapat menentukan perataan partisi. Lihat <xref linkend=\"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2030
-#, fuzzy
 msgid ""
 "Click <guibutton>Paste</guibutton>. The application displays the copy partition operation in the <guilabel>Pending "
 "Operations</guilabel> pane."
 msgstr ""
-"Klik <guibutton>Tempel.</guibutton> Aplikasi menampilkan operasi partisi salin di panel <guilabel>Operasi</guilabel> "
-"Tertunda."
+"Klik <guibutton>Tempel</guibutton>. Aplikasi menampilkan operasi salin partisi di panel <guilabel>Operasi Tertunda</"
+"guilabel>."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:1999
-#, fuzzy
 msgid "To Paste a partition: <_:orderedlist-1/>"
 msgstr "Untuk Menempelkan partisi: <_:orderedlist-1/>"
 
 #. (itstool) path: caution/para
 #: C/index.docbook:2039
-#, fuzzy
 msgid ""
 "The copy of the partition has the same file system label and Universally Unique Identifier (UUID) as the source "
 "partition. This can cause a problem when booting, or when mount actions use the file system label or UUID to identify the "
 "partition."
 msgstr ""
-"Salinan partisi memiliki label sistem file yang sama dan Pengidentifikasi Unik Universal (UUID) sebagai partisi sumber. "
-"Ini dapat menyebabkan masalah saat booting, atau ketika tindakan pemasangan menggunakan label sistem file atau UUID untuk "
+"Salinan partisi memiliki label sistem berkas dan Universally Unique Identifier (UUID) yang sama dengan partisi sumber. "
+"Ini dapat menyebabkan masalah saat boot, atau ketika tindakan mengait menggunakan label sistem berkas atau UUID untuk "
 "mengidentifikasi partisi."
 
 #. (itstool) path: caution/para
 #: C/index.docbook:2046
-#, fuzzy
 msgid ""
 "The problem is that the operating system will randomly select to mount either the source, or the copy of the partition. "
 "For example, on the first mount action the source partition might be mounted. On the next mount action the copy of the "
@@ -2260,7 +2171,7 @@ msgid ""
 msgstr ""
 "Masalahnya adalah bahwa sistem operasi akan secara acak memilih untuk memasang sumber, atau salinan partisi. Misalnya, "
 "pada tindakan kait pertama, partisi sumber mungkin dipasang. Pada aksi kait berikutnya salinan partisi mungkin dipasang. "
-"Seiring waktu sifat acak pemasangan partisi ini mungkin membuat file tampak secara misterius muncul atau menghilang "
+"Seiring waktu sifat acak pemasangan partisi ini mungkin membuat berkas tampak secara misterius muncul atau menghilang "
 "tergantung pada partisi mana yang dipasang. Pemasangan acak sumber atau salinan partisi juga dapat menyebabkan kerusakan "
 "atau kehilangan data yang parah."
 
@@ -2282,19 +2193,16 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2063
-#, fuzzy
 msgid "After you have queued or applied the copy operation: <_:orderedlist-1/>"
-msgstr "Setelah Anda mengantri atau menerapkan operasi salin: <_:orderedlist-1/>"
+msgstr "Setelah Anda mengantrikan atau menerapkan operasi salin: <_:orderedlist-1/>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2085
-#, fuzzy
 msgid "After you have applied the copy operation, delete or reformat the source partition."
-msgstr "Setelah Anda menerapkan operasi salin, hapus atau cukupkan ulang partisi sumber."
+msgstr "Setelah Anda menerapkan operasi salin, hapus, atau format ulang partisi sumber."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2091
-#, fuzzy
 msgid ""
 "Use some other method to ensure that the source partition and the copy of the partition are not used on the same computer "
 "at the same time. For example, if the copy of the partition is on a separate drive then remove the drive from the "
@@ -2305,19 +2213,16 @@ msgstr ""
 
 #. (itstool) path: caution/para
 #: C/index.docbook:2058
-#, fuzzy
 msgid "To avoid the problem you are advised to do one of the following: <_:itemizedlist-1/>"
 msgstr "Untuk menghindari masalah, Anda disarankan untuk melakukan salah satu hal berikut: <_:itemizedlist-1/>"
 
 #. (itstool) path: tip/para
 #: C/index.docbook:2103
-#, fuzzy
 msgid "The file system within a LUKS encrypted partition can only be copied when the encryption mapping is open."
-msgstr "Sistem file dalam partisi terenkripsi LUKS hanya dapat disalin ketika pemetaan enkripsi terbuka."
+msgstr "Sistem berkas dalam partisi terenkripsi LUKS hanya dapat disalin ketika pemetaan enkripsi terbuka."
 
 #. (itstool) path: note/para
 #: C/index.docbook:2109
-#, fuzzy
 msgid ""
 "To prevent unintended decryption of data, pasting into unallocated space creating a new partition is not permitted. "
 "However a LUKS encrypted partition can be pasted into an existing open LUKS encrypted partition maintaining an encrypted, "
@@ -2325,7 +2230,8 @@ msgid ""
 msgstr ""
 "Untuk mencegah dekripsi data yang tidak diinginkan, menempelkan ke ruang yang tidak dialokasikan membuat partisi baru "
 "tidak diizinkan. Namun partisi terenkripsi LUKS dapat ditempelkan ke dalam partisi terenkripsi LUKS terbuka yang ada "
-"mempertahankan enkripsi, atau ditempelkan ke dalam partisi polos yang membuat salinan sistem file yang tidak terenkripsi."
+"mempertahankan enkripsi, atau ditempelkan ke dalam partisi polos yang membuat salinan sistem berkas yang tidak "
+"terenkripsi."
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:2122
@@ -2334,87 +2240,77 @@ msgstr "Mengelola Flag Partisi"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2133
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Manage Flags</guimenuitem></menuchoice>. The application "
 "opens a <guilabel>Manage flags on <replaceable>/path-to-partition</replaceable></guilabel> dialog."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Partisi</guimenu><guimenuitem>Kelola Bendera</guimenuitem></menuchoice>. Aplikasi membuka "
-"bendera Kelola pada dialog <guilabel> <replaceable>/path-to-partition.</replaceable> </guilabel>"
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Kelola Flag</guimenuitem></menuchoice>. Aplikasi membuka dialog "
+"<guilabel>Kelola flag pada <replaceable>/path-ke-partisi</replaceable></guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2142
-#, fuzzy
 msgid ""
 "To enable a flag, select the check box beside the flag. The application writes the enabled flag to the partition and "
 "refreshes the <guilabel>Manage flags on <replaceable>/path-to-partition</replaceable></guilabel> dialog."
 msgstr ""
-"Untuk mengaktifkan bendera, pilih kotak centang di samping bendera. Aplikasi menulis bendera yang diaktifkan ke partisi "
-"dan menyegarkan dialog <guilabel>Kelola bendera pada <replaceable>/path-to-partition.</replaceable> </guilabel>"
+"Untuk mengaktifkan flag, pilih kotak centang di samping flag. Aplikasi menulis flag yang diaktifkan ke partisi dan "
+"menyegarkan dialog <guilabel>Kelola flag pada <replaceable>/path-ke-partisi</replaceable></guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2150
-#, fuzzy
 msgid ""
 "To disable a flag, deselect the check box beside the flag. The application writes the disabled flag to the partition and "
 "refreshes the <guilabel>Manage flags on <replaceable>/path-to-partition</replaceable></guilabel> dialog."
 msgstr ""
-"Untuk menonaktifkan bendera, batal pilih kotak centang di samping bendera. Aplikasi menulis bendera yang dinonaktifkan ke "
-"partisi dan menyegarkan <guilabel>dialog Kelola bendera pada <replaceable>/path-to-partition.</replaceable> </guilabel>"
+"Untuk menonaktifkan flag, batalkan pilih kotak centang di samping flag. Aplikasi menulis flag yang dinonaktifkan ke "
+"partisi dan menyegarkan dialog <guilabel>Kelola bendera pada <replaceable>/path-ke-partisi</replaceable></guilabel>."
 
 #. (itstool) path: note/para
 #: C/index.docbook:2160
-#, fuzzy
 msgid ""
 "<guimenuitem>Manage Flags</guimenuitem> is only available for disks with partition tables. Disks with <guimenuitem>loop</"
 "guimenuitem> or <guimenuitem>none</guimenuitem> partition tables do not contain a partition table, and do not have "
 "partition flags."
 msgstr ""
-"<guimenuitem>Kelola Bendera</guimenuitem> hanya tersedia untuk disk dengan tabel partisi. Disk dengan <guimenuitem>loop</"
-"guimenuitem> atau <guimenuitem>tidak</guimenuitem> ada tabel partisi tidak berisi tabel partisi, dan tidak memiliki "
-"bendera partisi."
+"<guimenuitem>Kelola Flag</guimenuitem> hanya tersedia untuk disk dengan tabel partisi. Disk dengan tabel partisi "
+"<guimenuitem>loop</guimenuitem> atau <guimenuitem>nihil</guimenuitem> tidak berisi tabel partisi, dan tidak memiliki flag "
+"partisi."
 
 #. (itstool) path: note/para
 #: C/index.docbook:2168
-#, fuzzy
 msgid "See <xref linkend=\"gparted-view-device-information\"/> to view the type of partition table."
-msgstr "Lihat <xref j=\"0/\"> untuk melihat tipe tabel partisi.</xref>"
+msgstr "Lihat <xref linkend=\"gparted-view-device-information\"/> untuk melihat tipe tabel partisi."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2123
-#, fuzzy
 msgid "To manage partition flags: <_:orderedlist-1/>"
-msgstr "Untuk mengelola bendera partisi: <_:orderedlist-1/>"
+msgstr "Untuk mengelola flag partisi: <_:orderedlist-1/>"
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2176
-#, fuzzy
 msgid ""
 "To close the <guilabel>Manage flags on <replaceable>/path-to-partition</replaceable></guilabel> dialog, click "
 "<guibutton>Close</guibutton>."
 msgstr ""
-"Untuk menutup dialog <guilabel>Kelola bendera pada <replaceable>/path-to-partition,</replaceable> </guilabel> klik "
-"<guibutton>Tutup.</guibutton>"
+"Untuk menutup dialog <guilabel>Kelola flag pada <replaceable>/path-ke-partisi</replaceable></guilabel>, klik "
+"<guibutton>Tutup</guibutton>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2187 C/index.docbook:2277
-#, fuzzy
 msgid ""
 "Boot is used by some commercial operating system boot loaders. The boot flag indicates the partition is active or "
 "bootable. Only one partition on a disk device can be active."
 msgstr ""
-"Boot digunakan oleh beberapa pemuat boot sistem operasi komersial. Bendera boot menunjukkan partisi aktif atau dapat di-"
+"Boot digunakan oleh beberapa boot loader sistem operasi komersial. Flag boot menunjukkan partisi aktif atau dapat di-"
 "boot. Hanya satu partisi pada perangkat disk yang dapat aktif."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2196
-#, fuzzy
 msgid "Diag is used to indicate the partition is used for diagnostics / recovery."
 msgstr "Diag digunakan untuk menunjukkan partisi digunakan untuk diagnostik / pemulihan."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2202
-#, fuzzy
 msgid ""
 "ESP indicates an EFI System Partition used to boot computers with the Unified Extensible Firmware Interface (UEFI) class "
 "2 that includes compatibility support for BIOS functions including the MBR partition structure."
@@ -2424,81 +2320,69 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2211 C/index.docbook:2300
-#, fuzzy
 msgid ""
 "Hidden is used by some commercial operating systems. The hidden flag makes the partition invisible to the operating "
 "system."
 msgstr ""
-"Tersembunyi digunakan oleh beberapa sistem operasi komersial. Bendera tersembunyi membuat partisi tidak terlihat oleh "
-"sistem operasi."
+"Tersembunyi digunakan oleh beberapa sistem operasi komersial. Flag tersembunyi membuat partisi tidak terlihat oleh sistem "
+"operasi."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2218 C/index.docbook:2313
-#, fuzzy
 msgid "Irst identifies an Intel Rapid Start Technology partition."
 msgstr "Irst mengidentifikasi partisi Intel Rapid Start Technology."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2224
-#, fuzzy
 msgid ""
 "LBA is used by some commercial operating system boot loaders. The LBA flag indicates the partition should be accessed "
 "using Logical Block Addressing (LBA), instead of Cylinder-Head-Sector (CHS) addressing."
 msgstr ""
-"LBA digunakan oleh beberapa pemuat boot sistem operasi komersial. Bendera LBA menunjukkan partisi harus diakses "
-"menggunakan Logical Block Addressing (LBA), alih-alih mengatasi Cylinder-Head-Sector (CHS)."
+"LBA digunakan oleh beberapa boot loader sistem operasi komersial. Flag LBA menunjukkan partisi harus diakses menggunakan "
+"Logical Block Addressing (LBA), alih-alih pengalamatan Cylinder-Head-Sector (CHS)."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2233
-#, fuzzy
 msgid "LVM is used to indicate the partition is used by a Logical Volume Manager (LVM)."
 msgstr "LVM digunakan untuk menunjukkan partisi digunakan oleh Logical Volume Manager (LVM)."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2239
-#, fuzzy
 msgid "Palo is used by the Precision Architecture - Reduced Instruction Set Computing (PA-RISC) boot loader, palo."
-msgstr "Palo digunakan oleh loader boot Precision Architecture - Reduced Instruction Set Computing (PA-RISC), palo."
+msgstr "Palo digunakan oleh boot loader Precision Architecture - Reduced Instruction Set Computing (PA-RISC), palo."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2246 C/index.docbook:2343
-#, fuzzy
 msgid "Prep is used to indicate the boot partition on Power Performance Computing (PowerPC) hardware."
-msgstr "Persiapan digunakan untuk menunjukkan partisi boot pada perangkat keras Power Performance Computing (PowerPC)."
+msgstr "Prep digunakan untuk menunjukkan partisi boot pada perangkat keras Power Performance Computing (PowerPC)."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2252
-#, fuzzy
 msgid "RAID is used to indicate the partition is used in a Redundant Array of Inexpensive Disks (RAID)."
-msgstr "RAID digunakan untuk menunjukkan partisi digunakan dalam Array Berlebihan dari Disk Murah (RAID)."
+msgstr "RAID digunakan untuk menunjukkan partisi digunakan dalam Redundant Array of Inexpensive Disks (RAID)."
 
 #. (itstool) path: note/para
 #: C/index.docbook:2182
-#, fuzzy
 msgid "A description of flags in an msdos partition table follows: <_:itemizedlist-1/>"
-msgstr "Deskripsi bendera dalam tabel partisi msdos mengikuti: <_:itemizedlist-1/>"
+msgstr "Deskripsi flag dalam tabel partisi msdos mengikuti: <_:itemizedlist-1/>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2265
-#, fuzzy
 msgid "Atvrecv is used to indicate an Apple TV Recovery partition."
 msgstr "Atvrecv digunakan untuk menunjukkan partisi Pemulihan Apple TV."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2271
-#, fuzzy
 msgid "BIOS_GRUB indicates a BIOS boot partition often used by the GRUB 2 boot loader."
-msgstr "BIOS_GRUB menunjukkan partisi boot BIOS yang sering digunakan oleh loader boot GRUB 2."
+msgstr "BIOS_GRUB menunjukkan partisi boot BIOS yang sering digunakan oleh boot loader GRUB 2."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2286
-#, fuzzy
 msgid "Diag indicates the partition is used for diagnostics or recovery."
 msgstr "Diag menunjukkan partisi digunakan untuk diagnostik atau pemulihan."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2292
-#, fuzzy
 msgid ""
 "ESP indicates an EFI System Partition used to boot computers with Extensible Firmware Interface (EFI) class 1 or Unified "
 "Extensible Firmware Interface (UEFI) class 2 or UEFI class 3."
@@ -2508,45 +2392,38 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2307
-#, fuzzy
 msgid "HP-service is used to indicate a Hewlett Packard service partition."
 msgstr "HP-service digunakan untuk menunjukkan partisi layanan Hewlett Packard."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2319
-#, fuzzy
 msgid "Legacy_boot is used by some special purpose software to indicate the partition might be bootable."
 msgstr "Legacy_boot digunakan oleh beberapa perangkat lunak tujuan khusus untuk menunjukkan partisi mungkin dapat di-boot."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2325
-#, fuzzy
 msgid "LVM indicates the partition is used by a Logical Volume Manager (LVM)."
 msgstr "LVM menunjukkan partisi digunakan oleh Logical Volume Manager (LVM)."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2331
-#, fuzzy
 msgid "Msftdata identifies partitions that contain Microsoft file systems such as NTFS or FAT."
-msgstr "Msftdata mengidentifikasi partisi yang berisi sistem file Microsoft seperti NTFS atau FAT."
+msgstr "Msftdata mengidentifikasi partisi yang berisi sistem berkas Microsoft seperti NTFS atau FAT."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2337
-#, fuzzy
 msgid "Msftres is used to indicate a Microsoft Reserved partition."
 msgstr "Msftres digunakan untuk menunjukkan partisi Microsoft Reserved."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2349
-#, fuzzy
 msgid "RAID indicates the partition is used in a Redundant Array of Inexpensive Disks (RAID)."
-msgstr "RAID menunjukkan partisi digunakan dalam Array Redundan Disk Murah (RAID)."
+msgstr "RAID menunjukkan partisi digunakan dalam Redundant Array of Inexpensive Disks (RAID)."
 
 #. (itstool) path: note/para
 #: C/index.docbook:2261
-#, fuzzy
 msgid "A description of flags in a gpt partition table follows: <_:itemizedlist-1/>"
-msgstr "Deskripsi bendera dalam tabel partisi gpt mengikuti: <_:itemizedlist-1/>"
+msgstr "Deskripsi flag dalam tabel partisi gpt mengikuti: <_:itemizedlist-1/>"
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:2361
@@ -2555,23 +2432,21 @@ msgstr "Memeriksa Partisi"
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2362
-#, fuzzy
 msgid ""
 "Checking a partition will attempt to find and fix problems in the file system. Checking a partition will attempt to grow "
 "the file system to fill the partition."
 msgstr ""
-"Memeriksa partisi akan mencoba untuk menemukan dan memperbaiki masalah dalam sistem file. Memeriksa partisi akan mencoba "
-"untuk menumbuhkan sistem file untuk mengisi partisi."
+"Memeriksa partisi akan mencoba untuk menemukan dan memperbaiki masalah dalam sistem berkas. Memeriksa partisi akan "
+"mencoba untuk menumbuhkan sistem berkas untuk mengisi penuh partisi."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2378
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Check</guimenuitem></menuchoice>. The application displays "
 "the check partition operation in the <guilabel>Pending Operations</guilabel> pane."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Pemeriksaan</guimenu><guimenuitem>Partisi</guimenuitem></menuchoice>. Aplikasi menampilkan "
-"operasi partisi pemeriksaan di panel <guilabel>Operasi Tertunda.</guilabel>"
+"Pilih: <menuchoice><guimenu>Partisi</guimenu><guimenuitem>Periksa</guimenuitem></menuchoice>. Aplikasi menampilkan "
+"operasi pemeriksaan partisi di panel <guilabel>Operasi Tertunda</guilabel>."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2368
@@ -2590,17 +2465,16 @@ msgstr "Membatalkan Operasi Terakhir"
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2399
-#, fuzzy
 msgid ""
 "To undo the last operation in the operation queue, choose: <menuchoice><guimenu>Edit</guimenu><guimenuitem>Undo Last "
 "Operation</guimenuitem></menuchoice>. The application removes the last operation from the queue displayed in the "
 "<guilabel>Pending Operations</guilabel> pane. If there are no operations remaining in the queue, the application closes "
 "the <guilabel>Pending Operations</guilabel> pane."
 msgstr ""
-"Untuk membatalkan operasi terakhir dalam antrean operasi, pilih: <menuchoice> <guimenu>Edit Batalkan</"
-"guimenu><guimenuitem>Operasi Terakhir.</guimenuitem></menuchoice> Aplikasi menghapus operasi terakhir dari antrean yang "
-"ditampilkan di panel <guilabel>Operasi Tertunda.</guilabel> Jika tidak ada operasi yang tersisa dalam antrean, aplikasi "
-"menutup panel <guilabel>Operasi Tertunda.</guilabel>"
+"Untuk membatalkan operasi terakhir dalam antrean operasi, pilih: <menuchoice> <guimenu>Sunting</"
+"guimenu><guimenuitem>Batalkan Operasi Terakhir</guimenuitem></menuchoice>. Aplikasi menghapus operasi terakhir dari "
+"antrean yang ditampilkan di panel <guilabel>Operasi Tertunda</guilabel>. Jika tidak ada operasi yang tersisa dalam "
+"antrean, aplikasi menutup panel <guilabel>Operasi Tertunda</guilabel>."
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:2412
@@ -2609,15 +2483,14 @@ msgstr "Menghapus Semua Operasi"
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2413
-#, fuzzy
 msgid ""
 "To clear all operations in the operation queue, choose: <menuchoice><guimenu>Edit</guimenu><guimenuitem>Clear All "
 "Operations</guimenuitem></menuchoice>. The application removes all operations from the queue and closes the "
 "<guilabel>Pending Operations</guilabel> pane."
 msgstr ""
-"Untuk menghapus semua operasi dalam antrean operasi, pilih: <menuchoice> <guimenu>Edit Hapus</guimenu><guimenuitem>Semua "
-"Operasi.</guimenuitem></menuchoice> Aplikasi menghapus semua operasi dari antrean dan menutup panel <guilabel>Operasi "
-"Tertunda.</guilabel>"
+"Untuk menghapus semua operasi dalam antrean operasi, pilih: <menuchoice> <guimenu>Sunting</guimenu><guimenuitem>Hapus "
+"Semua Operasi</guimenuitem></menuchoice>. Aplikasi menghapus semua operasi dari antrean dan menutup panel "
+"<guilabel>Operasi Tertunda</guilabel>."
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:2423
@@ -2626,36 +2499,32 @@ msgstr "Menerapkan Semua Operasi"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2428
-#, fuzzy
 msgid ""
 "Choose: <menuchoice><guimenu>Edit</guimenu><guimenuitem>Apply All Operations</guimenuitem></menuchoice>. The application "
 "displays an <guilabel>Apply operations to device</guilabel> dialog."
 msgstr ""
-"Pilih: <menuchoice> <guimenu>Edit</guimenu><guimenuitem>Terapkan Semua Operasi.</guimenuitem></menuchoice> Aplikasi "
-"menampilkan dialog <guilabel>Terapkan operasi ke</guilabel> perangkat."
+"Pilih: <menuchoice><guimenu>Sunting</guimenu><guimenuitem>Terapkan Semua Operasi</guimenuitem></menuchoice>. Aplikasi "
+"menampilkan dialog <guilabel>Menerapkan operasi ke perangkat</guilabel>."
 
 #. (itstool) path: caution/para
 #: C/index.docbook:2435
-#, fuzzy
 msgid ""
 "Editing partitions has the potential to cause LOSS of DATA. You are advised to backup your data before applying your "
 "partition editing operations."
 msgstr ""
-"Mengedit partisi berpotensi menyebabkan HILANGnya DATA. Anda disarankan untuk mencadangkan data Anda sebelum menerapkan "
-"operasi pengeditan partisi Anda."
+"Menyunting partisi berpotensi menyebabkan DATA HILANG. Anda disarankan untuk mencadangkan data Anda sebelum menerapkan "
+"operasi penyuntingan partisi Anda."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2453
-#, fuzzy
 msgid ""
 "To view more information, click <guibutton>Details</guibutton>. The application displays more details about operations."
 msgstr ""
-"Untuk melihat informasi selengkapnya, klik <guibutton>Detail.</guibutton> Aplikasi ini menampilkan detail selengkapnya "
+"Untuk melihat informasi selengkapnya, klik <guibutton>Detail</guibutton>. Aplikasi ini menampilkan detail selengkapnya "
 "tentang operasi."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2458
-#, fuzzy
 msgid "To view more information about the steps in each operation, click the arrow button beside each step."
 msgstr ""
 "Untuk melihat informasi selengkapnya tentang langkah-langkah dalam setiap operasi, klik tombol panah di samping setiap "
@@ -2663,13 +2532,12 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2464
-#, fuzzy
 msgid ""
 "To stop the operations while they are executing, click <guibutton>Cancel</guibutton>. The application displays a disabled "
 "<guibutton>Force Cancel (5)</guibutton> button and counts down for 5 seconds."
 msgstr ""
-"Untuk menghentikan operasi saat dijalankan, klik <guibutton>Batalkan.</guibutton> Aplikasi ini menampilkan tombol "
-"<guibutton>Force Cancel (5) yang dinonaktifkan</guibutton> dan dihitung mundur selama 5 detik."
+"Untuk menghentikan operasi saat dijalankan, klik <guibutton>Batal</guibutton>. Aplikasi ini menampilkan tombol "
+"<guibutton>Paksa Batal (5)</guibutton> yang dinonaktifkan dan menghitung mundur selama 5 detik."
 
 #. (itstool) path: note/para
 #: C/index.docbook:2472
@@ -2682,27 +2550,24 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2478
-#, fuzzy
 msgid ""
 "If operations have not halted after 5 seconds the application enables the <guibutton>Force Cancel</guibutton> button."
-msgstr "Jika operasi belum dihentikan setelah 5 detik aplikasi mengaktifkan tombol <guibutton>Force Cancel.</guibutton>"
+msgstr "Jika operasi belum dihentikan setelah 5 detik, aplikasi mengaktifkan tombol <guibutton>Paksa Batal</guibutton>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2483
-#, fuzzy
 msgid ""
 "To force the operations to stop, click <guibutton>Force Cancel</guibutton>. The application displays a warning dialog."
-msgstr "Untuk memaksa operasi berhenti, klik <guibutton>Batalkan Paksa.</guibutton> Aplikasi menampilkan dialog peringatan."
+msgstr "Untuk memaksa operasi berhenti, klik <guibutton>Paksa Batal</guibutton>. Aplikasi menampilkan dialog peringatan."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2488
-#, fuzzy
 msgid ""
 "Click <guibutton>Continue Operation</guibutton> to allow the roll back operations to complete, or click <guibutton>Cancel "
 "Operation</guibutton> to cancel the roll back operations."
 msgstr ""
-"Klik <guibutton>Lanjutkan Operasi</guibutton> untuk memperbolehkan operasi pembatalan selesai, atau klik "
-"<guibutton>Batalkan</guibutton> Operasi untuk membatalkan operasi pembatalan."
+"Klik <guibutton>Lanjutkan Operasi</guibutton> untuk memperbolehkan operasi roll back selesai, atau klik "
+"<guibutton>Batalkan Operasi</guibutton> untuk membatalkan operasi roll back."
 
 #. (itstool) path: warning/para
 #: C/index.docbook:2495
@@ -2717,95 +2582,85 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2504
-#, fuzzy
 msgid ""
 "When the application finishes performing operations, the application displays the <guibutton>Save Details</guibutton> "
 "button and the <guibutton>Close</guibutton> button."
 msgstr ""
 "Ketika aplikasi selesai melakukan operasi, aplikasi menampilkan tombol <guibutton>Simpan Detail</guibutton> dan tombol "
-"<guibutton>Tutup.</guibutton>"
+"<guibutton>Tutup</guibutton>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2443
-#, fuzzy
 msgid ""
 "Click <guibutton>Apply</guibutton>. The application displays an <guilabel>Applying pending operations</guilabel> dialog. "
 "The application applies each pending operation in the order you created the operations. The application displays a status "
 "update when each operation is completed. <_:itemizedlist-1/>"
 msgstr ""
-"Klik <guibutton>Terapkan.</guibutton> Aplikasi menampilkan dialog <guilabel>Menerapkan operasi yang tertunda.</guilabel> "
+"Klik <guibutton>Terapkan</guibutton>. Aplikasi menampilkan dialog <guilabel>Menerapkan operasi yang tertunda</guilabel>. "
 "Aplikasi ini menerapkan setiap operasi yang tertunda dalam urutan Anda membuat operasi. Aplikasi menampilkan pembaruan "
 "status ketika setiap operasi selesai. <_:itemizedlist-1/>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2522
-#, fuzzy
 msgid "If you want to change the default file name, then type a file name in the <guilabel>Name</guilabel> text box."
-msgstr "Jika Anda ingin mengubah nama file default, lalu ketikkan nama file dalam <guilabel>kotak</guilabel> teks Nama."
+msgstr "Jika Anda ingin mengubah nama berkas baku, maka ketikkan nama berkas dalam kotak teks<guilabel>Nama</guilabel>."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2529
-#, fuzzy
 msgid ""
 "If you want to save the file in a folder different than /root, click <guibutton>Browse for other folders</guibutton>. The "
 "application displays a file system navigator."
 msgstr ""
-"Jika Anda ingin menyimpan file dalam folder yang berbeda dari /root, Klik <guibutton>Telusuri folder lain.</guibutton> "
-"Aplikasi menampilkan navigator sistem file."
+"Jika Anda ingin menyimpan berkas dalam folder yang berbeda dari /root, klik <guibutton>Ramban folder lain</guibutton>. "
+"Aplikasi menampilkan navigator sistem berkas."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2535
-#, fuzzy
 msgid "Use the file system navigator to select a folder."
-msgstr "Gunakan navigator sistem file untuk memilih folder."
+msgstr "Gunakan navigator sistem berkas untuk memilih folder."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2540
-#, fuzzy
 msgid "Click <guibutton>Save</guibutton> to save the file. The application saves the details file."
-msgstr "Klik <guibutton>Simpan</guibutton> untuk menyimpan file. Aplikasi menyimpan file detail."
+msgstr "Klik <guibutton>Simpan</guibutton> untuk menyimpan berkas. Aplikasi menyimpan berkas detail."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2515
-#, fuzzy
 msgid ""
 "If you want to save the details from applying all operations, then click <guibutton>Save Details</guibutton>. The "
 "application displays a <guilabel>Save Details</guilabel> dialog. <_:orderedlist-1/>"
 msgstr ""
-"Jika Anda ingin menyimpan detail dari menerapkan semua operasi, lalu klik <guibutton>Simpan Detail.</guibutton> Aplikasi "
-"menampilkan dialog <guilabel>Simpan Detail.</guilabel><_:orderedlist-1/>"
+"Jika Anda ingin menyimpan detail dari menerapkan semua operasi, maka klik <guibutton>Simpan Detail</guibutton>. Aplikasi "
+"menampilkan dialog <guilabel>Simpan Detail</guilabel>. <_:orderedlist-1/>"
 
 #. (itstool) path: caution/para
 #: C/index.docbook:2548
-#, fuzzy
 msgid ""
 "If you use <application>gparted</application> from a Live CD, then the root file system exists in RAM memory. All files "
 "saved to the Live CD root file system will be lost when you shut down the computer."
 msgstr ""
-"Jika Anda menggunakan <application>gparted</application> dari Live CD, maka sistem file root ada di memori RAM. Semua "
-"file yang disimpan ke sistem file root Live CD akan hilang ketika Anda mematikan komputer."
+"Jika Anda menggunakan <application>gparted</application> dari Live CD, maka sistem berkas root ada di memori RAM. Semua "
+"berkas yang disimpan ke sistem berkas root Live CD akan hilang ketika Anda mematikan komputer."
 
 #. (itstool) path: caution/para
 #: C/index.docbook:2554
-#, fuzzy
 msgid ""
 "If you saved the gparted details to the Live CD root file system, then you need to copy the file to more permanent "
 "storage. Examples of more permanent storage are a hard disk drive or a USB flash memory drive."
 msgstr ""
-"Jika Anda menyimpan detail gparted ke sistem file root Live CD, maka Anda perlu menyalin file ke penyimpanan yang lebih "
-"permanen. Contoh penyimpanan yang lebih permanen adalah hard disk drive atau kandar memori flash USB."
+"Jika Anda menyimpan detail gparted ke sistem berkas root Live CD, maka Anda perlu menyalin berkas ke penyimpanan yang "
+"lebih permanen. Contoh penyimpanan yang lebih permanen adalah hard disk drive atau flash disk USB."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2563
-#, fuzzy
 msgid ""
 "Click <guibutton>Close</guibutton>. The application closes the <guilabel>Applying pending operations</guilabel> dialog. "
 "The application rescans all the disk devices and refreshes the device partition layout in the <application>gparted</"
 "application> window."
 msgstr ""
-"Klik <guibutton>Tutup.</guibutton> Aplikasi menutup dialog <guilabel>Terapkan operasi yang</guilabel> tertunda. Aplikasi "
-"ini memindai ulang semua perangkat disk dan menyegarkan tata letak partisi perangkat di <application>jendela gparted.</"
-"application>"
+"Klik <guibutton>Tutup</guibutton>. Aplikasi menutup dialog <guilabel>Terapkan operasi tertunda</guilabel>. Aplikasi ini "
+"memindai ulang semua perangkat disk dan menyegarkan tata letak partisi perangkat di jendela <application>gparted</"
+"application>."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2424
@@ -2819,7 +2674,6 @@ msgstr "Memperoleh GParted di Live CD"
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:2583
-#, fuzzy
 msgid ""
 "A Live CD is a Compact Disc that contains a bootable operating system. A Live CD enables you to boot your computer from "
 "the CD."
@@ -2829,87 +2683,75 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2592
-#, fuzzy
 msgid "You can edit all of your partitions because the partitions are not mounted."
-msgstr "Anda dapat mengedit semua partisi Anda karena partisi tidak dipasang."
+msgstr "Anda dapat menyunting semua partisi Anda karena partisi tidak dikait."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2598
-#, fuzzy
 msgid "You can edit partitions on computers that do not have a bootable operating system."
-msgstr "Anda dapat mengedit partisi pada komputer yang tidak memiliki sistem operasi yang dapat di-boot."
+msgstr "Anda dapat menyunting partisi pada komputer yang tidak memiliki sistem operasi yang dapat di-boot."
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:2587
-#, fuzzy
 msgid "Using <application>gparted</application> from a Live CD has the following advantages: <_:itemizedlist-1/>"
 msgstr ""
 "Menggunakan <application>gparted</application> dari Live CD memiliki keuntungan sebagai berikut: <_:itemizedlist-1/>"
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:2605
-#, fuzzy
 msgid "The <application>gparted</application> application is available on many Live CD distributions."
 msgstr "Aplikasi <application>gparted</application> tersedia di banyak distribusi Live CD."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2614
-#, fuzzy
 msgid "GParted Live CD <ulink type=\"http\" url=\"https://gparted.org/livecd.php\"/>"
-msgstr "CD Langsung GParted <ulink type=\"http\" url=\"https://gparted.org/livecd.php\"/>"
+msgstr "Live CD GParted <ulink type=\"http\" url=\"https://gparted.org/livecd.php\"/>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2620
-#, fuzzy
 msgid "SystemRescue (also known as SystemRescueCD) <ulink type=\"http\" url=\"https://www.system-rescue.org\"/>"
-msgstr "CD Penyelamatan Sistem <ulink type=\"http\" url=\"http://www.system-rescue-cd.org\"/>"
+msgstr "SystemRescue (juga dikenal sebagai SystemRescueCD) <ulink type=\"http\" url=\"http://www.system-rescue-cd.org\"/>"
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:2609
-#, fuzzy
 msgid ""
 "You can download a Live CD image containing <application>gparted</application> from the following web sites: <_:"
 "itemizedlist-1/>"
 msgstr ""
-"Anda dapat mengunduh gambar Live CD yang <application>berisi gparted</application> dari situs web berikut: <_:"
+"Anda dapat mengunduh image Live CD yang berisi <application>gparted</application> dari situs web berikut: <_:"
 "itemizedlist-1/>"
 
 #. (itstool) path: tip/para
 #: C/index.docbook:2628
-#, fuzzy
 msgid "The GParted Live CD image can be written to a USB flash drive."
-msgstr "Gambar CD GParted Live dapat ditulis ke USB flash drive."
+msgstr "Image Live CD GParted dapat ditulis ke USB flash drive."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:2631
-#, fuzzy
 msgid ""
 "If your computer can boot from Universal Serial Bus (USB) then you might prefer to boot and use <application>gparted</"
 "application> from a USB flash drive."
 msgstr ""
-"Jika komputer Anda dapat boot dari Universal Serial Bus (USB) maka Anda mungkin lebih suka boot dan "
-"<application>menggunakan gparted</application> dari USB flash drive."
+"Jika komputer Anda bisa boot dari Universal Serial Bus (USB) maka Anda mungkin lebih suka boot dan menggunakan "
+"<application>gparted</application> dari USB flash drive."
 
 #. (itstool) path: tip/para
 #: C/index.docbook:2638
-#, fuzzy
 msgid "To avoid wasting a blank CD when burning a CD image file, use the following tips:"
-msgstr "Untuk menghindari penyiakan CD kosong saat membakar file gambar CD, gunakan tips berikut:"
+msgstr "Untuk menghindari pemborosan CD kosong saat membakar berkas image CD, gunakan tips berikut:"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2644
-#, fuzzy
 msgid "Ensure the checksum of the downloaded file matches the checksum posted on the download page."
-msgstr "Pastikan checksum file yang diunduh cocok dengan checksum yang diposting di halaman unduhan."
+msgstr "Pastikan checksum berkas yang diunduh cocok dengan checksum yang dicantumkan di halaman unduhan."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2650
-#, fuzzy
 msgid ""
 "Be sure to burn the .iso file as an image to the blank CD. If you burn the .iso file as data to a blank CD then the CD "
 "will not boot in your computer."
 msgstr ""
-"Pastikan untuk membakar berkas .iso sebagai gambar ke CD kosong. Jika Anda membakar file .iso sebagai data ke CD kosong "
+"Pastikan untuk membakar berkas .iso sebagai image ke CD kosong. Jika Anda membakar berkas .iso sebagai data ke CD kosong "
 "maka CD tidak akan boot di komputer Anda."
 
 #. (itstool) path: sect1/title
@@ -2929,13 +2771,11 @@ msgstr "Memindahkan partisi."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2678
-#, fuzzy
 msgid "Install another operating system and overwrite the Master Boot Record (MBR)."
 msgstr "Instal sistem operasi lain dan timpa Master Boot Record (MBR)."
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:2663
-#, fuzzy
 msgid ""
 "Your computer might fail to boot an operating system when you perform one of the following actions: <_:itemizedlist-1/>"
 msgstr ""
@@ -2943,33 +2783,30 @@ msgstr ""
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:2685
-#, fuzzy
 msgid "Fortunately the failure to boot can be often be fixed."
-msgstr "Untungnya kegagalan boot dapat sering diperbaiki."
+msgstr "Untungnya kegagalan boot sering dapat diperbaiki."
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:2688
-#, fuzzy
 msgid ""
 "If your computer uses the GRUB boot loader, see <xref linkend=\"gparted-fix-grub-boot-problem\"/> to restore the ability "
 "to boot."
 msgstr ""
-"Jika komputer Anda menggunakan loader boot GRUB, lihat <xref j=\"0/\"> untuk memulihkan kemampuan untuk boot.</xref>"
+"Jika komputer Anda menggunakan boot loader GRUB, lihat <xref linkend=\"gparted-fix-grub-boot-problem\"/> untuk memulihkan "
+"kemampuan boot."
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:2693
-#, fuzzy
 msgid ""
 "If your computer does not use GRUB then you are advised to consult documentation for your boot loader to learn how to fix "
 "the problem. You might consult the <ulink type=\"http\" url=\"https://gparted.org/faq.php\">GParted FAQ</ulink>, or the "
 "<ulink type=\"http\" url=\"https://gparted.org/forum.php\">GParted forum</ulink>. You might also search the Internet to "
 "learn how other people have solved similar problems."
 msgstr ""
-"Jika komputer Anda tidak menggunakan GRUB maka Anda disarankan untuk berkonsultasi dengan dokumentasi untuk pemuat boot "
-"Anda untuk mempelajari cara memperbaiki masalah tersebut. Anda dapat berkonsultasi dengan <ulink type=\"http\" url="
-"\"https://gparted.org/faq.php\">FAQ GParted,</ulink>atau <ulink type=\"http\" url=\"https://gparted.org/forum.php\">forum "
-"GParted.</ulink> Anda mungkin juga mencari di Internet untuk mempelajari bagaimana orang lain telah memecahkan masalah "
-"serupa."
+"Jika komputer Anda tidak menggunakan GRUB maka Anda disarankan berkonsultasi dengan dokumentasi bagi boot loader Anda "
+"untuk mempelajari cara memperbaiki masalah tersebut. Anda dapat berkonsultasi dengan <ulink type=\"http\" url=\"https://"
+"gparted.org/faq.php\">FAQ GParted</ulink>, atau <ulink type=\"http\" url=\"https://gparted.org/forum.php\">forum GParted</"
+"ulink>. Anda mungkin juga mencari di Internet untuk mempelajari bagaimana orang lain telah memecahkan masalah serupa."
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:2707
@@ -2978,17 +2815,15 @@ msgstr "Memperbaiki masalah boot GRUB"
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:2708
-#, fuzzy
 msgid ""
 "The Grand Unified Boot loader (GRUB) is used by many GNU/Linux distributions. To fix GRUB boot problems you start by "
 "determining which major version of GRUB was used."
 msgstr ""
-"Grand Unified Boot loader (GRUB) digunakan oleh banyak distribusi GNU / Linux. Untuk memperbaiki masalah boot GRUB, Anda "
+"Grand Unified Boot loader (GRUB) digunakan oleh banyak distribusi GNU/Linux. Untuk memperbaiki masalah boot GRUB, Anda "
 "mulai dengan menentukan versi utama GRUB mana yang digunakan."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2717
-#, fuzzy
 msgid ""
 "GRUB, also known as GRUB 2, covers versions 1.98 and higher. GRUB 2 works with both GUID partition tables (GPT) and msdos "
 "partition tables."
@@ -2998,17 +2833,15 @@ msgstr ""
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2724
-#, fuzzy
 msgid ""
 "GRUB Legacy, traditionally known as GRUB, covers versions 0.9x and earlier. GRUB Legacy works with msdos partition tables "
 "only."
 msgstr ""
 "GRUB Legacy, secara tradisional dikenal sebagai GRUB, mencakup versi 0.9x dan yang lebih lama. GRUB Legacy hanya "
-"berfungsi dengan tabel partisi MSDOS."
+"berfungsi dengan tabel partisi msdos."
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:2713
-#, fuzzy
 msgid "There are two major versions of GRUB: <_:itemizedlist-1/>"
 msgstr "Ada dua versi utama GRUB: <_:itemizedlist-1/>"
 
@@ -3039,13 +2872,11 @@ msgstr "Ubuntu 9.10 (Karmic Koala) dan lebih tinggi"
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:2732
-#, fuzzy
 msgid "GRUB 2 is used as the default boot loader in the following GNU/Linux distributions: <_:itemizedlist-1/>"
-msgstr "GRUB 2 digunakan sebagai pemuat boot default dalam distribusi GNU/Linux berikut: <_:itemizedlist-1/>"
+msgstr "GRUB 2 digunakan sebagai boot loader baku dalam distribusi GNU/Linux berikut: <_:itemizedlist-1/>"
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:2763
-#, fuzzy
 msgid ""
 "If you are unsure whether your computer uses GRUB 2 or GRUB Legacy, you might try searching for the answer on the "
 "Internet."
@@ -3060,25 +2891,22 @@ msgstr "Memulihkan GRUB 2 Boot Loader"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2775
-#, fuzzy
 msgid "Boot from Live media such as GParted Live or your GNU/Linux distribution image. Open a terminal window."
-msgstr "Boot dari media Live seperti GParted Live atau gambar distribusi GNU / Linux Anda. Buka jendela terminal."
+msgstr "Boot dari media Live seperti GParted Live atau image distribusi GNU/Linux Anda. Buka jendela terminal."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2781
-#, fuzzy
 msgid "Determine which partition contains the / file system for your GNU/Linux distribution."
-msgstr "Tentukan partisi mana yang berisi sistem file / untuk distribusi GNU / Linux Anda."
+msgstr "Tentukan partisi mana yang berisi sistem berkas / untuk distribusi GNU/Linux Anda."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2785
-#, fuzzy
 msgid ""
 "Use GParted to list the partitions on your disk device. Look for a partition that contains your GNU/Linux / file system. "
 "This Linux partition will likely use a file system such as ext2, ext3, ext4, or btrfs."
 msgstr ""
-"Gunakan GParted untuk mencantumkan partisi pada perangkat disk Anda. Cari partisi yang berisi sistem file GNU / Linux / "
-"Anda. Partisi Linux ini kemungkinan akan menggunakan sistem file seperti ext2, ext3, ext4, atau btrfs."
+"Gunakan GParted untuk menampilkan daftar partisi pada perangkat disk Anda. Cari partisi yang berisi sistem berkas / "
+"(root) GNU/Linux Anda. Partisi Linux ini kemungkinan akan menggunakan sistem berkas seperti ext2, ext3, ext4, atau btrfs."
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2796
@@ -3088,11 +2916,11 @@ msgstr "<prompt># </prompt><command>vgchange</command> -a y"
 
 #. (itstool) path: note/para
 #: C/index.docbook:2792
-#, fuzzy
 msgid ""
 "If the / partition is on LVM then the Logical Volume Manager must be active. LVM can be started with the command: <_:"
 "screen-1/>"
-msgstr "Jika / partisi ada di LVM maka Manajer Volume Logis harus aktif. LVM dapat dimulai dengan perintah: <_:screen-1/>"
+msgstr ""
+"Jika partisi / (root) ada di LVM maka Logical Volume Manager harus aktif. LVM dapat dimulai dengan perintah: <_:screen-1/>"
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2802
@@ -3102,12 +2930,12 @@ msgstr "<prompt># </prompt><command>lvscan</command>"
 
 #. (itstool) path: note/para
 #: C/index.docbook:2798
-#, fuzzy
 msgid ""
 "With LVM, the equivalent of a disk partition is a Logical Volume. Logical Volumes can be listed with the command: <_:"
 "screen-1/>"
 msgstr ""
-"Dengan LVM, setara dengan partisi disk adalah Volume Logis. Volume Logika dapat dicantumkan dengan perintah: <_:screen-1/>"
+"Dengan LVM, setara dengan partisi disk adalah Volume Logis. Volume Logis dapat ditampilkan daftarnya dengan perintah: <_:"
+"screen-1/>"
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2810
@@ -3117,11 +2945,11 @@ msgstr "<prompt># </prompt><command>mdadm</command> --assemble --scan"
 
 #. (itstool) path: note/para
 #: C/index.docbook:2806
-#, fuzzy
 msgid ""
 "If the / partition is on RAID, then the RAID must be active. Linux Software RAID can be started with the command: <_:"
 "screen-1/>"
-msgstr "Jika /partisi ada di RAID, maka RAID harus aktif. Linux Software RAID dapat dimulai dengan perintah: <_:screen-1/>"
+msgstr ""
+"Jika partisi / (root) ada di RAID, maka RAID harus aktif. Linux Software RAID dapat dimulai dengan perintah: <_:screen-1/>"
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2817
@@ -3131,9 +2959,8 @@ msgstr "<prompt># </prompt><command>mkdir</command> /tmp/mydir"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2815
-#, fuzzy
 msgid "Create a mount point directory by entering (as root): <_:screen-1/>"
-msgstr "Membuat direktori mount point dengan memasukkan (sebagai root): <_:screen-1/>"
+msgstr "Buat titik kait direktori dengan memasukkan (sebagai root): <_:screen-1/>"
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2825
@@ -3143,13 +2970,12 @@ msgstr "<prompt># </prompt><command>mount</command> <replaceable>/dev/sda5</repl
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2821
-#, fuzzy
 msgid ""
 "Mount the / partition on the mount point directory. For example assume the / file system is contained in the /dev/sda5 "
 "partition. Enter (as root): <_:screen-1/>"
 msgstr ""
-"Pasang / partisi pada direktori mount point. Misalnya asumsikan sistem / file terkandung dalam partisi /dev/sda5. "
-"Masukkan (sebagai root): <_:screen-1/>"
+"Kait partisi / (root) pada titik kait direktori. Misalnya asumsikan sistem berkas / (root) dimuat dalam partisi /dev/"
+"sda5. Masukkan (sebagai root): <_:screen-1/>"
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2834
@@ -3159,7 +2985,6 @@ msgstr "<prompt># </prompt><command>mount</command> <replaceable>/dev/sda3</repl
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2829
-#, fuzzy
 msgid ""
 "If you have a separate /boot partition, for example at /dev/sda3, then an extra step is required. Mount the /boot "
 "partition at /tmp/mydir/boot by entering (as root): <_:screen-1/>"
@@ -3169,7 +2994,6 @@ msgstr ""
 
 #. (itstool) path: note/para
 #: C/index.docbook:2837
-#, fuzzy
 msgid "If you do not know whether you have a separate boot partition then you probably do not and can ignore this step."
 msgstr ""
 "Jika Anda tidak tahu apakah Anda memiliki partisi boot terpisah maka Anda mungkin tidak dan dapat mengabaikan langkah ini."
@@ -3194,7 +3018,6 @@ msgstr "<prompt># </prompt><command>mount</command> --bind /sys /tmp/mydir/sys"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2845
-#, fuzzy
 msgid "Prepare to change the root environment by entering (as root): <_:screen-1/> <_:screen-2/> <_:screen-3/>"
 msgstr ""
 "Bersiaplah untuk mengubah lingkungan root dengan memasukkan (sebagai root): <_:screen-1/> <_:screen-2/> <_:screen-3/>"
@@ -3207,13 +3030,11 @@ msgstr "<prompt># </prompt><command>chroot</command> /tmp/mydir"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2854
-#, fuzzy
 msgid "Change the root environment by entering (as root): <_:screen-1/>"
 msgstr "Mengubah lingkungan root dengan memasukkan (sebagai root): <_:screen-1/>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2860
-#, fuzzy
 msgid ""
 "Reinstall GRUB 2 on the boot device. Note that the device name is used and not the partition name. For example, if the / "
 "partition is /dev/sda5 then the device is /dev/sda."
@@ -3229,7 +3050,6 @@ msgstr "<prompt># </prompt><command>grub-install</command> <replaceable>/dev/sda
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2866
-#, fuzzy
 msgid "For Debian, Ubuntu, and other offshoot GNU/Linux distributions, enter the command (as root): <_:screen-1/>"
 msgstr "Untuk distribusi Debian, Ubuntu, dan offshoot GNU/Linux lainnya, masukkan perintah (sebagai root): <_:screen-1/>"
 
@@ -3241,7 +3061,6 @@ msgstr "<prompt># </prompt><command>grub2-install</command> <replaceable>/dev/sd
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2871
-#, fuzzy
 msgid "For CentOS, Fedora, openSUSE and other offshoot GNU/Linux distributions, enter the command (as root): <_:screen-1/>"
 msgstr ""
 "Untuk distribusi CentOS, Fedora, openSUSE, dan offshoot GNU/Linux lainnya, masukkan perintah (sebagai root): <_:screen-1/>"
@@ -3254,9 +3073,8 @@ msgstr "<prompt># </prompt><command>exit</command>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2878
-#, fuzzy
 msgid "Exit the chroot environment by entering (as root): <_:screen-1/>"
-msgstr "Keluar dari lingkungan kroot dengan memasukkan (sebagai root): <_:screen-1/>"
+msgstr "Keluar dari lingkungan chroot dengan memasukkan (sebagai root): <_:screen-1/>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2884 C/index.docbook:2972
@@ -3265,9 +3083,8 @@ msgstr "Reboot komputer Anda."
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2771
-#, fuzzy
 msgid "Use the following steps to restore the GRUB 2 boot loader: <_:orderedlist-1/>"
-msgstr "Gunakan langkah-langkah berikut untuk memulihkan pemuat boot GRUB 2: <_:orderedlist-1/>"
+msgstr "Gunakan langkah-langkah berikut untuk memulihkan boot loader GRUB 2: <_:orderedlist-1/>"
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:2894
@@ -3276,19 +3093,17 @@ msgstr "Memulihkan GRUB Legacy Boot Loader"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2900
-#, fuzzy
 msgid "Boot from Live media such as your GNU/Linux distribution image. Open a terminal window."
-msgstr "Boot dari media Live seperti gambar distribusi GNU / Linux Anda. Buka jendela terminal."
+msgstr "Boot dari media Live seperti image distribusi GNU/Linux Anda. Buka jendela terminal."
 
 #. (itstool) path: note/para
 #: C/index.docbook:2905
-#, fuzzy
 msgid ""
 "The Live media must contain the GRUB Legacy boot loader. If your GNU/Linux distribution uses GRUB Legacy, then the "
 "distribution Live media will also contain GRUB Legacy."
 msgstr ""
-"Media langsung harus berisi loader boot GRUB Legacy. Jika distribusi GNU/Linux Anda menggunakan GRUB Legacy, maka media "
-"Live distribusi juga akan berisi GRUB Legacy."
+"Media Live harus berisi boot loade GRUB Legacy. Jika distribusi GNU/Linux Anda menggunakan GRUB Legacy, maka media Live "
+"distribusi juga akan berisi GRUB Legacy."
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2917
@@ -3298,13 +3113,11 @@ msgstr "<prompt># </prompt><command>grub</command>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2914
-#, fuzzy
 msgid "Start the <application>grub</application> application from the command line (as root). <_:screen-1/>"
 msgstr "Mulai aplikasi <application>grub</application> dari baris perintah (sebagai root). <_:screen-1/>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2921
-#, fuzzy
 msgid "Find where <application>grub</application> stage1 is located by using one of the following:"
 msgstr "Temukan di mana <application>grub</application> stage1 berada dengan menggunakan salah satu hal berikut:"
 
@@ -3322,13 +3135,12 @@ msgstr "<prompt>grub&gt; </prompt><command>find</command> /grub/stage1"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2925
-#, fuzzy
 msgid ""
 "If the /boot folder is stored in the / partition, use the command: <_:screen-1/> If the /boot folder is stored in a "
 "partition different than the / partition, use the command: <_:screen-2/>"
 msgstr ""
 "Jika folder /boot disimpan dalam partisi /, gunakan perintah: <_:screen-1/> Jika folder /boot disimpan dalam partisi yang "
-"berbeda dari partisi/, gunakan perintah: <_:screen-2/>"
+"berbeda dari partisi /, gunakan perintah: <_:screen-2/>"
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2936
@@ -3338,13 +3150,12 @@ msgstr "<computeroutput> <replaceable>(hd0,0)</replaceable></computeroutput>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2933
-#, fuzzy
 msgid ""
 "The output from the <command>find</command> command might look like the following: <_:screen-1/> If more than one line is "
 "listed in the command output, you will need to decide which device you use for <application>grub</application>."
 msgstr ""
-"Output dari perintah <command>temukan</command> mungkin terlihat seperti berikut: <_:screen-1/> Jika lebih dari satu "
-"baris tercantum dalam output perintah, Anda harus memutuskan perangkat mana yang Anda gunakan untuk <application>grub</"
+"Keluaran dari perintah <command>find</command> mungkin terlihat seperti berikut: <_:screen-1/> Jika lebih dari satu baris "
+"tercantum dalam keluaran perintah, Anda harus memutuskan perangkat mana yang Anda gunakan untuk <application>grub</"
 "application>."
 
 #. (itstool) path: para/screen
@@ -3355,13 +3166,12 @@ msgstr "<prompt>grub&gt; </prompt>root <replaceable>(hd0,0)</replaceable>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2943
-#, fuzzy
 msgid ""
 "Set the <application>grub</application> root device by specifying the device returned by the <command>find</command> "
 "command. This should be the partition containing the boot directory. <_:screen-1/>"
 msgstr ""
-"Atur <application>perangkat</application> akar grub dengan menentukan perangkat yang dikembalikan oleh <command>perintah</"
-"command> temukan. Ini harus menjadi partisi yang berisi direktori boot. <_:screen-1/>"
+"Atur perangkat root <application>grub</application> dengan menyatakan perangkat yang dikembalikan oleh perintah "
+"<command>find</command>. Ini harus menjadi partisi yang berisi direktori boot. <_:screen-1/>"
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2955
@@ -3371,9 +3181,8 @@ msgstr "<prompt>grub&gt; </prompt>setup <replaceable>(hd0)</replaceable>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2952
-#, fuzzy
 msgid "Reinstall the <application>grub</application> boot loader into the Master Boot Record (MBR) with: <_:screen-1/>"
-msgstr "Instal ulang <application>loader</application> boot grub ke Master Boot Record (MBR) dengan: <_:screen-1/>"
+msgstr "Instal ulang boot loader <application>grub</application> ke Master Boot Record (MBR) dengan: <_:screen-1/>"
 
 #. (itstool) path: para/screen
 #: C/index.docbook:2962
@@ -3383,12 +3192,11 @@ msgstr "<prompt>grub&gt; </prompt>setup <replaceable>(hd0,0)</replaceable>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:2957
-#, fuzzy
 msgid ""
 "If you want to install the <application>grub</application> boot loader into the boot sector of a partition, instead "
 "specify a partition with: <_:screen-1/>"
 msgstr ""
-"Jika Anda ingin menginstal <application>grub</application> boat loader ke sektor boot partisi, sebagai gantinya tentukan "
+"Jika Anda ingin memasang boat loader <application>grub</application> ke sektor boot partisi, sebagai gantinya nyatakan "
 "partisi dengan: <_:screen-1/>"
 
 #. (itstool) path: para/screen
@@ -3404,9 +3212,8 @@ msgstr "Keluar dari <application>grub</application>. <_:screen-1/>"
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:2895
-#, fuzzy
 msgid "Use the following steps to restore the GRUB Legacy boot loader: <_:orderedlist-1/>"
-msgstr "Gunakan langkah-langkah berikut untuk memulihkan pemuat boot GRUB Legacy: <_:orderedlist-1/>"
+msgstr "Gunakan langkah-langkah berikut untuk memulihkan boot loader GRUB Legacy: <_:orderedlist-1/>"
 
 #. (itstool) path: sect1/title
 #: C/index.docbook:2986
