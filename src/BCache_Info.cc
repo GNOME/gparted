@@ -17,7 +17,7 @@
 
 #include "BCache_Info.h"
 
-#include <string.h>  // GNU version of basename()
+#include <libgen.h>  // POSIX version of basename()
 #include <unistd.h>
 #include <glibmm/ustring.h>
 #include <glibmm/fileutils.h>
