@@ -72,7 +72,7 @@ GParted_Core::GParted_Core()
 	ped_exception_set_handler( ped_exception_handler ) ; 
 
 	//get valid flags ...
-	for ( PedPartitionFlag flag = ped_partition_flag_next( static_cast<PedPartitionFlag>( NULL ) ) ;
+	for ( PedPartitionFlag flag = ped_partition_flag_next( static_cast<PedPartitionFlag>( 0 ) ) ;
 	      flag ;
 	      flag = ped_partition_flag_next( flag ) )
 		flags .push_back( flag ) ;
