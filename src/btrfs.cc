@@ -306,7 +306,17 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 	else
-		mount_point = partition_new .get_mountpoint() ;
+	{
+		mount_point = Utils::first_directory(partition_new.get_mountpoints());
+		if (mount_point.empty())
+		{
+			Glib::ustring mount_list = Glib::build_path(", ", partition_new.get_mountpoints());
+			operationdetail.add_child(OperationDetail(
+			                Glib::ustring::compose(_("No directory mount point found in %1"), mount_list),
+			                STATUS_ERROR));
+			return false;
+		}
+	}
 
 	if ( success )
 	{

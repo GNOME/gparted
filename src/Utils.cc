@@ -30,6 +30,7 @@
 #include <glibmm/ustring.h>
 #include <glibmm/stringutils.h>
 #include <glibmm/shell.h>
+#include <glibmm/fileutils.h>
 #include <gtkmm/main.h>
 #include <gtkmm/enums.h>
 #include <gtkmm/stock.h>
@@ -940,6 +941,18 @@ bool Utils::is_dev_busy(const Glib::ustring& path)
 		close(fd);
 
 	return false;
+}
+
+
+// Return the first path that is a directory, or the empty string.
+const Glib::ustring& Utils::first_directory(const std::vector<Glib::ustring>& paths)
+{
+	for (unsigned int i = 0; i < paths.size(); i++)
+		if (file_test(paths[i], Glib::FILE_TEST_IS_DIR))
+			return paths[i];
+
+	static const Glib::ustring not_found;
+	return not_found;
 }
 
 

@@ -184,6 +184,7 @@ public:
 	                                         Byte_Value & fs_size, Byte_Value & fs_free,
 	                                         Glib::ustring & error_message ) ;
 	static bool is_dev_busy(const Glib::ustring& path);
+	static const Glib::ustring& first_directory(const std::vector<Glib::ustring>& paths);
 	static Byte_Value floor_size( Byte_Value value, Byte_Value rounding_size ) ;
 	static Byte_Value ceil_size( Byte_Value value, Byte_Value rounding_size ) ;
 
