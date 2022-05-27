@@ -58,10 +58,10 @@ public:
 
 private:
 	static void read_mountpoints_from_file( const Glib::ustring & filename, MountMapping & map );
-	static void add_mountpoint_entry( MountMapping & map,
-	                                  Glib::ustring & node,
-	                                  bool readonly,
-	                                  Glib::ustring& mountpoint);
+	static void add_mountpoint_entry(MountMapping& map,
+	                                 const Glib::ustring& node,
+	                                 bool readonly,
+	                                 const Glib::ustring& mountpoint);
 	static bool parse_readonly_flag( const Glib::ustring & str );
 	static void read_mountpoints_from_file_swaps( const Glib::ustring & filename,
 	                                              MountMapping & map );

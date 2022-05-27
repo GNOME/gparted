@@ -172,10 +172,10 @@ void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, Mou
 }
 
 
-void Mount_Info::add_mountpoint_entry( MountMapping & map,
-                                       Glib::ustring & node,
-                                       bool readonly,
-                                       Glib::ustring& mountpoint)
+void Mount_Info::add_mountpoint_entry(MountMapping& map,
+                                      const Glib::ustring& node,
+                                      bool readonly,
+                                      const Glib::ustring& mountpoint)
 {
 	// Only add node path if mount point exists
 	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
