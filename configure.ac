@@ -16,6 +16,8 @@ AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_LIBTOOL
 AC_PROG_AWK
+AC_PROG_FGREP
+AC_PROG_SED
 dnl Check for pkg-config early to avoid splitting message when first used.
 PKG_CHECK_EXISTS
 
@@ -56,6 +58,22 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], "$GETTEXT_PACKAGE", [description])
 
 AM_GLIB_GNU_GETTEXT
 IT_PROG_INTLTOOL([0.36.0])
+
+dnl Check for and fix missing delete of intltool cache lock file.  Only
+dnl needed with intltool >= 0.51.0-5.1, but just always fix as that is
+dnl simpler and safe.
+AC_MSG_CHECKING([whether po/Makefile.in.in deletes intltool cache lock file])
+file='po/Makefile.in.in'
+if $FGREP -q '.intltool-merge-cache.lock' "$file"; then
+	AC_MSG_RESULT([yes])
+else
+	$SED -i '/rm -f .intltool-merge-cache/s/$/ .intltool-merge-cache.lock/' "$file"
+	if $FGREP -q '.intltool-merge-cache.lock' "$file"; then
+		AC_MSG_RESULT([fixed])
+	else
+		AC_MSG_RESULT([no])
+	fi
+fi
 
 
 dnl======================
