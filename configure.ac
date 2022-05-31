@@ -64,11 +64,14 @@ dnl needed with intltool >= 0.51.0-5.1, but just always fix as that is
 dnl simpler and safe.
 AC_MSG_CHECKING([whether po/Makefile.in.in deletes intltool cache lock file])
 file='po/Makefile.in.in'
-if $FGREP -q '.intltool-merge-cache.lock' "$file"; then
+if test ! -f "$srcdir/$file"; then
+	AC_MSG_RESULT([not applicable])
+elif $FGREP -q '.intltool-merge-cache.lock' "$srcdir/$file" 2> /dev/null; then
 	AC_MSG_RESULT([yes])
 else
-	$SED -i '/rm -f .intltool-merge-cache/s/$/ .intltool-merge-cache.lock/' "$file"
-	if $FGREP -q '.intltool-merge-cache.lock' "$file"; then
+	test -w "$srcdir/$file" && \
+	$SED -i '/rm -f .intltool-merge-cache/s/$/ .intltool-merge-cache.lock/' "$srcdir/$file" 2> /dev/null
+	if $FGREP -q '.intltool-merge-cache.lock' "$srcdir/$file" 2> /dev/null; then
 		AC_MSG_RESULT([fixed])
 	else
 		AC_MSG_RESULT([no])
