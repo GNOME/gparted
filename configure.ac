@@ -14,7 +14,7 @@ dnl checks for programs
 dnl======================
 AC_PROG_CXX
 AC_PROG_CC
-AC_PROG_LIBTOOL
+LT_INIT
 AC_PROG_AWK
 AC_PROG_FGREP
 AC_PROG_SED
