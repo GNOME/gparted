@@ -2,6 +2,16 @@ stages:
   - build
   - test
 
+.alpine_image_template: &alpine_image_definition
+  # Use official Alpine image https://hub.docker.com/_/alpine/.
+  image: alpine:latest
+  before_script:
+    - cat /proc/version
+    - cat /etc/os-release
+    - apk update
+    - apk add gnome-common yelp-tools automake autoconf glib-dev intltool
+              libtool g++ parted-dev gtkmm3-dev itstool make
+
 .centos_image_template: &centos_image_definition
   # Use official CentOS image https://hub.docker.com/_/centos/.
   image: centos:centos7
@@ -103,7 +113,11 @@ stages:
       - ./
     expire_in: 1 week
 
-# Check GParted can be built and installed on CentOS and Ubuntu.
+# Check GParted can be built and installed on Alpine Linux, CentOS and Ubuntu.
+alpine_build:
+  <<: *alpine_image_definition
+  <<: *build_stage_definition
+
 centos_build:
   <<: *centos_image_definition
   <<: *build_stage_definition
