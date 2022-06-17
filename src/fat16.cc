@@ -211,10 +211,10 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 {
 	Glib::ustring cmd = "" ;
 	if ( partition.get_filesystem_label().empty() )
-		cmd = "mlabel -c :: -i " + Glib::shell_quote( partition.get_path() );
+		cmd = "mlabel -c -i " + Glib::shell_quote(partition.get_path()) + " ::";
 	else
-		cmd = "mlabel ::" + Glib::shell_quote( sanitize_label( partition.get_filesystem_label() ) ) +
-		      " -i " + Glib::shell_quote( partition.get_path() );
+		cmd = "mlabel -i " + Glib::shell_quote(partition.get_path()) +
+		      " ::" + Glib::shell_quote(sanitize_label(partition.get_filesystem_label()));
 
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
