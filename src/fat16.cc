@@ -190,22 +190,22 @@ void fat16::set_used_sectors( Partition & partition )
 }
 
 
-void fat16::read_label( Partition & partition )
+void fat16::read_label(Partition& partition)
 {
-	if ( ! Utils::execute_command( "mlabel -s :: -i " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                           )
+	exit_status = Utils::execute_command("mlabel -s :: -i " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		partition.set_filesystem_label( Utils::trim( Utils::regexp_label( output, "Volume label is ([^(]*)" ) ) );
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
-	}
+
+	partition.set_filesystem_label(Utils::trim(Utils::regexp_label(output, "Volume label is ([^(]*)")));
 }
+
 
 bool fat16::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
