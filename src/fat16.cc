@@ -192,7 +192,7 @@ void fat16::set_used_sectors( Partition & partition )
 
 void fat16::read_label(Partition& partition)
 {
-	exit_status = Utils::execute_command("mlabel -s :: -i " + Glib::shell_quote(partition.get_path()),
+	exit_status = Utils::execute_command("mlabel -s -i " + Glib::shell_quote(partition.get_path()) + " ::",
 	                                     output, error, true);
 	if (exit_status != 0)
 	{
