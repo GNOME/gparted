@@ -6,6 +6,8 @@ stages:
   # Use official CentOS image https://hub.docker.com/_/centos/.
   image: centos:centos7
   before_script:
+    - cat /proc/version
+    - cat /etc/os-release
     - yum update -y
     - yum install -y which gnome-common yelp-tools glib2-devel intltool
                      gcc-c++ libuuid-devel parted-devel gtkmm30-devel make
@@ -17,14 +19,14 @@ stages:
                      mtools hfsplus-tools util-linux cryptsetup device-mapper
                      lvm2 ntfsprogs udftools xfsprogs xfsdump
                      xorg-x11-server-Xvfb kmod
-    - cat /proc/version
-    - cat /etc/os-release
     - systemd-machine-id-setup
 
 .ubuntu_image_template: &ubuntu_image_definition
   # Use official Ubuntu image https://hub.docker.com/_/ubuntu/.
   image: ubuntu:latest
   before_script:
+    - cat /proc/version
+    - cat /etc/os-release
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
     - apt-get install -y build-essential gnome-common yelp-tools
@@ -35,8 +37,6 @@ stages:
                          hfsutils hfsprogs jfsutils util-linux cryptsetup-bin
                          dmsetup lvm2 nilfs-tools ntfs-3g reiser4progs
                          reiserfsprogs udftools xfsprogs xfsdump xvfb kmod
-    - cat /proc/version
-    - cat /etc/os-release
 
 .build_stage_template: &build_stage_definition
   stage: build
