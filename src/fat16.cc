@@ -219,25 +219,25 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
 
-void fat16::read_uuid( Partition & partition )
+
+void fat16::read_uuid(Partition& partition)
 {
-	Glib::ustring cmd = "mdir -f :: -i " + Glib::shell_quote( partition.get_path() );
-
-	if ( ! Utils::execute_command( cmd, output, error, true ) )
+	exit_status = Utils::execute_command("mdir -f :: -i " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		partition .uuid = Utils::regexp_label( output, "Volume Serial Number is[[:blank:]]([^[:space:]]+)" ) ;
-		if ( partition .uuid == "0000-0000" )
-			partition .uuid .clear() ;
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
 
-		if ( ! error .empty() )
-			partition.push_back_message( error );
-	}
+	partition.uuid = Utils::regexp_label(output, "Volume Serial Number is[[:blank:]]([^[:space:]]+)");
+	if (partition.uuid == "0000-0000")
+		partition.uuid.clear();
 }
+
 
 bool fat16::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
