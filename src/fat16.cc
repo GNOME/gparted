@@ -222,7 +222,7 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 
 void fat16::read_uuid(Partition& partition)
 {
-	exit_status = Utils::execute_command("mdir -f :: -i " + Glib::shell_quote(partition.get_path()),
+	exit_status = Utils::execute_command("mdir -f -i " + Glib::shell_quote(partition.get_path()) + " ::/",
 	                                     output, error, true);
 	if (exit_status != 0)
 	{
