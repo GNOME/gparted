@@ -14,7 +14,7 @@ stages:
     # Extra packages only needed during the test stage.
     - apk add btrfs-progs btrfs-progs-extra e2fsprogs e2fsprogs-extra exfatprogs
               dosfstools mtools f2fs-tools jfsutils cryptsetup lvm2 udftools
-              xfsprogs xfsprogs-extra xvfb-run kmod
+              xfsprogs xfsprogs-extra xvfb-run kmod gzip
 
 .centos_image_template: &centos_image_definition
   # Use official CentOS image https://hub.docker.com/_/centos/.
