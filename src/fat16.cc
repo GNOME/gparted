@@ -241,10 +241,10 @@ void fat16::read_uuid(Partition& partition)
 
 bool fat16::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	Glib::ustring cmd = "mlabel -s -n :: -i " + Glib::shell_quote( partition.get_path() );
-
-	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
+	return ! execute_command("mlabel -n -i " + Glib::shell_quote(partition.get_path()) + " ::",
+	                         operationdetail, EXEC_CHECK_STATUS);
 }
+
 
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
