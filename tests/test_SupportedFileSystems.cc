@@ -596,7 +596,11 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteLabel)
 	m_partition.set_filesystem_label("FIRST");
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
-	// Test writing a label is successful.
+	// Test clearing the label is successful.
+	m_partition.set_filesystem_label("");
+	ASSERT_TRUE(m_fs_object->write_label(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test writing the label is successful.
 	m_partition.set_filesystem_label("SECOND");
 	ASSERT_TRUE(m_fs_object->write_label(m_partition, m_operation_detail)) << m_operation_detail;
 }
