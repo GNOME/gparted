@@ -171,7 +171,7 @@ bool xfs::write_label( const Partition & partition, OperationDetail & operationd
 			      " " + partition.get_mountpoint();
 
 		execute_command(cmd, operationdetail);
-		// In a some error situations xfs_io reports exit status zero but writes a
+		// In some error situations xfs_io reports exit status zero and writes a
 		// failure message to stdout.  Therefore determine success based on the
 		// output starting with the fixed text, reporting the new label.
 		bool success = output.compare(0, 9, "label = \"") == 0;
