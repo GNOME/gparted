@@ -47,10 +47,11 @@ stages:
                          libglib2.0-dev-bin uuid-dev libparted-dev
                          libgtkmm-3.0-dev policykit-1
     # Extra packages only needed during the test stage.
-    - apt-get install -y btrfs-progs e2fsprogs f2fs-tools dosfstools mtools
-                         hfsutils hfsprogs jfsutils util-linux cryptsetup-bin
-                         dmsetup lvm2 nilfs-tools ntfs-3g reiser4progs
-                         reiserfsprogs udftools xfsprogs xfsdump xvfb kmod
+    - apt-get install -y btrfs-progs e2fsprogs exfatprogs f2fs-tools dosfstools
+                         mtools hfsutils hfsprogs jfsutils util-linux
+                         cryptsetup-bin dmsetup lvm2 nilfs-tools ntfs-3g
+                         reiser4progs reiserfsprogs udftools xfsprogs xfsdump
+                         xvfb kmod
 
 .build_stage_template: &build_stage_definition
   stage: build
