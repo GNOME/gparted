@@ -617,6 +617,33 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteUUID)
 }
 
 
+TEST_P(SupportedFileSystemsTest, CreateAndWriteUUIDAndReadLabel)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(write_uuid);
+	SKIP_IF_FS_DOESNT_SUPPORT(read_label);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_BTRFS);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
+
+	const char* fs_label = "TEST_LABEL";
+	create_image_file();
+	m_partition.set_filesystem_label(fs_label);
+	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test writing a new random UUID is successful.
+	ASSERT_TRUE(m_fs_object->write_uuid(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test reading the label is successful and it hasn't changed.
+	reload_partition();
+	m_fs_object->read_label(m_partition);
+	EXPECT_STREQ(fs_label, m_partition.get_filesystem_label().c_str());
+
+	// Test messages from read operation are empty or print them.
+	EXPECT_TRUE(m_partition.get_messages().empty()) << m_partition;
+}
+
+
 TEST_P(SupportedFileSystemsTest, CreateAndCheck)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
