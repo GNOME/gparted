@@ -79,29 +79,8 @@ stages:
     - make -j $nproc
     # Exclude specific unit tests which fail without being able to create
     # loop devices in Docker images.
-    - export GTEST_FILTER="-My/SupportedFileSystemsTest.Create/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndReadUsage/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndReadUsage/nilfs2"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndReadLabel/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndReadLabel/nilfs2"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndReadUUID/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndReadUUID/nilfs2"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndWriteLabel/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndWriteLabel/nilfs2"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndWriteUUID/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndWriteUUID/nilfs2"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndWriteUUIDAndReadLabel/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndWriteUUIDAndReadLabel/nilfs2"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndCheck/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndRemove/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndGrow/btrfs"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndGrow/jfs"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndGrow/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndGrow/nilfs2"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndGrow/xfs"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndShrink/btrfs"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndShrink/lvm2pv"
-    - GTEST_FILTER="$GTEST_FILTER:My/SupportedFileSystemsTest.CreateAndShrink/nilfs2"
+    - export GTEST_FILTER=`tests/exclude_loopdev_tests.sh tests/test_SupportedFileSystems.cc`
+    - echo $GTEST_FILTER
     - fgrep -v nodev /proc/filesystems | sort
     # Create needed /dev entries for unit tests in Docker images.
     - tests/makedev.sh
