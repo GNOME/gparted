@@ -20,8 +20,10 @@
 #include "FileSystem.h"
 #include "Mount_Info.h"
 #include "Partition.h"
+#include "Utils.h"
 
 #include <ctype.h>
+#include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
 
@@ -341,39 +343,28 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 	return success ;
 }
 
-void btrfs::read_label( Partition & partition )
+
+void btrfs::read_label(Partition& partition)
 {
-	Utils::execute_command("btrfs filesystem show " + Glib::shell_quote(partition.get_path()),
-		               output, error, true);
-	//In many cases the exit status doesn't reflect valid output or an error condition
-	//  so rely on parsing the output to determine success.
-
-	if ( output .compare( 0, 18, "Label: none  uuid:" ) == 0 )
+	exit_status = Utils::execute_command("btrfs filesystem label " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		//Indistinguishable cases of either no label or the label is actually set
-		//  to "none".  Assume no label case.
-		partition.set_filesystem_label( "" );
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
-	{
-		// Try matching a label enclosed in single quotes, then without quotes, to
-		// handle reporting of mounted file systems by old btrfs-progs 3.12.
-		Glib::ustring label = Utils::regexp_label( output, "^Label: '(.*)'  uuid:" ) ;
-		if ( label .empty() )
-			label = Utils::regexp_label( output, "^Label: (.*)  uuid:" ) ;
 
-		if ( ! label .empty() )
-			partition.set_filesystem_label( label );
-		else
-		{
-			if ( ! output .empty() )
-				partition.push_back_message( output );
+	// Strip terminating new line from output.
+	size_t len = output.length();
+	if (len > 0 && output[len-1] == '\n')
+		output.resize(len-1);
 
-			if ( ! error .empty() )
-				partition.push_back_message( error );
-		}
-	}
+	partition.set_filesystem_label(output);
 }
+
 
 void btrfs::read_uuid( Partition & partition )
 {
