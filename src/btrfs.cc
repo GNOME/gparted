@@ -61,7 +61,8 @@ FS btrfs::get_filesystem_support()
 		//     btrfs filesystem label
 		//     btrfs filesystem resize
 		//     btrfs filesystem show
-		// as they are all available in btrfs-progs >= 3.12.
+		//     btrfs inspect-internal dump-super
+		// as they are all available in btrfs-progs >= 4.5.
 
 		fs.read = FS::EXTERNAL;
 		fs .read_label = FS::EXTERNAL ;
@@ -361,25 +362,24 @@ void btrfs::read_label(Partition& partition)
 }
 
 
-void btrfs::read_uuid( Partition & partition )
+void btrfs::read_uuid(Partition& partition)
 {
-	Utils::execute_command("btrfs filesystem show " + Glib::shell_quote(partition.get_path()),
+	Utils::execute_command("btrfs inspect-internal dump-super " + Glib::shell_quote(partition.get_path()),
 		               output, error, true);
-	//In many cases the exit status doesn't reflect valid output or an error condition
-	//  so rely on parsing the output to determine success.
-
-	Glib::ustring uuid_str = Utils::regexp_label( output, "uuid:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
-	if ( ! uuid_str .empty() )
-		partition .uuid = uuid_str ;
-	else
+	// btrfs inspect-internal dump-super returns zero exit status for both success and
+	// failure.  Instead use non-empty stderr to identify failure.
+	if (! error.empty())
 	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
+
+	partition.uuid = Utils::regexp_label(output, "^fsid[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")");
 }
+
 
 bool btrfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
