@@ -138,112 +138,108 @@ bool btrfs::check_repair( const Partition & partition, OperationDetail & operati
 	                         operationdetail, EXEC_CHECK_STATUS);
 }
 
-void btrfs::set_used_sectors( Partition & partition )
-{
-	//Called when the file system is unmounted *and* when mounted.
-	//
-	//  Btrfs has a volume manager layer within the file system which allows it to
-	//  provide multiple levels of data redundancy, RAID levels, and use multiple
-	//  devices both of which can be changed while the file system is mounted.  To
-	//  achieve this btrfs has to allocate space at two different levels: (1) chunks
-	//  of 256 MiB or more at the volume manager level; and (2) extents at the file
-	//  data level.
-	//  References:
-	//  *   Btrfs: Working with multiple devices
-	//      https://lwn.net/Articles/577961/
-	//  *   Btrfs wiki: Glossary
-	//      https://btrfs.wiki.kernel.org/index.php/Glossary
-	//
-	//  This makes the question of how much disk space is being used in an individual
-	//  device a complicated question to answer.  Further, the current btrfs tools
-	//  don't provide the required information.
-	//
-	//  Btrfs filesystem show only provides space usage information at the chunk level
-	//  per device.  At the file extent level only a single figure for the whole file
-	//  system is provided.  It also reports size of the data and metadata being
-	//  stored, not the larger figure of the amount of space taken after redundancy is
-	//  applied.  So it is impossible to answer the question of how much disk space is
-	//  being used in an individual device.  Example output:
-	//
-	//      Label: none  uuid: 36eb51a2-2927-4c92-820f-b2f0b5cdae50
-	//              Total devices 2 FS bytes used 156.00KB
-	//              devid    2 size 2.00GB used 512.00MB path /dev/sdb2
-	//              devid    1 size 2.00GB used 240.75MB path /dev/sdb1
-	//
-	//  Guesstimate the per device used figure as the fraction of the file system wide
-	//  extent usage based on chunk usage per device.
-	//
-	//  Positives:
-	//  1) Per device used figure will correctly be between zero and allocated chunk
-	//     size.
-	//
-	//  Known inaccuracies:
-	//  [for single and multi-device btrfs file systems]
-	//  1) Btrfs filesystem show reports file system wide file extent usage without
-	//     considering redundancy applied to that data.  (By default btrfs stores two
-	//     copies of metadata and one copy of data).
-	//  2) At minimum size when all data has been consolidated there will be a few
-	//     partly filled chunks of 256 MiB or more for data and metadata of each
-	//     storage profile (RAID level).
-	//  [for multi-device btrfs file systems only]
-	//  3) Data may be far from evenly distributed between the chunks on multiple
-	//     devices.
-	//  4) Extents can be and are relocated to other devices within the file system
-	//     when shrinking a device.
-	Utils::execute_command("btrfs filesystem show " + Glib::shell_quote(partition.get_path()),
-		               output, error, true);
-	//In many cases the exit status doesn't reflect valid output or an error condition
-	//  so rely on parsing the output to determine success.
 
-	//Extract the per device size figure.  Guesstimate the per device used
-	// figure as discussed above.  Example output:
+void btrfs::set_used_sectors(Partition& partition)
+{
+	// Called when the file system is unmounted *and* when mounted.
 	//
-	//      Label: none  uuid: 36eb51a2-2927-4c92-820f-b2f0b5cdae50
-	//              Total devices 2 FS bytes used 156.00KB
-	//              devid    2 size 2.00GB used 512.00MB path /dev/sdb2
-	//              devid    1 size 2.00GB used 240.75MB path /dev/sdb1
+	// Btrfs has a volume manager layer within the file system which allows it to
+	// provide multiple levels of data redundancy, RAID levels, and use multiple
+	// devices both of which can be changed while the file system is mounted.  To
+	// achieve this btrfs has to allocate space at two different levels: (1) chunks of
+	// 256 MiB or more at the volume manager level; and (2) extents at the metadata
+	// and file data level.
+	// References:
+	// *   Btrfs: Working with multiple devices
+	//     https://lwn.net/Articles/577961/
+	// *   Btrfs wiki: Glossary
+	//     https://btrfs.wiki.kernel.org/index.php/Glossary
+	//
+	// This makes the question of how much disk space is being used in an individual
+	// device a complicated question to answer.  Further, the current btrfs tools
+	// don't provide the required information.
+	//
+	// Btrfs filesystem show only provides space usage information at the chunk level
+	// per device.  At the file extent level only a single figure for the whole file
+	// system is provided.  It also reports size of the data and metadata being
+	// stored, not the larger figure of the amount of space taken after redundancy is
+	// applied.  So it is impossible to answer the question of how much disk space is
+	// being used in an individual device.  Example:
+	//
+	//     # btrfs filesystem show --raw /dev/sdb1
+	//     Label: none  uuid: 003a619e-856f-4b9c-bd29-4d0ae0296d66
+	//             Total devices 2 FS bytes used 178765824
+	//             devid    1 size 2147483648 used 239861760 path /dev/sdb1
+	//             devid    2 size 2147483648 used 436207616 path /dev/sdc1
+	//
+	// Guesstimate the per device used figure as the fraction of the file system wide
+	// extent usage based on chunk usage per device.
+	//
+	// Positives:
+	// 1) Per device used figure will correctly be between zero and allocated chunk
+	//    size.
+	//
+	// Known inaccuracies:
+	// [for single and multi-device btrfs file systems]
+	// 1) Btrfs filesystem show reports file system wide file extent usage without
+	//    considering redundancy applied to that data.  (By default btrfs stores two
+	//    copies of metadata and one copy of data).
+	// 2) At minimum size when all data has been consolidated there will be a few
+	//    partly filled chunks of 256 MiB or more for data and metadata of each
+	//    storage profile (RAID level).
+	// [for multi-device btrfs file systems only]
+	// 3) Data may be far from evenly distributed between the chunks on multiple
+	//    devices.
+	// 4) Extents can be and are relocated to other devices within the file system
+	//    when shrinking a device.
+	Utils::execute_command("btrfs filesystem show --raw " + Glib::shell_quote(partition.get_path()),
+		               output, error, true);
+	// In many cases the exit status doesn't reflect valid output or an error
+	// condition so rely on parsing the output to determine success.
+
+	// Extract the per device size figure.  Guesstimate the per device used
+	// figure as discussed above.  Example:
+	//
+	//     # btrfs filesystem show --raw /dev/sdb1
+	//     Label: none  uuid: 003a619e-856f-4b9c-bd29-4d0ae0296d66
+	//             Total devices 2 FS bytes used 178765824
+	//             devid    1 size 2147483648 used 239861760 path /dev/sdb1
+	//             devid    2 size 2147483648 used 436207616 path /dev/sdc1
 	//
 	// Calculations:
-	//      ptn fs size = devid size
-	//      ptn fs used = total fs used * devid used / sum devid used
+	//     ptn fs size = devid size
+	//     ptn fs used = total fs used * devid used / sum devid used
 
-	Byte_Value ptn_size = partition .get_byte_length() ;
-	Byte_Value total_fs_used = -1 ;  //total fs used
-	Byte_Value sum_devid_used = 0 ;  //sum devid used
-	Byte_Value devid_used = -1 ;     //devid used
-	Byte_Value devid_size = -1 ;     //devid size
+	long long total_fs_used = -1;
+	long long sum_devid_used = 0;
+	long long devid_used = -1;
+	long long devid_size = -1;
 
-	//Btrfs file system wide used bytes (extents and items)
-	Glib::ustring str ;
-	if ( ! ( str = Utils::regexp_label( output, "FS bytes used ([0-9\\.]+( ?[KMGTPE]?i?B)?)" ) ) .empty() )
-		total_fs_used = Utils::round( btrfs_size_to_gdouble( str ) ) ;
+	// Btrfs file system wide used bytes (extents and items)
+	Glib::ustring::size_type index = output.find("FS bytes used");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "FS bytes used %lld", &total_fs_used);
 
 	Glib::ustring::size_type offset = 0 ;
-	Glib::ustring::size_type index ;
 	while ( ( index = output .find( "devid ", offset ) ) != Glib::ustring::npos )
 	{
 		Glib::ustring devid_path = Utils::regexp_label( output .substr( index ),
 		                                                "devid .* path (/dev/[[:graph:]]+)" ) ;
 		if ( ! devid_path .empty() )
 		{
-			//Btrfs per devid used bytes (chunks)
-			Byte_Value used = -1 ;
-			if ( ! ( str = Utils::regexp_label( output .substr( index ),
-			                                    "devid .* used ([0-9\\.]+( ?[KMGTPE]?i?B)?) path" ) ) .empty() )
+			// Btrfs per devid used bytes (chunks)
+			long long used = -1;
+			sscanf(output.substr(index).c_str(), "devid %*d size %*d used %lld path", &used);
+			if (used > -1)
 			{
-				used = btrfs_size_to_num( str, ptn_size, false ) ;
 				sum_devid_used += used ;
 				if ( devid_path == partition .get_path() )
 					devid_used = used ;
 			}
 
 			if ( devid_path == partition .get_path() )
-			{
-				//Btrfs per device size bytes (chunks)
-				if ( ! ( str = Utils::regexp_label( output .substr( index ),
-				                                    "devid .* size ([0-9\\.]+( ?[KMGTPE]?i?B)?) used " ) ) .empty() )
-					devid_size = btrfs_size_to_num( str, ptn_size, true ) ;
-			}
+				// Btrfs per device size bytes (chunks)
+				sscanf(output.substr(index).c_str(), "devid %*d size %lld used", &devid_size);
 		}
 		offset = index + 5 ;  //Next find starts immediately after current "devid"
 	}
@@ -482,94 +478,5 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 	return btrfs_dev ;
 }
 
-//Return the value of a btrfs tool formatted size, including reversing
-//  changes in certain cases caused by using binary prefix multipliers
-//  and rounding to two decimal places of precision.  E.g. "2.00GB".
-Byte_Value btrfs::btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up )
-{
-	Byte_Value size_bytes = Utils::round( btrfs_size_to_gdouble( str ) ) ;
-	gdouble delta         = btrfs_size_max_delta( str ) ;
-	Byte_Value upper_size = size_bytes + ceil( delta ) ;
-	Byte_Value lower_size = size_bytes - floor( delta ) ;
-
-	if ( size_bytes > ptn_bytes && lower_size <= ptn_bytes )
-	{
-		//Scale value down to partition size:
-		//  The btrfs tool reported size appears larger than the partition
-		//  size, but the minimum possible size which could have been rounded
-		//  to the reported figure is within the partition size so use the
-		//  smaller partition size instead.  Applied to FS device size and FS
-		//  wide used bytes.
-		//      ............|         ptn_bytes
-		//               [    x    )  size_bytes with upper & lower size
-		//                  x         scaled down size_bytes
-		//  Do this to avoid the FS size or used bytes being larger than the
-		//  partition size and GParted failing to read the file system usage and
-		//  report a warning.
-		size_bytes = ptn_bytes ;
-	}
-	else if ( scale_up && size_bytes < ptn_bytes && upper_size > ptn_bytes )
-	{
-		//Scale value up to partition size:
-		//  The btrfs tool reported size appears smaller than the partition
-		//  size, but the maximum possible size which could have been rounded
-		//  to the reported figure is within the partition size so use the
-		//  larger partition size instead.  Applied to FS device size only.
-		//      ............|     ptn_bytes
-		//           [    x    )  size_bytes with upper & lower size
-		//                  x     scaled up size_bytes
-		//  Make an assumption that the file system actually fills the
-		//  partition, rather than is slightly smaller to avoid false reporting
-		//  of unallocated space.
-		size_bytes = ptn_bytes ;
-	}
-
-	return size_bytes ;
-}
-
-//Return maximum delta for which num +/- delta would be rounded by btrfs
-//  tools to str.  E.g. btrfs_size_max_delta("2.00GB") -> 5368709.12
-gdouble btrfs::btrfs_size_max_delta( Glib::ustring str )
-{
-	Glib::ustring limit_str ;
-	//Create limit_str.  E.g. str = "2.00GB" -> limit_str = "0.005GB"
-	for ( Glib::ustring::iterator p = str .begin() ; p != str .end() ; p ++ )
-	{
-		if ( isdigit( *p ) )
-			limit_str .append( "0" ) ;
-		else if ( *p == '.' )
-			limit_str .append( "." ) ;
-		else
-		{
-			limit_str .append( "5" ) ;
-			limit_str .append( p, str .end() ) ;
-			break ;
-		}
-	}
-	gdouble max_delta = btrfs_size_to_gdouble( limit_str ) ;
-	return max_delta ;
-}
-
-//Return the value of a btrfs tool formatted size.
-//  E.g. btrfs_size_to_gdouble("2.00GB") -> 2147483648.0
-gdouble btrfs::btrfs_size_to_gdouble( Glib::ustring str )
-{
-	gchar * suffix ;
-	gdouble rawN = g_ascii_strtod( str .c_str(), & suffix ) ;
-	while ( isspace( suffix[0] ) )  //Skip white space before suffix
-		suffix ++ ;
-	unsigned long long mult ;
-	switch ( suffix[0] )
-	{
-		case 'K':	mult = KIBIBYTE ;	break ;
-		case 'M':	mult = MEBIBYTE ;	break ;
-		case 'G':	mult = GIBIBYTE ;	break ;
-		case 'T':	mult = TEBIBYTE ;	break ;
-		case 'P':	mult = PEBIBYTE ;	break ;
-		case 'E':	mult = EXBIBYTE ;	break ;
-		default:	mult = 1 ;		break ;
-	}
-	return rawN * mult ;
-}
 
 } //GParted
