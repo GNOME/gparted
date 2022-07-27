@@ -156,108 +156,83 @@ void btrfs::set_used_sectors(Partition& partition)
 	//     https://btrfs.wiki.kernel.org/index.php/Glossary
 	//
 	// This makes the question of how much disk space is being used in an individual
-	// device a complicated question to answer.  Further, the current btrfs tools
-	// don't provide the required information.
+	// device a complicated question to answer.  Additionally, even if there is a
+	// correct answer for the usage / minimum size a device can be, a multi-device
+	// btrfs can and does relocate extents to other devices allowing it to be shrunk
+	// smaller than it's minimum size (redundancy requirements of chunks permitting).
 	//
-	// Btrfs filesystem show only provides space usage information at the chunk level
-	// per device.  At the file extent level only a single figure for the whole file
-	// system is provided.  It also reports size of the data and metadata being
-	// stored, not the larger figure of the amount of space taken after redundancy is
-	// applied.  So it is impossible to answer the question of how much disk space is
-	// being used in an individual device.  Example:
+	// Btrfs inspect-internal dump-super provides chunk allocation information for the
+	// current device only and a single file system wide extent level usage figure.
+	// Calculate the per device used figure as the fraction of file system wide extent
+	// usage apportioned per device.
 	//
+	// Example:
 	//     # btrfs filesystem show --raw /dev/sdb1
-	//     Label: none  uuid: 003a619e-856f-4b9c-bd29-4d0ae0296d66
-	//             Total devices 2 FS bytes used 178765824
+	//     Label: none  uuid: 68195e7e-c13f-4095-945f-675af4b1a451
+	//             Total devices 2 FS bytes used 178749440
 	//             devid    1 size 2147483648 used 239861760 path /dev/sdb1
 	//             devid    2 size 2147483648 used 436207616 path /dev/sdc1
 	//
-	// Guesstimate the per device used figure as the fraction of the file system wide
-	// extent usage based on chunk usage per device.
+	//     # btrfs inspect-internal dump-super /dev/sdb1 | egrep 'total_bytes|bytes_used|sectorsize|devid'
+	//     total_bytes             4294967296
+	//     bytes_used              178749440
+	//     sectorsize              4096
+	//     dev_item.total_bytes    2147483648
+	//     dev_item.bytes_used     239861760
+	//     dev_item.devid          1
 	//
-	// Positives:
-	// 1) Per device used figure will correctly be between zero and allocated chunk
-	//    size.
+	// Calculation:
+	//     ptn_fs_size = dev_item_total_bytes
+	//     ptn_fs_used = bytes_used * dev_item_total_bytes / total_bytes
 	//
-	// Known inaccuracies:
-	// [for single and multi-device btrfs file systems]
-	// 1) Btrfs filesystem show reports file system wide file extent usage without
-	//    considering redundancy applied to that data.  (By default btrfs stores two
-	//    copies of metadata and one copy of data).
-	// 2) At minimum size when all data has been consolidated there will be a few
-	//    partly filled chunks of 256 MiB or more for data and metadata of each
-	//    storage profile (RAID level).
-	// [for multi-device btrfs file systems only]
-	// 3) Data may be far from evenly distributed between the chunks on multiple
-	//    devices.
-	// 4) Extents can be and are relocated to other devices within the file system
-	//    when shrinking a device.
-	Utils::execute_command("btrfs filesystem show --raw " + Glib::shell_quote(partition.get_path()),
+	// This calculation also ignores that btrfs allocates chunks at the volume manager
+	// level.  So when fully compacted there will be partially filled chunks for
+	// metadata and data for each storage profile (RAID level) not accounted for.
+	Utils::execute_command("btrfs inspect-internal dump-super " + Glib::shell_quote(partition.get_path()),
 		               output, error, true);
-	// In many cases the exit status doesn't reflect valid output or an error
-	// condition so rely on parsing the output to determine success.
+	// btrfs inspect-internal dump-super returns zero exit status for both success and
+	// failure.  Instead use non-empty stderr to identify failure.
+	if (! error.empty())
+	{
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
+	}
 
-	// Extract the per device size figure.  Guesstimate the per device used
-	// figure as discussed above.  Example:
-	//
-	//     # btrfs filesystem show --raw /dev/sdb1
-	//     Label: none  uuid: 003a619e-856f-4b9c-bd29-4d0ae0296d66
-	//             Total devices 2 FS bytes used 178765824
-	//             devid    1 size 2147483648 used 239861760 path /dev/sdb1
-	//             devid    2 size 2147483648 used 436207616 path /dev/sdc1
-	//
-	// Calculations:
-	//     ptn fs size = devid size
-	//     ptn fs used = total fs used * devid used / sum devid used
-
-	long long total_fs_used = -1;
-	long long sum_devid_used = 0;
-	long long devid_used = -1;
-	long long devid_size = -1;
-
-	// Btrfs file system wide used bytes (extents and items)
-	Glib::ustring::size_type index = output.find("FS bytes used");
+	// Btrfs file system wide size (sum of devid sizes)
+	long long total_bytes = -1;
+	Glib::ustring::size_type index = output.find("\ntotal_bytes");
 	if (index < output.length())
-		sscanf(output.substr(index).c_str(), "FS bytes used %lld", &total_fs_used);
+		sscanf(output.substr(index).c_str(), "\ntotal_bytes %lld", &total_bytes);
 
-	Glib::ustring::size_type offset = 0 ;
-	while ( ( index = output .find( "devid ", offset ) ) != Glib::ustring::npos )
+	// Btrfs file system wide used bytes
+	long long bytes_used = -1;
+	index = output.find("\nbytes_used");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nbytes_used %lld", &bytes_used);
+
+	// Sector size
+	long long sector_size = -1;
+	index = output.find("\nsectorsize");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nsectorsize %lld", &sector_size);
+
+	// Btrfs this device size
+	long long dev_item_total_bytes = -1;
+	index = output.find("\ndev_item.total_bytes");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\ndev_item.total_bytes %lld", &dev_item_total_bytes);
+
+	if (total_bytes > -1 && bytes_used > -1 && dev_item_total_bytes > -1 && sector_size > -1)
 	{
-		Glib::ustring devid_path = Utils::regexp_label( output .substr( index ),
-		                                                "devid .* path (/dev/[[:graph:]]+)" ) ;
-		if ( ! devid_path .empty() )
-		{
-			// Btrfs per devid used bytes (chunks)
-			long long used = -1;
-			sscanf(output.substr(index).c_str(), "devid %*d size %*d used %lld path", &used);
-			if (used > -1)
-			{
-				sum_devid_used += used ;
-				if ( devid_path == partition .get_path() )
-					devid_used = used ;
-			}
-
-			if ( devid_path == partition .get_path() )
-				// Btrfs per device size bytes (chunks)
-				sscanf(output.substr(index).c_str(), "devid %*d size %lld used", &devid_size);
-		}
-		offset = index + 5 ;  //Next find starts immediately after current "devid"
-	}
-
-	if ( total_fs_used > -1 && devid_size > -1 && devid_used > -1 && sum_devid_used > 0 )
-	{
-		T = Utils::round( devid_size / double(partition .sector_size) ) ;               //ptn fs size
-		double ptn_fs_used = total_fs_used * ( devid_used / double(sum_devid_used) ) ;  //ptn fs used
-		N = T - Utils::round( ptn_fs_used / double(partition .sector_size) ) ;
-		partition .set_sector_usage( T, N ) ;
-	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		Sector ptn_fs_size = dev_item_total_bytes / partition.sector_size;
+		double devid_size_fraction = dev_item_total_bytes / double(total_bytes);
+		Sector ptn_fs_used = Utils::round(bytes_used * devid_size_fraction) / partition.sector_size;
+		Sector ptn_fs_free = ptn_fs_size - ptn_fs_used;
+		partition.set_sector_usage(ptn_fs_size, ptn_fs_free);
+		partition.fs_block_size = sector_size;
 	}
 }
 
