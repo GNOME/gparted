@@ -105,13 +105,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 			if ( concatenated_messages.size() > 0 )
 				concatenated_messages += "\n\n";
 
-			Glib::ustring::size_type take = messages[i].size();
-			if ( take > 0 )
-			{
-				if ( messages[i][take-1] == '\n' )
-					take -- ;  //Skip optional trailing new line
-				concatenated_messages += "<i>" + messages[i].substr( 0, take ) + "</i>";
-			}
+			concatenated_messages += "<i>" + Utils::trim_trailing_new_line(messages[i]) + "</i>";
 		}
 		Gtk::Box *vbox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 		vbox ->set_border_width( 5 ) ;

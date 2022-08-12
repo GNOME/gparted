@@ -289,17 +289,12 @@ bool FS_Info::run_blkid_update_cache_one_label( FS_Entry & fs_entry )
 	if ( ! success )
 		return false;
 
-	size_t len = output.length();
-	if ( len > 0 && output[len-1] == '\n' )
-	{
-		// Output is either the label with a terminating new line or zero bytes
-		// when the file system has no label.  Strip optional trailing new line
-		// from blkid output.
-		output.resize( len-1 );
-	}
-	// Update cache entry with the read label.
+	// Output from blkid is either the label with a trailing new line character or
+	// zero bytes when the file system has no label.  Update the cache entry in both
+	// cases as the label was successfully read even if it didn't exist so is zero
+	// characters long.
 	fs_entry.have_label = true;
-	fs_entry.label = output;
+	fs_entry.label = Utils::trim_trailing_new_line(output);
 	return true;
 }
 

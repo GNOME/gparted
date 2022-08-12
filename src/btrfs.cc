@@ -357,12 +357,7 @@ void btrfs::read_label(Partition& partition)
 		return;
 	}
 
-	// Strip terminating new line from output.
-	size_t len = output.length();
-	if (len > 0 && output[len-1] == '\n')
-		output.resize(len-1);
-
-	partition.set_filesystem_label(output);
+	partition.set_filesystem_label(Utils::trim_trailing_new_line(output));
 }
 
 

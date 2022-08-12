@@ -809,6 +809,17 @@ Glib::ustring Utils::trim( const Glib::ustring & src, const Glib::ustring & c /*
 	return src.substr(p1, (p2-p1)+1);
 }
 
+
+// Return string with optional trailing new line character removed.
+Glib::ustring Utils::trim_trailing_new_line(const Glib::ustring& src)
+{
+	Glib::ustring::size_type len = src.length();
+	if (len > 0 && src[len-1] == '\n')
+		len --;
+	return src.substr(0, len);
+}
+
+
 // Return portion of string after the last carriage return character or
 // the whole string when there is no carriage return character.
 Glib::ustring Utils::last_line( const Glib::ustring & src )

@@ -572,11 +572,8 @@ std::vector<Glib::ustring> DMRaid::lookup_dmraid_members(const Glib::ustring& ar
 	Glib::ustring error;
 	Utils::execute_command("udevadm info --query=name " + Glib::shell_quote(array),
 	                       output, error, true);
-
 	// Strip terminating new line from output.
-	size_t len = output.length();
-	if (len > 0 && output[len-1] == '\n')
-		output.resize(len-1);
+	output = Utils::trim_trailing_new_line(output);
 
 	if (output.empty())
 		return members;  // Empty vector
