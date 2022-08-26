@@ -56,8 +56,9 @@ GETTEXT_PACKAGE=gparted
 AC_SUBST([GETTEXT_PACKAGE])
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], "$GETTEXT_PACKAGE", [description])
 
-AM_GLIB_GNU_GETTEXT
-IT_PROG_INTLTOOL([0.36.0])
+AM_GNU_GETTEXT_VERSION([0.19.8])
+AM_GNU_GETTEXT([external])
+
 
 dnl Check for and fix missing delete of intltool cache lock file.  Only
 dnl needed with intltool >= 0.51.0-5.1, but just always fix as that is

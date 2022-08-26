@@ -7,23 +7,30 @@ if BUILD_HELP_DOC
   SUBDIRS += help
 endif
 
-@INTLTOOL_DESKTOP_RULE@
 DESKTOP_IN_IN_FILES = gparted.desktop.in.in
 DESKTOP_IN_FILES = gparted.desktop.in
 DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 desktopdir = $(datadir)/applications
 desktop_DATA = $(DESKTOP_FILES)
 
-@INTLTOOL_XML_RULE@
+$(DESKTOP_FILES): $(DESKTOP_IN_FILES)
+	$(AM_V_GEN)$(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
+
 APPDATA_IN_FILES = gparted.appdata.xml.in
 APPDATA_FILES =$(APPDATA_IN_FILES:.xml.in=.xml)
 appdatadir = $(datadir)/appdata
 appdata_DATA = $(APPDATA_FILES)
 
-@INTLTOOL_POLICY_RULE@
+$(APPDATA_FILES): $(APPDATA_IN_FILES)
+	$(AM_V_GEN)$(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
+
 polkit_action_in_in_FILES = org.gnome.gparted.policy.in.in
 polkit_action_in_FILES = org.gnome.gparted.policy.in
 polkit_action_FILES = $(polkit_action_in_FILES:.policy.in=.policy)
+
+$(polkit_action_FILES): $(polkit_action_in_FILES)
+	$(AM_V_GEN)$(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
+
 polkit_actiondir = $(datadir)/polkit-1/actions
 if INSTALL_POLKIT_ACTIONS
   polkit_action_DATA = $(polkit_action_FILES)
@@ -76,15 +83,9 @@ EXTRA_DIST =			\
 	$(DESKTOP_IN_IN_FILES)	\
 	$(DESKTOP_FILES)	\
 	$(polkit_action_in_in_FILES)  \
-	intltool-extract.in  	\
-	intltool-merge.in	\
-	intltool-update.in	\
 	gparted.in
 
 DISTCLEANFILES =		\
 	$(appdata_DATA)		\
 	$(desktop_DATA)		\
-	$(polkit_action_DATA)  \
-	intltool-extract	\
-	intltool-merge		\
-	intltool-update
+	$(polkit_action_DATA)
