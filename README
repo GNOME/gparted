@@ -93,13 +93,14 @@ b. Building from Source
       gnome-common
       gtkmm3
       gettext
-      intltool
+      polkit
       yelp-tools          - required if help documentation is to be built
 
    On CentOS/RHEL, these dependencies may be obtained by running the
    following command as root:
-      yum install gnome-common yelp-tools glib2-devel intltool gcc-c++ \
-                  libuuid-devel parted-devel gtkmm30-devel make
+      yum install gnome-common yelp-tools glib2-devel gcc-c++ \
+                  libuuid-devel parted-devel gtkmm30-devel make \
+                  polkit-devel gettext-devel
 
    On Debian or Ubuntu, these dependencies may be obtained by running
    one of the following commands:
@@ -112,13 +113,14 @@ b. Building from Source
 
    On Fedora, these dependencies may be obtained by running the
    following command as root:
-      dnf install gnome-common yelp-tools glib2-devel intltool gcc-c++ \
-                  libuuid-devel parted-devel gtkmm30-devel make
+      dnf install gnome-common yelp-tools glib2-devel gcc-c++ \
+                  libuuid-devel parted-devel gtkmm30-devel make \
+                  polkit-devel gettext-devel
 
    On openSUSE, these dependencies may be obtained by running the
    following commands:
       sudo zypper install gnome-common gcc-c++ libuuid-devel \
-                          parted-devel gtkmm3-devel make
+                          parted-devel gtkmm3-devel make polkit-devel
 
    Again, build GParted with the default configuration and install into
    the default location of /usr/local using:
