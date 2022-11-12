@@ -3986,6 +3986,19 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 		ss << std::hex << partition .sector_start ;
 		Glib::ustring hex = ss .str() ;
 
+		bool beyond_32bit = false;
+		if (hex.length() > 8)
+		{
+			operationdetail.get_last_child().add_child(OperationDetail(
+				Glib::ustring::compose(_("Partition start (%1) is beyond sector 4294967295 (2^32-1).\n"
+				                         "Windows will not be able to boot from this file system."),
+				                       partition.sector_start),
+				STATUS_NONE, FONT_ITALIC));
+			// Sets Hidden Sectors to 0.
+			hex = "0";
+			beyond_32bit = true;
+		}
+
 		//fill with zeros and reverse...
 		hex .insert( 0, 8 - hex .length(), '0' ) ;
 		Glib::ustring reversed_hex ;
@@ -4045,6 +4058,8 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 		}
 
 		operationdetail.get_last_child().set_success_and_capture_errors( succes );
+		if (beyond_32bit)
+			operationdetail.get_last_child().set_status(STATUS_WARNING);
 		return succes ;
 	}
 
