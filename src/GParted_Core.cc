@@ -46,6 +46,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdint.h>
+#include <endian.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/shell.h>
@@ -3963,107 +3965,85 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	return overall_success ;
 }
 
-bool GParted_Core::update_bootsector( const Partition & partition, OperationDetail & operationdetail ) 
+
+bool GParted_Core::update_bootsector(const Partition& partition, OperationDetail& operationdetail)
 {
-	//only for ntfs atm...
-	//FIXME: this should probably be done in the fs classes...
-	if (partition.fstype == FS_NTFS)
+	// Only for NTFS.
+	// FIXME: This should probably be done in the FS classes.
+	if (partition.fstype != FS_NTFS)
+		return true;
+
+	// The NTFS file system stores a value in the boot record called the Number of
+	// Hidden Sectors.  This value must match the partition start sector number in
+	// order for Windows to boot from the file system.
+	// References to the NTFS Partition Boot Sector (PBS):
+	//     https://en.wikipedia.org/wiki/NTFS#Partition_Boot_Sector_(PBS)
+	//     https://thestarman.pcministry.com/asm/mbr/NTFSBR.htm
+	operationdetail.add_child(OperationDetail( 
+			/* TO TRANSLATORS: looks like   update boot sector of ntfs file system on /dev/sdd1 */
+			Glib::ustring::compose(_("update boot sector of %1 file system on %2"),
+			                       Utils::get_filesystem_string(partition.fstype),
+			                      partition.get_path())));
+
+	uint32_t hidden_sectors = 0;
+	bool beyond_32bit = false;
+	if ((partition.sector_start >> 32) == 0)
 	{
-		//The NTFS file system stores a value in the boot record called the
-		//  Number of Hidden Sectors.  This value must match the partition start
-		//  sector number in order for Windows to boot from the file system.
-		//  For more details, refer to the NTFS Volume Boot Record at:
-		//  http://www.geocities.com/thestarman3/asm/mbr/NTFSBR.htm
-
-		operationdetail .add_child( OperationDetail( 
-				/*TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1 */
-				Glib::ustring::compose( _("update boot sector of %1 file system on %2"),
-					  Utils::get_filesystem_string(partition.fstype),
-					  partition .get_path() ) ) ) ;
-
-		//convert start sector to hex string
-		std::stringstream ss ;
-		ss << std::hex << partition .sector_start ;
-		Glib::ustring hex = ss .str() ;
-
-		bool beyond_32bit = false;
-		if (hex.length() > 8)
-		{
-			operationdetail.get_last_child().add_child(OperationDetail(
+		hidden_sectors = htole32(static_cast<uint32_t>(partition.sector_start & 0xFFFFFFFF));
+	}
+	else
+	{
+		operationdetail.get_last_child().add_child(OperationDetail(
 				Glib::ustring::compose(_("Partition start (%1) is beyond sector 4294967295 (2^32-1).\n"
 				                         "Windows will not be able to boot from this file system."),
 				                       partition.sector_start),
 				STATUS_NONE, FONT_ITALIC));
-			// Sets Hidden Sectors to 0.
-			hex = "0";
-			beyond_32bit = true;
-		}
-
-		//fill with zeros and reverse...
-		hex .insert( 0, 8 - hex .length(), '0' ) ;
-		Glib::ustring reversed_hex ;
-		for ( int t = 6 ; t >= 0 ; t -=2 )
-			reversed_hex .append( hex .substr( t, 2 ) ) ;
-
-		//convert reversed hex codes into ascii characters
-		char buf[4] ;
-		for ( unsigned int k = 0; (k < 4 && k < (reversed_hex .length() / 2)); k++ )
-		{
-			Glib::ustring tmp_hex = "0x" + reversed_hex .substr( k * 2, 2 ) ;
-			buf[k] = (char)( std::strtol( tmp_hex .c_str(), NULL, 16 ) ) ;
-		}
-
-		//write new Number of Hidden Sectors value into NTFS boot sector at offset 0x1C
-		Glib::ustring error_message = "" ;
-		std::ofstream dev_file ;
-		dev_file .open( partition .get_path() .c_str(), std::ios::out | std::ios::binary ) ;
-		if ( dev_file .is_open() )
-		{
-			dev_file .seekp( 0x1C ) ;
-			if ( dev_file .good() )
-			{
-				dev_file .write( buf, 4 ) ;
-				if ( dev_file .bad() )
-				{
-					/*TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1 */
-					error_message = Glib::ustring::compose( _("Error trying to write to boot sector in %1"), partition .get_path() ) ;
-				}
-			}
-			else
-			{
-				/*TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1 */
-				error_message = Glib::ustring::compose( _("Error trying to seek to position 0x1c in %1"), partition .get_path() ) ;
-			}
-			dev_file .close( ) ;
-		}
-		else
-		{
-			/*TO TRANSLATORS: looks like Error trying to open /dev/sdd1 */
-			error_message = Glib::ustring::compose( _("Error trying to open %1"), partition .get_path() ) ;
-		}
-
-		//append error messages if any found
-		bool succes = true ;
-		if ( ! error_message .empty() )
-		{
-			succes = false ;
-			error_message += "\n" ;
-			/*TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record. */
-			error_message += Glib::ustring::compose( _("Failed to set the number of hidden sectors to %1 in the NTFS boot record."), reversed_hex ) ;
-			error_message += "\n" ;
-			error_message += _("You might try the following command to correct the problem:");
-			error_message += "\n" ;
-			error_message += Glib::ustring::compose( "echo %1 | xxd -r -p | dd conv=notrunc of=%2 bs=1 seek=28", reversed_hex, partition .get_path() ) ;
-			operationdetail .get_last_child() .add_child( OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
-		}
-
-		operationdetail.get_last_child().set_success_and_capture_errors( succes );
-		if (beyond_32bit)
-			operationdetail.get_last_child().set_status(STATUS_WARNING);
-		return succes ;
+		beyond_32bit = true;
 	}
 
-	return true ;
+	std::ofstream dev_file;
+	dev_file.open(partition.get_path().c_str(), std::ios::out|std::ios::binary);
+	if (! dev_file)
+	{
+		/* TO TRANSLATORS: looks like   Error trying to open /dev/sdd1 */
+		operationdetail.get_last_child().add_child(OperationDetail(
+				Glib::ustring::compose(_("Error trying to open %1"), partition.get_path()),
+				STATUS_NONE, FONT_ITALIC));
+		operationdetail.get_last_child().set_success_and_capture_errors(false);
+		return false;
+	}
+
+	dev_file.seekp(0x1C);
+	if (! dev_file)
+	{
+		/* TO TRANSLATORS: looks like   Error trying to seek to position 0x1C in /dev/sdd1 */
+		operationdetail.get_last_child().add_child(OperationDetail(
+				Glib::ustring::compose(_("Error trying to seek to position 0x1c in %1"),
+				                       partition.get_path()),
+				STATUS_NONE, FONT_ITALIC));
+		operationdetail.get_last_child().set_success_and_capture_errors(false);
+		dev_file.close();
+		return false;
+	}
+
+	dev_file.write(reinterpret_cast<const char *>(&hidden_sectors), sizeof(hidden_sectors));
+	dev_file.flush();
+	dev_file.close();
+	if (! dev_file)
+	{
+		/* TO TRANSLATORS: looks like   Error trying to write to boot sector in /dev/sdd1 */
+		operationdetail.get_last_child().add_child(OperationDetail(
+				Glib::ustring::compose(_("Error trying to write to boot sector in %1"),
+				                       partition.get_path()),
+				STATUS_NONE, FONT_ITALIC));
+		operationdetail.get_last_child().set_success_and_capture_errors(false);
+		return false;
+	}
+
+	operationdetail.get_last_child().set_success_and_capture_errors(true);
+	if (beyond_32bit)
+		operationdetail.get_last_child().set_status(STATUS_WARNING);
+	return true;
 }
 
 
