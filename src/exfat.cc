@@ -197,7 +197,7 @@ bool exfat::write_uuid(const Partition& partition, OperationDetail& operationdet
 
 bool exfat::check_repair(const Partition& partition, OperationDetail& operationdetail)
 {
-	return ! execute_command("fsck.exfat -v " + Glib::shell_quote(partition.get_path()),
+	return ! execute_command("fsck.exfat -y -v " + Glib::shell_quote(partition.get_path()),
 	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
 
