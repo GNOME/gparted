@@ -92,8 +92,8 @@ FS xfs::get_filesystem_support()
 		fs .online_grow = fs .grow ;
 #endif
 
-	// Official minsize = 16MB, but the smallest xfs_repair can handle is 32MB.
-	fs_limits.min_size = 32 * MEBIBYTE;
+	// From xfsprogs 5.19.0 the smallest creatable file system is 300 MiB.
+	fs_limits.min_size = 300 * MEBIBYTE;
 
 	return fs ;
 }
