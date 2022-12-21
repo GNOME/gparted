@@ -239,7 +239,7 @@ const std::string param_fsname(const ::testing::TestParamInfo<FSType>& info)
 	}
 
 
-const Byte_Value IMAGESIZE_Default = 256*MEBIBYTE;
+const Byte_Value IMAGESIZE_Default = 320*MEBIBYTE;
 const Byte_Value IMAGESIZE_Larger  = 512*MEBIBYTE;
 
 
