@@ -3771,70 +3771,52 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		overall_success &= device_is_open;
 	}
 
-	//Erase all file system super blocks, including their signatures.  The specified
-	//  byte ranges are converted to whole sectors (as disks fundamentally only read
-	//  or write whole sectors) and written using ped_geometry_write().  Therefore
-	//  don't try to surgically overwrite just the few bytes of each signature as this
-	//  code overwrites whole sectors and it embeds more knowledge that is necessary.
+	// Erase all file system super blocks, including their signatures.  The specified
+	// byte ranges are converted to whole sectors (as disks fundamentally only read or
+	// write whole sectors) and written using ped_geometry_write().  Therefore don't
+	// try to surgically overwrite just the few bytes of each signature as this code
+	// overwrites whole sectors and it embeds more knowledge than is necessary.
 	//
-	//  First byte range from offset 0 of length 512 KiB covers the primary super
-	//  block of all currently supported file systems and is also likely to include
-	//  future file system super blocks too.  Only a few file systems have super
-	//  blocks and signatures located elsewhere.
+	// First byte range from offset 0, length 512 KiB covers ZFS Labels L0 and L1 and
+	// all other super blocks at the start of the device.
+	//     ZFS On-Disk Specification
+	//     http://www.giis.co.in/Zfs_ondiskformat.pdf
 	//
-	//  Btrfs super blocks are located at: 64 KiB, 64 MiB, 256 GiB and 1 PiB.
-	//  (The super block at 64 KiB will be erased by the zeroing from offset 0.  Other
-	//  super block mirror copies need to be explicitly cleared).
-	//  https://btrfs.wiki.kernel.org/index.php/On-disk_Format#Superblock
+	// Last byte range from offset -512 KiB (from the end), length 768 KiB covers ZFS
+	// Labels L2 and L3 and other super blocks at the end of the device.  Includes:
+	// *   Linux Software RAID metadata 0.90 and 1.0
+	// *   secondary Nilfs2 super block
+	// *   Almost all the various ATARAID types
 	//
-	//  ZFS labels are 256 KiB in size and 4 copies are stored on every member device,
-	//  2 at the beginning and 2 at the end of the device, aligned to 256 KiB.  (The
-	//  front two labels, L0 and L1, will be erased by the zeroing from offset 0.  The
-	//  back two labels, L2 and L3, need to be explicitly cleared).
-	//  Reference:
-	//      ZFS On-Disk Specification
-	//      http://maczfs.googlecode.com/files/ZFSOnDiskFormat.pdf
+	// Not covered by the above are:
+	// *   Btrfs super block mirror copies
+	// *   One possible location of Promise FastTrack RAID super block
 	//
-	//  Linux Software RAID metadata 0.90 stores it's super block at 64 KiB before the
-	//  end of the device, aligned to 64 KiB boundary.  Length 4 KiB.
-	//  Ref: mdadm/super0.c load_super0()
-	//       mdadm/md_p.h   #define MD_NEW_SIZE_SECTORS(x) ...
+	// Btrfs super blocks are located at: 64 KiB, 64 MiB, 256 GiB and 1 PiB.  The
+	// super block at 64 KiB will be erased by the zeroing from offset 0.  The super
+	// block mirror copies need to be explicitly cleared.
+	//     Btrfs: On-disk Format, Superblock
+	//     https://btrfs.wiki.kernel.org/index.php/On-disk_Format#Superblock
 	//
-	//  Linux Software RAID metadata 1.0 stores it's super block at 8 KiB before the
-	//  end of the device, aligned to 4 KiB boundary.  Length 4 KiB.  (Metadata 1.1
-	//  and 1.2 store their super blocks at 0 KiB and 4 KiB respectively so will be
-	//  erased by the zeroing from offset 0).
-	//  Ref: mdadm/super1.c load_super1()
-	//                      #define MAX_SB_SIZE 4096
-	//
-	//  Nilfs2 secondary super block is located at the last whole 4 KiB block.
-	//  Ref: nilfs-utils-2.1.4/include/nilfs2_fs.h
-	//  #define NILFS_SB2_OFFSET_BYTES(devsize) ((((devsize) >> 12) - 1) << 12)
-	//
-	// NOTE:
-	// Most of the time partitions are aligned to whole MiBs so the writing of zeros
-	// at offsets -64 KiB and -8 KiB will be overwriting zeros already just written
-	// at offset -512 KiB, length 512 KiB.  This will double write 12 KiB of zeros.
-	// However partitions don't have to be MiB aligned and real disk drives generally
-	// aren't an exact multiple of 1024^2 bytes in size either.  So zeroing at offsets
-	// -64 KiB and -8 KiB with their smaller rounding / alignment requirements will
-	// write outside the -512 KiB zeroed region and needs to be kept.  Because of the
-	// small amount of double writing it is not worth the effort to suppress it when
-	// not needed.
+	// Promise FastTrack RAID super block may be located at any of these 512-byte
+	// sectors before the end of the device: -16, -63, -255, -256, -399, -591, -675,
+	// -753, -911, -951, -974, -991, -3087.  All from -991 and smaller offsets from
+	// the end of the device will be erased by the zeroing from -512 KiB.  Possible
+	// location -3087 must be explicitly cleared.
+	//     util-linux v2.38.1: libblkid/src/subperblocks/promise_raid.c:probe_pdcraid()
+        //     https://git.kernel.org/pub/scm/utils/util-linux/util-linux.git/tree/libblkid/src/superblocks/promise_raid.c?h=v2.38.1#n27
 	struct {
-		Byte_Value offset;    //Negative offsets work backwards from the end of the partition
-		Byte_Value rounding;  //Minimum desired rounding for offset
+		Byte_Value offset;    // Negative offsets work backwards from the end of the partition
+		Byte_Value rounding;  // Minimum desired rounding for offset
 		Byte_Value length;
 	} ranges[] = {
-		//offset           , rounding       , length
-		{    0LL           ,   1LL           , 512LL * KIBIBYTE },  // All primary super blocks
+		//offset           , rounding        , length
+		{    0LL           ,   1LL           , 512LL * KIBIBYTE },  // Super blocks at start
 		{   64LL * MEBIBYTE,   1LL           ,   4LL * KIBIBYTE },  // Btrfs super block mirror copy
 		{  256LL * GIBIBYTE,   1LL           ,   4LL * KIBIBYTE },  // Btrfs super block mirror copy
 		{    1LL * PEBIBYTE,   1LL           ,   4LL * KIBIBYTE },  // Btrfs super block mirror copy
-		{ -512LL * KIBIBYTE, 256LL * KIBIBYTE, 512LL * KIBIBYTE },  // ZFS labels L2 and L3
-		{  -64LL * KIBIBYTE,  64LL * KIBIBYTE,   4LL * KIBIBYTE },  // SWRaid metadata 0.90 super block
-		{   -8LL * KIBIBYTE,   4LL * KIBIBYTE,   8LL * KIBIBYTE }   // @-8K SWRaid metadata 1.0 super block
-		                                                            // and @-4K Nilfs2 secondary super block
+		{ -3087LL * 512LL  ,   1LL           , 512LL            },  // Promise FastTrack RAID super block
+		{ -512LL * KIBIBYTE, 256LL * KIBIBYTE, 768LL * KIBIBYTE }   // Super blocks at end
 	} ;
 	for ( unsigned int i = 0 ; overall_success && i < sizeof( ranges ) / sizeof( ranges[0] ) ; i ++ )
 	{
