@@ -314,12 +314,7 @@ const std::string SupportedFileSystemsTest::create_loopdev(const std::string& im
 		return "";
 	}
 
-	// Strip trailing New Line.
-	size_t len = output.length();
-	if (len > 0 && output[len-1] == '\n')
-		output.resize(len-1);
-
-	return output;
+	return Utils::trim_trailing_new_line(output);
 }
 
 
