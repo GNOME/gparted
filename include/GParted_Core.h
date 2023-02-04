@@ -40,6 +40,9 @@ namespace GParted
 
 class GParted_Core
 {
+friend class EraseFileSystemSignaturesTest;  // To allow unit testing to call private
+                                             // method.
+
 public:
 	static Glib::Thread *mainthread;
 	GParted_Core() ;

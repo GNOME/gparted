@@ -11,19 +11,17 @@ LDADD =  \
 
 # Programs to be built by "make check"
 check_PROGRAMS =  \
-	test_dummy                 \
-	test_BlockSpecial          \
-	test_PasswordRAMStore      \
-	test_PipeCapture           \
+	test_dummy                      \
+	test_BlockSpecial               \
+	test_EraseFileSystemSignatures  \
+	test_PasswordRAMStore           \
+	test_PipeCapture                \
 	test_SupportedFileSystems
 
 # Test cases to be run by "make check"
 TESTS = $(check_PROGRAMS)
 
-test_dummy_SOURCES        = test_dummy.cc
-
-test_SupportedFileSystems_SOURCES = test_SupportedFileSystems.cc
-test_SupportedFileSystems_LDADD   =  \
+gparted_core_OBJECTS =  \
 	$(top_builddir)/src/BCache_Info.$(OBJEXT)           \
 	$(top_builddir)/src/BlockSpecial.$(OBJEXT)          \
 	$(top_builddir)/src/CopyBlocks.$(OBJEXT)            \
@@ -65,14 +63,20 @@ test_SupportedFileSystems_LDADD   =  \
 	$(top_builddir)/src/reiser4.$(OBJEXT)               \
 	$(top_builddir)/src/reiserfs.$(OBJEXT)              \
 	$(top_builddir)/src/udf.$(OBJEXT)                   \
-	$(top_builddir)/src/xfs.$(OBJEXT)                   \
-	$(GTEST_LIBS)                                       \
-	$(top_builddir)/lib/gtest/lib/libgtest.la
+	$(top_builddir)/src/xfs.$(OBJEXT)
+
+test_dummy_SOURCES        = test_dummy.cc
 
 test_BlockSpecial_SOURCES = test_BlockSpecial.cc
 test_BlockSpecial_LDADD   =  \
 	$(top_builddir)/src/BlockSpecial.$(OBJEXT)  \
 	$(LDADD)
+
+test_EraseFileSystemSignatures_SOURCES = test_EraseFileSystemSignatures.cc
+test_EraseFileSystemSignatures_LDADD =  \
+	$(gparted_core_OBJECTS)                    \
+	$(GTEST_LIBS)                              \
+	$(top_builddir)/lib/gtest/lib/libgtest.la
 
 test_PasswordRAMStore_SOURCES = test_PasswordRAMStore.cc
 test_PasswordRAMStore_LDADD   =  \
@@ -83,3 +87,9 @@ test_PipeCapture_SOURCES  = test_PipeCapture.cc
 test_PipeCapture_LDADD    =  \
 	$(top_builddir)/src/PipeCapture.$(OBJEXT)  \
 	$(LDADD)
+
+test_SupportedFileSystems_SOURCES = test_SupportedFileSystems.cc
+test_SupportedFileSystems_LDADD   =  \
+	$(gparted_core_OBJECTS)                    \
+	$(GTEST_LIBS)                              \
+	$(top_builddir)/lib/gtest/lib/libgtest.la
