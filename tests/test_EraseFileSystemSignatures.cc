@@ -18,19 +18,15 @@
  */
 
 
+#include "common.h"
+#include "insertion_operators.h"
 #include "GParted_Core.h"
 #include "OperationDetail.h"
 #include "Partition.h"
 #include "Utils.h"
 #include "gtest/gtest.h"
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <iomanip>
 #include <stddef.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -40,102 +36,11 @@
 #include <unistd.h>
 #include <gtkmm.h>
 #include <parted/parted.h>
-#include <glibmm/ustring.h>
 #include <glibmm/thread.h>
 
 
 namespace GParted
 {
-
-
-// Hacky XML parser which strips italic and bold markup added in
-// OperationDetail::set_description() and reverts just these 5 characters &<>'" encoded by
-// Glib::Markup::escape_text() -> g_markup_escape_text() -> append_escaped_text().
-Glib::ustring strip_markup(const Glib::ustring& str)
-{
-	size_t len = str.length();
-	size_t i = 0;
-	Glib::ustring ret;
-	ret.reserve(len);
-	while (i < len)
-	{
-		if (str.compare(i, 3, "<i>") == 0)
-			i += 3;
-		else if (str.compare(i, 4, "</i>") == 0)
-			i += 4;
-		else if (str.compare(i, 3, "<b>") == 0)
-			i += 3;
-		else if (str.compare(i, 4, "</b>") == 0)
-			i += 4;
-		else if (str.compare(i, 5, "&amp;") == 0)
-		{
-			ret.push_back('&');
-			i += 5;
-		}
-		else if (str.compare(i, 4, "&lt;") == 0)
-		{
-			ret.push_back('<');
-			i += 4;
-		}
-		else if (str.compare(i, 4, "&gt;") == 0)
-		{
-			ret.push_back('>');
-			i += 4;
-		}
-		else if (str.compare(i, 6, "&apos;") == 0)
-		{
-			ret.push_back('\'');
-			i += 6;
-		}
-		else if (str.compare(i, 6, "&quot;") == 0)
-		{
-			ret.push_back('"');
-			i += 6;
-		}
-		else
-		{
-			ret.push_back(str[i]);
-			i++;
-		}
-	}
-	return ret;
-}
-
-
-// Print method for OperationDetailStatus.
-std::ostream& operator<<(std::ostream& out, const OperationDetailStatus od_status)
-{
-	switch (od_status)
-	{
-		case STATUS_NONE:     out << "NONE";     break;
-		case STATUS_EXECUTE:  out << "EXECUTE";  break;
-		case STATUS_SUCCESS:  out << "SUCCESS";  break;
-		case STATUS_ERROR:    out << "ERROR";    break;
-		case STATUS_INFO:     out << "INFO";     break;
-		case STATUS_WARNING:  out << "WARNING";  break;
-		default:                                 break;
-	}
-	return out;
-}
-
-
-// Print method for an OperationDetail object.
-std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
-{
-	out << strip_markup(od.get_description());
-	Glib::ustring elapsed = od.get_elapsed_time();
-	if (! elapsed.empty())
-		out << "    " << elapsed;
-	if (od.get_status() != STATUS_NONE)
-		out << "  (" << od.get_status() << ")";
-	out << "\n";
-
-	for (size_t i = 0; i < od.get_childs().size(); i++)
-	{
-		out << *od.get_childs()[i];
-	}
-	return out;
-}
 
 
 // Explicit test fixture class for common variables and methods used in each test.
@@ -226,42 +131,6 @@ const char* first_non_zero_byte(const char* buf, size_t size)
 }
 
 
-// Number of bytes of binary data to report.
-const size_t BinaryStringChunkSize = 16;
-
-
-// Format up to BinaryStringChunkSize (16) bytes of binary data ready for printing as:
-//      Hex offset     ASCII text          Hex bytes
-//     "0x000000000  \"ABCDEFGHabcdefgh\"  41 42 43 44 45 46 47 48 61 62 63 64 65 66 67 68"
-std::string binary_string_to_print(size_t offset, const char* s, size_t len)
-{
-	std::ostringstream result;
-
-	result << "0x";
-	result.fill('0');
-	result << std::setw(8) << std::hex << std::uppercase << offset << "  \"";
-
-	size_t i;
-	for (i = 0; i < BinaryStringChunkSize && i < len; i++)
-		result.put((isprint(s[i])) ? s[i] : '.');
-	result.put('\"');
-
-	if (len > 0)
-	{
-		for (; i < BinaryStringChunkSize; i++)
-			result.put(' ');
-		result.put(' ');
-
-		for (i = 0 ; i < BinaryStringChunkSize && i < len; i++)
-			result << " "
-			       << std::setw(2) << std::hex << std::uppercase
-			       << (unsigned int)(unsigned char)s[i];
-	}
-
-	return result.str();
-}
-
-
 bool EraseFileSystemSignaturesTest::image_contains_all_zeros()
 {
 	int fd = open(s_image_name, O_RDONLY|O_NONBLOCK);
@@ -329,38 +198,6 @@ TEST_F(EraseFileSystemSignaturesTest, IntelSoftwareRAIDUnaligned)
 }  // namespace GParted
 
 
-// Re-execute current executable using xvfb-run so that it provides a virtual X11 display.
-void exec_using_xvfb_run(int argc, char** argv)
-{
-	// argc+2 = Space for "xvfb-run" command, existing argc strings plus NULL pointer.
-	size_t size = sizeof(char*) * (argc+2);
-	char** new_argv = (char**)malloc(size);
-	if (new_argv == NULL)
-	{
-		fprintf(stderr, "Failed to allocate %lu bytes of memory.  errno=%d,%s\n",
-			(unsigned long)size, errno, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-
-	new_argv[0] = strdup("xvfb-run");
-	if (new_argv[0] == NULL)
-	{
-		fprintf(stderr, "Failed to allocate %lu bytes of memory.  errno=%d,%s\n",
-		        (unsigned long)strlen(new_argv[0])+1, errno, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-
-	// Copy argv pointers including final NULL pointer.
-	for (unsigned int i = 0; i <= (unsigned)argc; i++)
-		new_argv[i+1] = argv[i];
-
-	execvp(new_argv[0], new_argv);
-	fprintf(stderr, "Failed to execute '%s %s ...'.  errno=%d,%s\n", new_argv[0], new_argv[1],
-		errno, strerror(errno));
-	exit(EXIT_FAILURE);
-}
-
-
 // Custom Google Test main().
 // Reference:
 // *   Google Test, Primer, Writing the main() function
@@ -368,14 +205,7 @@ void exec_using_xvfb_run(int argc, char** argv)
 int main(int argc, char** argv)
 {
 	printf("Running main() from %s\n", __FILE__);
-
-	const char* display = getenv("DISPLAY");
-	if (display == NULL)
-	{
-		printf("DISPLAY environment variable unset.  Executing 'xvfb-run %s ...'\n", argv[0]);
-		exec_using_xvfb_run(argc, argv);
-	}
-	printf("DISPLAY=\"%s\"\n", display);
+	GParted::ensure_x11_display(argc, argv);
 
 	// Initialise threading in GParted to successfully use Utils:: and
 	// FileSystem::execute_command().  Must be before InitGoogleTest().

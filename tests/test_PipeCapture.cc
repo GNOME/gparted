@@ -22,6 +22,7 @@
  * being tested.
  */
 
+#include "common.h"
 #include "PipeCapture.h"
 #include "gtest/gtest.h"
 
@@ -48,39 +49,6 @@ static std::string repeat( const std::string & str, size_t count )
 	return result;
 }
 
-// Number of bytes of binary data to compare and report.
-const size_t BinaryStringDiffSize = 16;
-
-// Format up to 16 bytes of binary data ready for printing as:
-//      Hex offset     ASCII text          Hex bytes
-//     "0x000000000  \"ABCDEFGHabcdefgh\"  41 42 43 44 45 46 47 48 61 62 63 64 65 66 67 68"
-std::string BinaryStringToPrint( size_t offset, const char * s, size_t len )
-{
-	std::ostringstream result;
-
-	result << "0x";
-	result.fill( '0' );
-	result << std::setw( 8 ) << std::hex << std::uppercase << offset << "  \"";
-
-	size_t i;
-	for ( i = 0 ; i < BinaryStringDiffSize && i < len ; i ++ )
-		result.put( ( isprint( s[i] ) ) ? s[i] : '.' );
-	result.put( '\"' );
-
-	if ( len > 0 )
-	{
-		for ( ; i < BinaryStringDiffSize ; i ++ )
-			result.put( ' ' );
-		result.put( ' ' );
-
-		for ( i = 0 ; i < BinaryStringDiffSize && i < len ; i ++ )
-			result << " "
-			       << std::setw( 2 ) << std::hex << std::uppercase
-			       << (unsigned int)(unsigned char)s[i];
-	}
-
-	return result.str();
-}
 
 // Helper to construct and return message for equality assertion of C++ strings containing
 // binary data used in:
@@ -97,10 +65,10 @@ std::string BinaryStringToPrint( size_t offset, const char * s, size_t len )
 	size_t len2 = rhs.length();
 	while ( len1 > 0 || len2 > 0 )
 	{
-		size_t cmp_span = BinaryStringDiffSize;
+		size_t cmp_span = BinaryStringChunkSize;
 		cmp_span = ( len1 < cmp_span ) ? len1 : cmp_span;
 		cmp_span = ( len2 < cmp_span ) ? len2 : cmp_span;
-		if ( cmp_span < BinaryStringDiffSize && len1 != len2 )
+		if (cmp_span < BinaryStringChunkSize && len1 != len2)
 		{
 			diff = true;
 			break;
@@ -127,9 +95,9 @@ std::string BinaryStringToPrint( size_t offset, const char * s, size_t len )
 		       << "To be equal to: " << rhs_expr << "\n"
 		       << "     Of length: " << rhs.length() << "\n"
 		       << "With first binary difference:\n"
-		       << "< " << BinaryStringToPrint( offset, p1, len1 ) << "\n"
+		       << "< " << binary_string_to_print(offset, p1, len1) << "\n"
 		       << "--\n"
-		       << "> " << BinaryStringToPrint( offset, p2, len2 );
+		       << "> " << binary_string_to_print(offset, p2, len2);
 	}
 }
 

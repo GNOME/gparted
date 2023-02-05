@@ -33,6 +33,8 @@
  */
 
 
+#include "common.h"
+#include "insertion_operators.h"
 #include "GParted_Core.h"
 #include "FileSystem.h"
 #include "OperationDetail.h"
@@ -62,60 +64,6 @@ namespace GParted
 {
 
 
-// Hacky XML parser which strips italic and bold markup added in
-// OperationDetail::set_description() and reverts just these 5 characters &<>'" encoded by
-// Glib::Markup::escape_text() -> g_markup_escape_text() -> append_escaped_text().
-Glib::ustring strip_markup(const Glib::ustring& str)
-{
-	size_t len = str.length();
-	size_t i = 0;
-	Glib::ustring ret;
-	ret.reserve(len);
-	while (i < len)
-	{
-		if (str.compare(i, 3, "<i>") == 0)
-			i += 3;
-		else if (str.compare(i, 4, "</i>") == 0)
-			i += 4;
-		else if (str.compare(i, 3, "<b>") == 0)
-			i += 3;
-		else if (str.compare(i, 4, "</b>") == 0)
-			i += 4;
-		else if (str.compare(i, 5, "&amp;") == 0)
-		{
-			ret.push_back('&');
-			i += 5;
-		}
-		else if (str.compare(i, 4, "&lt;") == 0)
-		{
-			ret.push_back('<');
-			i += 4;
-		}
-		else if (str.compare(i, 4, "&gt;") == 0)
-		{
-			ret.push_back('>');
-			i += 4;
-		}
-		else if (str.compare(i, 6, "&apos;") == 0)
-		{
-			ret.push_back('\'');
-			i += 6;
-		}
-		else if (str.compare(i, 6, "&quot;") == 0)
-		{
-			ret.push_back('"');
-			i += 6;
-		}
-		else
-		{
-			ret.push_back(str[i]);
-			i++;
-		}
-	}
-	return ret;
-}
-
-
 // Print method for the messages in a Partition object.
 std::ostream& operator<<(std::ostream& out, const Partition& partition)
 {
@@ -123,42 +71,6 @@ std::ostream& operator<<(std::ostream& out, const Partition& partition)
 	out << "Partition messages:\n";
 	for (unsigned int i = 0; i < messages.size(); i++)
 		out << messages[i];
-	return out;
-}
-
-
-// Print method for OperationDetailStatus.
-std::ostream& operator<<(std::ostream& out, const OperationDetailStatus od_status)
-{
-	switch (od_status)
-	{
-		case STATUS_NONE:     out << "NONE";     break;
-		case STATUS_EXECUTE:  out << "EXECUTE";  break;
-		case STATUS_SUCCESS:  out << "SUCCESS";  break;
-		case STATUS_ERROR:    out << "ERROR";    break;
-		case STATUS_INFO:     out << "INFO";     break;
-		case STATUS_WARNING:  out << "WARNING";  break;
-		default:                                 break;
-	}
-	return out;
-}
-
-
-// Print method for an OperationDetail object.
-std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
-{
-	out << strip_markup(od.get_description());
-	Glib::ustring elapsed = od.get_elapsed_time();
-	if (! elapsed.empty())
-		out << "    " << elapsed;
-	if (od.get_status() != STATUS_NONE)
-		out << "  (" << od.get_status() << ")";
-	out << "\n";
-
-	for (unsigned int i = 0; i < od.get_childs().size(); i++)
-	{
-		out << *od.get_childs()[i];
-	}
 	return out;
 }
 
@@ -724,38 +636,6 @@ INSTANTIATE_TEST_CASE_P(My,
 }  // namespace GParted
 
 
-// Re-execute current executable using xvfb-run so that it provides a virtual X11 display.
-void exec_using_xvfb_run(int argc, char** argv)
-{
-	// argc+2 = Space for "xvfb-run" command, existing argc strings plus NULL pointer.
-	size_t size = sizeof(char*) * (argc+2);
-	char** new_argv = (char**)malloc(size);
-	if (new_argv == NULL)
-	{
-		fprintf(stderr, "Failed to allocate %lu bytes of memory.  errno=%d,%s\n",
-			(unsigned long)size, errno, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-
-	new_argv[0] = strdup("xvfb-run");
-	if (new_argv[0] == NULL)
-	{
-		fprintf(stderr, "Failed to allocate %lu bytes of memory.  errno=%d,%s\n",
-		        (unsigned long)strlen(new_argv[0])+1, errno, strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-
-	// Copy argv pointers including final NULL pointer.
-	for (unsigned int i = 0; i <= (unsigned)argc; i++)
-		new_argv[i+1] = argv[i];
-
-	execvp(new_argv[0], new_argv);
-	fprintf(stderr, "Failed to execute '%s %s ...'.  errno=%d,%s\n", new_argv[0], new_argv[1],
-		errno, strerror(errno));
-	exit(EXIT_FAILURE);
-}
-
-
 // Custom Google Test main().
 // Reference:
 // *   Google Test, Primer, Writing the main() function
@@ -763,14 +643,7 @@ void exec_using_xvfb_run(int argc, char** argv)
 int main(int argc, char** argv)
 {
 	printf("Running main() from %s\n", __FILE__);
-
-	const char* display = getenv("DISPLAY");
-	if (display == NULL)
-	{
-		printf("DISPLAY environment variable unset.  Executing 'xvfb-run %s ...'\n", argv[0]);
-		exec_using_xvfb_run(argc, argv);
-	}
-	printf("DISPLAY=\"%s\"\n", display);
+	GParted::ensure_x11_display(argc, argv);
 
 	// Initialise threading in GParted to allow FileSystem interface classes to
 	// successfully use Utils:: and Filesystem::execute_command().  Must be before

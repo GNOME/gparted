@@ -21,6 +21,10 @@ check_PROGRAMS =  \
 # Test cases to be run by "make check"
 TESTS = $(check_PROGRAMS)
 
+noinst_HEADERS =  \
+	common.h               \
+	insertion_operators.h
+
 gparted_core_OBJECTS =  \
 	$(top_builddir)/src/BCache_Info.$(OBJEXT)           \
 	$(top_builddir)/src/BlockSpecial.$(OBJEXT)          \
@@ -72,7 +76,10 @@ test_BlockSpecial_LDADD   =  \
 	$(top_builddir)/src/BlockSpecial.$(OBJEXT)  \
 	$(LDADD)
 
-test_EraseFileSystemSignatures_SOURCES = test_EraseFileSystemSignatures.cc
+test_EraseFileSystemSignatures_SOURCES =  \
+	test_EraseFileSystemSignatures.cc  \
+	common.cc                          \
+	insertion_operators.cc
 test_EraseFileSystemSignatures_LDADD =  \
 	$(gparted_core_OBJECTS)                    \
 	$(GTEST_LIBS)                              \
@@ -83,12 +90,17 @@ test_PasswordRAMStore_LDADD   =  \
 	$(top_builddir)/src/PasswordRAMStore.$(OBJEXT)  \
 	$(LDADD)
 
-test_PipeCapture_SOURCES  = test_PipeCapture.cc
+test_PipeCapture_SOURCES  =  \
+	test_PipeCapture.cc  \
+	common.cc
 test_PipeCapture_LDADD    =  \
 	$(top_builddir)/src/PipeCapture.$(OBJEXT)  \
 	$(LDADD)
 
-test_SupportedFileSystems_SOURCES = test_SupportedFileSystems.cc
+test_SupportedFileSystems_SOURCES =  \
+	test_SupportedFileSystems.cc  \
+	common.cc                     \
+	insertion_operators.cc
 test_SupportedFileSystems_LDADD   =  \
 	$(gparted_core_OBJECTS)                    \
 	$(GTEST_LIBS)                              \
