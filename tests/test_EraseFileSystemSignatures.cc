@@ -26,6 +26,7 @@
 #include "Utils.h"
 #include "gtest/gtest.h"
 
+#include <vector>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,7 +51,9 @@ class EraseFileSystemSignaturesTest : public ::testing::Test
 {
 protected:
 	virtual void create_image_file(Byte_Value size);
+	virtual void write_signatures(const char* signature, const std::vector<off_t>& sector_offsets);
 	virtual void write_intel_software_raid_signature();
+	virtual void write_all_possible_promise_fasttrack_raid_signatures();
 	virtual bool image_contains_all_zeros();
 	virtual void TearDown();
 
@@ -97,24 +100,49 @@ void EraseFileSystemSignaturesTest::create_image_file(Byte_Value size)
 }
 
 
-void EraseFileSystemSignaturesTest::write_intel_software_raid_signature()
+void EraseFileSystemSignaturesTest::write_signatures(const char* signature, const std::vector<off_t>& sector_offsets)
 {
+	const off_t SectorSize = 512;
+
 	int fd = open(s_image_name, O_WRONLY|O_NONBLOCK);
 	ASSERT_GE(fd, 0) << "Failed to open image file '" << s_image_name << "'.  errno="
 	                 << errno << "," << strerror(errno);
-	const char* signature = "Intel Raid ISM Cfg Sig. ";
-	size_t len_signature = strlen(signature);
+	size_t signature_len = strlen(signature);
 
+	for (size_t i = 0; i < sector_offsets.size(); i++)
+	{
+		// Positive offsets are relative to the start of the file, negative
+		// offsets relative to the end of the file.
+		int whence = sector_offsets[i] >= 0 ? SEEK_SET : SEEK_END;
+		ASSERT_GE(lseek(fd, sector_offsets[i] * SectorSize, whence), 0)
+		        << "Failed to seek in image file '" << s_image_name << "'.  errno="
+		        << errno << "," << strerror(errno);
+		ASSERT_EQ(write(fd, signature, signature_len), (ssize_t)signature_len)
+		        << "Failed to write to image file '" << s_image_name << "'.  errno="
+		        << errno << "," << strerror(errno);
+	}
+	close(fd);
+}
+
+
+void EraseFileSystemSignaturesTest::write_intel_software_raid_signature()
+{
 	// Write Intel Software RAID signature at -2 sectors before the end.  Hard codes
 	// sector size to 512 bytes for a file.
 	// Reference:
 	//     .../util-linux/libblkid/src/superblocks/isw_raid.c:probe_iswraid().
-	ASSERT_GE(lseek(fd, 2 * -512, SEEK_END), 0) << "Failed to seek in image file '" << s_image_name
-	                                            << "'.  errno=" << errno << "," << strerror(errno);
-	ASSERT_EQ(write(fd, signature, len_signature), (ssize_t)len_signature)
-	        << "Failed to write to image file '" << s_image_name << "'.  errno="
-	        << errno << "," << strerror(errno);
-	close(fd);
+	std::vector<off_t> sector_offsets{-2};
+	write_signatures("Intel Raid ISM Cfg Sig. ", sector_offsets);
+}
+
+
+void EraseFileSystemSignaturesTest::write_all_possible_promise_fasttrack_raid_signatures()
+{
+	// Write all possible Promise FastTrack RAID signatures.
+	// Reference:
+	//     .../util-linux/libblkid/src/superblocks/promise_raid.c:probe_pdcraid().
+	std::vector<off_t> sector_offsets{-63, -255, -256, -16, -399, -591, -675, -735, -911, -974, -991, -951, -3087};
+	write_signatures("Promise Technology, Inc.", sector_offsets);
 }
 
 
@@ -189,6 +217,26 @@ TEST_F(EraseFileSystemSignaturesTest, IntelSoftwareRAIDUnaligned)
 {
 	create_image_file(16 * MEBIBYTE - 512);
 	write_intel_software_raid_signature();
+
+	EXPECT_TRUE(erase_filesystem_signatures(m_partition, m_operation_detail)) << m_operation_detail;
+	EXPECT_TRUE(image_contains_all_zeros());
+}
+
+
+TEST_F(EraseFileSystemSignaturesTest, PromiseFastTrackRAIDAligned)
+{
+	create_image_file(16 * MEBIBYTE);
+	write_all_possible_promise_fasttrack_raid_signatures();
+
+	EXPECT_TRUE(erase_filesystem_signatures(m_partition, m_operation_detail)) << m_operation_detail;
+	EXPECT_TRUE(image_contains_all_zeros());
+}
+
+
+TEST_F(EraseFileSystemSignaturesTest, PromiseFastTrackRAIDUnaligned)
+{
+	create_image_file(16 * MEBIBYTE - 512);
+	write_all_possible_promise_fasttrack_raid_signatures();
 
 	EXPECT_TRUE(erase_filesystem_signatures(m_partition, m_operation_detail)) << m_operation_detail;
 	EXPECT_TRUE(image_contains_all_zeros());
