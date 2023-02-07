@@ -1,6 +1,6 @@
 gparted_includedir = $(pkgincludedir)
 
-EXTRA_DIST = \
+noinst_HEADERS = \
 	BCache_Info.h			\
 	BlockSpecial.h			\
 	CopyBlocks.h			\
