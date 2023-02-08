@@ -58,7 +58,7 @@ static const char * gen_key( unsigned int i )
 static const char * gen_passwd( unsigned int i )
 {
 	static char buf[21];
-	snprintf( buf, sizeof( buf ), "password%03u                    ", i );
+	snprintf(buf, sizeof(buf), "password%03u         ", i%1000);
 	return buf;
 }
 
