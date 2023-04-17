@@ -2008,6 +2008,9 @@ void Win_GParted::activate_resize()
 		return;
 	}
 
+	Device display_device = devices[current_device].get_copy_without_partitions();
+	display_device.partitions = display_partitions;
+
 	PartitionVector * display_partitions_ptr = &display_partitions;
 	if ( selected_partition_ptr->type == TYPE_LOGICAL )
 	{
@@ -2057,7 +2060,7 @@ void Win_GParted::activate_resize()
 		working_ptn = selected_partition_ptr->clone();
 	}
 
-	Dialog_Partition_Resize_Move dialog(devices[current_device],
+	Dialog_Partition_Resize_Move dialog(display_device,
 	                                    fs_cap,
 	                                    fs_limits,
 	                                    *working_ptn,
