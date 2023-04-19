@@ -213,6 +213,7 @@ private:
 	                                            // in Win_GParted::display_partitions[] vector).
 	const Partition * copied_partition;         // NULL or copy of source partition object.
 	std::vector<Device> devices;
+	Device m_display_device;                    // Copy of devices[current_device] with copy of display_partitions.
 	std::vector<Operation *> operations;
 
 //gui stuff

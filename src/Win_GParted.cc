@@ -979,9 +979,12 @@ void Win_GParted::Refresh_Visual()
 	//                     devices.clear()
 	//                     etc.
 	//
-	// (2) Takes a copy of the partitions for the device currently being shown in the
-	//     GUI and visually applies pending operations.
+	// (2) Takes a copy of the device and partitions for the device currently being
+	//     shown in the GUI and visually applies pending operations.
 	//
+	//     Data owner: Device Win_GParted::m_display_device
+	//     Lifetime:   Valid until the next call to Refresh_Visual().
+	//     Function:   Refresh_Visual()
 	//     Data owner: PartitionVector Win_GParted::display_partitions
 	//     Lifetime:   Valid until the next call to Refresh_Visual().
 	//     Function:   Refresh_Visual()
@@ -1052,6 +1055,9 @@ void Win_GParted::Refresh_Visual()
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
 		if ( operations[ t ] ->device == devices[ current_device ] )
 			operations[t]->apply_to_visual( display_partitions );
+
+	m_display_device = devices[current_device].get_copy_without_partitions();
+	m_display_device.partitions = display_partitions;
 			
 	hbox_operations .load_operations( operations ) ;
 
@@ -2008,9 +2014,6 @@ void Win_GParted::activate_resize()
 		return;
 	}
 
-	Device display_device = devices[current_device].get_copy_without_partitions();
-	display_device.partitions = display_partitions;
-
 	PartitionVector * display_partitions_ptr = &display_partitions;
 	if ( selected_partition_ptr->type == TYPE_LOGICAL )
 	{
@@ -2060,7 +2063,7 @@ void Win_GParted::activate_resize()
 		working_ptn = selected_partition_ptr->clone();
 	}
 
-	Dialog_Partition_Resize_Move dialog(display_device,
+	Dialog_Partition_Resize_Move dialog(m_display_device,
 	                                    fs_cap,
 	                                    fs_limits,
 	                                    *working_ptn,
@@ -2253,7 +2256,7 @@ void Win_GParted::activate_paste()
 			part_temp->clear_mountpoints();
 			part_temp->name.clear();
 
-			Dialog_Partition_Copy dialog(devices[current_device],
+			Dialog_Partition_Copy dialog(m_display_device,
 			                             gparted_core.get_fs(copied_filesystem_ptn.fstype),
 			                             fs_limits,
 			                             *selected_partition_ptr,
@@ -2412,11 +2415,11 @@ void Win_GParted::activate_new()
 		// decide whether to allow the creation of the only extended partition
 		// type or not.
 		bool any_extended = ( find_extended_partition( display_partitions ) >= 0 );
-		Dialog_Partition_New dialog( devices[current_device],
-		                             *selected_partition_ptr,
-		                             any_extended,
-		                             new_count,
-		                             gparted_core.get_filesystems() );
+		Dialog_Partition_New dialog(m_display_device,
+		                            *selected_partition_ptr,
+		                            any_extended,
+		                            new_count,
+		                            gparted_core.get_filesystems());
 		dialog .set_transient_for( *this );
 		
 		if ( dialog .run() == Gtk::RESPONSE_OK )
