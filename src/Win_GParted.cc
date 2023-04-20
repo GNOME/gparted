@@ -985,9 +985,6 @@ void Win_GParted::Refresh_Visual()
 	//     Data owner: Device Win_GParted::m_display_device
 	//     Lifetime:   Valid until the next call to Refresh_Visual().
 	//     Function:   Refresh_Visual()
-	//     Data owner: PartitionVector Win_GParted::display_partitions
-	//     Lifetime:   Valid until the next call to Refresh_Visual().
-	//     Function:   Refresh_Visual()
 	//
 	// (3) Loads the disk graphic and partition list with partitions to be shown in
 	//     the GUI.  Both classes store pointers pointing back to each partition
@@ -1049,16 +1046,13 @@ void Win_GParted::Refresh_Visual()
 	//                 Specifically longer than the next call to Refresh_Visual().
 	//     Function:   Win_GParted::activate_copy()
 
-	display_partitions = devices[current_device].partitions;
 
 	//make all operations visible
-	for ( unsigned int t = 0 ; t < operations .size(); t++ )
-		if ( operations[ t ] ->device == devices[ current_device ] )
-			operations[t]->apply_to_visual( display_partitions );
+	m_display_device = devices[current_device];
+	for (unsigned int i = 0; i < operations.size(); i++)
+		if (operations[i]->device == m_display_device)
+			operations[i]->apply_to_visual(m_display_device.partitions);
 
-	m_display_device = devices[current_device].get_copy_without_partitions();
-	m_display_device.partitions = display_partitions;
-			
 	hbox_operations .load_operations( operations ) ;
 
 	//set new statusbartext
@@ -1080,42 +1074,42 @@ void Win_GParted::Refresh_Visual()
 	Sector largest_unalloc_size = -1 ;
 	Sector current_size ;
 
-	for ( unsigned int t = 0 ; t < display_partitions.size() ; t++ )
+	for (unsigned int i = 0; i < m_display_device.partitions.size(); i++)
 	{
-		if ( copied_partition != NULL && display_partitions[t].get_path() == copied_partition->get_path() )
+		if (copied_partition != NULL && m_display_device.partitions[i].get_path() == copied_partition->get_path())
 		{
 			delete copied_partition;
-			copied_partition = display_partitions[t].clone();
+			copied_partition = m_display_device.partitions[i].clone();
 		}
 
-		if (display_partitions[t].fstype == FS_UNALLOCATED)
+		if (m_display_device.partitions[i].fstype == FS_UNALLOCATED)
 		{
-			current_size = display_partitions[t].get_sector_length();
-			if ( current_size > largest_unalloc_size )
+			current_size = m_display_device.partitions[i].get_sector_length();
+			if (current_size > largest_unalloc_size)
 			{
 				largest_unalloc_size = current_size;
-				selected_partition_ptr = & display_partitions[t];
+				selected_partition_ptr = & m_display_device.partitions[i];
 			}
 		}
 
-		if ( display_partitions[t].type == TYPE_EXTENDED )
+		if (m_display_device.partitions[i].type == TYPE_EXTENDED)
 		{
-			for ( unsigned int u = 0 ; u < display_partitions[t].logicals.size() ; u ++ )
+			for (unsigned int j = 0; j < m_display_device.partitions[i].logicals.size(); j++)
 			{
-				if ( copied_partition != NULL &&
-				     display_partitions[t].logicals[u].get_path() == copied_partition->get_path() )
+				if (copied_partition != NULL &&
+				    m_display_device.partitions[i].logicals[j].get_path() == copied_partition->get_path())
 				{
 					delete copied_partition;
-					copied_partition = display_partitions[t].logicals[u].clone();
+					copied_partition = m_display_device.partitions[i].logicals[j].clone();
 				}
 
-				if (display_partitions[t].logicals[u].fstype == FS_UNALLOCATED)
+				if (m_display_device.partitions[i].logicals[j].fstype == FS_UNALLOCATED)
 				{
-					current_size = display_partitions[t].logicals[u].get_sector_length();
+					current_size = m_display_device.partitions[i].logicals[j].get_sector_length();
 					if ( current_size > largest_unalloc_size )
 					{
 						largest_unalloc_size = current_size;
-						selected_partition_ptr = & display_partitions[t].logicals[u];
+						selected_partition_ptr = & m_display_device.partitions[i].logicals[j];
 					}
 				}
 			}
@@ -1123,10 +1117,10 @@ void Win_GParted::Refresh_Visual()
 	}
 
 	// frame visualdisk
-	drawingarea_visualdisk.load_partitions( display_partitions, devices[current_device].length );
+	drawingarea_visualdisk.load_partitions(m_display_device.partitions, m_display_device.length);
 
 	// treeview details
-	treeview_detail.load_partitions( display_partitions );
+	treeview_detail.load_partitions(m_display_device.partitions);
 
 	set_valid_operations() ;
 
@@ -1145,25 +1139,26 @@ void Win_GParted::Refresh_Visual()
 
 
 // Confirms that the pointer points to one of the partition objects in the vector of
-// displayed partitions, Win_GParted::display_partitions[].
-// Usage: g_assert( valid_display_partition_ptr( my_partition_ptr ) );
+// displayed partitions, Win_GParted::m_display_device.partitions[].
+// Usage: g_assert(valid_display_partition_ptr(my_partition_ptr));
 bool Win_GParted::valid_display_partition_ptr( const Partition * partition_ptr )
 {
-	for ( unsigned int i = 0 ; i < display_partitions.size() ; i++ )
+	for (unsigned int i = 0; i < m_display_device.partitions.size();i++)
 	{
-		if ( & display_partitions[i] == partition_ptr )
+		if (& m_display_device.partitions[i] == partition_ptr)
 			return true;
-		else if ( display_partitions[i].type == TYPE_EXTENDED )
+		else if (m_display_device.partitions[i].type == TYPE_EXTENDED)
 		{
-			for ( unsigned int j = 0 ; j < display_partitions[i].logicals.size() ; j++ )
+			for (unsigned int j = 0; j < m_display_device.partitions[i].logicals.size(); j++)
 			{
-				if ( & display_partitions[i].logicals[j] == partition_ptr )
+				if (& m_display_device.partitions[i].logicals[j] == partition_ptr)
 					return true;
 			}
 		}
 	}
 	return false;
 }
+
 
 bool Win_GParted::Quit_Check_Operations()
 {
@@ -1967,28 +1962,29 @@ void Win_GParted::on_partition_popup_menu( unsigned int button, unsigned int tim
 bool Win_GParted::max_amount_prim_reached() 
 {
 	int primary_count = 0;
-	for ( unsigned int i = 0 ; i < display_partitions.size() ; i ++ )
+	for (unsigned int i = 0; i < m_display_device.partitions.size(); i++)
 	{
-		if ( display_partitions[i].type == TYPE_PRIMARY || display_partitions[i].type == TYPE_EXTENDED )
+		if (m_display_device.partitions[i].type == TYPE_PRIMARY  ||
+		    m_display_device.partitions[i].type == TYPE_EXTENDED   )
+		{
 			primary_count ++;
+		}
 	}
 
 	//Display error if user tries to create more primary partitions than the partition table can hold. 
-	if ( ! selected_partition_ptr->inside_extended && primary_count >= devices[current_device].max_prims )
+	if (! selected_partition_ptr->inside_extended && primary_count >= m_display_device.max_prims)
 	{
 		Gtk::MessageDialog dialog( 
 			*this,
-			Glib::ustring::compose( ngettext( "It is not possible to create more than %1 primary partition"
-			                          , "It is not possible to create more than %1 primary partitions"
-			                          , devices[ current_device ] .max_prims
-			                          )
-			                , devices[ current_device ] .max_prims
-			                ),
+			Glib::ustring::compose(ngettext("It is not possible to create more than %1 primary partition",
+			                                "It is not possible to create more than %1 primary partitions",
+			                                m_display_device.max_prims),
+			                       m_display_device.max_prims),
 			false,
 			Gtk::MESSAGE_ERROR,
 			Gtk::BUTTONS_OK,
-			true ) ;
-		
+			true);
+
 		dialog .set_secondary_text(
 			_( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions. Because an extended partition is also a primary partition it might be necessary to remove a primary partition first.") ) ;
 		
@@ -2014,12 +2010,12 @@ void Win_GParted::activate_resize()
 		return;
 	}
 
-	PartitionVector * display_partitions_ptr = &display_partitions;
+	PartitionVector* display_partitions_ptr = & m_display_device.partitions;
 	if ( selected_partition_ptr->type == TYPE_LOGICAL )
 	{
-		int index_extended = find_extended_partition( display_partitions );
+		int index_extended = find_extended_partition(m_display_device.partitions);
 		if ( index_extended >= 0 )
-			display_partitions_ptr = &display_partitions[index_extended].logicals;
+			display_partitions_ptr = & m_display_device.partitions[index_extended].logicals;
 	}
 
 	Partition * working_ptn;
@@ -2414,7 +2410,7 @@ void Win_GParted::activate_new()
 		// Check if an extended partition already exist; so that the dialog can
 		// decide whether to allow the creation of the only extended partition
 		// type or not.
-		bool any_extended = ( find_extended_partition( display_partitions ) >= 0 );
+		bool any_extended = find_extended_partition(m_display_device.partitions) >= 0;
 		Dialog_Partition_New dialog(m_display_device,
 		                            *selected_partition_ptr,
 		                            any_extended,
