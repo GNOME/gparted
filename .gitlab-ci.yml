@@ -80,6 +80,8 @@ stages:
     - export GTEST_FILTER=`tests/exclude_loopdev_tests.sh tests/test_SupportedFileSystems.cc`
     - echo $GTEST_FILTER
     - fgrep -v nodev /proc/filesystems | sort
+    - cat /proc/partitions
+    - ls -l /dev
     # Create needed /dev entries for unit tests in Docker images.
     - tests/makedev.sh
     - make check
