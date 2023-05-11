@@ -4,7 +4,7 @@ stages:
 
 .alpine_image_template: &alpine_image_definition
   # Use official Alpine image https://hub.docker.com/_/alpine/.
-  image: alpine:latest
+  image: alpine:3.17
   before_script:
     - cat /proc/version
     - cat /etc/os-release
