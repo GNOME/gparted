@@ -251,8 +251,8 @@ TEST( BlockSpecialTest, NamedBlockSpecialObjectBlockDeviceDuplicate )
 TEST( BlockSpecialTest, TwoNamedBlockSpecialObjectBlockDevices )
 {
 	std::string bname1 = get_block_name( 0 );
-	std::string bname2 = get_block_name( 1 );
 	SKIP_IF_BLOCK_DEVICE_DOESNT_EXIST(bname1);
+	std::string bname2 = get_block_name( 1 );
 	SKIP_IF_BLOCK_DEVICE_DOESNT_EXIST(bname2);
 
 	// Test that two different named block devices produce different
@@ -267,6 +267,7 @@ TEST( BlockSpecialTest, TwoNamedBlockSpecialObjectBlockDevices )
 TEST( BlockSpecialTest, NamedBlockSpecialObjectBySymlinkMatches )
 {
 	std::string lname = get_link_name();
+	SKIP_IF_BLOCK_DEVICE_DOESNT_EXIST(lname);
 	std::string bname = follow_link_name( lname );
 	SKIP_IF_BLOCK_DEVICE_DOESNT_EXIST(bname);
 
@@ -366,8 +367,8 @@ TEST( BlockSpecialTest, OperatorEqualsPlainFileAndBlockDevice )
 TEST( BlockSpecialTest, OperatorEqualsTwoDifferentBlockDevices )
 {
 	std::string bname1 = get_block_name( 0 );
-	std::string bname2 = get_block_name( 1 );
 	SKIP_IF_BLOCK_DEVICE_DOESNT_EXIST(bname1);
+	std::string bname2 = get_block_name( 1 );
 	SKIP_IF_BLOCK_DEVICE_DOESNT_EXIST(bname2);
 
 	// Test inequality of two different named block device BlockSpecial objects.
