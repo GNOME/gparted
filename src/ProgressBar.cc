@@ -68,7 +68,8 @@ double ProgressBar::get_fraction() const
 	return m_fraction;
 }
 
-Glib::ustring ProgressBar::get_text() const
+
+const Glib::ustring& ProgressBar::get_text() const
 {
 	return m_text;
 }

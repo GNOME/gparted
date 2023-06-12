@@ -41,7 +41,7 @@ public:
 	void stop();
 	bool running() const;
 	double get_fraction() const;
-	Glib::ustring get_text() const;
+	const Glib::ustring& get_text() const;
 
 private:
 	ProgressBar( const ProgressBar & src );              // Not implemented copy constructor
