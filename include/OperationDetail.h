@@ -70,7 +70,7 @@ public:
 	std::vector<OperationDetail*> & get_childs() ;
 	const std::vector<OperationDetail*> & get_childs() const ;
 	OperationDetail & get_last_child() ;
-	void run_progressbar( double progress, double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_NONE );
+	void run_progressbar(double progress, double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_TIME_REMAINING);
 	void stop_progressbar();
 
 	sigc::signal< void, const OperationDetail & > signal_update ;

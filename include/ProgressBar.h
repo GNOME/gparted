@@ -26,7 +26,7 @@ namespace GParted
 
 enum ProgressBar_Text
 {
-	PROGRESSBAR_TEXT_NONE,
+	PROGRESSBAR_TEXT_TIME_REMAINING,
 	PROGRESSBAR_TEXT_COPY_BYTES
 };
 
@@ -36,7 +36,7 @@ public:
 	ProgressBar();
 	~ProgressBar();
 
-	void start( double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_NONE );
+	void start(double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_TIME_REMAINING);
 	void update( double progress );
 	void stop();
 	bool running() const;
@@ -53,8 +53,8 @@ private:
 	double            m_target;     // Progress bar target should be > 0.0
 	double            m_progress;   // Should be 0.0 <= m_progress <= m_target
 	double            m_fraction;   // Always between 0.0 and 1.0 for passing to Gtk::ProgressBar.set_fraction()
-	ProgressBar_Text  m_text_mode;  // Whether to and style of text generation
-	Glib::ustring     m_text;       // Optional text for passing to Gtk::ProgressBar.set_text()
+	ProgressBar_Text  m_text_mode;  // Style of text generation
+	Glib::ustring     m_text;       // Text for passing to Gtk::ProgressBar.set_text()
 	Glib::Timer       m_timer;      // Measures elapsed time to the microsecond for accurate estimation
 };
 
