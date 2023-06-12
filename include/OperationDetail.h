@@ -82,7 +82,7 @@ private:
 	void add_child_implement( const OperationDetail & operationdetail );
 	void on_update( const OperationDetail & operationdetail ) ;
 	void cancel( bool force );
-	ProgressBar & get_progressbar() const;
+	const ProgressBar& get_progressbar() const;
 
 	Glib::ustring description ;
 	OperationDetailStatus status ; 

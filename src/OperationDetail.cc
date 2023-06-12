@@ -227,7 +227,7 @@ void OperationDetail::cancel( bool force )
 	signal_cancel.emit( force );
 }
 
-ProgressBar & OperationDetail::get_progressbar() const
+const ProgressBar& OperationDetail::get_progressbar() const
 {
 	return single_progressbar;
 }

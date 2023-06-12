@@ -165,7 +165,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 		if ( operationdetail .get_status() == STATUS_EXECUTE )
 			label_current_sub_text = operationdetail .get_description() ;
 
-		ProgressBar & progressbar_src = operationdetail.get_progressbar();
+		const ProgressBar& progressbar_src = operationdetail.get_progressbar();
 		if ( progressbar_src.running() )
 		{
 			if ( pulsetimer.connected() )
