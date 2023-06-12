@@ -37,6 +37,7 @@ void ProgressBar::start( double target, ProgressBar_Text text_mode )
 	m_target = target;
 	m_progress = 0.0;
 	m_text_mode = text_mode;
+	m_text.clear();
 	m_timer.start();
 	do_update();
 }
