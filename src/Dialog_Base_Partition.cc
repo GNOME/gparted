@@ -525,11 +525,12 @@ void Dialog_Base_Partition::on_signal_move( int x_start, int x_end )
 	}
 	else
 		spinbutton_after .set_value( TOTAL_MB - spinbutton_before .get_value() - spinbutton_size .get_value() ) ;
-	
-	Check_Change() ;
-	
+
+	update_button_resize_move_sensitivity();
+
 	GRIP = false ;
 }
+
 
 void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resizer_Base::ArrowType arrow )
 {  
@@ -552,10 +553,11 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 	else if ( arrow == Frame_Resizer_Base::ARROW_LEFT ) //don't touch freespace after, leave it as it is
 		spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() ) ;
 
-	Check_Change() ;
-	
+	update_button_resize_move_sensitivity();
+
 	GRIP = false ;
 }
+
 
 void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 {  
@@ -596,11 +598,12 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 
 		frame_resizer_base->redraw();
 
-		Check_Change() ;
+		update_button_resize_move_sensitivity();
 	}
 }
 
-void Dialog_Base_Partition::Check_Change()
+
+void Dialog_Base_Partition::update_button_resize_move_sensitivity()
 {
 	button_resize_move .set_sensitive(
 		ORIG_BEFORE != spinbutton_before .get_value_as_int()	||

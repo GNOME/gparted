@@ -105,14 +105,14 @@ private:
 	Dialog_Base_Partition( const Dialog_Base_Partition & src );              // Not implemented copy constructor
 	Dialog_Base_Partition & operator=( const Dialog_Base_Partition & rhs );  // Not implemented copy assignment operator
 
-	void Check_Change( ) ;
+	void update_button_resize_move_sensitivity();
 
 	Gtk::Box vbox_resize_move;
 	Gtk::Label label_minmax ;
 	Gtk::Grid grid_resize;
 	Gtk::Box hbox_grid;
 	Gtk::Box hbox_resizer;
-	Gtk::Button button_resize_move ;
+	Gtk::Button button_resize_move;  // Displayed only in the derived Resize/Move dialog
 };
 
 } //GParted
