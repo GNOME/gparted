@@ -206,15 +206,18 @@ bool exfat::check_repair(const Partition& partition, OperationDetail& operationd
 
 // Reformat exfat printed serial into the same format which blkid reports and GParted
 // displays to users.  Returns "" if source is not correctly formatted.
-// E.g. "0x772ffe5d" -> "772F-FE5D"
+// E.g. "0x772ffe5d" -> "772F-FE5D" or "0x0" -> "0000-0000"
 Glib::ustring exfat::serial_to_blkid_uuid(const Glib::ustring& serial)
 {
 	Glib::ustring verified_serial = Utils::regexp_label(serial, "^(0x[[:xdigit:]][[:xdigit:]]*)$");
 	if (verified_serial.empty())
 		return verified_serial;
 
-	Glib::ustring canonical_uuid = verified_serial.substr(2, 4).uppercase() + "-" +
-	                               verified_serial.substr(6, 4).uppercase();
+	// verified_serial is formatted with leading "0x" and 1 or more hex digits.
+	Glib::ustring temp = Glib::ustring(8, '0') + verified_serial.substr(2);
+	size_t len = temp.length();
+	Glib::ustring canonical_uuid = temp.substr(len - 8, 4).uppercase() + "-" +
+	                               temp.substr(len - 4, 4).uppercase();
 	return canonical_uuid;
 }
 
