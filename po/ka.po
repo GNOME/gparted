@@ -2,21 +2,22 @@
 # Copyright (C) 2022 gparted's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gparted package.
 # NorwayFun <temuri.doghonadze@gmail.com>, 2022.
+# Ekaterine Papava <papava.e@gtu.ge>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2022-11-20 14:03+0000\n"
-"PO-Revision-Date: 2022-11-20 18:55+0100\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"POT-Creation-Date: 2023-06-24 15:11+0000\n"
+"PO-Revision-Date: 2023-06-24 19:01+0200\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #: gparted.appdata.xml.in:7
 msgid "GParted Partition Editor"
@@ -45,14 +46,17 @@ msgid ""
 "ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, "
 "reiserfs, reiser4, udf, ufs, and xfs."
 msgstr ""
+"GParted მრავალ ფაილურ სისტემასთან მუშაობს. მათ შორის: btrfs, exfat, ext2, "
+"ext3, ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, "
+"ntfs, reiserfs, reiser4, udf, ufs, და xfs."
 
 #: gparted.appdata.xml.in:37
 msgid "The GParted Project"
 msgstr "პროექტი GParted"
 
 #. ==== GUI =========================
-#: gparted.desktop.in.in:3 src/Win_GParted.cc:90 src/Win_GParted.cc:1659
-#: src/Win_GParted.cc:1888
+#: gparted.desktop.in.in:3 src/Win_GParted.cc:90 src/Win_GParted.cc:1660
+#: src/Win_GParted.cc:1889
 msgid "GParted"
 msgstr "GParted"
 
@@ -71,6 +75,7 @@ msgstr "GParted-ი root-ით უნდა გაუშვათ"
 #: org.gnome.gparted.policy.in.in:12
 msgid "Authentication is required to run the GParted Partition Editor as root"
 msgstr ""
+"დანაყოფების რედაქტორ GParted-ის root-ით გასაშვებად ავთენტიკაცია გჭირდებათ"
 
 #: include/Utils.h:57
 msgid "(New UUID - will be randomly generated)"
@@ -82,7 +87,7 @@ msgstr "(ნახევარი ახალი UUID - ავტომატ�
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
-#: src/CopyBlocks.cc:72 src/CopyBlocks.cc:177 src/ProgressBar.cc:106
+#: src/CopyBlocks.cc:72 src/CopyBlocks.cc:177 src/ProgressBar.cc:108
 msgid "%1 of %2 copied"
 msgstr "%1 %2-დან კოპირებულია"
 
@@ -148,19 +153,19 @@ msgstr "მიბ"
 msgid "None"
 msgstr "არცერთი"
 
-#: src/Dialog_Base_Partition.cc:479
+#: src/Dialog_Base_Partition.cc:475
 msgid "Resize"
 msgstr "ზომის შეცვლა"
 
-#: src/Dialog_Base_Partition.cc:479 src/Win_GParted.cc:326
+#: src/Dialog_Base_Partition.cc:475 src/Win_GParted.cc:326
 msgid "Resize/Move"
 msgstr "ზომის შეცვლა/გადატანა"
 
-#: src/Dialog_Base_Partition.cc:497
+#: src/Dialog_Base_Partition.cc:493
 msgid "Minimum size: %1 MiB"
 msgstr "მინიმალური ზომა: %1 მიბ"
 
-#: src/Dialog_Base_Partition.cc:498
+#: src/Dialog_Base_Partition.cc:494
 msgid "Maximum size: %1 MiB"
 msgstr "მაქსიმალური ზომა: %1 მიბ"
 
@@ -320,12 +325,12 @@ msgstr "მიმაგრებული არაა"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: src/Dialog_Partition_Info.cc:430 src/Win_GParted.cc:3608
+#: src/Dialog_Partition_Info.cc:430 src/Win_GParted.cc:3609
 msgid "Volume Group:"
 msgstr "ტომების ჯგუფი:"
 
 #. Members
-#: src/Dialog_Partition_Info.cc:443 src/Win_GParted.cc:3609
+#: src/Dialog_Partition_Info.cc:443 src/Win_GParted.cc:3610
 msgid "Members:"
 msgstr "წევრები:"
 
@@ -509,7 +514,7 @@ msgstr "მნიშვნელოვანია"
 
 #: src/Dialog_Progress.cc:297
 msgid "If you want support, you need to provide the saved details!"
-msgstr ""
+msgstr "თუ მხარდაჭერა გჭირდებათ, შენახული დეტალები უნდა მოგვაწოდოთ!"
 
 #. TO TRANSLATORS: looks like
 #. * See https://gparted.org/save-details.htm for more information.
@@ -530,7 +535,7 @@ msgstr "ძალით გაუქმება"
 
 #: src/Dialog_Progress.cc:337
 msgid "Are you sure you want to cancel the current operation?"
-msgstr ""
+msgstr "დარწმუნებული ბრძნდებით, რომ გნებავთ, გააუქმოთ მიმდინარე ოპერაცია?"
 
 #: src/Dialog_Progress.cc:343
 msgid "Canceling an operation might cause SEVERE file system damage."
@@ -785,10 +790,11 @@ msgstr ""
 #: src/Dialog_Rescue_Data.cc:84
 msgid "The 'View' buttons create read-only views of each file system."
 msgstr ""
+"'გადახედვის' ღილაკი ყოველი ფაილური სისტემის მხოლოდ-კითხვად ხედის შეგიქმნით."
 
 #: src/Dialog_Rescue_Data.cc:86
 msgid "All mounted views will be unmounted when you close this dialog."
-msgstr ""
+msgstr "ამ ფანჯრის დახურვისას ყველა მიმაგრებული ხედი მოიხსნება."
 
 #: src/Dialog_Rescue_Data.cc:109
 msgid "File systems"
@@ -807,7 +813,7 @@ msgstr "ხედი"
 msgid ""
 "An error occurred while creating a temporary directory for use as a mount "
 "point."
-msgstr ""
+msgstr "შეცდომა მისამაგრებლად დროებითი საქაღალდის შექმნისას."
 
 #: src/Dialog_Rescue_Data.cc:171
 msgid "Error"
@@ -860,7 +866,7 @@ msgstr ""
 
 #: src/Dialog_Rescue_Data.cc:262
 msgid "Do you want to try to deactivate the following mount points?"
-msgstr ""
+msgstr "გნებავთ მოხსნათ შემდეგი მიმაგრების წერტილები?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
 #: src/DMRaid.cc:361
@@ -1158,6 +1164,8 @@ msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr ""
+"ახალ და ძველ ფაილურ სისტემას იგივე მდებარეობა გააჩნიათ.  ამიტომ ეს ოპერაცია "
+"გამოტოვებული იქნება"
 
 #: src/GParted_Core.cc:2373
 msgid "using libparted"
@@ -1181,7 +1189,7 @@ msgstr ""
 
 #: src/GParted_Core.cc:2475
 msgid "impossible to shrink a closed LUKS encryption volume"
-msgstr ""
+msgstr "დახურული LUKS დაშიფრული ტომის დაპატარავება შეუძლებელია"
 
 #: src/GParted_Core.cc:2534
 msgid ""
@@ -1231,6 +1239,8 @@ msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr ""
+"ახალ და ძველ დანაყოფებს იგივე ზომა გააჩნიათ.  ამიტომ ეს ოპერაცია "
+"გამოტოვებული იქნება"
 
 #: src/GParted_Core.cc:2653
 msgid "old start: %1"
@@ -1476,90 +1486,90 @@ msgstr ""
 msgid "clear old file system signatures in %1"
 msgstr "%1-ში ძველი ფაილური სისტემების ხელწერის წაშლა"
 
-#: src/GParted_Core.cc:3943
+#: src/GParted_Core.cc:3927
 msgid "flush operating system cache of %1"
 msgstr "%1-ის ოპერაციული სისტემის ქეშის დისკზე ჩაწერა"
 
 #. TO TRANSLATORS: looks like   update boot sector of ntfs file system on /dev/sdd1
-#: src/GParted_Core.cc:3984
+#: src/GParted_Core.cc:3968
 msgid "update boot sector of %1 file system on %2"
 msgstr "%2-ზე მდებარე ფაილური სისტემის (%1) ჩამტვირთავი სექტორის განახლება"
 
-#: src/GParted_Core.cc:3997
+#: src/GParted_Core.cc:3981
 msgid ""
 "Partition start (%1) is beyond sector 4294967295 (2^32-1).\n"
 "Windows will not be able to boot from this file system."
 msgstr ""
 
-#: src/GParted_Core.cc:4010
+#: src/GParted_Core.cc:3994
 msgid "Error trying to open %1"
 msgstr "შეცდომა %1-ის გახსნისას"
 
-#: src/GParted_Core.cc:4021
+#: src/GParted_Core.cc:4005
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "%1-ში 0x1c პოზიციაზე გადასვლის შეცდომა"
 
-#: src/GParted_Core.cc:4036
+#: src/GParted_Core.cc:4020
 msgid "Error trying to write to boot sector in %1"
 msgstr "%1-ში ჩამტვირთავი სექტორის ჩაწერის შეცდომა"
 
-#: src/GParted_Core.cc:4054
+#: src/GParted_Core.cc:4038
 msgid "libparted messages"
 msgstr "libparted-ის შეტყობინებები"
 
-#: src/GParted_Core.cc:4247
+#: src/GParted_Core.cc:4231
 msgid "Libparted Information"
 msgstr "Libparted-ის ინფორმაცია"
 
-#: src/GParted_Core.cc:4251
+#: src/GParted_Core.cc:4235
 msgid "Libparted Warning"
 msgstr "Libparted-ის გაფრთხილება"
 
-#: src/GParted_Core.cc:4255
+#: src/GParted_Core.cc:4239
 msgid "Libparted Error"
 msgstr "Libparted-ის შეცდომა"
 
-#: src/GParted_Core.cc:4258
+#: src/GParted_Core.cc:4242
 msgid "Libparted Fatal"
 msgstr "Libparted-ის ფატალური შეცდომა"
 
-#: src/GParted_Core.cc:4261
+#: src/GParted_Core.cc:4245
 msgid "Libparted Bug"
 msgstr "Libparted-ის კოდის შეცდომა"
 
-#: src/GParted_Core.cc:4264
+#: src/GParted_Core.cc:4248
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted-ის მხარდაუჭერელი თვისება"
 
-#: src/GParted_Core.cc:4267
+#: src/GParted_Core.cc:4251
 msgid "Libparted unknown exception"
 msgstr "უცნობი შეცდომა"
 
-#: src/GParted_Core.cc:4271
+#: src/GParted_Core.cc:4255
 msgid "Fix"
 msgstr "გასწორება"
 
-#: src/GParted_Core.cc:4273
+#: src/GParted_Core.cc:4257
 msgid "Yes"
 msgstr "დიახ"
 
-#: src/GParted_Core.cc:4275
+#: src/GParted_Core.cc:4259
 msgid "Ok"
 msgstr "დიახ"
 
-#: src/GParted_Core.cc:4277
+#: src/GParted_Core.cc:4261
 msgid "Retry"
 msgstr "თავიდან ცდა"
 
-#: src/GParted_Core.cc:4279
+#: src/GParted_Core.cc:4263
 msgid "No"
 msgstr "არა"
 
-#: src/GParted_Core.cc:4281
+#: src/GParted_Core.cc:4265
 msgid "Cancel"
 msgstr "გაუქმება"
 
-#: src/GParted_Core.cc:4283
+#: src/GParted_Core.cc:4267
 msgid "Ignore"
 msgstr "უგულებელყოფა"
 
@@ -1577,19 +1587,19 @@ msgstr "ყველა ოპერაციის _გადატარებ
 
 #: src/LVM2_PV_Info.cc:197
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
-msgstr ""
+msgstr "ტომების ჯგუფის წევრი ერთი ან მეტი ფიზიკური ტომი აღმოჩენილი არაა."
 
 #: src/LVM2_PV_Info.cc:325
 msgid "An error occurred reading LVM2 configuration!"
-msgstr ""
+msgstr "შეცდომა LVM2-ის კონფიგურაციის წაკითხვისას!"
 
 #: src/LVM2_PV_Info.cc:327
 msgid "Some or all of the details might be missing or incorrect."
-msgstr ""
+msgstr "ზოგიერთი ან არც ერთი დეტალი მითითებული არაა."
 
 #: src/LVM2_PV_Info.cc:329
 msgid "You should NOT modify any LVM2 PV partitions."
-msgstr ""
+msgstr "LVM2 PV დანაყოფები სჯობს არ შეცვალოთ."
 
 #. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
 #: src/OperationChangeUUID.cc:56
@@ -1666,6 +1676,8 @@ msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
 msgstr ""
+"ახალ და ძველ დანაყოფებს იგივე ზომა და მდებარეობა გააჩნიათ.  ამიტომ ეს "
+"ოპერაცია გამოტოვებული იქნება"
 
 #: src/OperationResizeMove.cc:110
 msgid "Move %1 to the right"
@@ -1735,9 +1747,14 @@ msgid "Unpartitioned"
 msgstr "დაუყოფელი"
 
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: src/ProgressBar.cc:98
+#: src/ProgressBar.cc:100
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 %2-დან კოპირებულია (დარჩენილია %30"
+
+#. TO TRANSLATORS: looks like   (00:01:59 remaining)
+#: src/ProgressBar.cc:124
+msgid "(%1 remaining)"
+msgstr "(დარჩენილია %1)"
 
 #: src/TreeView_Detail.cc:46
 msgid "Name"
@@ -1973,107 +1990,108 @@ msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 დარჩენილი ოპერაცია"
 
-#: src/Win_GParted.cc:1167
+#: src/Win_GParted.cc:1168
 msgid "Quit GParted?"
 msgstr "გნებავთ GParted-დან გასვლა?"
 
-#: src/Win_GParted.cc:1173
+#: src/Win_GParted.cc:1174
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 დარჩენილი ოპერაცია."
 
-#: src/Win_GParted.cc:1584
+#: src/Win_GParted.cc:1585
 msgid "%1 - GParted"
 msgstr "%1 GParted"
 
-#: src/Win_GParted.cc:1635
+#: src/Win_GParted.cc:1636
 msgid "Scanning all devices..."
 msgstr "მოწყობილობების ძებნა..."
 
-#: src/Win_GParted.cc:1682
+#: src/Win_GParted.cc:1683
 msgid "No devices detected"
 msgstr "მოწყობილობები ნაპოვნი არაა"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: src/Win_GParted.cc:1771
+#: src/Win_GParted.cc:1772
 msgid "No partition table found on device %1"
 msgstr "%1-ზე დანაყოფების ცხრილი არ არსებობს"
 
-#: src/Win_GParted.cc:1776
+#: src/Win_GParted.cc:1777
 msgid "A partition table is required before partitions can be added."
 msgstr "დანაყოფების დამატებამდე საჭიროა მათი ცხრილის შექმნა."
 
-#: src/Win_GParted.cc:1778
+#: src/Win_GParted.cc:1779
 msgid "To create a new partition table choose the menu item:"
 msgstr "დანაყოფების ახალი ცხრილის შესაქმნელად აირჩიეთ მენიუს პუნქტი:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: src/Win_GParted.cc:1781
+#: src/Win_GParted.cc:1782
 msgid "Device --> Create Partition Table."
 msgstr "მოწყობილობა --> დანაყოფების ცხრილის შექმნა."
 
 #. TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1
-#: src/Win_GParted.cc:1790
+#: src/Win_GParted.cc:1791
 msgid "Unable to resize read-only file system %1"
 msgstr "მხოლოდ-წაკითხვადი ფაილური სისტემის (%1) ზომის შეცვლა შეუძლებელია"
 
-#: src/Win_GParted.cc:1795
+#: src/Win_GParted.cc:1796
 msgid "The file system can not be resized while it is mounted read-only."
 msgstr ""
 "მხოლოდ-წაკითხვადი მიმაგრებული ფაილური სისტემის ზომის შეცვლა შეუძლებელია."
 
-#: src/Win_GParted.cc:1797
+#: src/Win_GParted.cc:1798
 msgid "Either unmount the file system or remount it read-write."
 msgstr ""
+"მოხსენით ფაილური სისტემა ან თავიდან მიამაგრეთ, მხოლოდ-წაკითხვის რეჟიმში."
 
-#: src/Win_GParted.cc:1819
+#: src/Win_GParted.cc:1820
 msgid "Unable to open GParted Manual help file"
 msgstr "GParted-ის სახელმძღვანელოს ფაილის გახსნა შეუძლებელია"
 
-#: src/Win_GParted.cc:1821
+#: src/Win_GParted.cc:1822
 msgid "Command yelp not found."
 msgstr "ბრძანება yep ვერ ვიპოვე."
 
-#: src/Win_GParted.cc:1824
+#: src/Win_GParted.cc:1825
 msgid "Install yelp and try again."
 msgstr "დააყენეთ yelp და თავიდან სცადეთ."
 
-#: src/Win_GParted.cc:1845
+#: src/Win_GParted.cc:1846
 msgid "Failed to open GParted Manual help file"
 msgstr "GParted-ის სახელმძღვანელოს ფაილის გახსნა შეუძლებელია"
 
-#: src/Win_GParted.cc:1865
+#: src/Win_GParted.cc:1866
 msgid "Documentation is not available"
 msgstr "დოკუმენტაცია ხელმიუწვდომელია"
 
-#: src/Win_GParted.cc:1870
+#: src/Win_GParted.cc:1871
 msgid "This build of gparted is configured without documentation."
-msgstr ""
+msgstr "GParted-ის ეს ვერსია დოკუმენტაციის გარეშეა აგებული."
 
-#: src/Win_GParted.cc:1872
+#: src/Win_GParted.cc:1873
 msgid "Documentation is available at the project web site."
 msgstr "დოკუმენტაცია ხელმისაწვდომია პროექტის ვებგვერდზე."
 
-#: src/Win_GParted.cc:1876
+#: src/Win_GParted.cc:1877
 msgid "GParted Manual"
 msgstr "GParted-ის სახელმძღვანელო"
 
-#: src/Win_GParted.cc:1891
+#: src/Win_GParted.cc:1892
 msgid "GNOME Partition Editor"
 msgstr "GNOME-ის დანაყოფების რედაქტორი"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: src/Win_GParted.cc:1928
+#: src/Win_GParted.cc:1929
 msgid "translator-credits"
 msgstr "თემური დოღონაძე"
 
-#: src/Win_GParted.cc:1975
+#: src/Win_GParted.cc:1979
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "%1-ზე მეტი ძირითადი დანაყოფის ქონა შეუძლებელია"
 
-#: src/Win_GParted.cc:1987
+#: src/Win_GParted.cc:1989
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -2081,102 +2099,102 @@ msgid ""
 "partition first."
 msgstr ""
 
-#: src/Win_GParted.cc:2113
+#: src/Win_GParted.cc:2115
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: src/Win_GParted.cc:2120
+#: src/Win_GParted.cc:2122
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "ოპერაცია საწყისი სექტორის გადატანა დანაყოფისთვის %1 რიგში ჩაემატა."
 
-#: src/Win_GParted.cc:2122
+#: src/Win_GParted.cc:2124
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
 msgstr ""
 
-#: src/Win_GParted.cc:2124
+#: src/Win_GParted.cc:2126
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 
-#: src/Win_GParted.cc:2128
+#: src/Win_GParted.cc:2130
 msgid "Moving a partition might take a very long time to apply."
 msgstr "დანაყოფის გაწევას ძალიან დიდი დრო შეიძლება დასჭირდეს."
 
 #. TO TRANSLATORS: looks like   Enter LUKS passphrase to resize /dev/sda1
-#: src/Win_GParted.cc:2170
+#: src/Win_GParted.cc:2172
 msgid "Enter LUKS passphrase to resize %1"
 msgstr "%1-ის ზომის შესაცვლელად შეიყვანეთ LUKS-ის კოდური ფრაზა"
 
-#: src/Win_GParted.cc:2199
+#: src/Win_GParted.cc:2201
 msgid "LUKS encryption passphrase check failed"
 msgstr "LUKS შიფრაციის კოდური ფრაზის შემოწმების შეცდომა"
 
-#: src/Win_GParted.cc:2277
+#: src/Win_GParted.cc:2279
 msgid "Copy of %1"
 msgstr "%1-ის კოპირება"
 
-#: src/Win_GParted.cc:2378
+#: src/Win_GParted.cc:2380
 msgid "You have pasted into an existing partition"
 msgstr "ჩასვით უკვე არსებულ დანაყოფში"
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: src/Win_GParted.cc:2386
+#: src/Win_GParted.cc:2388
 msgid "The data in %1 will be lost if you apply this operation."
-msgstr ""
+msgstr "ოპერაციის გაშვების შემთხვევაში %1-ში არსებული მონაცემები დაიკარგება."
 
-#: src/Win_GParted.cc:2460
+#: src/Win_GParted.cc:2462
 msgid "Unable to delete %1!"
 msgstr "%1-ის წაშლა შეუძლებელია!"
 
-#: src/Win_GParted.cc:2467
+#: src/Win_GParted.cc:2469
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 
-#: src/Win_GParted.cc:2478
+#: src/Win_GParted.cc:2480
 msgid "Are you sure you want to delete %1?"
 msgstr "დარწმუნებული ბრძანდებით, რომ გნებავთ წაშალოთ '%1'?"
 
-#: src/Win_GParted.cc:2485
+#: src/Win_GParted.cc:2487
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: src/Win_GParted.cc:2488
+#: src/Win_GParted.cc:2490
 msgid "Delete %1 (%2, %3)"
 msgstr "%1-ის წაშლა (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: src/Win_GParted.cc:2644
+#: src/Win_GParted.cc:2645
 msgid "Cannot format this file system to %1"
 msgstr "ამ ფაილური სისტემის %1-ზე გადაფორმატება შეუძლებელია"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: src/Win_GParted.cc:2656
+#: src/Win_GParted.cc:2657
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "ფაილური სისტემის (%1) მინიმალური ზომაა %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: src/Win_GParted.cc:2664
+#: src/Win_GParted.cc:2665
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "დანაყოფის ფაილურ სისტემით %1 მაქსიმალური ზომაა %2."
 
-#: src/Win_GParted.cc:2736
+#: src/Win_GParted.cc:2737
 msgid "Opening encryption on %1"
 msgstr "%1-ზე შიფრაციის გახსნა"
 
-#: src/Win_GParted.cc:2750
+#: src/Win_GParted.cc:2751
 msgid "Failed to open LUKS encryption"
 msgstr "LUKS შიფრაციის გახსნის შეცდომა"
 
-#: src/Win_GParted.cc:2772
+#: src/Win_GParted.cc:2773
 msgid ""
 "The close encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2184,15 +2202,15 @@ msgstr ""
 "შიფრაციის დახურვა მაშინ, როცა ამ დანაყოფისთვის დარჩენილია გადასატარებელი "
 "ოპერაციები, შეუძლებელია."
 
-#: src/Win_GParted.cc:2773
+#: src/Win_GParted.cc:2774
 msgid "Closing encryption on %1"
 msgstr "%1-ზე შიფრაციის დახურვა"
 
-#: src/Win_GParted.cc:2774
+#: src/Win_GParted.cc:2775
 msgid "Could not close encryption"
 msgstr "შიფრაციის დახურვის შეცდომა"
 
-#: src/Win_GParted.cc:2779
+#: src/Win_GParted.cc:2780
 msgid ""
 "The open encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2203,31 +2221,31 @@ msgstr ""
 #. TO TRANSLATORS: looks like
 #. * Enter LUKS passphrase to open /dev/sda1
 #.
-#: src/Win_GParted.cc:2819
+#: src/Win_GParted.cc:2820
 msgid "Enter LUKS passphrase to open %1"
 msgstr "LUKS-ის კოდური ფრაზა %1-ის გასახსნელად"
 
-#: src/Win_GParted.cc:2890
+#: src/Win_GParted.cc:2891
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr ""
 
-#: src/Win_GParted.cc:2892
+#: src/Win_GParted.cc:2893
 msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
 msgstr ""
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: src/Win_GParted.cc:2905
+#: src/Win_GParted.cc:2906
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "დანაყოფისთვის (%2) დარჩენილი ოპერაციები: %1"
 
-#: src/Win_GParted.cc:2920
+#: src/Win_GParted.cc:2921
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
 
-#: src/Win_GParted.cc:2963
+#: src/Win_GParted.cc:2964
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
@@ -2235,15 +2253,15 @@ msgstr ""
 "ქმედება \"swapoff\" მაშინ, როცა ამ დანაყოფისთვის დარჩენილია გადასატარებელი "
 "ოპერაციები, შეუძლებელია."
 
-#: src/Win_GParted.cc:2964
+#: src/Win_GParted.cc:2965
 msgid "Deactivating swap on %1"
 msgstr "%1-ზე სვაპის დეაქტივაცია"
 
-#: src/Win_GParted.cc:2965
+#: src/Win_GParted.cc:2966
 msgid "Could not deactivate swap"
 msgstr "სვაპის დეაქტივაციის შეცდომა"
 
-#: src/Win_GParted.cc:2970
+#: src/Win_GParted.cc:2971
 msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
@@ -2251,137 +2269,141 @@ msgstr ""
 "ქმედება \"swapon\" მაშინ, როცა ამ დანაყოფისთვის დარჩენილია გადასატარებელი "
 "ოპერაციები, შეუძლებელია."
 
-#: src/Win_GParted.cc:2971
+#: src/Win_GParted.cc:2972
 msgid "Activating swap on %1"
 msgstr "%1-ზე სვაპის აქტივაცია"
 
-#: src/Win_GParted.cc:2972
+#: src/Win_GParted.cc:2973
 msgid "Could not activate swap"
 msgstr "სვაპის აქტივაციის შეცდომა"
 
-#: src/Win_GParted.cc:2977
+#: src/Win_GParted.cc:2978
 msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
 msgstr ""
 
-#: src/Win_GParted.cc:2978
+#: src/Win_GParted.cc:2979
 msgid "Deactivating Volume Group %1"
 msgstr "%1-ზე ტომების ჯგუფის დეაქტივაცია"
 
 #. VGNAME from point point
-#: src/Win_GParted.cc:2980
+#: src/Win_GParted.cc:2981
 msgid "Could not deactivate Volume Group"
 msgstr "ტომების ჯგუფის დეაქტივაციის შეცდომა"
 
-#: src/Win_GParted.cc:2985
+#: src/Win_GParted.cc:2986
 msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
 msgstr ""
 
-#: src/Win_GParted.cc:2986
+#: src/Win_GParted.cc:2987
 msgid "Activating Volume Group %1"
 msgstr "%1-ზე ტომების ჯგუფის აქტივაცია"
 
 #. VGNAME from point point
-#: src/Win_GParted.cc:2988
+#: src/Win_GParted.cc:2989
 msgid "Could not activate Volume Group"
 msgstr "ტომების ჯგუფის აქტივაციის  შეცდომა"
 
-#: src/Win_GParted.cc:2993
+#: src/Win_GParted.cc:2994
 msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
 
-#: src/Win_GParted.cc:2994
+#: src/Win_GParted.cc:2995
 msgid "Unmounting %1"
 msgstr "%1-ის მოხსნა"
 
-#: src/Win_GParted.cc:2995
+#: src/Win_GParted.cc:2996
 msgid "Could not unmount %1"
 msgstr "%1-ის მოხსნის შეცდომა"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: src/Win_GParted.cc:3059
+#: src/Win_GParted.cc:3060
 msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
+"მიმაგრების ქმედების შესრულება მაშინ, როცა ამ დანაყოფისთვის ოპერაციებია "
+"დარჩენილი, შეუძლებელია."
 
-#: src/Win_GParted.cc:3072
+#: src/Win_GParted.cc:3073
 msgid "mounting %1 on %2"
 msgstr "%1-ის %2-ზე მიმაგრება"
 
-#: src/Win_GParted.cc:3100
+#: src/Win_GParted.cc:3101
 msgid "Could not mount %1 on %2"
 msgstr "%1-ის %2-ზე მიმაგრების შეცდომა"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: src/Win_GParted.cc:3119
+#: src/Win_GParted.cc:3120
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "მოწყობილობაზე (%2) დანაყოფი (%1) აქტიური არაა"
 
-#: src/Win_GParted.cc:3134
+#: src/Win_GParted.cc:3135
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "დანაყოფების ახალი ცხრილის შექმნა მაშინ, როცა არსებობს აქტიური დანაყოფები, "
 "შეუძლებელია."
 
-#: src/Win_GParted.cc:3136
+#: src/Win_GParted.cc:3137
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
 msgstr ""
 
-#: src/Win_GParted.cc:3138
+#: src/Win_GParted.cc:3139
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
 msgstr ""
 
-#: src/Win_GParted.cc:3150
+#: src/Win_GParted.cc:3151
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 დარჩენილი ოპერაცია"
 
-#: src/Win_GParted.cc:3163
+#: src/Win_GParted.cc:3164
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
+"დანაყოფების ახალი ცხრილის შექმნა მაშინ, როცა არსებობს დარჩენილი ოპერაციები, "
+"შეუძლებელია."
 
-#: src/Win_GParted.cc:3165
+#: src/Win_GParted.cc:3166
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr ""
 
-#: src/Win_GParted.cc:3180
+#: src/Win_GParted.cc:3181
 msgid "Error while creating partition table"
 msgstr "დანაყოფების ცხრილის შექმნის შეცდომა"
 
-#: src/Win_GParted.cc:3200
+#: src/Win_GParted.cc:3201
 msgid "Command gpart was not found"
 msgstr "ბრძანება gpart ვერ ვიპოვე"
 
-#: src/Win_GParted.cc:3201
+#: src/Win_GParted.cc:3202
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "ეს თვისება gpart-ს იყენებს. დააყენეთ gpart და თავიდან სცადეთ."
 
 #. Dialog information
-#: src/Win_GParted.cc:3209
+#: src/Win_GParted.cc:3210
 msgid "A full disk scan is needed to find file systems."
 msgstr "ფაილური სისტემების საპოვნად დისკის საჭიროა დისკის სრული სკანირება."
 
-#: src/Win_GParted.cc:3211
+#: src/Win_GParted.cc:3212
 msgid "The scan might take a very long time."
 msgstr "სკანირებას დიდი დრო შეიძლება დასჭირდეს."
 
-#: src/Win_GParted.cc:3213
+#: src/Win_GParted.cc:3214
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2389,75 +2411,77 @@ msgstr ""
 "სკანირების შემდეგ შეგიძლიათ ნებისმიერი აღმოჩენილი ფაილური სისტემის მიმაგრება "
 "და მონაცემების სხვაგან გადაწერა."
 
-#: src/Win_GParted.cc:3215
+#: src/Win_GParted.cc:3216
 msgid "Do you want to continue?"
 msgstr "გნებავთ, გააგრძელოთ?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: src/Win_GParted.cc:3219
+#: src/Win_GParted.cc:3220
 msgid "Search for file systems on %1"
 msgstr "%1-ზე ფაილური სისტემების ძებნა"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: src/Win_GParted.cc:3230
+#: src/Win_GParted.cc:3231
 msgid "Searching for file systems on %1"
 msgstr "%1-ზე ფაილური სისტემების ძებნა"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: src/Win_GParted.cc:3246
+#: src/Win_GParted.cc:3247
 msgid "No file systems found on %1"
 msgstr "%1-ზე ფაილური სისტემები ნაპოვნი არაა"
 
-#: src/Win_GParted.cc:3247
+#: src/Win_GParted.cc:3248
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
 msgstr ""
+"GParted-ის მიერ დისკის სკანირებამ ამ დისკზე ნაცნობი ფაილური სისტემები ვერ "
+"აღმოაჩინა."
 
-#: src/Win_GParted.cc:3524
+#: src/Win_GParted.cc:3525
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "დარწმუნებული ხართ, რომ გსურთ გადაატაროთ დარჩენილი ოპერაციები?"
 
-#: src/Win_GParted.cc:3530
+#: src/Win_GParted.cc:3531
 msgid "Editing partitions has the potential to cause LOSS of DATA."
-msgstr ""
+msgstr "დანაყოფების ჩასწორებას დიდი ალბათობით მონაცემების კარგვა მოყვება."
 
-#: src/Win_GParted.cc:3532
+#: src/Win_GParted.cc:3533
 msgid "You are advised to backup your data before proceeding."
-msgstr ""
+msgstr "გირჩევთ, გაგრძელებამდე მონაცემების მარქაფი გააკეთოტ."
 
-#: src/Win_GParted.cc:3534
+#: src/Win_GParted.cc:3535
 msgid "Apply operations to device"
 msgstr "ოპერაციების მოწყობილობაზე გადატარება"
 
-#: src/Win_GParted.cc:3577
+#: src/Win_GParted.cc:3578
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
-msgstr ""
+msgstr "შლით არა-ცარიელ LVM2-ის ფიზიკურ ტომს %1"
 
-#: src/Win_GParted.cc:3581
+#: src/Win_GParted.cc:3582
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
-msgstr ""
+msgstr "აპირებთ, დააფორმატოთ არა-ცარიელი LVM2-ის ფიზიკურ ტომი %1"
 
-#: src/Win_GParted.cc:3585
+#: src/Win_GParted.cc:3586
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
-msgstr ""
+msgstr "აპირებთ ჩასვათ არა-ცარიელი LVM2 ფიზიკური ტომი %1"
 
-#: src/Win_GParted.cc:3594
+#: src/Win_GParted.cc:3595
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
 msgstr ""
 
-#: src/Win_GParted.cc:3597
+#: src/Win_GParted.cc:3598
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
 "this operation."
 msgstr ""
 
-#: src/Win_GParted.cc:3600
+#: src/Win_GParted.cc:3601
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
-msgstr ""
+msgstr "გნებავთ ფიზიკური ტომის ძალით წაშლის გაგრძელება?"
 
 #: src/btrfs.cc:267
 msgid "Failed to find devid for path %1"
@@ -2576,3 +2600,5 @@ msgid ""
 "mkudffs prior to version 1.1 does not support non-ASCII characters in the "
 "label."
 msgstr ""
+"1.1 ვერსიამდე mkudffs-ს ჭდისთვის არა-ASCII სიმბოლოების გამოყენების "
+"მხარდაჭერა არ გააჩნია."
