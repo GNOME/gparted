@@ -231,10 +231,15 @@ for rule in $UDEV_TEMP_RULES; do
 done
 
 #
-#  Use systemctl to restore that status of any mount points changed above
+#  Use systemctl to unmask those mount points masked above
 #
 if test "x$HAVE_SYSTEMCTL" = "xyes"; then
-	systemctl --runtime unmask --quiet -- $MOUNTLIST
+	systemctl --runtime unmask --quiet -- $MOUNTLIST 2> /dev/null || \
+	{
+		cd /run/systemd/system  &&
+		rm -f -- $MOUNTLIST     &&
+		systemctl daemon-reload
+	}
 fi
 
 exit $status
