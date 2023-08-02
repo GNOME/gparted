@@ -148,6 +148,7 @@ done
 #
 #  Use systemctl to prevent automount by masking currently unmasked mount points
 #
+MOUNTLIST=''
 if test "x$HAVE_SYSTEMCTL" = "xyes"; then
 	MOUNTLIST=`systemctl show --all --property=Where,What,Id,LoadState '*.mount' | \
 	awk '
@@ -172,7 +173,9 @@ if test "x$HAVE_SYSTEMCTL" = "xyes"; then
 	/^$/          { process_unit() }
 	END           { process_unit() }
 	'`
-	systemctl --runtime mask --quiet -- $MOUNTLIST
+	if test "x$MOUNTLIST" != "x"; then
+		systemctl --runtime mask --quiet -- $MOUNTLIST
+	fi
 fi
 
 #
@@ -234,7 +237,7 @@ done
 #
 #  Use systemctl to unmask those mount points masked above
 #
-if test "x$HAVE_SYSTEMCTL" = "xyes"; then
+if test "x$HAVE_SYSTEMCTL" = "xyes" && test "x$MOUNTLIST" != "x"; then
 	systemctl --runtime unmask --quiet -- $MOUNTLIST 2> /dev/null || \
 	{
 		cd /run/systemd/system  &&
