@@ -158,6 +158,7 @@ if test "x$HAVE_SYSTEMCTL" = "xyes"; then
 		if (substr(what,1,5) == "/dev/"     &&
 		    loadstate        != "masked"    &&
 		    what             != "/dev/fuse" &&
+		    where            != "/"         &&
 		    ! (substr(what,1,9) == "/dev/loop" && substr(where,1,6) == "/snap/"))
 		{
 			print id
