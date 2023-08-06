@@ -183,8 +183,9 @@ fi
 # start Linux Software RAID array members and Bcache devices.
 #
 # Udev stores volatile / temporary runtime rules in directory /run/udev/rules.d.
-# Volatile / temporary rules are used to override default rules from
-# /lib/udev/rules.d.  (Permanent local administrative rules in directory
+# Volatile / temporary rules are used to override system default rules from
+# /lib/udev/rules.d and/or /usr/lib/udev/rules.d (depending on udev
+# configuration).  (Permanent local administrative rules in directory
 # /etc/udev/rules.d override all others).  See udev(7) manual page for details.
 #
 # Default udev rules containing mdadm to incrementally start array members are
@@ -194,9 +195,12 @@ fi
 UDEV_TEMP_RULES=''  # List of temporary override rules files.
 if test -d /run/udev; then
 	test ! -d /run/udev/rules.d && mkdir /run/udev/rules.d
-	udev_mdadm_rules=`egrep -l '^[^#].*mdadm (-I|--incremental)' /lib/udev/rules.d/*.rules 2> /dev/null`
-	udev_bcache_rules=`ls /lib/udev/rules.d/*bcache*.rules 2> /dev/null`
-	UDEV_TEMP_RULES=`echo $udev_mdadm_rules $udev_bcache_rules | sed 's,/lib/udev,/run/udev,g'`
+	UDEV_TEMP_RULES=`for udev_default_rules_dir in /lib/udev/rules.d /usr/lib/udev/rules.d
+	do
+		test -d $udev_default_rules_dir || continue
+		egrep -l '^[^#].*mdadm (-I|--incremental)' $udev_default_rules_dir/*.rules 2> /dev/null
+		ls $udev_default_rules_dir/*bcache*.rules 2> /dev/null
+	done | sed 's,.*/lib/udev,/run/udev,g' | sort -u`
 fi
 for rule in $UDEV_TEMP_RULES; do
 	touch "$rule"
