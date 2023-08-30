@@ -209,38 +209,8 @@ dnl Check for glibmm minimum required version.
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.32.0])
 
 
-need_cxx_compile_stdcxx_11=no
-dnl Check for glibmm >= 2.45.40 which requires C++11 compilation.
-AC_MSG_CHECKING([for glibmm >= 2.45.40 which requires C++11 compilation])
-PKG_CHECK_EXISTS(
-	[glibmm-2.4 >= 2.45.40],
-	[need_cxx_compile_stdcxx_11=yes
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_MSG_RESULT([no])]
-)
-dnl Check for libsigc++ >= 2.5.1 which requires C++11 compilation.
-AC_MSG_CHECKING([for libsigc++ >= 2.5.1 which requires C++11 compilation])
-PKG_CHECK_EXISTS(
-	[sigc++-2.0 >= 2.5.1],
-	[need_cxx_compile_stdcxx_11=yes
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_MSG_RESULT([no])]
-)
-dnl Check for gtkmm >= 3.18.0 which requires C++11 compilation.
-AC_MSG_CHECKING([for gtkmm >= 3.18.0 which requires C++11 compilation])
-PKG_CHECK_EXISTS(
-	[gtkmm-3.0 >= 3.18.0],
-	[need_cxx_compile_stdcxx_11=yes
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_MSG_RESULT([no])]
-)
-dnl Enable C++11 compilation only if required.
-if test "x$need_cxx_compile_stdcxx_11" = xyes; then
-	AX_CXX_COMPILE_STDCXX_11()
-fi
+dnl Require C++11 compilation.
+AX_CXX_COMPILE_STDCXX_11()
 
 
 dnl Check for gtkmm >= 3.16 to determine availability of Gtk::Label::set_xalign().
