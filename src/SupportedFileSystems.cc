@@ -52,13 +52,13 @@ SupportedFileSystems::SupportedFileSystems()
 	//     their derived FileSystem object, which determines and implements their
 	//     supported actions.
 	//     supported_filesystem() -> true
-	// 2)  Basic supported file systems have a NULL pointer entry, with
+	// 2)  Basic supported file systems have a nullptr pointer entry, with
 	//     find_supported_filesystems() creating a basic set of supported actions.
 	//     supported_filesystem() -> false
 	// 3)  Unsupported file systems have no entry, and no supported actions.
 	//     supported_filesystem() -> false
-	m_fs_objects[FS_UNKNOWN]         = NULL;
-	m_fs_objects[FS_OTHER]           = NULL;
+	m_fs_objects[FS_UNKNOWN]         = nullptr;
+	m_fs_objects[FS_OTHER]           = nullptr;
 	m_fs_objects[FS_BTRFS]           = new btrfs();
 	m_fs_objects[FS_EXFAT]           = new exfat();
 	m_fs_objects[FS_EXT2]            = new ext2(FS_EXT2);
@@ -80,16 +80,16 @@ SupportedFileSystems::SupportedFileSystems()
 	m_fs_objects[FS_REISERFS]        = new reiserfs();
 	m_fs_objects[FS_UDF]             = new udf();
 	m_fs_objects[FS_XFS]             = new xfs();
-	m_fs_objects[FS_APFS]            = NULL;
-	m_fs_objects[FS_ATARAID]         = NULL;
-	m_fs_objects[FS_BITLOCKER]       = NULL;
-	m_fs_objects[FS_GRUB2_CORE_IMG]  = NULL;
-	m_fs_objects[FS_ISO9660]         = NULL;
-	m_fs_objects[FS_LINUX_SWRAID]    = NULL;
-	m_fs_objects[FS_LINUX_SWSUSPEND] = NULL;
-	m_fs_objects[FS_REFS]            = NULL;
-	m_fs_objects[FS_UFS]             = NULL;
-	m_fs_objects[FS_ZFS]             = NULL;
+	m_fs_objects[FS_APFS]            = nullptr;
+	m_fs_objects[FS_ATARAID]         = nullptr;
+	m_fs_objects[FS_BITLOCKER]       = nullptr;
+	m_fs_objects[FS_GRUB2_CORE_IMG]  = nullptr;
+	m_fs_objects[FS_ISO9660]         = nullptr;
+	m_fs_objects[FS_LINUX_SWRAID]    = nullptr;
+	m_fs_objects[FS_LINUX_SWSUSPEND] = nullptr;
+	m_fs_objects[FS_REFS]            = nullptr;
+	m_fs_objects[FS_UFS]             = nullptr;
+	m_fs_objects[FS_ZFS]             = nullptr;
 }
 
 
@@ -99,7 +99,7 @@ SupportedFileSystems::~SupportedFileSystems()
 	for (iter = m_fs_objects.begin(); iter != m_fs_objects.end(); iter++)
 	{
 		delete iter->second;
-		iter->second = NULL;
+		iter->second = nullptr;
 	}
 }
 
@@ -137,7 +137,7 @@ FileSystem* SupportedFileSystems::get_fs_object(FSType fstype) const
 {
 	FSObjectsMap::const_iterator iter = m_fs_objects.find(fstype);
 	if (iter == m_fs_objects.end())
-		return NULL;
+		return nullptr;
 	else
 		return iter->second;
 }
@@ -167,7 +167,7 @@ const std::vector<FS>& SupportedFileSystems::get_all_fs_support() const
 // Return true for file systems with an implementation class, false otherwise.
 bool SupportedFileSystems::supported_filesystem(FSType fstype) const
 {
-	return get_fs_object(fstype) != NULL;
+	return get_fs_object(fstype) != nullptr;
 }
 
 

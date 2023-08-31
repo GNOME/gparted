@@ -614,7 +614,7 @@ double Utils::sector_to_unit( Sector sectors, Byte_Value sector_size, SIZE_UNIT 
 int Utils::execute_command( const Glib::ustring & command )
 {
 	Glib::ustring dummy ;
-	return execute_command( command, NULL, dummy, dummy );
+	return execute_command(command, nullptr, dummy, dummy);
 }
 
 class CommandStatus
@@ -679,7 +679,7 @@ int Utils::execute_command( const Glib::ustring & command,
 			    Glib::ustring & error,
 			    bool use_C_locale )
 {
-	return execute_command( command, NULL, output, error, use_C_locale );
+	return execute_command(command, nullptr, output, error, use_C_locale);
 }
 
 int Utils::execute_command( const Glib::ustring & command,
@@ -704,7 +704,7 @@ int Utils::execute_command( const Glib::ustring & command,
 			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
 			use_C_locale ? sigc::ptr_fun( set_locale ) : sigc::slot< void >(),
 			&pid,
-			( input != NULL ) ? &in : 0,
+			(input != nullptr) ? &in : 0,
 			&out,
 			&err );
 	} catch (Glib::SpawnError &e) {
@@ -725,7 +725,7 @@ int Utils::execute_command( const Glib::ustring & command,
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
-	if ( input != NULL && in != -1 )
+	if (input != nullptr && in != -1)
 	{
 		// Write small amount of input to pipe to the child process.  Linux will
 		// always accept up 4096 bytes without blocking.  See pipe(7).
@@ -830,7 +830,7 @@ Glib::ustring Utils::get_lang()
 {
 	//Extract base language from string that may look like "en_CA.UTF-8"
 	//  and return in the form "en-CA"
-	Glib::ustring lang = setlocale( LC_CTYPE, NULL ) ;
+	Glib::ustring lang = setlocale(LC_CTYPE, nullptr);
 
 	//Strip off anything after the period "." or at sign "@"
 	lang = Utils::regexp_label( lang .c_str(), "^([^.@]*)") ;

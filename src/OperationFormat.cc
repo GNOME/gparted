@@ -36,14 +36,14 @@ OperationFormat::~OperationFormat()
 {
 	delete partition_original;
 	delete partition_new;
-	partition_original = NULL;
-	partition_new = NULL;
+	partition_original = nullptr;
+	partition_new = nullptr;
 }
 
 void OperationFormat::apply_to_visual( PartitionVector & partitions )
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if (partition_original->type == TYPE_UNPARTITIONED && partition_new->fstype == FS_CLEARED)
 	{
@@ -68,8 +68,8 @@ void OperationFormat::apply_to_visual( PartitionVector & partitions )
 
 void OperationFormat::create_description() 
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	/*TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap */
 	description = Glib::ustring::compose( _("Format %1 as %2"),
@@ -79,7 +79,7 @@ void OperationFormat::create_description()
 
 bool OperationFormat::merge_operations( const Operation & candidate )
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( candidate.type == OPERATION_FORMAT                   &&
 	     *partition_new == candidate.get_partition_original()    )

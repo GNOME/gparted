@@ -163,8 +163,8 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 		if ( ! device_found && file_test( dev_path, Glib::FILE_TEST_IS_SYMLINK ) )
 		{
 			//Path is a symbolic link so find real path
-			char * rpath = realpath( dev_path.c_str(), NULL );
-			if ( rpath != NULL )
+			char* rpath = realpath(dev_path.c_str(), nullptr);
+			if (rpath != nullptr)
 			{
 				Glib::ustring tmp_path = rpath;
 				free( rpath );
@@ -233,8 +233,8 @@ Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 		if ( dmraid_name .empty() && file_test( dev_path, Glib::FILE_TEST_IS_SYMLINK ) )
 		{
 			//Path is a symbolic link so find real path
-			char * rpath = realpath( dev_path.c_str(), NULL );
-			if ( rpath != NULL )
+			char* rpath = realpath(dev_path.c_str(), nullptr);
+			if (rpath != nullptr)
 			{
 				Glib::ustring tmp_path = rpath;
 				free( rpath );

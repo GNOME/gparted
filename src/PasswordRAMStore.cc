@@ -85,11 +85,11 @@ const size_t ProtectedMemSize = 4096;
 PWStore::PWStore()
 {
 	// MAP_ANONYMOUS also ensures RAM is zero initialised.
-	protected_mem = (char *) mmap( NULL, ProtectedMemSize, PROT_READ|PROT_WRITE,
-	                               MAP_PRIVATE|MAP_ANONYMOUS|MAP_LOCKED, -1, 0 );
+	protected_mem = (char*) mmap(nullptr, ProtectedMemSize, PROT_READ|PROT_WRITE,
+	                             MAP_PRIVATE|MAP_ANONYMOUS|MAP_LOCKED, -1, 0);
 	if ( protected_mem == MAP_FAILED )
 	{
-		protected_mem = NULL;
+		protected_mem = nullptr;
 		std::cerr << "No locked virtual memory for password RAM store" << std::endl;
 	}
 }
@@ -97,13 +97,13 @@ PWStore::PWStore()
 PWStore::~PWStore()
 {
 	erase_all();
-	if ( protected_mem != NULL )
+	if (protected_mem != nullptr)
 		munmap( protected_mem, ProtectedMemSize );
 }
 
 bool PWStore::insert( const Glib::ustring & key, const char * password )
 {
-	if ( protected_mem == NULL )
+	if (protected_mem == nullptr)
 		// No locked memory for passwords
 		return false;
 
@@ -157,7 +157,7 @@ const char * PWStore::lookup( const Glib::ustring & key )
 	}
 
 	// No such key
-	return NULL;
+	return nullptr;
 }
 
 PWStore::iterator PWStore::find_key( const Glib::ustring & key )
@@ -174,7 +174,7 @@ PWStore::iterator PWStore::find_key( const Glib::ustring & key )
 void PWStore::erase_all()
 {
 	pw_entries.clear();
-	if ( protected_mem != NULL )
+	if (protected_mem != nullptr)
 		// WARNING:
 		// memset() can be optimised away if the compiler knows the memory is not
 		// accessed again.  In this case this memset() is in a separate method
@@ -206,7 +206,7 @@ static PWStore single_pwstore;
 bool PasswordRAMStore::store( const Glib::ustring & key, const char * password )
 {
 	const char * looked_up_pw = single_pwstore.lookup( key );
-	if ( looked_up_pw == NULL )
+	if (looked_up_pw == nullptr)
 		return single_pwstore.insert( key, password );
 
 	if ( strcmp( looked_up_pw, password ) == 0 )

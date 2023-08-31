@@ -40,7 +40,7 @@ Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move(const Device& device,
 Dialog_Partition_Resize_Move::~Dialog_Partition_Resize_Move()
 {
 	delete new_partition;
-	new_partition = NULL;
+	new_partition = nullptr;
 }
 
 void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partition,
@@ -78,7 +78,7 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & partitions )
 {
-	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
+	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
 	// Don't permit shrinking an existing file system (other than linux-swap) when the
 	// usage is unknown as that sets the minimum resize.
@@ -118,7 +118,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 
 	Sector previous, next ;
 	previous = next = 0 ;
-	const Partition* prev_unalloc_partition = NULL;
+	const Partition* prev_unalloc_partition = nullptr;
 	//also check the partitions file system ( if this is a 'resize-only' then previous should be 0 )	
 	if (t >= 1 && partitions[t-1].type == TYPE_UNALLOCATED && ! this->fixed_start)
 	{ 
@@ -157,7 +157,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	// Only need to use MIN_SPACE_BEFORE_MB to reserve 1 MiB to protect the partition
 	// table or EBR if there is a previous unallocated partition allowing the start of
 	// this selected partition to be resize/moved to the left.
-	if (prev_unalloc_partition == NULL)
+	if (prev_unalloc_partition == nullptr)
 		MIN_SPACE_BEFORE_MB = 0 ;
 	else
 		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record(*prev_unalloc_partition);
@@ -231,7 +231,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector & partitions )
 {
-	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
+	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
 	set_title(Glib::ustring::compose(_("Resize/Move %1"), new_partition->get_path()));
 
@@ -243,7 +243,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 
 	Sector previous, next ;
 	previous = next = 0 ;
-	const Partition* prev_unalloc_partition = NULL;
+	const Partition* prev_unalloc_partition = nullptr;
 	//calculate length and start of previous
 	if (t > 0 && partitions[t-1].type == TYPE_UNALLOCATED)
 	{
@@ -263,7 +263,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	// Only need to use MIN_SPACE_BEFORE_MB to reserve 1 MiB to protect the partition
 	// table or EBR if there is a previous unallocated partition allowing the start of
 	// this selected partition to be resize/moved to the left.
-	if (prev_unalloc_partition == NULL)
+	if (prev_unalloc_partition == nullptr)
 		MIN_SPACE_BEFORE_MB = 0 ;
 	else
 		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record(*prev_unalloc_partition);

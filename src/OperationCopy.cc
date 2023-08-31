@@ -40,28 +40,28 @@ OperationCopy::~OperationCopy()
 	delete partition_original;
 	delete partition_new;
 	delete partition_copied;
-	partition_original = NULL;
-	partition_new = NULL;
-	partition_copied = NULL;
+	partition_original = nullptr;
+	partition_new = nullptr;
+	partition_copied = nullptr;
 }
 
 Partition & OperationCopy::get_partition_copied()
 {
-	g_assert( partition_copied != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	return *partition_copied;
 }
 
 const Partition & OperationCopy::get_partition_copied() const
 {
-	g_assert( partition_copied != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	return *partition_copied;
 }
 
 void OperationCopy::apply_to_visual( PartitionVector & partitions )
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( partition_original->type == TYPE_UNALLOCATED )
 		// Paste into unallocated space creating new partition
@@ -73,9 +73,9 @@ void OperationCopy::apply_to_visual( PartitionVector & partitions )
 
 void OperationCopy::create_description() 
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
-	g_assert( partition_copied != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( partition_original->type == TYPE_UNALLOCATED )
 	{

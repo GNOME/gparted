@@ -37,13 +37,13 @@ OperationResizeMove::~OperationResizeMove()
 {
 	delete partition_original;
 	delete partition_new;
-	partition_original = NULL;
-	partition_new = NULL;
+	partition_original = nullptr;
+	partition_new = nullptr;
 }
 
 void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( partition_original->type == TYPE_EXTENDED )
 		apply_extended_to_visual( partitions ) ;
@@ -53,8 +53,8 @@ void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 
 void OperationResizeMove::create_description() 
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	//i'm not too happy with this, but i think it is the correct way from a i18n POV
 	enum Action
@@ -143,8 +143,8 @@ void OperationResizeMove::create_description()
 
 void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;
@@ -185,7 +185,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions )
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 
@@ -239,7 +239,7 @@ void OperationResizeMove::remove_adjacent_unallocated( PartitionVector & partiti
 
 bool OperationResizeMove::merge_operations( const Operation & candidate )
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( candidate.type == OPERATION_RESIZE_MOVE              &&
 	     *partition_new == candidate.get_partition_original()    )

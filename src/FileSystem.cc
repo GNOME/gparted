@@ -91,7 +91,7 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 {
 	StreamSlot empty_stream_slot;
 	TimedSlot empty_timed_slot;
-	return execute_command_internal(command, NULL, operationdetail, flags, empty_stream_slot, empty_timed_slot);
+	return execute_command_internal(command, nullptr, operationdetail, flags, empty_stream_slot, empty_timed_slot);
 }
 
 
@@ -114,7 +114,7 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
                                  StreamSlot stream_progress_slot )
 {
 	TimedSlot empty_timed_slot;
-	return execute_command_internal(command, NULL, operationdetail, flags, stream_progress_slot, empty_timed_slot);
+	return execute_command_internal(command, nullptr, operationdetail, flags, stream_progress_slot, empty_timed_slot);
 }
 
 
@@ -125,7 +125,7 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
                                  TimedSlot timed_progress_slot )
 {
 	StreamSlot empty_stream_slot;
-	return execute_command_internal(command, NULL, operationdetail, flags, empty_stream_slot, timed_progress_slot);
+	return execute_command_internal(command, nullptr, operationdetail, flags, empty_stream_slot, timed_progress_slot);
 }
 
 
@@ -150,7 +150,7 @@ int FileSystem::execute_command_internal(const Glib::ustring& command, const cha
 			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
 			sigc::ptr_fun(setup_child),
 			&pid,
-			(input != NULL) ? &in : 0,
+			(input != nullptr) ? &in : 0,
 			&out,
 			&err );
 	} catch (Glib::SpawnError &e) {
@@ -194,7 +194,7 @@ int FileSystem::execute_command_internal(const Glib::ustring& command, const cha
 			pid,
 			flags & EXEC_CANCEL_SAFE ) );
 
-	if (input != NULL && in != -1)
+	if (input != nullptr && in != -1)
 	{
 		// Write small amount of input to pipe to the child process.  Linux will
 		// always accept up to 4096 bytes without blocking.  See pipe(7).
@@ -252,7 +252,7 @@ Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDet
 	operationdetail .add_child( OperationDetail(
 			Glib::ustring( "mkdir -v " ) + dir_buf, STATUS_EXECUTE, FONT_BOLD_ITALIC ) ) ;
 	const char * dir_name = mkdtemp( dir_buf ) ;
-	if ( NULL == dir_name )
+	if (nullptr == dir_name)
 	{
 		int e = errno ;
 		operationdetail .get_last_child() .add_child( OperationDetail(

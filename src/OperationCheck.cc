@@ -34,8 +34,8 @@ OperationCheck::~OperationCheck()
 {
 	delete partition_original;
 	delete partition_new;
-	partition_original = NULL;
-	partition_new = NULL;
+	partition_original = nullptr;
+	partition_new = nullptr;
 }
 
 void OperationCheck::apply_to_visual( PartitionVector & partitions )
@@ -44,7 +44,7 @@ void OperationCheck::apply_to_visual( PartitionVector & partitions )
 
 void OperationCheck::create_description() 
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	/*TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4 */
 	description = Glib::ustring::compose( _("Check and repair file system (%1) on %2"),
@@ -54,7 +54,7 @@ void OperationCheck::create_description()
 
 bool OperationCheck::merge_operations( const Operation & candidate )
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( candidate.type      == OPERATION_CHECK                    &&
 	     *partition_original == candidate.get_partition_original()    )

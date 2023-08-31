@@ -31,7 +31,7 @@ namespace GParted
 Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
  : m_device(device)
 {
-	frame_resizer_base = NULL;
+	frame_resizer_base = nullptr;
 	GRIP = false ;
 	this ->fixed_start = false ;
 	this ->set_resizable( false );
@@ -165,7 +165,7 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 
 const Partition & Dialog_Base_Partition::Get_New_Partition()
 {
-	g_assert( new_partition != NULL );  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
+	g_assert(new_partition != nullptr);  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
 
 	prepare_new_partition();
 	return *new_partition;
@@ -173,7 +173,7 @@ const Partition & Dialog_Base_Partition::Get_New_Partition()
 
 void Dialog_Base_Partition::prepare_new_partition()
 {
-	g_assert( new_partition != NULL );  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
+	g_assert(new_partition != nullptr);  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
 
 	Sector old_size = new_partition->get_sector_length();
 

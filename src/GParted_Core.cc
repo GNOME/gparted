@@ -201,7 +201,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			ped_device_probe_all();
 		}
 
-		PedDevice* lp_device = ped_device_get_next( NULL ) ;
+		PedDevice* lp_device = ped_device_get_next(nullptr);
 		while ( lp_device ) 
 		{
 			/* TO TRANSLATORS: looks like   Confirming /dev/sda */
@@ -243,7 +243,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 #endif
 
 			PedDevice* lp_device = ped_device_get( device_paths[t].c_str() );
-			if ( lp_device == NULL || ! useable_device( lp_device ) )
+			if (lp_device == nullptr || ! useable_device(lp_device))
 			{
 				// Remove this disk device which isn't useable
 				device_paths.erase( device_paths.begin() + t-- );
@@ -272,7 +272,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	}
 
 	set_thread_status_message("") ;
-	g_idle_add( (GSourceFunc)_mainquit, NULL );
+	g_idle_add((GSourceFunc)_mainquit, nullptr);
 }
 
 // runs gpart on the specified parameter
@@ -516,11 +516,11 @@ bool GParted_Core::new_disklabel( const Glib::ustring & device_path, const Glib:
 {
 	bool return_value = false ;
 
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device( device_path, lp_device ) )
 	{
-		PedDiskType *type = NULL ;
+		PedDiskType* type = nullptr;
 		type = ped_disk_type_get( disklabel .c_str() ) ;
 		
 		if ( type )
@@ -549,8 +549,8 @@ bool GParted_Core::new_disklabel( const Glib::ustring & device_path, const Glib:
 bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) 
 {
 	bool succes = false ;
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		PedPartition* lp_partition = get_lp_partition( lp_disk, partition );
@@ -590,7 +590,7 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes()
 	std::vector<Glib::ustring> disklabeltypes ;
 
 	PedDiskType *disk_type ;
-	for ( disk_type = ped_disk_type_get_next( NULL ) ; disk_type ; disk_type = ped_disk_type_get_next( disk_type ) )
+	for (disk_type = ped_disk_type_get_next(nullptr); disk_type; disk_type = ped_disk_type_get_next(disk_type))
 		disklabeltypes .push_back( disk_type->name ) ;
 
 	 return disklabeltypes ;
@@ -600,8 +600,8 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 {
 	std::map<Glib::ustring, bool> flag_info ;
 
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		PedPartition* lp_partition = get_lp_partition( lp_disk, partition );
@@ -624,13 +624,13 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 
 Glib::ustring GParted_Core::get_partition_path(const PedPartition *lp_partition)
 {
-	g_assert(lp_partition != NULL);  // Bug: Not initialised by suitable ped_disk_*partition*() call
+	g_assert(lp_partition != nullptr);  // Bug: Not initialised by suitable ped_disk_*partition*() call
 
 	char * lp_path;  //we have to free the result of ped_partition_get_path()
 	Glib::ustring partition_path = "Partition path not found";
 
 	lp_path = ped_partition_get_path(lp_partition);
-	if ( lp_path != NULL )
+	if (lp_path != nullptr)
 	{
 		partition_path = lp_path;
 		free(lp_path);
@@ -653,8 +653,8 @@ Glib::ustring GParted_Core::get_partition_path(const PedPartition *lp_partition)
 
 void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & device_path )
 {
-	PedDevice* lp_device = NULL;
-	PedDisk* lp_disk = NULL;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 
 	if (! get_device(device_path, lp_device, true))
 		return;
@@ -677,7 +677,7 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 		device.cylsize = MEBIBYTE / device.sector_size;
 
 	std::vector<Glib::ustring> messages;
-	FSType fstype = detect_filesystem(lp_device, NULL, messages);
+	FSType fstype = detect_filesystem(lp_device, nullptr, messages);
 
 	if (fstype != FS_UNKNOWN)
 	{
@@ -826,11 +826,11 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	//clear partitions
 	device .partitions .clear() ;
 
-	PedPartition* lp_partition = ped_disk_next_partition( lp_disk, NULL ) ;
+	PedPartition* lp_partition = ped_disk_next_partition(lp_disk, nullptr);
 	while ( lp_partition )
 	{
 		libparted_messages .clear() ;
-		Partition * partition_temp = NULL;
+		Partition* partition_temp = nullptr;
 		bool partition_is_busy = false ;
 		FSType fstype;
 		std::vector<Glib::ustring> detect_messages;
@@ -930,7 +930,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 
 		// Only for libparted reported partition types that we care about: NORMAL,
 		// LOGICAL, EXTENDED
-		if ( partition_temp != NULL )
+		if (partition_temp != nullptr)
 		{
 			set_partition_label_and_uuid( *partition_temp );
 			set_mountpoints( *partition_temp );
@@ -986,7 +986,7 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	Glib::ustring path = lp_device->path;
 	bool partition_is_busy = is_busy(device.get_path(), fstype, path);
 
-	Partition * partition_temp = NULL;
+	Partition* partition_temp = nullptr;
 	if ( fstype == FS_LUKS )
 		partition_temp = new PartitionLUKS();
 	else
@@ -1008,7 +1008,7 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 
 	set_partition_label_and_uuid( *partition_temp );
 	set_mountpoints( *partition_temp );
-	set_used_sectors( *partition_temp, NULL );
+	set_used_sectors(*partition_temp, nullptr);
 
 	device.partitions.push_back_adopt( partition_temp );
 }
@@ -1039,7 +1039,7 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 
 	set_partition_label_and_uuid( encrypted );
 	set_mountpoints( encrypted );
-	set_used_sectors( encrypted, NULL );
+	set_used_sectors(encrypted, nullptr);
 }
 
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )
@@ -1095,18 +1095,18 @@ FSType GParted_Core::detect_filesystem_in_encryption_mapping(const Glib::ustring
 
 	FSType fstype = FS_UNKNOWN;
 
-	PedDevice *lp_device = NULL;
+	PedDevice* lp_device = nullptr;
 	if (get_device(path, lp_device))
 	{
 		// Run libparted partition table and file system identification.  Only use
 		// (get the first partition) if it's a "loop" table; because GParted only
 		// supports one block device to one encryption mapping to one file system.
-		PedDisk *lp_disk = NULL;
-		PedPartition *lp_partition = NULL;
+		PedDisk* lp_disk = nullptr;
+		PedPartition* lp_partition = nullptr;
 		if (get_disk(lp_device, lp_disk) && lp_disk && lp_disk->type        &&
 		    lp_disk->type->name && strcmp(lp_disk->type->name, "loop") == 0   )
 		{
-			lp_partition = ped_disk_next_partition(lp_disk, NULL);
+			lp_partition = ped_disk_next_partition(lp_disk, nullptr);
 		}
 		// Clear the "unrecognised disk label" message reported when libparted
 		// fails to detect anything.
@@ -1147,20 +1147,20 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 		const char * sig2;
 		FSType       fstype;
 	} signatures[] = {
-		//offset1, sig1              , offset2, sig2  , fstype
-		{     0LL, "LUKS\xBA\xBE"    ,     0LL, NULL  , FS_LUKS           },
-		{     3LL, "-FVE-FS-"        ,     0LL, NULL  , FS_BITLOCKER      },
-		{     0LL, "\x52\x56\xBE\x1B",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\x56\xBE\x6F",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\xE8\x28\x01",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\xBF\xF4\x81",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\x56\xBE\x63",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\x56\xBE\x56",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{    24LL, "\x01\x00"        ,    32LL, "NXSB", FS_APFS           },
-		{   512LL, "LABELONE"        ,   536LL, "LVM2", FS_LVM2_PV        },
-		{  1030LL, "\x34\x34"        ,     0LL, NULL  , FS_NILFS2         },
-		{ 65536LL, "ReIsEr4"         ,     0LL, NULL  , FS_REISER4        },
-		{ 65600LL, "_BHRfS_M"        ,     0LL, NULL  , FS_BTRFS          }
+		//offset1, sig1              , offset2, sig2   , fstype
+		{     0LL, "LUKS\xBA\xBE"    ,     0LL, nullptr, FS_LUKS           },
+		{     3LL, "-FVE-FS-"        ,     0LL, nullptr, FS_BITLOCKER      },
+		{     0LL, "\x52\x56\xBE\x1B",     0LL, nullptr, FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\x56\xBE\x6F",     0LL, nullptr, FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\xE8\x28\x01",     0LL, nullptr, FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\xBF\xF4\x81",     0LL, nullptr, FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\x56\xBE\x63",     0LL, nullptr, FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\x56\xBE\x56",     0LL, nullptr, FS_GRUB2_CORE_IMG },
+		{    24LL, "\x01\x00"        ,    32LL, "NXSB" , FS_APFS           },
+		{   512LL, "LABELONE"        ,   536LL, "LVM2" , FS_LVM2_PV        },
+		{  1030LL, "\x34\x34"        ,     0LL, nullptr, FS_NILFS2         },
+		{ 65536LL, "ReIsEr4"         ,     0LL, nullptr, FS_REISER4        },
+		{ 65600LL, "_BHRfS_M"        ,     0LL, nullptr, FS_BTRFS          }
 	};
 	// For simple BitLocker recognition consider validation of BIOS Parameter block
 	// fields unnecessary.
@@ -1189,14 +1189,14 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 
 	for ( unsigned int i = 0 ; i < sizeof( signatures ) / sizeof( signatures[0] ) ; i ++ )
 	{
-		const size_t len1 = std::min( ( signatures[i].sig1 == NULL ) ? 0U : strlen( signatures[i].sig1 ),
-		                              sizeof( magic1 ) );
-		const size_t len2 = std::min( ( signatures[i].sig2 == NULL ) ? 0U : strlen( signatures[i].sig2 ),
-		                              sizeof( magic2 ) );
+		const size_t len1 = std::min((signatures[i].sig1 == nullptr) ? 0U : strlen(signatures[i].sig1),
+		                             sizeof(magic1));
+		const size_t len2 = std::min((signatures[i].sig2 == nullptr) ? 0U : strlen(signatures[i].sig2),
+		                             sizeof(magic2));
 		// NOTE: From this point onwards signatures[].sig1 and .sig2 are treated
 		// as character buffers of known lengths len1 and len2, not NUL terminated
 		// strings.
-		if ( len1 == 0UL || ( signatures[i].sig2 != NULL && len2 == 0UL ) )
+		if (len1 == 0UL || (signatures[i].sig2 != nullptr && len2 == 0UL))
 			continue;  // Don't allow 0 length signatures to match
 
 		Byte_Value read_offset = signatures[i].offset1 / sector_size * sector_size;
@@ -1220,11 +1220,11 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 		memcpy(magic1, buf + signatures[i].offset1 % sector_size, len1);
 
 		// WARNING: This assumes offset2 is in the same sector as offset1
-		if (signatures[i].sig2 != NULL)
+		if (signatures[i].sig2 != nullptr)
 			memcpy(magic2, buf + signatures[i].offset2 % sector_size, len2);
 
-		if (memcmp(magic1, signatures[i].sig1, len1) == 0                                 &&
-		    (signatures[i].sig2 == NULL || memcmp(magic2, signatures[i].sig2, len2) == 0)   )
+		if (memcmp(magic1, signatures[i].sig1, len1) == 0                                    &&
+		    (signatures[i].sig2 == nullptr || memcmp(magic2, signatures[i].sig2, len2) == 0)   )
 		{
 			fstype = signatures[i].fstype;
 			break;
@@ -1241,7 +1241,7 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPartition *lp_partition,
                                        std::vector<Glib::ustring> &messages)
 {
-	g_assert(lp_device != NULL);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
+	g_assert(lp_device != nullptr);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
 
 	Glib::ustring fsname = "";
 	Glib::ustring path;
@@ -1382,7 +1382,7 @@ FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPart
 	
 void GParted_Core::read_label( Partition & partition )
 {
-	FileSystem* p_filesystem = NULL;
+	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition.fstype).read_label)
 	{
 		case FS::EXTERNAL:
@@ -1398,7 +1398,7 @@ void GParted_Core::read_label( Partition & partition )
 
 void GParted_Core::read_uuid( Partition & partition )
 {
-	FileSystem* p_filesystem = NULL;
+	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition.fstype).read_uuid)
 	{
 		case FS::EXTERNAL:
@@ -1574,7 +1574,7 @@ bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::us
 // Report whether the partition is busy (mounted/active)
 bool GParted_Core::is_busy(const Glib::ustring& device_path, FSType fstype, const Glib::ustring& partition_path)
 {
-	FileSystem * p_filesystem = NULL ;
+	FileSystem* p_filesystem = nullptr;
 	bool busy = false ;
 
 	if ( supported_filesystem( fstype ) )
@@ -1620,7 +1620,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 {
 	if (supported_filesystem(partition.fstype))
 	{
-		FileSystem* p_filesystem = NULL;
+		FileSystem* p_filesystem = nullptr;
 		if ( partition.busy )
 		{
 			switch(get_fs(partition.fstype).online_read)
@@ -1738,8 +1738,8 @@ void GParted_Core::mounted_fs_set_used_sectors( Partition & partition )
 #ifdef HAVE_LIBPARTED_FS_RESIZE
 void GParted_Core::LP_set_used_sectors( Partition & partition, PedDisk* lp_disk )
 {
-	PedFileSystem *fs = NULL;
-	PedConstraint *constraint = NULL;
+	PedFileSystem* fs = nullptr;
+	PedConstraint* constraint = nullptr;
 
 	if ( lp_disk )
 	{
@@ -1815,14 +1815,14 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	operationdetail .add_child( OperationDetail( _("create empty partition") ) ) ;
 	
 	new_partition .partition_number = 0 ;
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( new_partition .device_path, lp_device, lp_disk ) )
 	{
 		PedPartitionType type;
-		PedConstraint *constraint = NULL ;
-		PedFileSystemType* fs_type = NULL ;
-		
+		PedConstraint* constraint = nullptr;
+		PedFileSystemType* fs_type = nullptr;
+
 		//create new partition
 		switch ( new_partition .type )
 		{
@@ -1935,7 +1935,7 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 							Utils::get_filesystem_string(partition.fstype))));
 	
 	bool succes = false ;
-	FileSystem* p_filesystem = NULL ;
+	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition.fstype).create)
 	{
 		case FS::NONE:
@@ -1982,8 +1982,8 @@ bool GParted_Core::delete_partition( const Partition & partition, OperationDetai
 	operationdetail .add_child( OperationDetail( _("delete partition") ) ) ;
 
 	bool succes = false ;
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		PedPartition* lp_partition = get_lp_partition( lp_disk, partition );
@@ -1998,8 +1998,8 @@ bool GParted_Core::delete_partition( const Partition & partition, OperationDetai
 	DMRaid dmraid ;
 	if ( succes && dmraid .is_dmraid_device( partition .device_path ) )
 	{
-		PedDevice* lp_device = NULL ;
-		PedDisk* lp_disk = NULL ;
+		PedDevice* lp_device = nullptr;
+		PedDisk* lp_disk = nullptr;
 		//Open disk handle before and close after to prevent application crash.
 		if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 		{
@@ -2029,7 +2029,7 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 	}
 
 	bool success = true ;
-	FileSystem* p_filesystem = NULL ;
+	FileSystem* p_filesystem = nullptr;
 
 	switch (get_fs(partition.fstype ).remove)
 	{
@@ -2071,7 +2071,7 @@ bool GParted_Core::label_filesystem( const Partition & partition, OperationDetai
 	}
 
 	bool succes = false ;
-	FileSystem* p_filesystem = NULL ;
+	FileSystem* p_filesystem = nullptr;
 	const FS& fs_cap = get_fs(partition.fstype);
 	FS::Support support = (partition.busy) ? fs_cap.online_write_label : fs_cap.write_label;
 	switch (support)
@@ -2100,8 +2100,8 @@ bool GParted_Core::name_partition( const Partition & partition, OperationDetail 
 				                  partition.name, partition.get_path() ) ) );
 
 	bool success = false;
-	PedDevice *lp_device = NULL;
-	PedDisk *lp_disk = NULL;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition.device_path, lp_device, lp_disk ) )
 	{
 		PedPartition *lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
@@ -2139,7 +2139,7 @@ bool GParted_Core::change_filesystem_uuid( const Partition & partition, Operatio
 	}
 
 	bool succes = false ;
-	FileSystem* p_filesystem = NULL ;
+	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition.fstype).write_uuid)
 	{
 		case FS::EXTERNAL:
@@ -2175,7 +2175,7 @@ bool GParted_Core::resize_move( const Partition & partition_old,
 		{
 			return move( partition_old, partition_new, operationdetail );
 		}
-		Partition * temp = NULL;
+		Partition* temp = nullptr;
 		if ( partition_new .get_sector_length() > partition_old .get_sector_length() )
 		{
 			//first move, then grow. Since old.length < new.length and new.start is valid, temp is valid.
@@ -2197,7 +2197,7 @@ bool GParted_Core::resize_move( const Partition & partition_old,
 			success = resize_move( *temp, partition_new, operationdetail );
 
 		delete temp;
-		temp = NULL;
+		temp = nullptr;
 
 		return success;
 	}
@@ -2264,7 +2264,7 @@ bool GParted_Core::move( const Partition & partition_old,
 			}
 
 			delete partition_restore;
-			partition_restore = NULL;
+			partition_restore = nullptr;
 		}
 		else
 		{
@@ -2280,7 +2280,7 @@ bool GParted_Core::move( const Partition & partition_old,
 	}
 
 	delete partition_all_space;
-	partition_all_space = NULL;
+	partition_all_space = nullptr;
 
 	if ( ! success )
 		return false;
@@ -2313,7 +2313,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	}
 
 	bool succes = false ;
-	FileSystem* p_filesystem = NULL ;
+	FileSystem* p_filesystem = nullptr;
 	Sector total_done = 0;
 	switch (get_fs(partition_old.fstype).move)
 	{
@@ -2373,13 +2373,13 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 	operationdetail .add_child( OperationDetail( _("using libparted"), STATUS_NONE ) ) ;
 
 	bool return_value = false ;
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
-		PedFileSystem *	fs = NULL ;
-		PedGeometry * lp_geom = NULL ;	
-		
+		PedFileSystem* fs = nullptr;
+		PedGeometry* lp_geom = nullptr;
+
 		lp_geom = ped_geometry_new( lp_device,
 					    partition_old .sector_start,
 					    partition_old .get_sector_length() ) ;
@@ -2388,7 +2388,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 			fs = ped_file_system_open( lp_geom );
 
 			ped_geometry_destroy( lp_geom );
-			lp_geom = NULL;
+			lp_geom = nullptr;
 
 			if ( fs )
 			{
@@ -2426,8 +2426,8 @@ void GParted_Core::thread_lp_ped_file_system_resize( PedFileSystem * fs,
                                                      PedGeometry * lp_geom,
                                                      bool * return_value )
 {
-	*return_value = ped_file_system_resize( fs, lp_geom, NULL );
-	g_idle_add( (GSourceFunc)_mainquit, NULL );
+	*return_value = ped_file_system_resize(fs, lp_geom, nullptr);
+	g_idle_add((GSourceFunc)_mainquit, nullptr);
 }
 #endif
 
@@ -2729,9 +2729,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		rollback_success = rollback_success && update_dmraid_entry( *partition_restore, operationdetail );
 
 		delete partition_restore;
-		partition_restore = NULL;
+		partition_restore = nullptr;
 		delete partition_intersection;
-		partition_intersection = NULL;
+		partition_intersection = nullptr;
 
 		operationdetail.get_last_child().set_success_and_capture_errors( rollback_success );
 	}
@@ -2745,14 +2745,14 @@ bool GParted_Core::resize_move_partition_implement( const Partition & partition_
                                                     Sector & new_end )
 {
 	bool success = false;
-	PedDevice *lp_device = NULL;
-	PedDisk *lp_disk = NULL;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition_old.device_path, lp_device, lp_disk ) )
 	{
 		PedPartition *lp_partition = get_lp_partition( lp_disk, partition_old );
 		if ( lp_partition )
 		{
-			PedConstraint *constraint = NULL;
+			PedConstraint* constraint = nullptr;
 			if ( partition_new.alignment == ALIGN_STRICT   ||
 			     partition_new.alignment == ALIGN_MEBIBYTE ||
 			     partition_new.strict_start                   )
@@ -2969,7 +2969,7 @@ bool GParted_Core::resize_filesystem_implement( const Partition & partition_old,
 		action = ( partition_old.busy ) ? fs_cap.online_shrink : fs_cap.shrink;
 	}
 	bool success = false;
-	FileSystem* p_filesystem = NULL;
+	FileSystem* p_filesystem = nullptr;
 	switch ( action )
 	{
 		case FS::NONE:
@@ -3078,7 +3078,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			                  partition_dst.get_path() ) ) );
 
 	bool success = false;
-	FileSystem* p_filesystem = NULL;
+	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition_dst.fstype).copy)
 	{
 		case FS::GPARTED:
@@ -3306,8 +3306,8 @@ void GParted_Core::rollback_move_filesystem( const Partition & partition_src,
 
 		delete temp_src;
 		delete temp_dst;
-		temp_src = NULL;
-		temp_dst = NULL;
+		temp_src = nullptr;
+		temp_dst = nullptr;
 	}
 }
 
@@ -3332,7 +3332,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 						  partition .get_path() ) ) ) ;
 	
 	bool succes = false ;
-	FileSystem* p_filesystem = NULL ;
+	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition.fstype).check)
 	{
 		case FS::NONE:
@@ -3380,7 +3380,7 @@ bool GParted_Core::check_repair_maximize( const Partition & partition,
 		temp_offline->busy = false;
 		bool success = maximize_encryption( *temp_offline, operationdetail );
 		delete temp_offline;
-		temp_offline = NULL;
+		temp_offline = nullptr;
 		if ( ! success )
 			return false;
 
@@ -3408,8 +3408,8 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 
 	bool return_value = false ;
 	
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
@@ -3420,7 +3420,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			// Lookup libparted file system type using GParted's name, as most
 			// match.  Exclude cleared as the name won't be recognised by
 			// libparted and get_filesystem_string() has also translated it.
-			PedFileSystemType *lp_fs_type = NULL;
+			PedFileSystemType* lp_fs_type = nullptr;
 			if (partition.fstype != FS_CLEARED)
 				lp_fs_type = ped_file_system_type_get(fs_type.c_str());
 
@@ -3503,8 +3503,8 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 		operationdetail.add_child( OperationDetail( Glib::ustring::compose( _("calibrate %1"), curr_path ) ) );
 	
 		bool success = false;
-		PedDevice* lp_device = NULL ;
-		PedDisk* lp_disk = NULL ;
+		PedDevice* lp_device = nullptr;
+		PedDisk* lp_disk = nullptr;
 		if ( get_device( partition.device_path, lp_device ) )
 		{	
 			if ( partition.type == TYPE_UNPARTITIONED )
@@ -3612,14 +3612,14 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 		FONT_ITALIC ) ) ;
 	
 	bool succes = false ;
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
 		PedPartition* lp_partition = get_lp_partition( lp_disk, partition_old );
 		if ( lp_partition )
 		{
-			PedConstraint *constraint = NULL ;
+			PedConstraint* constraint = nullptr;
 			constraint = ped_constraint_any( lp_device ) ;
 			
 			if ( constraint )
@@ -3673,7 +3673,7 @@ bool GParted_Core::update_dmraid_entry( const Partition & partition, OperationDe
 	DMRaid dmraid;
 	if ( dmraid.is_dmraid_device( partition.device_path ) )
 	{
-		PedDevice *lp_device = NULL;
+		PedDevice* lp_device = nullptr;
 		PedDisk *lp_disk;
 		// Open disk handle before and close after to prevent application crash.
 		if ( get_device_and_disk( partition.device_path, lp_device, lp_disk ) )
@@ -3696,7 +3696,7 @@ FileSystem * GParted_Core::get_filesystem_object( FSType fstype )
 // Return true for file systems with an implementation class, false otherwise
 bool GParted_Core::supported_filesystem( FSType fstype )
 {
-	return supported_filesystems->get_fs_object(fstype) != NULL;
+	return supported_filesystems->get_fs_object(fstype) != nullptr;
 }
 
 
@@ -3704,7 +3704,7 @@ FS_Limits GParted_Core::get_filesystem_limits( FSType fstype, const Partition & 
 {
 	FileSystem* p_filesystem = supported_filesystems->get_fs_object(fstype);
 	FS_Limits fs_limits;
-	if ( p_filesystem != NULL )
+	if (p_filesystem != nullptr)
 		fs_limits = p_filesystem->get_filesystem_limits( partition );
 	return fs_limits;
 }
@@ -3739,13 +3739,13 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 
 	//Get device, disk & partition and open the device.  Allocate buffer and fill with
 	//  zeros.  Buffer size is the greater of 4 KiB and the sector size.
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
-	PedPartition* lp_partition = NULL ;
-	PedGeometry *lp_geom = NULL;
+	PedDevice* lp_device = nullptr;
+	PedDisk* lp_disk = nullptr;
+	PedPartition* lp_partition = nullptr;
+	PedGeometry* lp_geom = nullptr;
 	bool device_is_open = false ;
 	Byte_Value bufsize = 4LL * KIBIBYTE ;
-	char * buf = NULL ;
+	char* buf = nullptr;
 	if ( get_device( partition.device_path, lp_device ) )
 	{
 		if ( partition.type == TYPE_UNPARTITIONED )
@@ -3763,7 +3763,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 				lp_geom = ped_geometry_duplicate(&lp_partition->geom);
 		}
 
-		if (lp_geom != NULL && ped_device_open(lp_device))
+		if (lp_geom != nullptr && ped_device_open(lp_device))
 		{
 			device_is_open = true ;
 
@@ -3901,7 +3901,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	}
 	if ( buf )
 		free( buf ) ;
-	if (lp_geom != NULL)
+	if (lp_geom != nullptr)
 		ped_geometry_destroy(lp_geom);
 
 	//Linux kernel doesn't maintain buffer cache coherency between the whole disk
@@ -4047,7 +4047,7 @@ void GParted_Core::capture_libparted_messages( OperationDetail & operationdetail
 
 bool GParted_Core::useable_device(const PedDevice* lp_device)
 {
-	g_assert( lp_device != NULL );  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
+	g_assert(lp_device != nullptr);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
 
 	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
 	if ( ! buf )
@@ -4119,7 +4119,7 @@ bool GParted_Core::get_device( const Glib::ustring & device_path, PedDevice *& l
 
 bool GParted_Core::get_disk(PedDevice *lp_device, PedDisk*& lp_disk)
 {
-	g_assert(lp_device != NULL);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
+	g_assert(lp_device != nullptr);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
 
 	lp_disk = ped_disk_new(lp_device);
 
@@ -4129,7 +4129,7 @@ bool GParted_Core::get_disk(PedDevice *lp_device, PedDisk*& lp_disk)
 	// /dev/PTN entries don't exist.
 	settle_device(SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
 
-	return (lp_disk != NULL);
+	return (lp_disk != nullptr);
 }
 
 
@@ -4152,11 +4152,11 @@ void GParted_Core::destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_
 {
 	if ( lp_disk )
 		ped_disk_destroy( lp_disk ) ;
-	lp_disk = NULL ;
+	lp_disk = nullptr;
 
 	if ( lp_device )
 		ped_device_destroy( lp_device ) ;
-	lp_device = NULL ;
+	lp_device = nullptr;
 }
 
 bool GParted_Core::commit( PedDisk* lp_disk )
@@ -4324,7 +4324,7 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 GParted_Core::~GParted_Core() 
 {
 	delete supported_filesystems;
-	supported_filesystems = NULL;
+	supported_filesystems = nullptr;
 }
 
 

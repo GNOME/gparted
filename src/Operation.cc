@@ -29,35 +29,35 @@ Operation::Operation()
 
 Partition & Operation::get_partition_original()
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
 	return *partition_original;
 }
 
 const Partition & Operation::get_partition_original() const
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
 	return *partition_original;
 }
 
 Partition & Operation::get_partition_new()
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
 	return *partition_new;
 }
 
 const Partition & Operation::get_partition_new() const
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
 	return *partition_new;
 }
 
 int Operation::find_index_original( const PartitionVector & partitions )
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 		if ( partition_original->sector_start >= partitions[t].sector_start &&
@@ -71,7 +71,7 @@ int Operation::find_index_original( const PartitionVector & partitions )
 // this->partition_new.  Return vector index or -1 when no match found.
 int Operation::find_index_new( const PartitionVector & partitions )
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	for ( unsigned int i = 0 ; i < partitions.size() ; i ++ )
 		if ( partition_new->sector_start >= partitions[i].sector_start &&
@@ -93,8 +93,8 @@ void Operation::insert_unallocated( PartitionVector & partitions,
 // it with this operation's new partition.
 void Operation::substitute_new( PartitionVector & partitions )
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;
@@ -130,7 +130,7 @@ void Operation::insert_new( PartitionVector & partitions )
 	// their operations to the disk graphic.  Hence their use of,
 	// find_index_original().
 
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;

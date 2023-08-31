@@ -43,7 +43,7 @@ Dialog_Partition_Copy::Dialog_Partition_Copy(const Device& device, const FS& fs,
 Dialog_Partition_Copy::~Dialog_Partition_Copy()
 {
 	delete new_partition;
-	new_partition = NULL;
+	new_partition = nullptr;
 }
 
 void Dialog_Partition_Copy::set_data( const Partition & selected_partition, const Partition & copied_partition )
@@ -145,7 +145,7 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 
 const Partition & Dialog_Partition_Copy::Get_New_Partition()
 {
-	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
+	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
 	//first call baseclass to get the correct new partition
 	Dialog_Base_Partition::prepare_new_partition();

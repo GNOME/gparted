@@ -33,7 +33,7 @@ namespace GParted
 
 DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 {
-	selected_vp = NULL ;
+	selected_vp = nullptr;
 
 	// Set some standard colors
 	color_used .set( Utils::get_color( GParted::FS_USED ) );
@@ -57,17 +57,17 @@ void DrawingAreaVisualDisk::load_partitions( const PartitionVector & partitions,
 
 void DrawingAreaVisualDisk::set_selected( const Partition * partition_ptr )
 {
-	selected_vp = NULL ;
+	selected_vp = nullptr;
 	set_selected( visual_partitions, partition_ptr );
-	
+
 	queue_draw() ;
 }
 
 void DrawingAreaVisualDisk::clear()
 {
 	visual_partitions .clear() ;
-	selected_vp = NULL ;
-	
+	selected_vp = nullptr;
+
 	queue_resize() ;
 }
 
@@ -343,7 +343,7 @@ bool DrawingAreaVisualDisk::on_button_press_event( GdkEventButton * event )
 {
 	bool ret_val = Gtk::DrawingArea::on_button_press_event( event ) ;
 
-	selected_vp = NULL ;
+	selected_vp = nullptr;
 	set_selected( visual_partitions, static_cast<int>( event ->x ), static_cast<int>( event ->y ) ) ;
 	queue_draw() ;
 	

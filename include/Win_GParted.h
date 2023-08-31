@@ -212,7 +212,7 @@ private:
 	                                            // operations applied to partitions for displaying in the UI.
 	const Partition * selected_partition_ptr;   // Pointer to the selected partition.  (Alias to element
 	                                            // in Win_GParted::m_display_device.partitions[] vector).
-	const Partition * copied_partition;         // NULL or copy of source partition object.
+	const Partition* copied_partition;          // nullptr or copy of source partition object.
 	std::vector<Operation *> operations;
 
 //gui stuff

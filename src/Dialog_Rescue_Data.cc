@@ -164,7 +164,7 @@ void Dialog_Rescue_Data::on_view_clicked(int nPart)
 	char tmpDir[32]=tmp_prefix;
 
 	char * tmpDirResult = mkdtemp(tmpDir);
-	if ( tmpDirResult == NULL )
+	if (tmpDirResult == nullptr)
 	{
 		Glib::ustring error_txt = _("An error occurred while creating a temporary directory for use as a mount point.");
 		error_txt += "\n";
@@ -212,8 +212,8 @@ void Dialog_Rescue_Data::on_view_clicked(int nPart)
 /* Opens the default browser in a directory */
 void Dialog_Rescue_Data::open_ro_view(Glib::ustring mountPoint)
 {
-	GError *error = NULL ;
-	GdkScreen *gscreen = NULL ;
+	GError* error = nullptr;
+	GdkScreen* gscreen = nullptr;
 
 	Glib::ustring uri = "file:" + mountPoint ;
 
@@ -221,7 +221,7 @@ void Dialog_Rescue_Data::open_ro_view(Glib::ustring mountPoint)
 
 	gtk_show_uri( gscreen, uri .c_str(), gtk_get_current_event_time(), &error ) ;
 
-	if ( error != NULL )
+	if (error != nullptr)
 	{
 		Glib::ustring sec_text(_("Error:"));
 		sec_text.append("\n");

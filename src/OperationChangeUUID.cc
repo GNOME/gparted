@@ -37,8 +37,8 @@ OperationChangeUUID::~OperationChangeUUID()
 {
 	delete partition_original;
 	delete partition_new;
-	partition_original = NULL;
-	partition_new = NULL;
+	partition_original = nullptr;
+	partition_new = nullptr;
 }
 
 void OperationChangeUUID::apply_to_visual( PartitionVector & partitions )
@@ -48,7 +48,7 @@ void OperationChangeUUID::apply_to_visual( PartitionVector & partitions )
 
 void OperationChangeUUID::create_description()
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( partition_new->get_filesystem_partition().uuid == UUID_RANDOM_NTFS_HALF )
 	{
@@ -68,7 +68,7 @@ void OperationChangeUUID::create_description()
 
 bool OperationChangeUUID::merge_operations( const Operation & candidate )
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( candidate.type == OPERATION_CHANGE_UUID              &&
 	     *partition_new == candidate.get_partition_original()    )

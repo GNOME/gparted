@@ -159,7 +159,7 @@ bool luks::resize( const Partition & partition_new, OperationDetail & operationd
 		// device sector size.
 		size = "--size " + Utils::num_to_str( ( partition_new.get_byte_length() - mapping.offset ) / 512LL ) + " ";
 
-	const char *pw = NULL;
+	const char* pw = nullptr;
 	if (mapping.key_loc == KEYLOC_KeyRing)
 		pw = PasswordRAMStore::lookup(partition_new.uuid);
 

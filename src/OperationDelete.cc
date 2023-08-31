@@ -33,7 +33,7 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 OperationDelete::~OperationDelete()
 {
 	delete partition_original;
-	partition_original = NULL;
+	partition_original = nullptr;
 }
 
 Partition & OperationDelete::get_partition_new()
@@ -54,7 +54,7 @@ const Partition & OperationDelete::get_partition_new() const
 
 void OperationDelete::apply_to_visual( PartitionVector & partitions )
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;
@@ -103,7 +103,7 @@ void OperationDelete::apply_to_visual( PartitionVector & partitions )
 
 void OperationDelete::create_description() 
 {
-	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( partition_original->type == TYPE_LOGICAL )
 		description = _("Logical Partition") ;

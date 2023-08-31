@@ -156,7 +156,7 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 					// delimited by an end pointer.
 					new_ptr ++;
 				read_ptr = new_ptr;
-				if ( read_ptr == NULL )
+				if (read_ptr == nullptr)
 					read_ptr = end_ptr;
 			}
 

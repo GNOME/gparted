@@ -153,11 +153,11 @@ bool Mount_Info::is_dev_mounted_at(const Glib::ustring& path, const Glib::ustrin
 void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, MountMapping & map )
 {
 	FILE* fp = setmntent( filename .c_str(), "r" );
-	if ( fp == NULL )
+	if (fp == nullptr)
 		return;
 
-	struct mntent* p = NULL;
-	while ( ( p = getmntent( fp ) ) != NULL )
+	struct mntent* p = nullptr;
+	while ((p = getmntent(fp)) != nullptr)
 	{
 		Glib::ustring node = lookup_uuid_or_label(p->mnt_fsname);
 		if (node.empty())

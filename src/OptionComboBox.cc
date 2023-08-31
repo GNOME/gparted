@@ -27,7 +27,7 @@ namespace GParted
 // NOTE: As stated in Gtkmm3 documentation, slots can be shared for all model instances.
 // See: Class Reference for Gtk::TreeModelColumn and Gtk::TreeModelColumnRecord.
 //     https://developer.gnome.org/gtkmm/3.22/classGtk_1_1TreeModelColumnRecord.html#details
-OptionStore::Slots *OptionStore::m_slots = NULL;
+OptionStore::Slots* OptionStore::m_slots = nullptr;
 
 
 OptionStore_Item::OptionStore_Item(const Glib::RefPtr<OptionStore>& ref_model,

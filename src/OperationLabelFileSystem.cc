@@ -36,8 +36,8 @@ OperationLabelFileSystem::~OperationLabelFileSystem()
 {
 	delete partition_original;
 	delete partition_new;
-	partition_original = NULL;
-	partition_new = NULL;
+	partition_original = nullptr;
+	partition_new = nullptr;
 }
 
 void OperationLabelFileSystem::apply_to_visual( PartitionVector & partitions )
@@ -47,7 +47,7 @@ void OperationLabelFileSystem::apply_to_visual( PartitionVector & partitions )
 
 void OperationLabelFileSystem::create_description()
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if( partition_new->get_filesystem_partition().get_filesystem_label().empty() )
 	{
@@ -66,7 +66,7 @@ void OperationLabelFileSystem::create_description()
 
 bool OperationLabelFileSystem::merge_operations( const Operation & candidate )
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( candidate.type == OPERATION_LABEL_FILESYSTEM         &&
 	     *partition_new == candidate.get_partition_original()    )

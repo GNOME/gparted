@@ -39,8 +39,8 @@ OperationCreate::~OperationCreate()
 {
 	delete partition_original;
 	delete partition_new;
-	partition_original = NULL;
-	partition_new = NULL;
+	partition_original = nullptr;
+	partition_new = nullptr;
 }
 
 void OperationCreate::apply_to_visual( PartitionVector & partitions )
@@ -50,7 +50,7 @@ void OperationCreate::apply_to_visual( PartitionVector & partitions )
 
 void OperationCreate::create_description() 
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	switch( partition_new->type )
 	{
@@ -79,7 +79,7 @@ void OperationCreate::create_description()
 
 bool OperationCreate::merge_operations( const Operation & candidate )
 {
-	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( candidate.type                            == OPERATION_FORMAT                   &&
 	     candidate.get_partition_original().status == STAT_NEW                           &&
