@@ -68,11 +68,7 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
 {
 	Gtk::Label *label = manage(new Gtk::Label(text));
 
-#if HAVE_LABEL_SET_XALIGN
 	label->set_xalign(0.0);
-#else
-	label->set_alignment(0.0, 0.5);
-#endif
 	label->set_valign(valign);
 	label ->set_use_markup( use_markup ) ;
 	if (wrap)

@@ -200,7 +200,7 @@ AC_SUBST([GTHREAD_LIBS])
 AC_SUBST([GTHREAD_CFLAGS])
 
 dnl GTKMM
-PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.4.0])
+PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.18.0])
 AC_SUBST([GTKMM_LIBS])
 AC_SUBST([GTKMM_CFLAGS])
 
@@ -211,18 +211,6 @@ PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.32.0])
 
 dnl Require C++11 compilation.
 AX_CXX_COMPILE_STDCXX_11()
-
-
-dnl Check for gtkmm >= 3.16 to determine availability of Gtk::Label::set_xalign().
-AC_MSG_CHECKING([for Gtk::Label::set_xalign() method])
-PKG_CHECK_EXISTS(
-	[gtkmm-3.0 >= 3.16.0],
-	[AC_DEFINE([HAVE_LABEL_SET_XALIGN], 1,
-	           [Define to 1 if gtkmm provides Gtk::Label::set_xalign() method.])
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_MSG_RESULT([no])]
-)
 
 
 dnl Check for gtkmm >= 3.22 to determine availability of Gtk::ScrolledWindow::set_propagate_natural_width().
