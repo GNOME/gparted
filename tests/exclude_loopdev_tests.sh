@@ -35,7 +35,7 @@ BEGIN {
 	#printf "DEBUG: test_name[%d]=\"%s\"\n", num_tests, test_name[num_tests]
 	num_tests++
 }
-/^INSTANTIATE_TEST_CASE_P/ {
+/^INSTANTIATE_TEST_SUITE_P/ {
 	# Save instantiation name.
 	instance_name = $2
 }

@@ -95,8 +95,8 @@ const std::string test_fsname(FSType fstype)
 }
 
 
-// Function callable by INSTANTIATE_TEST_CASE_P() to get the file system type for printing
-// as part of the test name.
+// Function callable by INSTANTIATE_TEST_SUITE_P() to get the file system type for
+// printing as part of the test name.
 const std::string param_fsname(const ::testing::TestParamInfo<FSType>& info)
 {
 	return test_fsname(info.param);
@@ -621,11 +621,11 @@ TEST_P(SupportedFileSystemsTest, CreateAndShrink)
 // Instantiate the test case so every test is run for the specified file system types.
 // Reference:
 // *   Google Test, Advanced googletest Topics, How to Write Value-Parameterized Tests
-//     https://github.com/google/googletest/blob/v1.8.x/googletest/docs/advanced.md#how-to-write-value-parameterized-tests
-INSTANTIATE_TEST_CASE_P(My,
-                        SupportedFileSystemsTest,
-                        ::testing::ValuesIn(SupportedFileSystemsTest::get_supported_fstypes()),
-                        param_fsname);
+//     https://github.com/google/googletest/blob/v1.10.x/googletest/docs/advanced.md#how-to-write-value-parameterized-tests
+INSTANTIATE_TEST_SUITE_P(My,
+                         SupportedFileSystemsTest,
+                         ::testing::ValuesIn(SupportedFileSystemsTest::get_supported_fstypes()),
+                         param_fsname);
 
 
 }  // namespace GParted
