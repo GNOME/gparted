@@ -69,10 +69,10 @@ std::string binary_string_to_print(size_t offset, const char* s, size_t len)
 // Re-execute current executable using xvfb-run so that it provides a virtual X11 display.
 static void exec_using_xvfb_run(int argc, char** argv)
 {
-	// argc+2 = Space for "xvfb-run" command, existing argc strings plus NULL pointer.
+	// argc+2 = Space for "xvfb-run" command, existing argc strings plus nullptr.
 	size_t size = sizeof(char*) * (argc+2);
 	char** new_argv = (char**)malloc(size);
-	if (new_argv == NULL)
+	if (new_argv == nullptr)
 	{
 		fprintf(stderr, "Failed to allocate %lu bytes of memory.  errno=%d,%s\n",
 			(unsigned long)size, errno, strerror(errno));
@@ -80,14 +80,14 @@ static void exec_using_xvfb_run(int argc, char** argv)
 	}
 
 	new_argv[0] = strdup("xvfb-run");
-	if (new_argv[0] == NULL)
+	if (new_argv[0] == nullptr)
 	{
 		fprintf(stderr, "Failed to allocate %lu bytes of memory.  errno=%d,%s\n",
 		        (unsigned long)strlen(new_argv[0])+1, errno, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
-	// Copy argv pointers including final NULL pointer.
+	// Copy argv pointers including final nullptr.
 	for (size_t i = 0; i <= (unsigned)argc; i++)
 		new_argv[i+1] = argv[i];
 
@@ -102,7 +102,7 @@ static void exec_using_xvfb_run(int argc, char** argv)
 void ensure_x11_display(int argc, char** argv)
 {
 	const char* display = getenv("DISPLAY");
-	if (display == NULL)
+	if (display == nullptr)
 	{
 		printf("DISPLAY environment variable unset.  Executing 'xvfb-run %s ...'\n", argv[0]);
 		exec_using_xvfb_run(argc, argv);

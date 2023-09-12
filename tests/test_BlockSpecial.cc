@@ -148,7 +148,7 @@ static std::string get_block_name( unsigned want )
 static std::string get_link_name()
 {
 	DIR * dir = opendir( "/dev/disk/by-id" );
-	if ( dir == NULL )
+	if (dir == nullptr)
 	{
 		ADD_FAILURE() << __func__ << "(): Failed to open directory '/dev/disk/by-id'";
 		return "";
@@ -180,8 +180,8 @@ static std::string get_link_name()
 // Follow symbolic link return real path.
 static std::string follow_link_name( std::string link )
 {
-	char * rpath = realpath( link.c_str(), NULL );
-	if ( rpath == NULL )
+	char* rpath = realpath(link.c_str(), nullptr);
+	if (rpath == nullptr)
 	{
 		ADD_FAILURE() << __func__ << "(): Failed to resolve symbolic link '" << link << "'";
 		return "";

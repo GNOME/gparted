@@ -194,12 +194,12 @@ protected:
 };
 
 
-SupportedFileSystems* SupportedFileSystemsTest::s_supported_filesystems = NULL;
+SupportedFileSystems* SupportedFileSystemsTest::s_supported_filesystems = nullptr;
 const char*           SupportedFileSystemsTest::s_image_name            = "test_SupportedFileSystems.img";
 
 
 SupportedFileSystemsTest::SupportedFileSystemsTest()
- : m_fstype(GetParam()), m_fs_object(NULL), m_require_loopdev(false),
+ : m_fstype(GetParam()), m_fs_object(nullptr), m_require_loopdev(false),
    // Initialise top-level operation detail object with description ...
    m_operation_detail("Operation details:", STATUS_NONE)
 {
@@ -208,12 +208,12 @@ SupportedFileSystemsTest::SupportedFileSystemsTest()
 
 void SupportedFileSystemsTest::SetUp()
 {
-	ASSERT_TRUE(s_supported_filesystems != NULL) << __func__ << "(): TEST_BUG: File system interfaces not loaded";
+	ASSERT_TRUE(s_supported_filesystems != nullptr) << __func__ << "(): TEST_BUG: File system interfaces not loaded";
 
 	// Lookup file system interface object.
 	m_fs_object = s_supported_filesystems->get_fs_object(m_fstype);
-	ASSERT_TRUE(m_fs_object != NULL) << __func__ << "(): TEST_BUG: Interface object not found for file system "
-	                                 << test_fsname(m_fstype);
+	ASSERT_TRUE(m_fs_object != nullptr) << __func__ << "(): TEST_BUG: Interface object not found for file system "
+	                                    << test_fsname(m_fstype);
 }
 
 
@@ -243,7 +243,7 @@ void SupportedFileSystemsTest::TearDown()
 
 	unlink(s_image_name);
 
-	m_fs_object = NULL;
+	m_fs_object = nullptr;
 }
 
 
@@ -279,7 +279,7 @@ std::vector<FSType> SupportedFileSystemsTest::get_supported_fstypes()
 // Create the supported file system interface object.
 void SupportedFileSystemsTest::setup_supported_filesystems()
 {
-	if (s_supported_filesystems == NULL)
+	if (s_supported_filesystems == nullptr)
 	{
 		s_supported_filesystems = new SupportedFileSystems();
 
@@ -294,7 +294,7 @@ void SupportedFileSystemsTest::setup_supported_filesystems()
 void SupportedFileSystemsTest::teardown_supported_filesystems()
 {
 	delete s_supported_filesystems;
-	s_supported_filesystems = NULL;
+	s_supported_filesystems = nullptr;
 }
 
 
@@ -361,7 +361,7 @@ void SupportedFileSystemsTest::reload_partition()
 
 	// Use libparted to get the sector size etc. of the image file.
 	PedDevice* lp_device = ped_device_get(m_dev_name.c_str());
-	ASSERT_TRUE(lp_device != NULL);
+	ASSERT_TRUE(lp_device != nullptr);
 
 	// Prepare partition object spanning whole of the image file.
 	m_partition.set_unpartitioned(m_dev_name,
@@ -372,7 +372,7 @@ void SupportedFileSystemsTest::reload_partition()
 	                              false);
 
 	ped_device_destroy(lp_device);
-	lp_device = NULL;
+	lp_device = nullptr;
 }
 
 

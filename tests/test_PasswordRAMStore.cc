@@ -79,7 +79,7 @@ static bool mem_is_zero( const char * mem, size_t len )
 class PasswordRAMStoreTest : public ::testing::Test
 {
 protected:
-	PasswordRAMStoreTest() : looked_up_pw( NULL )  {};
+	PasswordRAMStoreTest() : looked_up_pw(nullptr)  {};
 
 	static void SetUpTestCase();
 
@@ -93,7 +93,7 @@ protected:
 };
 
 // Initialise test case class static member.
-const char * PasswordRAMStoreTest::protected_mem = NULL;
+const char * PasswordRAMStoreTest::protected_mem = nullptr;
 
 const size_t ProtectedMemSize = 4096;  // [Implementation knowledge: size]
 
@@ -101,7 +101,7 @@ const size_t ProtectedMemSize = 4096;  // [Implementation knowledge: size]
 void PasswordRAMStoreTest::SetUpTestCase()
 {
 	protected_mem = PasswordRAMStore::get_protected_mem();
-	ASSERT_TRUE( protected_mem != NULL ) << __func__ << "(): No locked virtual memory for password RAM store";
+	ASSERT_TRUE(protected_mem != nullptr) << __func__ << "(): No locked virtual memory for password RAM store";
 }
 
 TEST_F( PasswordRAMStoreTest, Initialisation )
@@ -114,7 +114,7 @@ TEST_F( PasswordRAMStoreTest, UnknownPasswordLookup )
 {
 	// Test lookup of non-existent password fails.
 	looked_up_pw = PasswordRAMStore::lookup( "key-unknown" );
-	EXPECT_TRUE( looked_up_pw == NULL );
+	EXPECT_TRUE(looked_up_pw == nullptr);
 }
 
 TEST_F( PasswordRAMStoreTest, UnknownPasswordErasure )
@@ -270,7 +270,7 @@ TEST_F( PasswordRAMStoreTest, TooLongPassword )
 	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );
 
 	looked_up_pw = PasswordRAMStore::lookup( "key-too-long" );
-	EXPECT_TRUE( looked_up_pw == NULL );
+	EXPECT_TRUE(looked_up_pw == nullptr);
 
 	EXPECT_FALSE(PasswordRAMStore::erase("key-too-long"));
 	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );

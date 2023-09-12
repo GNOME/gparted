@@ -86,7 +86,7 @@ void EraseFileSystemSignaturesTest::create_image_file(Byte_Value size)
 	m_partition.Reset();
 
 	PedDevice* lp_device = ped_device_get(s_image_name);
-	ASSERT_TRUE(lp_device != NULL);
+	ASSERT_TRUE(lp_device != nullptr);
 
 	m_partition.set_unpartitioned(s_image_name,
 	                              lp_device->path,
@@ -96,7 +96,7 @@ void EraseFileSystemSignaturesTest::create_image_file(Byte_Value size)
 	                              false);
 
 	ped_device_destroy(lp_device);
-	lp_device = NULL;
+	lp_device = nullptr;
 }
 
 
@@ -155,7 +155,7 @@ const char* first_non_zero_byte(const char* buf, size_t size)
 		buf++;
 		size--;
 	}
-	return NULL;
+	return nullptr;
 }
 
 
@@ -183,7 +183,7 @@ bool EraseFileSystemSignaturesTest::image_contains_all_zeros()
 			return false;
 		}
 		const char* p = first_non_zero_byte(buf, bytes_read);
-		if (p != NULL)
+		if (p != nullptr)
 		{
 			ADD_FAILURE() << __func__ << "(): First non-zero bytes:\n"
 			              << binary_string_to_print(offset + (p - buf), p, buf + bytes_read - p);
