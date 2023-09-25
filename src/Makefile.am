@@ -28,7 +28,6 @@ gpartedbin_SOURCES = \
 	Dialog_Partition_New.cc		\
 	Dialog_Partition_Resize_Move.cc	\
 	Dialog_Progress.cc		\
-	Dialog_Rescue_Data.cc		\
 	DrawingAreaVisualDisk.cc	\
 	FS_Info.cc			\
 	FileSystem.cc			\

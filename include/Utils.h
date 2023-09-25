@@ -179,7 +179,6 @@ public:
 	static void split( const Glib::ustring& str,
 	                   std::vector<Glib::ustring>& result,
 	                   const Glib::ustring& delimiters     ) ;
-	static int convert_to_int(const Glib::ustring & src);
 	static Glib::ustring generate_uuid(void);
 	static int get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
 	                                         Byte_Value & fs_size, Byte_Value & fs_free,

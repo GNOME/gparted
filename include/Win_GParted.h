@@ -191,7 +191,6 @@ private:
 	void toggle_fs_busy_state();
 	void activate_mount_partition( unsigned int index ) ;
 	void activate_disklabel() ;
-	void activate_attempt_rescue_data();
 	void activate_manage_flags() ;
 	void activate_check() ;
 	void activate_change_uuid() ;

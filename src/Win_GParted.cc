@@ -21,7 +21,6 @@
 #include "DialogFeatures.h"
 #include "DialogPasswordEntry.h"
 #include "Dialog_Disklabel.h"
-#include "Dialog_Rescue_Data.h"
 #include "Dialog_Partition_Resize_Move.h"
 #include "Dialog_Partition_Copy.h"
 #include "Dialog_Partition_New.h"
@@ -252,11 +251,6 @@ void Win_GParted::init_menubar()
 	item = manage(new GParted::Menu_Helpers::MenuElem(
 		Glib::ustring(_("_Create Partition Table") ) + "...",
 		sigc::mem_fun(*this, &Win_GParted::activate_disklabel)));
-	menu->append(*item);
-
-	item = manage(new GParted::Menu_Helpers::MenuElem(
-		Glib::ustring(_("_Attempt Data Rescue") ) + "...",
-		sigc::mem_fun(*this, &Win_GParted::activate_attempt_rescue_data)));
 	menu->append(*item);
 
 	item = manage(new GParted::Menu_Helpers::MenuElem(
@@ -3193,72 +3187,6 @@ void Win_GParted::activate_disklabel()
 	}
 }
 
-//Runs when the Device->Attempt Rescue Data is clicked
-void Win_GParted::activate_attempt_rescue_data()
-{
-	if(Glib::find_program_in_path( "gpart" ) .empty()) //Gpart must be installed to continue
-	{
-		Gtk::MessageDialog errorDialog(*this, "", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
-		errorDialog.set_message(_("Command gpart was not found"));
-		errorDialog.set_secondary_text(_("This feature uses gpart. Please install gpart and try again."));
-
-		errorDialog.run();
-
-		return;
-	}
-
-	//Dialog information
-	Glib::ustring sec_text = _( "A full disk scan is needed to find file systems." ) ;
-	sec_text += "\n" ;
-	sec_text +=_("The scan might take a very long time.");
-	sec_text += "\n" ;
-	sec_text += _("After the scan you can mount any discovered file systems and copy the data to other media.") ;
-	sec_text += "\n" ;
-	sec_text += _("Do you want to continue?");
-
-	Gtk::MessageDialog messageDialog(*this, "", true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK_CANCEL, true);
-	/*TO TRANSLATORS: looks like	Search for file systems on /deb/sdb */
-	messageDialog.set_message(Glib::ustring::compose(_("Search for file systems on %1"), devices[ current_device ] .get_path()));
-	messageDialog.set_secondary_text(sec_text);
-
-	if(messageDialog.run()!=Gtk::RESPONSE_OK)
-	{
-		return;
-	}
-
-	messageDialog.hide();
-
-	/*TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb */
-	show_pulsebar(Glib::ustring::compose( _("Searching for file systems on %1"), devices[ current_device ] .get_path()));
-	Glib::ustring gpart_output;
-	gparted_core.guess_partition_table(devices[ current_device ], gpart_output);
-	hide_pulsebar();
-	Dialog_Rescue_Data dialog;
-	dialog .set_transient_for( *this );
-
-	//Reads the output of gpart
-	dialog.init_partitions( &devices[current_device], gpart_output );
-
-	if ( ! dialog.found_partitions() )
-	{
-		//Dialog information
-		Gtk::MessageDialog errorDialog(*this, "", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
-		
-		/*TO TRANSLATORS: looks like	No file systems found on /deb/sdb */
-		errorDialog.set_message(Glib::ustring::compose(_("No file systems found on %1"), devices[ current_device ] .get_path()));
-		errorDialog.set_secondary_text(_("The disk scan by gpart did not find any recognizable file systems on this disk."));
-
-		errorDialog.run();
-		return;
-	}
-
-	dialog.run();
-	dialog.hide();
-
-	Utils::execute_command( "umount /tmp/gparted-roview*" );
-
-	menu_gparted_refresh_devices() ;
-}
 
 void Win_GParted::activate_manage_flags() 
 {

@@ -275,14 +275,6 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	g_idle_add((GSourceFunc)_mainquit, nullptr);
 }
 
-// runs gpart on the specified parameter
-void GParted_Core::guess_partition_table(const Device & device, Glib::ustring &buff)
-{
-	Glib::ustring error;
-	Glib::ustring cmd = "gpart -s " + Utils::num_to_str( device.sector_size ) +
-	                    " " + Glib::shell_quote( device.get_path() );
-	Utils::execute_command( cmd, buff, error, true );
-}
 
 void GParted_Core::set_thread_status_message( Glib::ustring msg )
 {

@@ -18,7 +18,6 @@ noinst_HEADERS = \
 	Dialog_Partition_New.h		\
 	Dialog_Partition_Resize_Move.h	\
 	Dialog_Progress.h		\
-	Dialog_Rescue_Data.h		\
 	DrawingAreaVisualDisk.h		\
 	FS_Info.h			\
 	FileSystem.h			\

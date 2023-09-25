@@ -54,7 +54,6 @@ public:
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void set_devices( std::vector<Device> & devices ) ;
 	void set_devices_thread( std::vector<Device> * pdevices );
-	void guess_partition_table(const Device & device, Glib::ustring &buff);
 
 	bool valid_partition(const Device& device, Partition& partition, Glib::ustring& error);
 	bool apply_operation_to_disk( Operation * operation );
@@ -241,7 +240,6 @@ private:
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
 	Glib::ustring thread_status_message;  //Used to pass data to show_pulsebar method
-	Glib::RefPtr<Glib::IOChannel> iocInput, iocOutput; // Used to send data to gpart command
 	static SupportedFileSystems* supported_filesystems;
 };
 

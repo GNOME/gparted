@@ -895,15 +895,6 @@ void Utils::split( const Glib::ustring& str,
 	result. push_back( word ) ;
 }
 
-// Converts a Glib::ustring into a int
-int Utils::convert_to_int(const Glib::ustring & src)
-{
-	int ret_val;
-	std::istringstream stream(src);
-	stream >> ret_val;
-
-	return ret_val;
-}
 
 // Create a new UUID
 Glib::ustring Utils::generate_uuid(void)
