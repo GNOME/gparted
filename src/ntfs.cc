@@ -192,10 +192,7 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 	bool success;
 	Glib::ustring size = "" ;
 	if ( ! fill_partition )
-	{
-		size = " -s " + Utils::num_to_str( floor( Utils::sector_to_unit(
-				partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) ) ;
-	}
+		size = " -s " + Utils::num_to_str(partition_new.get_byte_length());
 	Glib::ustring cmd = "ntfsresize --force --force" + size ;
 
 	//simulation..

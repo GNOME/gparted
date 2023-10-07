@@ -177,10 +177,7 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 { 
 	Glib::ustring size = "" ;
 	if ( ! fill_partition )
-	{
-		size = " -s " + Utils::num_to_str( floor( Utils::sector_to_unit(
-		                   partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) ) ;
-	}
+		size = " -s " + Utils::num_to_str(partition_new.get_byte_length());
 	const Glib::ustring resize_cmd = "echo y | resize_reiserfs" + size +
 	                                 " " + Glib::shell_quote( partition_new.get_path() );
 	exit_status = execute_command( "sh -c " + Glib::shell_quote( resize_cmd ), operationdetail );

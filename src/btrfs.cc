@@ -296,8 +296,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 	{
 		Glib::ustring size ;
 		if ( ! fill_partition )
-			size = Utils::num_to_str( floor( Utils::sector_to_unit(
-					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
+			size = Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
 		else
 			size = "max" ;
 		success &= ! execute_command("btrfs filesystem resize " + devid_str + ":" + size +

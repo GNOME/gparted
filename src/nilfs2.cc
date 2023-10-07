@@ -199,8 +199,7 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		Glib::ustring cmd = "nilfs-resize -v -y " + Glib::shell_quote( partition_new.get_path() );
 		if ( ! fill_partition )
 		{
-			Glib::ustring size = Utils::num_to_str( floor( Utils::sector_to_unit(
-					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
+			Glib::ustring size = Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
 			cmd += " " + size ;
 		}
 		success &= ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );

@@ -107,8 +107,7 @@ bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operati
 	Glib::ustring size = "" ;
 	if ( ! fill_partition )
 		size = " --yes --setphysicalvolumesize " +
-			Utils::num_to_str( floor( Utils::sector_to_unit(
-				partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K " ;
+		       Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K ";
 	return ! execute_command( "lvm pvresize -v " + size + Glib::shell_quote( partition_new.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }

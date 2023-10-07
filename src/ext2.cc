@@ -302,8 +302,7 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 	Glib::ustring str_temp = "resize2fs -p " + Glib::shell_quote( partition_new.get_path() );
 	
 	if ( ! fill_partition )
-		str_temp += " " + Utils::num_to_str( floor( Utils::sector_to_unit(
-					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K";
+		str_temp += " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
 
 	return ! execute_command( str_temp, operationdetail, EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
 	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::resize_progress ) ) );
