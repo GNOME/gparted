@@ -196,13 +196,11 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 
 	if ( success )
 	{
-		Glib::ustring cmd = "nilfs-resize -v -y " + Glib::shell_quote( partition_new.get_path() );
+		Glib::ustring size;
 		if ( ! fill_partition )
-		{
-			Glib::ustring size = Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
-			cmd += " " + size ;
-		}
-		success &= ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
+			size = " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
+		success &= ! execute_command("nilfs-resize -v -y " + Glib::shell_quote(partition_new.get_path()) + size,
+		                             operationdetail, EXEC_CHECK_STATUS);
 
 		if ( ! partition_new. busy )
 			success &= ! execute_command( "umount -v " + Glib::shell_quote( mount_point ),
