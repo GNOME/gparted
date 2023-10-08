@@ -86,27 +86,27 @@ void reiserfs::set_used_sectors( Partition & partition )
 	if ( ! Utils::execute_command( "debugreiserfs " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                         )
 	{
-		Glib::ustring::size_type index = output.find( "Count of blocks on the device:" );
-		if ( index >= output .length() ||
-		     sscanf( output.substr( index ).c_str(), "Count of blocks on the device: %lld", &T ) != 1 )
-			T = -1 ;
+		long long block_count = -1;
+		Glib::ustring::size_type index = output.find("\nCount of blocks on the device:");
+		if (index < output.length())
+			sscanf(output.substr(index).c_str(), "\nCount of blocks on the device: %lld", &block_count);
 
-		index = output .find( "Blocksize:" ) ;
-		if ( index >= output .length() || 
-		     sscanf( output.substr( index ).c_str(), "Blocksize: %lld", &S ) != 1 )
-			S = -1 ;
+		long long block_size = -1;
+		index = output.find("\nBlocksize:");
+		if (index < output.length())
+			sscanf(output.substr(index).c_str(), "\nBlocksize: %lld", &block_size);
 
-		index = output .find( ":", output .find( "Free blocks" ) ) +1 ;
-		if ( index >= output .length() ||
-		     sscanf( output.substr( index ).c_str(), "%lld", &N ) != 1 )
-			N = -1 ;
+		long long free_blocks = -1;
+		index = output.find("\nFree blocks");
+		if (index < output.length())
+			sscanf(output.substr(index).c_str(), "\nFree blocks%*[^:]: %lld", &free_blocks);
 
-		if ( T > -1 && N > -1 && S > -1 )
+		if (block_count > -1 && block_size > -1 && free_blocks > -1)
 		{
-			Sector fs_size = T * S / partition.sector_size;
-			Sector fs_free = N * S / partition.sector_size;
+			Sector fs_size = block_count * block_size / partition.sector_size;
+			Sector fs_free = free_blocks * block_size / partition.sector_size;
 			partition.set_sector_usage(fs_size, fs_free);
-			partition.fs_block_size = S;
+			partition.fs_block_size = block_size;
 		}
 	}
 	else
