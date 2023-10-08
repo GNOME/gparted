@@ -81,14 +81,15 @@ bool lvm2_pv::is_busy( const Glib::ustring & path )
 	return LVM2_PV_Info::has_active_lvs( path );
 }
 
+
 void lvm2_pv::set_used_sectors( Partition & partition )
 {
-	T = (Sector) LVM2_PV_Info::get_size_bytes( partition.get_path() );
-	N = (Sector) LVM2_PV_Info::get_free_bytes( partition.get_path() );
-	if ( T > -1 && N > -1 )
+	Byte_Value size_bytes = LVM2_PV_Info::get_size_bytes(partition.get_path());
+	Byte_Value free_bytes = LVM2_PV_Info::get_free_bytes(partition.get_path());
+	if (size_bytes > -1 && free_bytes > -1)
 	{
-		Sector fs_size = T / partition.sector_size;
-		Sector fs_free = N / partition.sector_size;
+		Sector fs_size = size_bytes / partition.sector_size;
+		Sector fs_free = free_bytes / partition.sector_size;
 		partition.set_sector_usage(fs_size, fs_free);
 	}
 

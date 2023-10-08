@@ -121,8 +121,8 @@ void luks::set_used_sectors( Partition & partition )
 	if ( mapping.name.empty() )
 	{
 		// Inactive LUKS partition
-		T = partition.get_sector_length();
-		partition.set_sector_usage( T, 0 );
+		Sector fs_size = partition.get_sector_length();
+		partition.set_sector_usage(fs_size, 0);
 	}
 	else
 	{

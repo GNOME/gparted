@@ -79,7 +79,7 @@ void linux_swap::set_used_sectors( Partition & partition )
 {
 	if ( partition .busy )
 	{
-		N = -1;
+		long long used_kib = -1;
 		std::string line ;
 		std::ifstream input( "/proc/swaps" ) ;
 		if ( input )
@@ -90,7 +90,7 @@ void linux_swap::set_used_sectors( Partition & partition )
 				Glib::ustring filename = Utils::regexp_label( line, "^([[:graph:]]+)" );
 				if ( bs_path == BlockSpecial( filename ) )
 				{
-					sscanf( line.c_str(), "%*s %*s %*d %lld", &N );
+					sscanf(line.c_str(), "%*s %*s %*d %lld", &used_kib);
 					break ;
 				}
 			}
@@ -100,14 +100,14 @@ void linux_swap::set_used_sectors( Partition & partition )
 		{
 			partition.push_back_message( "open(\"/proc/swaps\", O_RDONLY): " + Glib::strerror( errno ) );
 		}
-		if ( N > -1 )
+		if (used_kib > -1)
 		{
 			// Ignore swap space reported size to ignore 1 page format
 			// overhead.  Instead use partition size as sectors_fs_size so
 			// reported used figure for active swap space starts from 0
 			// upwards, matching what 'swapon -s' reports.
 			Sector fs_size = partition.get_sector_length();
-			Sector fs_used = N * KIBIBYTE / partition.sector_size;
+			Sector fs_used = used_kib * KIBIBYTE / partition.sector_size;
 			Sector fs_free = fs_size - fs_used;
 			partition.set_sector_usage(fs_size, fs_free);
 		}
