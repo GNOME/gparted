@@ -76,45 +76,46 @@ FS nilfs2::get_filesystem_support()
 	return fs ;
 }
 
-void nilfs2::set_used_sectors( Partition & partition )
+
+void nilfs2::set_used_sectors(Partition& partition)
 {
-	if ( ! Utils::execute_command( "nilfs-tune -l " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                         )
+	exit_status = Utils::execute_command("nilfs-tune -l " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		//File system size in bytes
-		long long device_size = -1;
-		Glib::ustring::size_type index = output.find("\nDevice size:");
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nDevice size: %lld", &device_size);
-
-		//Free space in blocks
-		long long free_blocks = -1;
-		index = output.find("\nFree blocks count:");
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nFree blocks count: %lld", &free_blocks);
-
-		long long block_size = -1;
-		index = output.find("\nBlock size:");
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nBlock size: %lld", &block_size);
-
-		if (device_size > -1 && free_blocks > -1 && block_size > -1)
-		{
-			Sector fs_size = device_size / partition.sector_size;
-			Sector fs_free = free_blocks * block_size / partition.sector_size;
-			partition.set_sector_usage(fs_size, fs_free);
-			partition.fs_block_size = block_size;
-		}
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
 
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+	// File system size in bytes
+	long long device_size = -1;
+	Glib::ustring::size_type index = output.find("\nDevice size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nDevice size: %lld", &device_size);
+
+	// Free space in blocks
+	long long free_blocks = -1;
+	index = output.find("\nFree blocks count:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nFree blocks count: %lld", &free_blocks);
+
+	long long block_size = -1;
+	index = output.find("\nBlock size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nBlock size: %lld", &block_size);
+
+	if (device_size > -1 && free_blocks > -1 && block_size > -1)
+	{
+		Sector fs_size = device_size / partition.sector_size;
+		Sector fs_free = free_blocks * block_size / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		partition.fs_block_size = block_size;
 	}
 }
+
 
 void nilfs2::read_label( Partition & partition )
 {
