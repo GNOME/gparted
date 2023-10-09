@@ -148,87 +148,88 @@ FS ext2::get_filesystem_support()
 	return fs ;
 }
 
-void ext2::set_used_sectors( Partition & partition ) 
+
+void ext2::set_used_sectors(Partition& partition)
 {
 	// Called when file system is unmounted *and* when mounted.  Always read
 	// the file system size from the on disk superblock using dumpe2fs to
 	// avoid overhead subtraction.  When mounted read the free space from
 	// the kernel via the statvfs() system call.  When unmounted read the
 	// free space using resize2fs itself falling back to using dumpe2fs.
-	if ( ! Utils::execute_command( "dumpe2fs -h " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                       )
+	exit_status = Utils::execute_command("dumpe2fs -h " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		long long block_count = -1;
-		Glib::ustring::size_type index = output.find("\nBlock count:");
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nBlock count: %lld", &block_count);
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
+	}
 
-		long long block_size = -1;
-		index = output.find("\nBlock size:");
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nBlock size: %lld", &block_size);
+	long long block_count = -1;
+	Glib::ustring::size_type index = output.find("\nBlock count:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nBlock count: %lld", &block_count);
 
-		long long free_blocks = -1;
-		if ( partition .busy )
+	long long block_size = -1;
+	index = output.find("\nBlock size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nBlock size: %lld", &block_size);
+
+	long long free_blocks = -1;
+	if (partition.busy)
+	{
+		Byte_Value ignored;
+		Byte_Value fs_free_bytes;
+		if (Utils::get_mounted_filesystem_usage(partition.get_mountpoint(),
+		                                        ignored, fs_free_bytes, error) == 0)
 		{
-			Byte_Value ignored ;
-			Byte_Value fs_free_bytes;
-			if (Utils::get_mounted_filesystem_usage(partition.get_mountpoint(),
-			                                        ignored, fs_free_bytes, error) == 0)
-			{
-				free_blocks = fs_free_bytes / block_size;
-			}
-			else
-			{
-				partition.push_back_message( error );
-			}
+			free_blocks = fs_free_bytes / block_size;
 		}
 		else
 		{
-			// Resize2fs won't shrink a file system smaller than it's own
-			// estimated minimum size, so use that to derive the free space.
-			Glib::ustring output2;
-			Glib::ustring error2;
-			if ( ! Utils::execute_command( "resize2fs -P " + Glib::shell_quote( partition.get_path() ),
-			                               output2, error2, true )                                      )
-			{
-				long long minimum_blocks = -1;
-				sscanf(output2.c_str(), "Estimated minimum size of the filesystem: %lld", &minimum_blocks);
-				if (minimum_blocks > -1)
-					free_blocks = block_count - minimum_blocks;
-			}
-
-			// Resize2fs can fail reporting please run fsck first.  Fall back
-			// to reading dumpe2fs output for free space.
-			if (free_blocks == -1)
-			{
-				index = output.find("\nFree blocks:");
-				if ( index < output.length() )
-					sscanf( output.substr(index).c_str(), "\nFree blocks: %lld", &free_blocks);
-			}
-
-			if (free_blocks == -1 && error2.empty())
-				partition.push_back_message( error2 );
-		}
-
-		if (block_count > -1 && block_size > -1 && free_blocks > -1)
-		{
-			Sector fs_size = block_count * block_size / partition.sector_size;
-			Sector fs_free = free_blocks * block_size / partition.sector_size;
-			partition.set_sector_usage(fs_size, fs_free);
-			partition.fs_block_size = block_size;
+			partition.push_back_message(error);
 		}
 	}
 	else
 	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		// Resize2fs won't shrink a file system smaller than it's own estimated
+		// minimum size, so use that to derive the free space.
+		Glib::ustring output2;
+		Glib::ustring error2;
+		if (! Utils::execute_command("resize2fs -P " + Glib::shell_quote(partition.get_path()),
+		                             output2, error2, true)                                    )
+		{
+			long long minimum_blocks = -1;
+			sscanf(output2.c_str(), "Estimated minimum size of the filesystem: %lld", &minimum_blocks);
+			if (minimum_blocks > -1)
+				free_blocks = block_count - minimum_blocks;
+		}
+
+		// Resize2fs can fail reporting please run fsck first.  Fall back to
+		// reading dumpe2fs output for free space.
+		if (free_blocks == -1)
+		{
+			index = output.find("\nFree blocks:");
+			if (index < output.length())
+				sscanf(output.substr(index).c_str(), "\nFree blocks: %lld", &free_blocks);
+		}
+
+		if (free_blocks == -1 && error2.empty())
+			partition.push_back_message(error2);
+	}
+
+	if (block_count > -1 && block_size > -1 && free_blocks > -1)
+	{
+		Sector fs_size = block_count * block_size / partition.sector_size;
+		Sector fs_free = free_blocks * block_size / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		partition.fs_block_size = block_size;
 	}
 }
-	
+
+
 void ext2::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "e2label " + Glib::shell_quote( partition.get_path() ),
