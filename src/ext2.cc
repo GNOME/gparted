@@ -297,16 +297,18 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::create_progress ) ) );
 }
 
-bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
-{
-	Glib::ustring str_temp = "resize2fs -p " + Glib::shell_quote( partition_new.get_path() );
-	
-	if ( ! fill_partition )
-		str_temp += " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
 
-	return ! execute_command( str_temp, operationdetail, EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
-	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::resize_progress ) ) );
+bool ext2::resize(const Partition& partition_new, OperationDetail& operationdetail, bool fill_partition)
+{
+	Glib::ustring size;
+	if ( ! fill_partition )
+		size = " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
+
+	return ! execute_command("resize2fs -p " + Glib::shell_quote(partition_new.get_path()) + size,
+	                         operationdetail, EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
+	                         static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::resize_progress)));
 }
+
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
