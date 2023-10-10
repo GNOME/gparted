@@ -98,46 +98,46 @@ FS xfs::get_filesystem_support()
 	return fs ;
 }
 
-void xfs::set_used_sectors( Partition & partition ) 
+
+void xfs::set_used_sectors(Partition& partition)
 {
-	if ( ! Utils::execute_command( "xfs_db -r -c 'sb 0' -c 'print blocksize' -c 'print dblocks'"
-	                               " -c 'print fdblocks' " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                                   )
+	exit_status = Utils::execute_command("xfs_db -r -c 'sb 0' -c 'print blocksize' -c 'print dblocks'"
+	                                     " -c 'print fdblocks' " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		//blocksize
-		long long block_size = -1;
-		sscanf(output.c_str(), "blocksize = %lld", &block_size);
-
-		//filesystem blocks
-		long long data_blocks = -1;
-		Glib::ustring::size_type index = output.find( "\ndblocks" );
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\ndblocks = %lld", &data_blocks);
-
-		//free blocks
-		long long free_data_blocks = -1;
-		index = output .find( "\nfdblocks" ) ;
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nfdblocks = %lld", &free_data_blocks);
-
-		if (block_size > -1 && data_blocks > -1 && free_data_blocks > -1)
-		{
-			Sector fs_size = data_blocks * block_size / partition.sector_size;
-			Sector fs_free = free_data_blocks * block_size / partition.sector_size;
-			partition.set_sector_usage(fs_size, fs_free);
-			partition.fs_block_size = block_size;
-		}
-
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
+
+	// blocksize
+	long long block_size = -1;
+	sscanf(output.c_str(), "blocksize = %lld", &block_size);
+
+	// filesystem data blocks
+	long long data_blocks = -1;
+	Glib::ustring::size_type index = output.find("\ndblocks");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\ndblocks = %lld", &data_blocks);
+
+	// free data blocks
+	long long free_data_blocks = -1;
+	index = output.find("\nfdblocks");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nfdblocks = %lld", &free_data_blocks);
+
+	if (block_size > -1 && data_blocks > -1 && free_data_blocks > -1)
 	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		Sector fs_size = data_blocks * block_size / partition.sector_size;
+		Sector fs_free = free_data_blocks * block_size / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		partition.fs_block_size = block_size;
 	}
 }
+
 
 void xfs::read_label( Partition & partition )
 {
