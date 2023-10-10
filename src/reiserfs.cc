@@ -81,43 +81,44 @@ FS reiserfs::get_filesystem_support()
 	return fs ;
 }
 
-void reiserfs::set_used_sectors( Partition & partition ) 
+
+void reiserfs::set_used_sectors(Partition& partition)
 {
-	if ( ! Utils::execute_command( "debugreiserfs " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                         )
+	exit_status = Utils::execute_command("debugreiserfs " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		long long block_count = -1;
-		Glib::ustring::size_type index = output.find("\nCount of blocks on the device:");
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nCount of blocks on the device: %lld", &block_count);
-
-		long long block_size = -1;
-		index = output.find("\nBlocksize:");
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nBlocksize: %lld", &block_size);
-
-		long long free_blocks = -1;
-		index = output.find("\nFree blocks");
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nFree blocks%*[^:]: %lld", &free_blocks);
-
-		if (block_count > -1 && block_size > -1 && free_blocks > -1)
-		{
-			Sector fs_size = block_count * block_size / partition.sector_size;
-			Sector fs_free = free_blocks * block_size / partition.sector_size;
-			partition.set_sector_usage(fs_size, fs_free);
-			partition.fs_block_size = block_size;
-		}
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
+
+	long long block_count = -1;
+	Glib::ustring::size_type index = output.find("\nCount of blocks on the device:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nCount of blocks on the device: %lld", &block_count);
+
+	long long block_size = -1;
+	index = output.find("\nBlocksize:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nBlocksize: %lld", &block_size);
+
+	long long free_blocks = -1;
+	index = output.find("\nFree blocks");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nFree blocks%*[^:]: %lld", &free_blocks);
+
+	if (block_count > -1 && block_size > -1 && free_blocks > -1)
 	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		Sector fs_size = block_count * block_size / partition.sector_size;
+		Sector fs_free = free_blocks * block_size / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		partition.fs_block_size = block_size;
 	}
 }
+
 
 void reiserfs::read_label( Partition & partition )
 {
