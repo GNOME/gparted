@@ -166,7 +166,6 @@ protected:
 
 	//those are used in several places..
 	Glib::ustring output, error ;
-	Sector T, N, S ;  //File system [T]otal num of blocks, [N]um of free (or used) blocks, block [S]ize
 	int exit_status ;
 
 private:
