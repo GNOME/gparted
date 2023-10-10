@@ -64,43 +64,44 @@ FS reiser4::get_filesystem_support()
 	return fs ;
 }
 
-void reiser4::set_used_sectors( Partition & partition ) 
+
+void reiser4::set_used_sectors(Partition& partition)
 {
-	if ( ! Utils::execute_command( "debugfs.reiser4 " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                           )
+	exit_status = Utils::execute_command("debugfs.reiser4 " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		long long blocks = -1;
-		Glib::ustring::size_type index = output.find( "\nblocks:" );
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nblocks: %lld", &blocks);
-
-		long long free_blocks = -1;
-		index = output .find( "\nfree blocks:" ) ;
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nfree blocks: %lld", &free_blocks);
-
-		long long block_size = -1;
-		index = output .find( "\nblksize:" ) ;
-		if (index < output.length())
-			sscanf(output.substr(index).c_str(), "\nblksize: %lld", &block_size);
-
-		if (blocks > -1 && free_blocks > -1 && block_size > -1)
-		{
-			Sector fs_size = blocks * block_size / partition.sector_size;
-			Sector fs_free = free_blocks * block_size / partition.sector_size;
-			partition.set_sector_usage(fs_size, fs_free);
-			partition.fs_block_size = block_size;
-		}
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
+
+	long long blocks = -1;
+	Glib::ustring::size_type index = output.find("\nblocks:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nblocks: %lld", &blocks);
+
+	long long free_blocks = -1;
+	index = output.find("\nfree blocks:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nfree blocks: %lld", &free_blocks);
+
+	long long block_size = -1;
+	index = output.find("\nblksize:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "\nblksize: %lld", &block_size);
+
+	if (blocks > -1 && free_blocks > -1 && block_size > -1)
 	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		Sector fs_size = blocks * block_size / partition.sector_size;
+		Sector fs_free = free_blocks * block_size / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		partition.fs_block_size = block_size;
 	}
 }
+
 
 void reiser4::read_label( Partition & partition )
 {
