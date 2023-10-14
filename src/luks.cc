@@ -127,8 +127,8 @@ void luks::set_used_sectors( Partition & partition )
 	else
 	{
 		// Active LUKS partition
-		T = Utils::round( ( mapping.offset + mapping.length ) / double(partition.sector_size) );
-		partition.set_sector_usage( T, 0 );
+		Sector fs_size = (mapping.offset + mapping.length) / partition.sector_size;
+		partition.set_sector_usage(fs_size, 0);
 	}
 }
 

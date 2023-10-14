@@ -87,9 +87,9 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 	N = (Sector) LVM2_PV_Info::get_free_bytes( partition.get_path() );
 	if ( T > -1 && N > -1 )
 	{
-		T = Utils::round( T / double(partition .sector_size) ) ;
-		N = Utils::round( N / double(partition .sector_size) ) ;
-		partition .set_sector_usage( T, N ) ;
+		Sector fs_size = T / partition.sector_size;
+		Sector fs_free = N / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
 	}
 
 	std::vector<Glib::ustring> error_messages = LVM2_PV_Info::get_error_messages( partition.get_path() );

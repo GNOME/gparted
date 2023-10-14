@@ -86,9 +86,9 @@ void reiser4::set_used_sectors( Partition & partition )
 
 		if ( T > -1 && N > -1 && S > -1 )
 		{
-			T = Utils::round( T * ( S / double(partition .sector_size) ) ) ;
-			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
-			partition .set_sector_usage( T, N ) ;
+			Sector fs_size = T * S / partition.sector_size;
+			Sector fs_free = N * S / partition.sector_size;
+			partition.set_sector_usage(fs_size, fs_free);
 			partition.fs_block_size = S;
 		}
 	}

@@ -106,18 +106,20 @@ void linux_swap::set_used_sectors( Partition & partition )
 			// overhead.  Instead use partition size as sectors_fs_size so
 			// reported used figure for active swap space starts from 0
 			// upwards, matching what 'swapon -s' reports.
-			T = partition.get_sector_length();
-			N = Utils::round( N * ( KIBIBYTE / double(partition .sector_size) ) ) ;
-			partition .set_sector_usage( T, T - N ) ;
+			Sector fs_size = partition.get_sector_length();
+			Sector fs_used = N * KIBIBYTE / partition.sector_size;
+			Sector fs_free = fs_size - fs_used;
+			partition.set_sector_usage(fs_size, fs_free);
 		}
 	}
 	else
 	{
-		//By definition inactive swap space is 100% free
-		Sector size = partition .get_sector_length() ;
-		partition .set_sector_usage( size, size ) ;
+		// By definition inactive swap space is 100% free.
+		Sector fs_size = partition.get_sector_length();
+		partition.set_sector_usage(fs_size, fs_size);
 	}
 }
+
 
 void linux_swap::read_label( Partition & partition )
 {
