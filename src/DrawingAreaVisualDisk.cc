@@ -36,12 +36,12 @@ DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 	selected_vp = nullptr;
 
 	// Set some standard colors
-	color_used .set( Utils::get_color( GParted::FS_USED ) );
-	color_unused .set( Utils::get_color( GParted::FS_UNUSED ) );
-	color_unallocated .set( Utils::get_color( GParted::FS_UNALLOCATED ) );
+	color_used.set(Utils::get_color(FS_USED));
+	color_unused.set(Utils::get_color(FS_UNUSED));
+	color_unallocated.set(Utils::get_color(FS_UNALLOCATED));
 	color_text .set( "black" );
 	add_events( Gdk::BUTTON_PRESS_MASK );
-	
+
 	set_size_request( -1, HEIGHT ) ;
 }
 

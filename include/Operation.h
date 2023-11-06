@@ -25,7 +25,7 @@
 
 namespace GParted
 {
-	//FIXME: stop using GParted:: in front of our own enums.. it's not necessary and clutters the code
+
 enum OperationType {
 	OPERATION_DELETE           = 0,
 	OPERATION_CHECK            = 1,
