@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2023-06-24 15:11+0000\n"
-"PO-Revision-Date: 2023-08-28 13:06+0330\n"
+"POT-Creation-Date: 2023-10-04 16:25+0000\n"
+"PO-Revision-Date: 2024-01-20 15:29+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian\n"
 "Language: fa\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: gparted.appdata.xml.in:7
 msgid "GParted Partition Editor"
@@ -32,7 +32,7 @@ msgstr "ساخت، بازسازی و حذف پارتیشن‌ها"
 msgid ""
 "GParted is a free partition editor for graphically managing your disk "
 "partitions."
-msgstr ""
+msgstr "جی‌پارتد ویرایشگر افرازی آزاد برای مدیریت گرافیکی افرازهای دیسکتان است."
 
 #: gparted.appdata.xml.in:14
 msgid ""
@@ -43,9 +43,9 @@ msgstr ""
 
 #: gparted.appdata.xml.in:20
 msgid ""
-"GParted works with many file systems including: btrfs, exfat, ext2, ext3, "
-"ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, "
-"reiserfs, reiser4, udf, ufs, and xfs."
+"GParted works with many file systems including: btrfs, exfat, ext2, ext3, ext4, "
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
+"reiser4, udf, ufs, and xfs."
 msgstr ""
 
 #: gparted.appdata.xml.in:37
@@ -53,8 +53,8 @@ msgid "The GParted Project"
 msgstr "پروژهٔ GParted"
 
 #. ==== GUI =========================
-#: gparted.desktop.in.in:3 src/Win_GParted.cc:90 src/Win_GParted.cc:1660
-#: src/Win_GParted.cc:1889
+#: gparted.desktop.in.in:3 src/Win_GParted.cc:89 src/Win_GParted.cc:1654
+#: src/Win_GParted.cc:1883
 msgid "GParted"
 msgstr "GParted"
 
@@ -64,7 +64,7 @@ msgstr "ویرایشگر افراز"
 
 #: gparted.desktop.in.in:12
 msgid "Partition;"
-msgstr "Partition;افراز"
+msgstr "Partition;افراز;"
 
 #: org.gnome.gparted.policy.in.in:11
 msgid "Run GParted as root"
@@ -154,7 +154,7 @@ msgstr "هیچکدام"
 msgid "Resize"
 msgstr "تغییر اندازه"
 
-#: src/Dialog_Base_Partition.cc:475 src/Win_GParted.cc:326
+#: src/Dialog_Base_Partition.cc:475 src/Win_GParted.cc:320
 msgid "Resize/Move"
 msgstr "تغییر اندازه/جابجایی"
 
@@ -325,12 +325,12 @@ msgstr "سوار نشده"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: src/Dialog_Partition_Info.cc:430 src/Win_GParted.cc:3609
+#: src/Dialog_Partition_Info.cc:430 src/Win_GParted.cc:3538
 msgid "Volume Group:"
 msgstr "گروه حجمی:"
 
 #. Members
-#: src/Dialog_Partition_Info.cc:443 src/Win_GParted.cc:3610
+#: src/Dialog_Partition_Info.cc:443 src/Win_GParted.cc:3539
 msgid "Members:"
 msgstr "اعضا:"
 
@@ -354,7 +354,7 @@ msgid "Unallocated:"
 msgstr "تخصیص نیافته:"
 
 #. Size
-#: src/Dialog_Partition_Info.cc:529 src/Win_GParted.cc:604
+#: src/Dialog_Partition_Info.cc:529 src/Win_GParted.cc:598
 msgid "Size:"
 msgstr "اندازه:"
 
@@ -373,7 +373,7 @@ msgstr "رمزنگاری:"
 #. Left field & value pair area
 #. Path
 #: src/Dialog_Partition_Info.cc:559 src/Dialog_Partition_Info.cc:604
-#: src/Win_GParted.cc:612
+#: src/Win_GParted.cc:606
 msgid "Path:"
 msgstr "آدرس:"
 
@@ -409,7 +409,7 @@ msgstr "آخرین سکتور:"
 
 #. Total sectors
 #: src/Dialog_Partition_Info.cc:646 src/Dialog_Progress.cc:431
-#: src/Win_GParted.cc:662
+#: src/Win_GParted.cc:656
 msgid "Total sectors:"
 msgstr "مجموع سکتورها:"
 
@@ -452,8 +452,7 @@ msgid "New Partition #%1"
 msgstr "افراز جدید #%1"
 
 #. Bug: Not initialised by constructor calling set_data()
-#: src/Dialog_Partition_Resize_Move.cc:101
-#: src/Dialog_Partition_Resize_Move.cc:236
+#: src/Dialog_Partition_Resize_Move.cc:101 src/Dialog_Partition_Resize_Move.cc:236
 msgid "Resize/Move %1"
 msgstr "تغییر اندازه/جابجایی %1"
 
@@ -564,38 +563,38 @@ msgid "Device:"
 msgstr "دستگاه:"
 
 #. Model
-#: src/Dialog_Progress.cc:428 src/Win_GParted.cc:588
+#: src/Dialog_Progress.cc:428 src/Win_GParted.cc:582
 msgid "Model:"
 msgstr "مدل:"
 
 #. Serial number
-#: src/Dialog_Progress.cc:429 src/Win_GParted.cc:596
+#: src/Dialog_Progress.cc:429 src/Win_GParted.cc:590
 msgid "Serial:"
 msgstr "سریال:"
 
 #. Sector size
-#: src/Dialog_Progress.cc:430 src/Win_GParted.cc:670
+#: src/Dialog_Progress.cc:430 src/Win_GParted.cc:664
 msgid "Sector size:"
 msgstr "اندازه سکتور:"
 
 #. Heads
-#: src/Dialog_Progress.cc:435 src/Win_GParted.cc:638
+#: src/Dialog_Progress.cc:435 src/Win_GParted.cc:632
 msgid "Heads:"
 msgstr "هِدها:"
 
 #. Sectors / track
-#: src/Dialog_Progress.cc:436 src/Win_GParted.cc:646
+#: src/Dialog_Progress.cc:436 src/Win_GParted.cc:640
 msgid "Sectors/track:"
 msgstr "سکتورها/شیار:"
 
 #. Cylinders
-#: src/Dialog_Progress.cc:437 src/Win_GParted.cc:654
+#: src/Dialog_Progress.cc:437 src/Win_GParted.cc:648
 msgid "Cylinders:"
 msgstr "سیلندرها:"
 
 #. Partition table type
 #. Disktype
-#: src/Dialog_Progress.cc:442 src/Win_GParted.cc:630
+#: src/Dialog_Progress.cc:442 src/Win_GParted.cc:624
 msgid "Partition table:"
 msgstr "جدول افراز:"
 
@@ -713,11 +712,11 @@ msgstr "این نمودار کنش‌های قابل پیشتیبانی بر ر�
 
 #: src/DialogFeatures.cc:93
 msgid ""
-"Not all actions are available on all file systems, in part due to the nature "
-"of file systems and limitations in the required software."
+"Not all actions are available on all file systems, in part due to the nature of "
+"file systems and limitations in the required software."
 msgstr ""
-"همه‌ی کنش‌ها برای تمام سیستم پرونده‌ها موجود نیست، برخی به دلیل طبیعت سیستم "
-"پرونده و برخی به دلیل محدودیت در نرم‌افزارهای مورد نیاز."
+"همه‌ی کنش‌ها برای تمام سیستم پرونده‌ها موجود نیست، برخی به دلیل طبیعت سیستم پرونده "
+"و برخی به دلیل محدودیت در نرم‌افزارهای مورد نیاز."
 
 #. TO TRANSLATORS:  Available offline and online
 #. * means that this action is valid for this file system when
@@ -725,7 +724,7 @@ msgstr ""
 #.
 #: src/DialogFeatures.cc:112
 msgid "Available offline and online"
-msgstr ""
+msgstr "برخط و برون‌خط موجود"
 
 #. TO TRANSLATORS:  Available online only
 #. * means that this action is valid for this file system only
@@ -741,7 +740,7 @@ msgstr "موجود فقط به صورت برخط"
 #.
 #: src/DialogFeatures.cc:138
 msgid "Available offline only"
-msgstr ""
+msgstr "موجود فقط برون‌خط"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
@@ -762,121 +761,6 @@ msgstr "پویش مجدد برای کنش‌های قابل پشتیبانی"
 #: src/DialogManageFlags.cc:32 src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
 msgstr "مدیریت پرچم‌ها بر روی %1"
-
-#: src/Dialog_Rescue_Data.cc:39
-msgid "Search disk for file systems"
-msgstr "جستجو دیسک برای سیستم پرونده‌ها"
-
-#. TO TRANSLATORS: looks like    File systems found on /dev/sdb
-#: src/Dialog_Rescue_Data.cc:56
-msgid "File systems found on %1"
-msgstr "سیستم پرونده‌های پیدا شده بر روی %1"
-
-#: src/Dialog_Rescue_Data.cc:61
-msgid "Data found"
-msgstr "اطلاعات پیدا شد"
-
-#: src/Dialog_Rescue_Data.cc:65
-msgid "Data found with inconsistencies"
-msgstr "اطلاعات همراه با تناقصاتی پیدا شد"
-
-#: src/Dialog_Rescue_Data.cc:67
-msgid "WARNING!: The file systems marked with (!) are inconsistent."
-msgstr "هشدار!: سیستم‌های پرونده‌ای مشخص شده با (!) متناقض هستند."
-
-#: src/Dialog_Rescue_Data.cc:69
-msgid "You might encounter errors trying to view these file systems."
-msgstr "شما ممکن است با مشکلاتی در هنگام نمایش این سیستم‌های پرونده مواجه شوید."
-
-#: src/Dialog_Rescue_Data.cc:84
-msgid "The 'View' buttons create read-only views of each file system."
-msgstr "دکمه‌های «نما»، نماهای «فقط-خواندنی» از هر سیستم پرونده می‌سازند."
-
-#: src/Dialog_Rescue_Data.cc:86
-msgid "All mounted views will be unmounted when you close this dialog."
-msgstr "تمام نماهای سوار شده هنگامی که این محاوره را ببندید پیاده می‌شوند."
-
-#: src/Dialog_Rescue_Data.cc:109
-msgid "File systems"
-msgstr "سیستم پرونده‌ها"
-
-#. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
-#: src/Dialog_Rescue_Data.cc:131
-msgid "#%1: %2 (%3 MiB)"
-msgstr "#%1: %2 (%3 مگابایت)"
-
-#: src/Dialog_Rescue_Data.cc:139
-msgid "View"
-msgstr "نما"
-
-#: src/Dialog_Rescue_Data.cc:169
-msgid ""
-"An error occurred while creating a temporary directory for use as a mount "
-"point."
-msgstr ""
-"یک خطا در هنگام ساخت شاخه‌ی موقت جهت استفاده به عنوان نقطه سوار کردن رُخ داد."
-
-#: src/Dialog_Rescue_Data.cc:171
-msgid "Error"
-msgstr "خطا"
-
-#: src/Dialog_Rescue_Data.cc:177
-msgid "Failed creating temporary directory"
-msgstr "شکست در هنگام ساخت شاخه موقت"
-
-#: src/Dialog_Rescue_Data.cc:195
-msgid "An error occurred while creating the read-only view."
-msgstr "یک خطا در هنگام ساخت نمای «فقط-خواندنی» رُخ داد."
-
-#: src/Dialog_Rescue_Data.cc:197
-msgid ""
-"Either the file system can not be mounted (like swap), or there are "
-"inconsistencies or errors in the file system."
-msgstr ""
-"اینکه آیا این سیستم پرونده می‌تواند سوار شود (مانند swap)، یا تناقضات و خطاهایی "
-"در سیستم پرونده‌ها وجود دارد."
-
-#: src/Dialog_Rescue_Data.cc:201
-msgid "Failed creating read-only view"
-msgstr "شکست در هنگام ساخت نمای «فقط-خواندنی»"
-
-#: src/Dialog_Rescue_Data.cc:226
-msgid "Error:"
-msgstr "خطا:"
-
-#. TO TRANSLATORS: looks like
-#. * The file system is mounted on:
-#. * /tmp/gparted-roview-Nlhb3R.
-#: src/Dialog_Rescue_Data.cc:234
-msgid "The file system is mounted on:"
-msgstr "سیستم پرونده‌ها سوار شده است بر روی:"
-
-#: src/Dialog_Rescue_Data.cc:239
-msgid "Unable to open the default file manager"
-msgstr "نمی‌توان مدیر پرونده پیش‌فرض را باز کرد"
-
-#: src/Dialog_Rescue_Data.cc:258
-#, fuzzy
-#| msgid ""
-#| "Warning: The detected file system area overlaps with at least one existing "
-#| "partition."
-msgid ""
-"Warning: The detected file system area overlaps with at least one existing "
-"partition"
-msgstr ""
-"هشدار: ناحیه سیستم پرونده تشخیص داده شده، با حداقل یکی از پارتیشن‌ها مشترک است."
-
-#: src/Dialog_Rescue_Data.cc:260
-msgid ""
-"It is recommended that you do not use any overlapping file systems to avoid "
-"disturbing existing data."
-msgstr ""
-"توصیه می‌شود از هیچ یک از سیستم‌های پرونده‌ی مشترک جهت جلوگیری از ایجاد اخلال در "
-"اطلاعات موجود استفاده نکنید."
-
-#: src/Dialog_Rescue_Data.cc:262
-msgid "Do you want to try to deactivate the following mount points?"
-msgstr "آیا مایلید سعی کنید «نقاط سوار کردن» مقابل را غیرفعال کنید؟"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
 #: src/DMRaid.cc:361
@@ -942,7 +826,7 @@ msgstr "درحال جستجو پارتیشن‌های %1"
 
 #. TO TRANSLATORS: looks like   A partition cannot start (-2048)
 #. * before the start of the device
-#: src/GParted_Core.cc:308
+#: src/GParted_Core.cc:300
 #, fuzzy
 #| msgid "A partition cannot have a length of %1 sectors"
 msgid "A partition cannot start (%1) before the start of the device"
@@ -950,19 +834,19 @@ msgstr "یک افراز نمی‌تواند طولی از %1 سکتور داشت
 
 #. TO TRANSLATORS: looks like   A partition cannot end (2099199)
 #. * after the end of the device (2097151)
-#: src/GParted_Core.cc:318
+#: src/GParted_Core.cc:310
 #, fuzzy
 #| msgid "A partition cannot have a length of %1 sectors"
 msgid "A partition cannot end (%1) after the end of the device (%2)"
 msgstr "یک افراز نمی‌تواند طولی از %1 سکتور داشته باشد"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: src/GParted_Core.cc:329
+#: src/GParted_Core.cc:321
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "یک افراز نمی‌تواند طولی از %1 سکتور داشته باشد"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: src/GParted_Core.cc:340
+#: src/GParted_Core.cc:332
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "یک افراز با سکتورهای استفاده شده (%1) بزرگتر از اندازه‌اش (%2) صحیح نیست"
@@ -971,57 +855,57 @@ msgstr "یک افراز با سکتورهای استفاده شده (%1) بزر�
 #. * means that the partition table for this disk device is unknown
 #. * or not recognized.
 #.
-#: src/GParted_Core.cc:712
+#: src/GParted_Core.cc:704
 msgid "unrecognized"
 msgstr "تشخیص داده نشده"
 
 #. no file system found....
-#: src/GParted_Core.cc:1367
+#: src/GParted_Core.cc:1359
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "نمی‌توان سیستم پرونده‌ها را تشخیص داد! دلایل ممکن عبارتند از:"
 
-#: src/GParted_Core.cc:1369
+#: src/GParted_Core.cc:1361
 msgid "The file system is damaged"
 msgstr "سیستم پرونده‌ها آسیب دیده است"
 
-#: src/GParted_Core.cc:1371
+#: src/GParted_Core.cc:1363
 msgid "The file system is unknown to GParted"
 msgstr "سیستم پرونده‌ها برای GParted ناشناخته است"
 
-#: src/GParted_Core.cc:1373
+#: src/GParted_Core.cc:1365
 msgid "There is no file system available (unformatted)"
 msgstr "هیچ سیستم پرونده‌ای وجود ندارد (قالب‌بندی نشده)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: src/GParted_Core.cc:1376
+#: src/GParted_Core.cc:1368
 msgid "The device entry %1 is missing"
 msgstr "ورودی دستگاه %1 ناپیدا است"
 
-#: src/GParted_Core.cc:1545
+#: src/GParted_Core.cc:1537
 msgid "Unable to find mount point"
 msgstr "نمی‌توان نقطه سوارکردن را پیدا کرد"
 
-#: src/GParted_Core.cc:1670
+#: src/GParted_Core.cc:1662
 msgid "Unable to read the contents of this file system!"
 msgstr "نمی‌توان محتویات سیستم پرونده‌ها را خواند!"
 
-#: src/GParted_Core.cc:1672
+#: src/GParted_Core.cc:1664
 msgid "Because of this some operations may be unavailable."
 msgstr "به این دلیل تعدادی از عملیات‌ها ممکن است قابل استفاده نباشد."
 
-#: src/GParted_Core.cc:1676
+#: src/GParted_Core.cc:1668
 msgid "The cause might be a missing software package."
 msgstr "ممکن است به دلیل نبود یک بسته نرم‌افزاری باشد."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: src/GParted_Core.cc:1679
+#: src/GParted_Core.cc:1671
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr "فهرست بسته‌های نرم افزاری مقابل جهت پشتیبانی از %1 مورد نیاز است:  %2."
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: src/GParted_Core.cc:1689
+#: src/GParted_Core.cc:1681
 msgid "%1 of unallocated space within the partition."
 msgstr ""
 
@@ -1029,7 +913,7 @@ msgstr ""
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: src/GParted_Core.cc:1699
+#: src/GParted_Core.cc:1691
 #, fuzzy
 #| msgid "To create a new partition table choose the menu item:"
 msgid ""
@@ -1037,13 +921,13 @@ msgid ""
 "the menu item:"
 msgstr "برای ساخت یک جدول افراز مورد منو را انتخاب کنید:"
 
-#: src/GParted_Core.cc:1701
+#: src/GParted_Core.cc:1693
 #, fuzzy
 #| msgid "Partition"
 msgid "Partition --> Check."
 msgstr "افراز"
 
-#: src/GParted_Core.cc:1815
+#: src/GParted_Core.cc:1807
 msgid "create empty partition"
 msgstr "ساخت یک افراز خالی"
 
@@ -1057,90 +941,87 @@ msgstr "ساخت یک افراز خالی"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: src/GParted_Core.cc:1891 src/GParted_Core.cc:3565
+#: src/GParted_Core.cc:1883 src/GParted_Core.cc:3557
 #, fuzzy
 #| msgid "path: %1"
 msgid "path: %1 (%2)"
 msgstr "مسیر: %1"
 
-#: src/GParted_Core.cc:1892 src/GParted_Core.cc:3569
+#: src/GParted_Core.cc:1884 src/GParted_Core.cc:3561
 msgid "partition"
 msgstr "افراز"
 
-#: src/GParted_Core.cc:1893 src/GParted_Core.cc:3570
+#: src/GParted_Core.cc:1885 src/GParted_Core.cc:3562
 msgid "start: %1"
 msgstr "ابتدا: %1"
 
-#: src/GParted_Core.cc:1894 src/GParted_Core.cc:3571
+#: src/GParted_Core.cc:1886 src/GParted_Core.cc:3563
 msgid "end: %1"
 msgstr "انتها: %1"
 
-#: src/GParted_Core.cc:1895 src/GParted_Core.cc:3572
+#: src/GParted_Core.cc:1887 src/GParted_Core.cc:3564
 msgid "size: %1 (%2)"
 msgstr "اندازه: %1 (%2)"
 
-#: src/GParted_Core.cc:1927
-msgid ""
-"partition contains open LUKS encryption for a create file system only step"
+#: src/GParted_Core.cc:1919
+msgid "partition contains open LUKS encryption for a create file system only step"
 msgstr ""
 
 #. TO TRANSLATORS: looks like create new ext3 file system
-#: src/GParted_Core.cc:1934
+#: src/GParted_Core.cc:1926
 msgid "create new %1 file system"
 msgstr "ساخت یک سیستم پرونده‌ها %1 جدید"
 
-#: src/GParted_Core.cc:1966
-msgid ""
-"partition contains open LUKS encryption for a format file system only step"
+#: src/GParted_Core.cc:1958
+msgid "partition contains open LUKS encryption for a format file system only step"
 msgstr ""
 
-#: src/GParted_Core.cc:1982
+#: src/GParted_Core.cc:1974
 msgid "delete partition"
 msgstr "حذف افراز"
 
-#: src/GParted_Core.cc:2026
-msgid ""
-"partition contains open LUKS encryption for a delete file system only step"
+#: src/GParted_Core.cc:2018
+msgid "partition contains open LUKS encryption for a delete file system only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2041
+#: src/GParted_Core.cc:2033
 #, fuzzy
 #| msgid "create new %1 file system"
 msgid "delete %1 file system"
 msgstr "ساخت یک سیستم پرونده‌ها %1 جدید"
 
-#: src/GParted_Core.cc:2059
+#: src/GParted_Core.cc:2051
 msgid "partition contains open LUKS encryption for a label file system only step"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: src/GParted_Core.cc:2066 src/OperationLabelFileSystem.cc:55
+#: src/GParted_Core.cc:2058 src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "پاک سازی برجسب سامانه پرونده روی %1"
 
-#: src/GParted_Core.cc:2069
+#: src/GParted_Core.cc:2061
 msgid "Set file system label to \"%1\" on %2"
 msgstr "تنظیم برجسب سامانه پرونده به «%1» روی %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: src/GParted_Core.cc:2096 src/OperationNamePartition.cc:55
+#: src/GParted_Core.cc:2088 src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "پاک سازی نام افراز روی %1"
 
-#: src/GParted_Core.cc:2099
+#: src/GParted_Core.cc:2091
 msgid "Set partition name to \"%1\" on %2"
 msgstr "تنظیم نام افراز به «%1» روی %2"
 
-#: src/GParted_Core.cc:2124
+#: src/GParted_Core.cc:2116
 msgid ""
 "partition contains open LUKS encryption for a change file system UUID only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2131
+#: src/GParted_Core.cc:2123
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "تنظیم نیمی از UUID بر روی %1 به یک مقدار تازه، مقدار اتفاقی"
 
-#: src/GParted_Core.cc:2136
+#: src/GParted_Core.cc:2128
 msgid "Set UUID on %1 to a new, random value"
 msgstr "تنظیم UUID روی %1 به یک مقدار تازه، مقدار اتفاقی"
 
@@ -1149,34 +1030,34 @@ msgstr "تنظیم UUID روی %1 به یک مقدار تازه، مقدار ا�
 #. * to change the size of a partition when performing a move only
 #. * step which is not permitted to change the partition size.
 #.
-#: src/GParted_Core.cc:2220
+#: src/GParted_Core.cc:2212
 msgid "size of the partition is changing for a move only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2251
+#: src/GParted_Core.cc:2243
 msgid "rollback last change to the partition"
 msgstr "برگردان آخرین تغییر روی افراز"
 
-#: src/GParted_Core.cc:2300
+#: src/GParted_Core.cc:2292
 msgid "move file system to the left"
 msgstr "جابجایی سیستم پرونده به چپ"
 
-#: src/GParted_Core.cc:2302
+#: src/GParted_Core.cc:2294
 msgid "move file system to the right"
 msgstr "جابجایی سیستم پرونده به راست"
 
-#: src/GParted_Core.cc:2305
+#: src/GParted_Core.cc:2297
 msgid "move file system"
 msgstr "جابجایی سیستم پرونده"
 
-#: src/GParted_Core.cc:2307
+#: src/GParted_Core.cc:2299
 msgid ""
 "new and old file system have the same position.  Hence skipping this operation"
 msgstr ""
 "سیستم پرونده جدید و قدیمی مکان یکسان دارند.  به این دلیل، این عملیات نادیده "
 "گرفته می‌شود"
 
-#: src/GParted_Core.cc:2373
+#: src/GParted_Core.cc:2365
 msgid "using libparted"
 msgstr "درحال استفاده از libgparted"
 
@@ -1186,61 +1067,60 @@ msgstr "درحال استفاده از libgparted"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: src/GParted_Core.cc:2447
+#: src/GParted_Core.cc:2439
 msgid "start of the partition is changing for a resize only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2465
+#: src/GParted_Core.cc:2457
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2475
+#: src/GParted_Core.cc:2467
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr ""
 
-#: src/GParted_Core.cc:2534
-msgid ""
-"partition contains open LUKS encryption for a resize file system only step"
+#: src/GParted_Core.cc:2526
+msgid "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2604
+#: src/GParted_Core.cc:2596
 msgid "resize/move partition"
 msgstr "تغییر اندازه/جابجایی افراز"
 
-#: src/GParted_Core.cc:2607
+#: src/GParted_Core.cc:2599
 msgid "move partition to the right"
 msgstr "جابجایی افراز به راست"
 
-#: src/GParted_Core.cc:2610
+#: src/GParted_Core.cc:2602
 msgid "move partition to the left"
 msgstr "جابجایی افراز به چپ"
 
-#: src/GParted_Core.cc:2613
+#: src/GParted_Core.cc:2605
 msgid "grow partition from %1 to %2"
 msgstr "گسترش افراز از %1 به %2"
 
-#: src/GParted_Core.cc:2616
+#: src/GParted_Core.cc:2608
 msgid "shrink partition from %1 to %2"
 msgstr "کوچک کردن افراز از %1 به %2"
 
-#: src/GParted_Core.cc:2619
+#: src/GParted_Core.cc:2611
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "جابجایی افراز به راست و گسترش آن از %1 به %2"
 
-#: src/GParted_Core.cc:2622
+#: src/GParted_Core.cc:2614
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "جابجایی افراز به راست و کوچک کردن آن از %1 به %2"
 
-#: src/GParted_Core.cc:2625
+#: src/GParted_Core.cc:2617
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "جابجایی افراز به چپ و گسترش آن از %1 به %2"
 
-#: src/GParted_Core.cc:2628
+#: src/GParted_Core.cc:2620
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "جابجایی افراز از چپ و کوچک کردن آن از %1 به %2"
 
-#: src/GParted_Core.cc:2643
+#: src/GParted_Core.cc:2635
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1248,88 +1128,87 @@ msgstr ""
 "افراز جدید و قدیمی هر دو اندازه و محل یکسانی دارند.  به این دلیل این عملیات "
 "نادیده گرفته می‌شود"
 
-#: src/GParted_Core.cc:2653
+#: src/GParted_Core.cc:2645
 msgid "old start: %1"
 msgstr "ابتدا قدیمی: %1"
 
-#: src/GParted_Core.cc:2654
+#: src/GParted_Core.cc:2646
 msgid "old end: %1"
 msgstr "انتها قدیمی: %1"
 
-#: src/GParted_Core.cc:2655
+#: src/GParted_Core.cc:2647
 msgid "old size: %1 (%2)"
 msgstr "اندازه قدیمی: %1 (%2)"
 
-#: src/GParted_Core.cc:2670 src/GParted_Core.cc:3653
+#: src/GParted_Core.cc:2662 src/GParted_Core.cc:3645
 msgid "new start: %1"
 msgstr "ابتدا جدید: %1"
 
-#: src/GParted_Core.cc:2671 src/GParted_Core.cc:3654
+#: src/GParted_Core.cc:2663 src/GParted_Core.cc:3646
 msgid "new end: %1"
 msgstr "انتها جدید: %1"
 
-#: src/GParted_Core.cc:2672 src/GParted_Core.cc:3655
+#: src/GParted_Core.cc:2664 src/GParted_Core.cc:3647
 msgid "new size: %1 (%2)"
 msgstr "اندازه جدید: %1 (%2)"
 
-#: src/GParted_Core.cc:2686 src/GParted_Core.cc:3606
+#: src/GParted_Core.cc:2678 src/GParted_Core.cc:3598
 msgid "requested start: %1"
 msgstr "ابتدا درخواست شده: %1"
 
-#: src/GParted_Core.cc:2687 src/GParted_Core.cc:3607
+#: src/GParted_Core.cc:2679 src/GParted_Core.cc:3599
 msgid "requested end: %1"
 msgstr "انتها درخواست شده: %1"
 
-#: src/GParted_Core.cc:2688 src/GParted_Core.cc:3608
+#: src/GParted_Core.cc:2680 src/GParted_Core.cc:3600
 msgid "requested size: %1 (%2)"
 msgstr "اندازه درخواست شده: %1 (%2)"
 
-#: src/GParted_Core.cc:2700
+#: src/GParted_Core.cc:2692
 msgid "attempt to rollback failed change to the partition"
 msgstr "تلاش برای برگرداندن آخرین تغییر روی افراز"
 
-#: src/GParted_Core.cc:2721
+#: src/GParted_Core.cc:2713
 msgid "original start: %1"
 msgstr "آغاز اصلی: %1"
 
-#: src/GParted_Core.cc:2722
+#: src/GParted_Core.cc:2714
 msgid "original end: %1"
 msgstr "پایان اصلی: %1"
 
-#: src/GParted_Core.cc:2723
+#: src/GParted_Core.cc:2715
 msgid "original size: %1 (%2)"
 msgstr "اندازهٔ اصلی: %1 (%2)"
 
-#: src/GParted_Core.cc:2805
+#: src/GParted_Core.cc:2797
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
 msgstr ""
 
-#: src/GParted_Core.cc:2810
+#: src/GParted_Core.cc:2802
 msgid "shrink encryption volume"
 msgstr ""
 
-#: src/GParted_Core.cc:2821
+#: src/GParted_Core.cc:2813
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2826
+#: src/GParted_Core.cc:2818
 #, fuzzy
 #| msgid "grow file system to fill the partition"
 msgid "grow encryption volume to fill the partition"
 msgstr "گسترش دادن سیستم پرونده تا این افراز را پُر کند"
 
-#: src/GParted_Core.cc:2836
+#: src/GParted_Core.cc:2828
 #, fuzzy
 #| msgid "growing is not available for this file system"
 msgid "growing is not available for this encryption volume"
 msgstr "گسترش دادن برای این سیستم پرونده موجود نیست"
 
-#: src/GParted_Core.cc:2854
-msgid ""
-"partition contains open LUKS encryption for a shrink file system only step"
+#: src/GParted_Core.cc:2846
+msgid "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
 
 #. TO TRANSLATORS:
@@ -1337,267 +1216,259 @@ msgstr ""
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: src/GParted_Core.cc:2866
+#: src/GParted_Core.cc:2858
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2871
+#: src/GParted_Core.cc:2863
 msgid "shrink file system"
 msgstr "کوچک کردن سیستم پرونده‌ها"
 
-#: src/GParted_Core.cc:2882
+#: src/GParted_Core.cc:2874
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
 
-#: src/GParted_Core.cc:2887
+#: src/GParted_Core.cc:2879
 msgid "grow file system to fill the partition"
 msgstr "گسترش دادن سیستم پرونده تا این افراز را پُر کند"
 
-#: src/GParted_Core.cc:2898
+#: src/GParted_Core.cc:2890
 msgid "growing is not available for this file system"
 msgstr "گسترش دادن برای این سیستم پرونده موجود نیست"
 
-#: src/GParted_Core.cc:2906
+#: src/GParted_Core.cc:2898
 #, fuzzy
 #| msgid "The file system is damaged"
 msgid "growing the file system is currently disallowed"
 msgstr "سیستم پرونده‌ها آسیب دیده است"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: src/GParted_Core.cc:2930
+#: src/GParted_Core.cc:2922
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: src/GParted_Core.cc:2942
+#: src/GParted_Core.cc:2934
 #, fuzzy
 #| msgid "create new %1 file system"
 msgid "recreate %1 file system"
 msgstr "ساخت یک سیستم پرونده‌ها %1 جدید"
 
-#: src/GParted_Core.cc:3011
+#: src/GParted_Core.cc:3003
 msgid "the destination is smaller than the source partition"
 msgstr "مقصد کوچکتر از افراز منبع است"
 
-#: src/GParted_Core.cc:3063
+#: src/GParted_Core.cc:3055
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only step"
 msgstr ""
 
-#: src/GParted_Core.cc:3070
+#: src/GParted_Core.cc:3062
 msgid ""
-"destination partition contains open LUKS encryption for a file system copy "
-"only step"
+"destination partition contains open LUKS encryption for a file system copy only "
+"step"
 msgstr ""
 
-#: src/GParted_Core.cc:3076
+#: src/GParted_Core.cc:3068
 #, fuzzy
 #| msgid "copy file system of %1 to %2"
 msgid "copy file system from %1 to %2"
 msgstr "رونوشت سیستم پرونده %1 به %2"
 
-#: src/GParted_Core.cc:3157
+#: src/GParted_Core.cc:3149
 msgid "using internal algorithm"
 msgstr "درحال استفاده از الگورتیم داخلی"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: src/GParted_Core.cc:3160
+#: src/GParted_Core.cc:3152
 msgid "copy %1"
 msgstr "رونوشت %1"
 
-#: src/GParted_Core.cc:3163
+#: src/GParted_Core.cc:3155
 msgid "finding optimal block size"
 msgstr "درحال پیدا کردن اندازه قطعه مطلوب"
 
 #. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
-#: src/GParted_Core.cc:3194 src/GParted_Core.cc:3240
+#: src/GParted_Core.cc:3186 src/GParted_Core.cc:3232
 msgid "copy %1 using a block size of %2"
 msgstr "رونوشت %1 با استفاده از اندازه قطعه %2"
 
-#: src/GParted_Core.cc:3212
+#: src/GParted_Core.cc:3204
 msgid "%1 seconds"
 msgstr "%1 ثانیه"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: src/GParted_Core.cc:3231
+#: src/GParted_Core.cc:3223
 msgid "optimal block size is %1"
 msgstr "اندازه قطعه مطلوب %1 است"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: src/GParted_Core.cc:3258
+#: src/GParted_Core.cc:3250
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 بایت) رونوشت شد"
 
-#: src/GParted_Core.cc:3296
+#: src/GParted_Core.cc:3288
 #, fuzzy
 #| msgid "grow mounted file system"
 msgid "rollback failed file system move"
 msgstr "گسترش سیستم پرونده سوار شده"
 
-#: src/GParted_Core.cc:3319
+#: src/GParted_Core.cc:3311
 msgid "partition contains open LUKS encryption for a check file system only step"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: src/GParted_Core.cc:3331
+#: src/GParted_Core.cc:3323
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "بررسی سیستم پرونده روی %1 برای خطاها و (در صورت امکان) حل آنها"
 
-#: src/GParted_Core.cc:3340
+#: src/GParted_Core.cc:3332
 msgid "checking is not available for this file system"
 msgstr "امکان بررسی برای این سیستم پرونده موجود نیست"
 
-#: src/GParted_Core.cc:3405
+#: src/GParted_Core.cc:3397
 msgid "set partition type on %1"
 msgstr "تنظیم نوع افراز بر روی %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: src/GParted_Core.cc:3459
+#: src/GParted_Core.cc:3451
 msgid "new partition type: %1"
 msgstr "نوع افراز جدید: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: src/GParted_Core.cc:3474
+#: src/GParted_Core.cc:3466
 #, fuzzy
 #| msgid "new partition type: %1"
 msgid "new partition flag: %1"
 msgstr "نوع افراز جدید: %1"
 
-#: src/GParted_Core.cc:3503
+#: src/GParted_Core.cc:3495
 msgid "calibrate %1"
 msgstr "مدرج کردن %1"
 
-#: src/GParted_Core.cc:3568
+#: src/GParted_Core.cc:3560
 msgid "device"
 msgstr "افزاره"
 
-#: src/GParted_Core.cc:3582
+#: src/GParted_Core.cc:3574
 #, fuzzy
 #| msgid "Information about %1"
 msgid "encryption path: %1"
 msgstr "اطلاعات درباره %1"
 
-#: src/GParted_Core.cc:3602
+#: src/GParted_Core.cc:3594
 msgid "calculate new size and position of %1"
 msgstr "محاسبه کردن اندازه و مکان جدید %1"
 
-#: src/GParted_Core.cc:3730
+#: src/GParted_Core.cc:3722
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
 msgstr ""
 
-#: src/GParted_Core.cc:3737
+#: src/GParted_Core.cc:3729
 #, fuzzy
 #| msgid "Search for file systems on %1"
 msgid "clear old file system signatures in %1"
 msgstr "جستجو برای سیستم پرونده‌ها بر روی %1"
 
-#: src/GParted_Core.cc:3927
+#: src/GParted_Core.cc:3919
 msgid "flush operating system cache of %1"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   update boot sector of ntfs file system on /dev/sdd1
-#: src/GParted_Core.cc:3968
+#: src/GParted_Core.cc:3960
 msgid "update boot sector of %1 file system on %2"
 msgstr "بروزرسانی سکتور بوت %1 سیستم پرونده بر روی %2"
 
-#: src/GParted_Core.cc:3981
+#: src/GParted_Core.cc:3973
 msgid ""
 "Partition start (%1) is beyond sector 4294967295 (2^32-1).\n"
 "Windows will not be able to boot from this file system."
 msgstr ""
 
-#: src/GParted_Core.cc:3994
+#: src/GParted_Core.cc:3986
 msgid "Error trying to open %1"
 msgstr "خطا در هنگام تلاش برای بازکردن %1"
 
-#: src/GParted_Core.cc:4005
+#: src/GParted_Core.cc:3997
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "خطا در هنگام تلاش جهت یافتن مکان 0x1c در %1"
 
-#: src/GParted_Core.cc:4020
+#: src/GParted_Core.cc:4012
 msgid "Error trying to write to boot sector in %1"
 msgstr "خطا در هنگام تلاش جهت نوشتن بر روی سکتور بوت در %1"
 
-#: src/GParted_Core.cc:4038
+#: src/GParted_Core.cc:4030
 msgid "libparted messages"
 msgstr "پیغام‌های libparted"
 
-#: src/GParted_Core.cc:4231
+#: src/GParted_Core.cc:4223
 msgid "Libparted Information"
 msgstr "اطلاعات Libparted"
 
-#: src/GParted_Core.cc:4235
+#: src/GParted_Core.cc:4227
 msgid "Libparted Warning"
 msgstr "هشدار Libparted"
 
-#: src/GParted_Core.cc:4239
+#: src/GParted_Core.cc:4231
 msgid "Libparted Error"
 msgstr "خطا Libparted"
 
-#: src/GParted_Core.cc:4242
-#, fuzzy
-#| msgid "Libparted"
+#: src/GParted_Core.cc:4234
 msgid "Libparted Fatal"
-msgstr "Libparted"
+msgstr "خطای مهلک Libparted"
 
-#: src/GParted_Core.cc:4245
-#, fuzzy
-#| msgid "Libparted"
+#: src/GParted_Core.cc:4237
 msgid "Libparted Bug"
-msgstr "Libparted"
+msgstr "مشکل Libparted"
 
-#: src/GParted_Core.cc:4248
-#, fuzzy
-#| msgid "Libparted Information"
+#: src/GParted_Core.cc:4240
 msgid "Libparted Unsupported Feature"
-msgstr "اطلاعات Libparted"
+msgstr "ویژگی پشتیبانی نشدهٔ Libparted"
 
-#: src/GParted_Core.cc:4251
-#, fuzzy
-#| msgid "Libparted Information"
+#: src/GParted_Core.cc:4243
 msgid "Libparted unknown exception"
-msgstr "اطلاعات Libparted"
+msgstr "استثنای ناشناختهٔ Libparted"
 
-#: src/GParted_Core.cc:4255
+#: src/GParted_Core.cc:4247
 msgid "Fix"
 msgstr "اصلاح"
 
-#: src/GParted_Core.cc:4257
+#: src/GParted_Core.cc:4249
 msgid "Yes"
 msgstr "بله"
 
-#: src/GParted_Core.cc:4259
+#: src/GParted_Core.cc:4251
 msgid "Ok"
 msgstr "قبول"
 
-#: src/GParted_Core.cc:4261
+#: src/GParted_Core.cc:4253
 msgid "Retry"
 msgstr "تلاش دوباره"
 
-#: src/GParted_Core.cc:4263
+#: src/GParted_Core.cc:4255
 msgid "No"
 msgstr "خیر"
 
-#: src/GParted_Core.cc:4265
+#: src/GParted_Core.cc:4257
 msgid "Cancel"
 msgstr "لغو"
 
-#: src/GParted_Core.cc:4267
+#: src/GParted_Core.cc:4259
 msgid "Ignore"
 msgstr "چشم‌پوشی"
 
-#: src/HBoxOperations.cc:48 src/Win_GParted.cc:197
+#: src/HBoxOperations.cc:48 src/Win_GParted.cc:196
 msgid "_Undo Last Operation"
 msgstr "_برگردان آخرین عملیات"
 
-#: src/HBoxOperations.cc:55 src/Win_GParted.cc:205
+#: src/HBoxOperations.cc:55 src/Win_GParted.cc:204
 msgid "_Clear All Operations"
 msgstr "_پاک کردن تمام عملیات‌ها"
 
-#: src/HBoxOperations.cc:62 src/Win_GParted.cc:212
+#: src/HBoxOperations.cc:62 src/Win_GParted.cc:211
 msgid "_Apply All Operations"
 msgstr "_اعمال تمام عملیات‌ها"
 
@@ -1662,8 +1533,8 @@ msgstr "حذف کردن %1 (%2، %3) از %4"
 #.
 #: src/OperationDetail.cc:157
 msgid ""
-"Adding more information to the results of this step after it has been marked "
-"as completed"
+"Adding more information to the results of this step after it has been marked as "
+"completed"
 msgstr ""
 
 #. Bug: Not initialised by constructor or reset later
@@ -1675,17 +1546,13 @@ msgstr "قالب‌بندی از %1 به %2"
 
 #. TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3
 #: src/OperationLabelFileSystem.cc:61
-#, fuzzy
-#| msgid "Set Partition Label \"%1\" on %2"
 msgid "Set file system label \"%1\" on %2"
-msgstr "تنظیم برچسب افراز «%1» بر روی %2"
+msgstr "تنظیم برچسب سامانهٔ پروندهٔ «%1» روی %2"
 
 #. TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3
 #: src/OperationNamePartition.cc:61
-#, fuzzy
-#| msgid "Set Partition Label \"%1\" on %2"
 msgid "Set partition name \"%1\" on %2"
-msgstr "تنظیم برچسب افراز «%1» بر روی %2"
+msgstr "تنظیم نام افراز «%1» روی %2"
 
 #: src/OperationResizeMove.cc:104
 msgid "resize/move %1"
@@ -1746,17 +1613,13 @@ msgstr "منطقی"
 #. * An "Extended" type of partition on a partitioned drive.
 #.
 #: src/Partition.cc:421
-#, fuzzy
-#| msgid "Extended Partition"
 msgid "Extended"
-msgstr "افراز قابل تعمیم"
+msgstr "گسترده"
 
 #. TO TRANSLATORS: Unallocated
 #. * Unused space outside of any partition on a partitioned drive.
 #.
 #: src/Partition.cc:426
-#, fuzzy
-#| msgid "unallocated"
 msgid "Unallocated"
 msgstr "تخصیص نیافته"
 
@@ -1764,10 +1627,8 @@ msgstr "تخصیص نیافته"
 #. * A drive which has no partition table.
 #.
 #: src/Partition.cc:431
-#, fuzzy
-#| msgid "Partition"
 msgid "Unpartitioned"
-msgstr "افراز"
+msgstr "افراز نشده"
 
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
 #: src/ProgressBar.cc:100
@@ -1776,11 +1637,8 @@ msgstr "%1 از %2 رونوشت شد (%3 باقیمانده است)"
 
 #. TO TRANSLATORS: looks like   (00:01:59 remaining)
 #: src/ProgressBar.cc:124
-#, fuzzy
-#| msgid "%1 warning"
-#| msgid_plural "%1 warnings"
 msgid "(%1 remaining)"
-msgstr "%1 هشدار"
+msgstr "(%1 مانده)"
 
 #: src/TreeView_Detail.cc:46
 msgid "Name"
@@ -1803,7 +1661,7 @@ msgstr "استفاده نشده"
 #. * outside any partition, so is in other words
 #. * unallocated.
 #.
-#: src/Utils.cc:325
+#: src/Utils.cc:321
 msgid "unallocated"
 msgstr "تخصیص نیافته"
 
@@ -1812,7 +1670,7 @@ msgstr "تخصیص نیافته"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: src/Utils.cc:332
+#: src/Utils.cc:328
 msgid "unknown"
 msgstr "ناشناس"
 
@@ -1821,7 +1679,7 @@ msgstr "ناشناس"
 #. * GParted the space within it will not be formatted
 #. * with a file system.
 #.
-#: src/Utils.cc:339
+#: src/Utils.cc:335
 msgid "unformatted"
 msgstr "قالب‌بندی نشده"
 
@@ -1830,7 +1688,7 @@ msgstr "قالب‌بندی نشده"
 #. * actions which can be performed on other file systems
 #. * not specifically listed as supported.
 #.
-#: src/Utils.cc:346
+#: src/Utils.cc:342
 msgid "other"
 msgstr "دیگر"
 
@@ -1838,327 +1696,322 @@ msgstr "دیگر"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: src/Utils.cc:352
+#: src/Utils.cc:348
 msgid "cleared"
 msgstr "پاک شده"
 
-#: src/Utils.cc:387
+#: src/Utils.cc:383
 msgid "used"
 msgstr "استفاده شده"
 
-#: src/Utils.cc:388
+#: src/Utils.cc:384
 msgid "unused"
 msgstr "استفاده نشده"
 
 #. TO TRANSLATORS: means that this is an encrypted file system
-#: src/Utils.cc:396
+#: src/Utils.cc:392
 msgid "Encrypted"
 msgstr "رمزنگاری شده"
 
-#: src/Utils.cc:544
+#: src/Utils.cc:540
 msgid "%1 B"
 msgstr "%1 بایت"
 
-#: src/Utils.cc:549
+#: src/Utils.cc:545
 msgid "%1 KiB"
 msgstr "%1 کیلوبایت"
 
-#: src/Utils.cc:554
+#: src/Utils.cc:550
 msgid "%1 MiB"
 msgstr "%1 مگابایت"
 
-#: src/Utils.cc:559
+#: src/Utils.cc:555
 msgid "%1 GiB"
 msgstr "%1 گیگابایت"
 
-#: src/Utils.cc:564
+#: src/Utils.cc:560
 msgid "%1 TiB"
 msgstr "%1 ترابایت"
 
-#: src/Win_GParted.cc:171
+#: src/Win_GParted.cc:170
 msgid "_Refresh Devices"
 msgstr "_نوسازی دستگاه‌ها"
 
-#: src/Win_GParted.cc:179
+#: src/Win_GParted.cc:178
 msgid "_Devices"
 msgstr "_دستگاه‌ها"
 
-#: src/Win_GParted.cc:191
+#: src/Win_GParted.cc:190
 msgid "_GParted"
 msgstr "_GParted"
 
-#: src/Win_GParted.cc:220
+#: src/Win_GParted.cc:219
 msgid "_Edit"
 msgstr "_ویرایش"
 
-#: src/Win_GParted.cc:228
+#: src/Win_GParted.cc:227
 msgid "Device _Information"
 msgstr "_اطلاعات دستگاه"
 
-#: src/Win_GParted.cc:233
+#: src/Win_GParted.cc:232
 msgid "Pending _Operations"
 msgstr "_عملیات‌های در انتظار"
 
-#: src/Win_GParted.cc:238
+#: src/Win_GParted.cc:237
 msgid "_View"
 msgstr "_نما"
 
-#: src/Win_GParted.cc:245
+#: src/Win_GParted.cc:244
 msgid "_File System Support"
 msgstr "پشتیبانی _سیستم پرونده‌ها"
 
-#: src/Win_GParted.cc:253
+#: src/Win_GParted.cc:252
 msgid "_Create Partition Table"
 msgstr "_ساخت جدول افراز"
 
-#: src/Win_GParted.cc:258
-msgid "_Attempt Data Rescue"
-msgstr "_تلاش جهت بازگردانی اطلاعات"
-
-#: src/Win_GParted.cc:263
+#: src/Win_GParted.cc:257
 msgid "_Device"
 msgstr "_دستگاه"
 
-#: src/Win_GParted.cc:271
+#: src/Win_GParted.cc:265
 msgid "_Partition"
 msgstr "_افراز"
 
-#: src/Win_GParted.cc:279
+#: src/Win_GParted.cc:273
 msgid "_Contents"
 msgstr "_محتویات"
 
-#: src/Win_GParted.cc:293
+#: src/Win_GParted.cc:287
 msgid "_Help"
 msgstr "_راهنما"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: src/Win_GParted.cc:307
+#: src/Win_GParted.cc:301
 msgid "New"
 msgstr "جدید"
 
-#: src/Win_GParted.cc:312
+#: src/Win_GParted.cc:306
 msgid "Create a new partition in the selected unallocated space"
 msgstr "ساخت یک افراز جدید در فضای تخصیص نیافته انتخاب شده"
 
-#: src/Win_GParted.cc:320
+#: src/Win_GParted.cc:314
 msgid "Delete the selected partition"
 msgstr "حذف افراز انتخاب شده"
 
-#: src/Win_GParted.cc:342
+#: src/Win_GParted.cc:336
 msgid "Resize/Move the selected partition"
 msgstr "تغییر اندازه/جابجایی افراز انتخاب شده"
 
-#: src/Win_GParted.cc:354
+#: src/Win_GParted.cc:348
 msgid "Copy the selected partition to the clipboard"
 msgstr "رونشت از افراز انتخاب شده در تخته‌گیره"
 
-#: src/Win_GParted.cc:362
+#: src/Win_GParted.cc:356
 msgid "Paste the partition from the clipboard"
 msgstr "چسباندن افراز انتخاب شده از تخته‌گیره"
 
-#: src/Win_GParted.cc:377
+#: src/Win_GParted.cc:371
 msgid "Undo Last Operation"
 msgstr "برگردان آخرین عملیات"
 
-#: src/Win_GParted.cc:388
+#: src/Win_GParted.cc:382
 msgid "Apply All Operations"
 msgstr "اعمال تمام عملیات‌ها"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: src/Win_GParted.cc:412
+#: src/Win_GParted.cc:406
 msgid "_New"
 msgstr "_جدید"
 
-#: src/Win_GParted.cc:431
+#: src/Win_GParted.cc:425
 msgid "_Resize/Move"
 msgstr "_تغییر اندازه/جابجایی"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with file systems..
-#: src/Win_GParted.cc:458
+#: src/Win_GParted.cc:452
 msgid "_Format to"
 msgstr "_قالب‌بندی به"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with mount points..
-#: src/Win_GParted.cc:483
+#: src/Win_GParted.cc:477
 msgid "_Mount on"
 msgstr "_سوار کردن بر روی"
 
-#: src/Win_GParted.cc:491
+#: src/Win_GParted.cc:485
 #, fuzzy
 #| msgid "_Partition"
 msgid "_Name Partition"
 msgstr "_افراز"
 
-#: src/Win_GParted.cc:497
+#: src/Win_GParted.cc:491
 msgid "M_anage Flags"
 msgstr "_مدیریت پرچم‌ها"
 
-#: src/Win_GParted.cc:503
+#: src/Win_GParted.cc:497
 msgid "C_heck"
 msgstr "ب_ررسی"
 
-#: src/Win_GParted.cc:509
+#: src/Win_GParted.cc:503
 #, fuzzy
 #| msgid "File System"
 msgid "_Label File System"
 msgstr "سیستم پرونده‌ها"
 
-#: src/Win_GParted.cc:515
+#: src/Win_GParted.cc:509
 msgid "New UU_ID"
 msgstr "UU_ID جدید"
 
-#: src/Win_GParted.cc:580
+#: src/Win_GParted.cc:574
 msgid "Device Information"
 msgstr "اطلاعات دستگاه"
 
-#: src/Win_GParted.cc:879
+#: src/Win_GParted.cc:873
 #, fuzzy
 #| msgid "Could not add this operation to the list."
 msgid "Could not add this operation to the list"
 msgstr "نمی‌توان این عملیات را به فهرست اضافه کرد."
 
-#: src/Win_GParted.cc:1060
+#: src/Win_GParted.cc:1054
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 عملیات در انتظار است"
 
-#: src/Win_GParted.cc:1168
+#: src/Win_GParted.cc:1162
 msgid "Quit GParted?"
 msgstr "خروج از GParted؟"
 
-#: src/Win_GParted.cc:1174
+#: src/Win_GParted.cc:1168
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "تعداد %1 عملیات در حال حاظر در انتظار هستند."
 
-#: src/Win_GParted.cc:1585
+#: src/Win_GParted.cc:1579
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: src/Win_GParted.cc:1636
+#: src/Win_GParted.cc:1630
 msgid "Scanning all devices..."
 msgstr "درحال پویش تمام دستگاه‌ها..."
 
-#: src/Win_GParted.cc:1683
+#: src/Win_GParted.cc:1677
 msgid "No devices detected"
 msgstr "هیچ دستگاهی پیدا نشد"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: src/Win_GParted.cc:1772
+#: src/Win_GParted.cc:1766
 msgid "No partition table found on device %1"
 msgstr "هیچ جدول پارتیشنی بر روی دستگاه %1 پیدا نشد"
 
-#: src/Win_GParted.cc:1777
+#: src/Win_GParted.cc:1771
 msgid "A partition table is required before partitions can be added."
 msgstr "یک جدول افراز قبل از اینکه بتوان افراز را اضافه کرد لازم است."
 
-#: src/Win_GParted.cc:1779
+#: src/Win_GParted.cc:1773
 msgid "To create a new partition table choose the menu item:"
 msgstr "برای ساخت یک جدول افراز مورد منو را انتخاب کنید:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: src/Win_GParted.cc:1782
+#: src/Win_GParted.cc:1776
 msgid "Device --> Create Partition Table."
 msgstr "دستگاه --> ساخت جدول افراز."
 
 #. TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1
-#: src/Win_GParted.cc:1791
+#: src/Win_GParted.cc:1785
 #, fuzzy
 #| msgid "Unable to read the contents of this file system!"
 msgid "Unable to resize read-only file system %1"
 msgstr "نمی‌توان محتویات سیستم پرونده‌ها را خواند!"
 
-#: src/Win_GParted.cc:1796
+#: src/Win_GParted.cc:1790
 #, fuzzy
 #| msgid "The file system is mounted on:"
 msgid "The file system can not be resized while it is mounted read-only."
 msgstr "سیستم پرونده‌ها سوار شده است بر روی:"
 
-#: src/Win_GParted.cc:1798
+#: src/Win_GParted.cc:1792
 msgid "Either unmount the file system or remount it read-write."
 msgstr ""
 
-#: src/Win_GParted.cc:1820
+#: src/Win_GParted.cc:1814
 #, fuzzy
 #| msgid "Unable to open GParted Manual help file."
 msgid "Unable to open GParted Manual help file"
 msgstr "نمی‌توان پرونده راهنما GParted را باز کرد."
 
-#: src/Win_GParted.cc:1822
+#: src/Win_GParted.cc:1816
 #, fuzzy
 #| msgid "Command gpart was not found"
 msgid "Command yelp not found."
 msgstr "فرمان gpart پیدا نشد"
 
-#: src/Win_GParted.cc:1825
+#: src/Win_GParted.cc:1819
 msgid "Install yelp and try again."
 msgstr ""
 
-#: src/Win_GParted.cc:1846
+#: src/Win_GParted.cc:1840
 #, fuzzy
 #| msgid "Unable to open GParted Manual help file."
 msgid "Failed to open GParted Manual help file"
 msgstr "نمی‌توان پرونده راهنما GParted را باز کرد."
 
-#: src/Win_GParted.cc:1866
+#: src/Win_GParted.cc:1860
 #, fuzzy
 #| msgid "Documentation is not available."
 msgid "Documentation is not available"
 msgstr "مستندات موجود نیستند."
 
-#: src/Win_GParted.cc:1871
+#: src/Win_GParted.cc:1865
 msgid "This build of gparted is configured without documentation."
 msgstr "این ساخت از GParted بدون مستندات آن پیکربندی شده است."
 
-#: src/Win_GParted.cc:1873
+#: src/Win_GParted.cc:1867
 msgid "Documentation is available at the project web site."
 msgstr "مستندات بر روی پایگاه وب پروژه موجود است."
 
-#: src/Win_GParted.cc:1877
+#: src/Win_GParted.cc:1871
 #, fuzzy
 #| msgid "GParted Details"
 msgid "GParted Manual"
 msgstr "جزئیات GParted"
 
-#: src/Win_GParted.cc:1892
+#: src/Win_GParted.cc:1886
 msgid "GNOME Partition Editor"
 msgstr "ویرایشگر افراز گنوم"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: src/Win_GParted.cc:1929
+#: src/Win_GParted.cc:1923
 msgid "translator-credits"
 msgstr "آرش موسوی <mousavi.arash@gmail.com>"
 
-#: src/Win_GParted.cc:1979
+#: src/Win_GParted.cc:1973
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "ساخت بیش از %1 عدد افراز اصلی امکان پذیر نیست"
 
-#: src/Win_GParted.cc:1989
+#: src/Win_GParted.cc:1983
 msgid ""
-"If you want more partitions you should first create an extended partition. "
-"Such a partition can contain other partitions. Because an extended partition "
-"is also a primary partition it might be necessary to remove a primary "
-"partition first."
+"If you want more partitions you should first create an extended partition. Such "
+"a partition can contain other partitions. Because an extended partition is also "
+"a primary partition it might be necessary to remove a primary partition first."
 msgstr ""
 "اگر شما پارتیشن‌های بیشتری می‌خواهید ابتدا باید یک افراز قابل تعمیم بسازید. یک "
 "چنین پارتیشنی می‌تواند شامل پارتیشن‌های دیگر باشد. به این دلیل که افراز قابل "
 "تعمیم خودش یک افراز اصلی است، ممکن است لازم باشد ابتدا یک افراز اصلی را حذف "
 "کنید."
 
-#: src/Win_GParted.cc:2115
+#: src/Win_GParted.cc:2109
 #, fuzzy
 #| msgid "Moving a partition might cause your operating system to fail to boot."
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "جابجایی یک افراز ممکن است باعث بالا نیامدن سیستم عامل شما بشود."
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: src/Win_GParted.cc:2122
+#: src/Win_GParted.cc:2116
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "شما یک عملیات را جهت جابجایی سکتور ابتدایی از افراز %1 در صف قرار دادید."
 
-#: src/Win_GParted.cc:2124
+#: src/Win_GParted.cc:2118
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux partition "
 "containing /boot, or if you move the Windows system partition C:."
@@ -2166,65 +2019,65 @@ msgstr ""
 "  اگر افراز گنو/لینوکسی شامل ‪/boot‬ یا افراز ‪C:‬ ویندوز را جابه‌جا کنید، ممکن است "
 "رااه‌اندازی شکست بخورد."
 
-#: src/Win_GParted.cc:2126
+#: src/Win_GParted.cc:2120
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "شما می‌توانید نحوه پیکربندی بوت را در راهنما GParted یاد بگیرید."
 
-#: src/Win_GParted.cc:2130
+#: src/Win_GParted.cc:2124
 msgid "Moving a partition might take a very long time to apply."
 msgstr "انتقال افراز ممکن است مدت زمان زیادی طول بکشد."
 
 #. TO TRANSLATORS: looks like   Enter LUKS passphrase to resize /dev/sda1
-#: src/Win_GParted.cc:2172
+#: src/Win_GParted.cc:2166
 msgid "Enter LUKS passphrase to resize %1"
 msgstr ""
 
-#: src/Win_GParted.cc:2201
+#: src/Win_GParted.cc:2195
 msgid "LUKS encryption passphrase check failed"
 msgstr ""
 
-#: src/Win_GParted.cc:2279
+#: src/Win_GParted.cc:2273
 #, fuzzy
 #| msgid "copy of %1"
 msgid "Copy of %1"
 msgstr "رونوشت از %1"
 
-#: src/Win_GParted.cc:2380
+#: src/Win_GParted.cc:2374
 #, fuzzy
 #| msgid "You have pasted into an existing partition."
 msgid "You have pasted into an existing partition"
 msgstr "شما در یک افراز موجود چسبانده‌اید."
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: src/Win_GParted.cc:2388
+#: src/Win_GParted.cc:2382
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "اطلاعات بر روی %1 با اعمال این عملیات حذف خواهند شد."
 
-#: src/Win_GParted.cc:2462
+#: src/Win_GParted.cc:2456
 msgid "Unable to delete %1!"
 msgstr "نمی‌توان %1 راحذف کرد!"
 
-#: src/Win_GParted.cc:2469
+#: src/Win_GParted.cc:2463
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "لطفا هرگونه افراز منطقی که شماره بالاتر از %1 دارد را پیاده کن"
 
-#: src/Win_GParted.cc:2480
+#: src/Win_GParted.cc:2474
 msgid "Are you sure you want to delete %1?"
 msgstr "آیا مطمئنید که می‌خواهید افراز %1 را حذف کنید؟"
 
-#: src/Win_GParted.cc:2487
+#: src/Win_GParted.cc:2481
 msgid "After deletion this partition is no longer available for copying."
 msgstr "بعد از حذف کردن، این افراز دیگر برای رونوشت کردن حاضر نیست."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: src/Win_GParted.cc:2490
+#: src/Win_GParted.cc:2484
 msgid "Delete %1 (%2, %3)"
 msgstr "حذف کردن %1 (%2، %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: src/Win_GParted.cc:2645
+#: src/Win_GParted.cc:2639
 #, fuzzy
 #| msgid "Cannot format this file system to %1."
 msgid "Cannot format this file system to %1"
@@ -2233,26 +2086,26 @@ msgstr "نمی‌توان این سیستم پرونده را به %1 قالب�
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: src/Win_GParted.cc:2657
+#: src/Win_GParted.cc:2651
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "یک سیستم پرونده %1 حداقل به %2 افراز نیاز دارد."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: src/Win_GParted.cc:2665
+#: src/Win_GParted.cc:2659
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "یک افراز با سیستم پرونده %1 حداکثر می‌تواند اندازه %2 داشته باشد."
 
-#: src/Win_GParted.cc:2737
+#: src/Win_GParted.cc:2732
 msgid "Opening encryption on %1"
 msgstr ""
 
-#: src/Win_GParted.cc:2751
+#: src/Win_GParted.cc:2746
 msgid "Failed to open LUKS encryption"
 msgstr ""
 
-#: src/Win_GParted.cc:2773
+#: src/Win_GParted.cc:2768
 #, fuzzy
 #| msgid ""
 #| "The swapon action cannot be performed if an operation is pending for the "
@@ -2263,17 +2116,17 @@ msgid ""
 msgstr ""
 "عمل swapon هنگامی که یک عملیات برای این افراز در انتظار است، قابل استفاده نیست."
 
-#: src/Win_GParted.cc:2774
+#: src/Win_GParted.cc:2769
 msgid "Closing encryption on %1"
 msgstr ""
 
-#: src/Win_GParted.cc:2775
+#: src/Win_GParted.cc:2770
 #, fuzzy
 #| msgid "Could not mount %1 on %2"
 msgid "Could not close encryption"
 msgstr "نمی‌توان %1 را بر روی %2 سوار کرد"
 
-#: src/Win_GParted.cc:2780
+#: src/Win_GParted.cc:2775
 #, fuzzy
 #| msgid ""
 #| "The mount action cannot be performed if an operation is pending for the "
@@ -2288,19 +2141,19 @@ msgstr ""
 #. TO TRANSLATORS: looks like
 #. * Enter LUKS passphrase to open /dev/sda1
 #.
-#: src/Win_GParted.cc:2820
+#: src/Win_GParted.cc:2815
 msgid "Enter LUKS passphrase to open %1"
 msgstr ""
 
-#: src/Win_GParted.cc:2891
+#: src/Win_GParted.cc:2886
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "افراز از «نقاط سوار کردن» مقابل نمی‌تواند پیاده شود:"
 
-#: src/Win_GParted.cc:2893
+#: src/Win_GParted.cc:2888
 #, fuzzy
 #| msgid ""
-#| "Most likely other partitions are also mounted on these mount points. You "
-#| "are advised to unmount them manually."
+#| "Most likely other partitions are also mounted on these mount points. You are "
+#| "advised to unmount them manually."
 msgid ""
 "This is because other partitions are also mounted on these mount points.  You "
 "are advised to unmount them manually."
@@ -2309,7 +2162,7 @@ msgstr ""
 "شده‌اند. به شما توصیه می‌شود که آنها را به صورت دستی پیاده کنید."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: src/Win_GParted.cc:2906
+#: src/Win_GParted.cc:2901
 #, fuzzy
 #| msgid "%1 operation is currently pending for partition %2."
 #| msgid_plural "%1 operations are currently pending for partition %2."
@@ -2317,7 +2170,7 @@ msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 عملیات در حال حاظر در انتظار افراز %2 هستند."
 
-#: src/Win_GParted.cc:2921
+#: src/Win_GParted.cc:2916
 #, fuzzy
 #| msgid ""
 #| "Use the Edit menu to undo, clear, or apply operations before using mount "
@@ -2327,7 +2180,7 @@ msgstr ""
 "از منو ویرایش جهت برگردان، پاک کردن، و یا اعمال عملیات‌ها، قبل از استفاده از "
 "«سوار کردن» در این افراز استفاده کنید."
 
-#: src/Win_GParted.cc:2964
+#: src/Win_GParted.cc:2959
 #, fuzzy
 #| msgid ""
 #| "The swapon action cannot be performed if an operation is pending for the "
@@ -2338,34 +2191,34 @@ msgid ""
 msgstr ""
 "عمل swapon هنگامی که یک عملیات برای این افراز در انتظار است، قابل استفاده نیست."
 
-#: src/Win_GParted.cc:2965
+#: src/Win_GParted.cc:2960
 msgid "Deactivating swap on %1"
 msgstr "غیرفعال کردن swap بر روی %1"
 
-#: src/Win_GParted.cc:2966
+#: src/Win_GParted.cc:2961
 msgid "Could not deactivate swap"
 msgstr "نمی‌توان swap را غیرفعال کرد"
 
-#: src/Win_GParted.cc:2971
+#: src/Win_GParted.cc:2966
 #, fuzzy
 #| msgid ""
 #| "The swapon action cannot be performed if an operation is pending for the "
 #| "partition."
 msgid ""
-"The swapon action cannot be performed when there are operations pending for "
-"the partition."
+"The swapon action cannot be performed when there are operations pending for the "
+"partition."
 msgstr ""
 "عمل swapon هنگامی که یک عملیات برای این افراز در انتظار است، قابل استفاده نیست."
 
-#: src/Win_GParted.cc:2972
+#: src/Win_GParted.cc:2967
 msgid "Activating swap on %1"
 msgstr "درحال فعال کردن swap بر روی %1"
 
-#: src/Win_GParted.cc:2973
+#: src/Win_GParted.cc:2968
 msgid "Could not activate swap"
 msgstr "نمی‌توان swap را فعال کرد"
 
-#: src/Win_GParted.cc:2978
+#: src/Win_GParted.cc:2973
 #, fuzzy
 #| msgid ""
 #| "The mount action cannot be performed if an operation is pending for the "
@@ -2377,20 +2230,20 @@ msgstr ""
 "عمل سوار کردن هنگامی که یک عملیات برای این افراز در انتظار است، قابل استفاده "
 "نیست."
 
-#: src/Win_GParted.cc:2979
+#: src/Win_GParted.cc:2974
 #, fuzzy
 #| msgid "Deactivating swap on %1"
 msgid "Deactivating Volume Group %1"
 msgstr "غیرفعال کردن swap بر روی %1"
 
 #. VGNAME from point point
-#: src/Win_GParted.cc:2981
+#: src/Win_GParted.cc:2976
 #, fuzzy
 #| msgid "Could not deactivate swap"
 msgid "Could not deactivate Volume Group"
 msgstr "نمی‌توان swap را غیرفعال کرد"
 
-#: src/Win_GParted.cc:2986
+#: src/Win_GParted.cc:2981
 #, fuzzy
 #| msgid ""
 #| "The mount action cannot be performed if an operation is pending for the "
@@ -2402,20 +2255,20 @@ msgstr ""
 "عمل سوار کردن هنگامی که یک عملیات برای این افراز در انتظار است، قابل استفاده "
 "نیست."
 
-#: src/Win_GParted.cc:2987
+#: src/Win_GParted.cc:2982
 #, fuzzy
 #| msgid "Activating swap on %1"
 msgid "Activating Volume Group %1"
 msgstr "درحال فعال کردن swap بر روی %1"
 
 #. VGNAME from point point
-#: src/Win_GParted.cc:2989
+#: src/Win_GParted.cc:2984
 #, fuzzy
 #| msgid "Could not activate swap"
 msgid "Could not activate Volume Group"
 msgstr "نمی‌توان swap را فعال کرد"
 
-#: src/Win_GParted.cc:2994
+#: src/Win_GParted.cc:2989
 #, fuzzy
 #| msgid ""
 #| "The mount action cannot be performed if an operation is pending for the "
@@ -2427,17 +2280,17 @@ msgstr ""
 "عمل سوار کردن هنگامی که یک عملیات برای این افراز در انتظار است، قابل استفاده "
 "نیست."
 
-#: src/Win_GParted.cc:2995
+#: src/Win_GParted.cc:2990
 msgid "Unmounting %1"
 msgstr "درحال پیاده کردن %1"
 
-#: src/Win_GParted.cc:2996
+#: src/Win_GParted.cc:2991
 msgid "Could not unmount %1"
 msgstr "نمی‌توان %1 را پیاده کرد"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: src/Win_GParted.cc:3060
+#: src/Win_GParted.cc:3055
 #, fuzzy
 #| msgid ""
 #| "The mount action cannot be performed if an operation is pending for the "
@@ -2449,16 +2302,16 @@ msgstr ""
 "عمل سوار کردن هنگامی که یک عملیات برای این افراز در انتظار است، قابل استفاده "
 "نیست."
 
-#: src/Win_GParted.cc:3073
+#: src/Win_GParted.cc:3068
 msgid "mounting %1 on %2"
 msgstr "درحال سوار کردن %1 بر روی %2"
 
-#: src/Win_GParted.cc:3101
+#: src/Win_GParted.cc:3096
 msgid "Could not mount %1 on %2"
 msgstr "نمی‌توان %1 را بر روی %2 سوار کرد"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: src/Win_GParted.cc:3120
+#: src/Win_GParted.cc:3115
 #, fuzzy
 #| msgid "%1 partition is currently active on device %2."
 #| msgid_plural "%1 partitions are currently active on device %2."
@@ -2466,11 +2319,11 @@ msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 افراز درحال حاظر بر روی دستگاه %2 فعال است."
 
-#: src/Win_GParted.cc:3135
+#: src/Win_GParted.cc:3130
 msgid "A new partition table cannot be created when there are active partitions."
 msgstr "نمی‌توان یک جدول افراز جدید ساخت در حالی که پارتیشن‌های فعال وجود دارند."
 
-#: src/Win_GParted.cc:3137
+#: src/Win_GParted.cc:3132
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, or "
 "enabled swap space."
@@ -2478,16 +2331,15 @@ msgstr ""
 "پارتیشن‌های فعال عبارتند از آنهایی که در حال استفاده هستند، مانند سیستم "
 "پرونده‌های سوار شده یا فضای swap فعال شده."
 
-#: src/Win_GParted.cc:3139
+#: src/Win_GParted.cc:3134
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
 msgstr ""
-"قبل از اینکه یک جدول افراز جدید بسازید از گزینه‌های منوی پارتیشن، نظیر "
-"پیاده‌کردن یا swapoff جهت غیرفعال کردن تمام پارتیشن‌های بر روی این دستگاه "
-"استفاده کنید."
+"قبل از اینکه یک جدول افراز جدید بسازید از گزینه‌های منوی پارتیشن، نظیر پیاده‌کردن "
+"یا swapoff جهت غیرفعال کردن تمام پارتیشن‌های بر روی این دستگاه استفاده کنید."
 
-#: src/Win_GParted.cc:3151
+#: src/Win_GParted.cc:3146
 #, fuzzy
 #| msgid "%1 operation is currently pending."
 #| msgid_plural "%1 operations are currently pending."
@@ -2495,119 +2347,66 @@ msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "تعداد %1 عملیات در حال حاظر در انتظار هستند."
 
-#: src/Win_GParted.cc:3164
-msgid ""
-"A new partition table cannot be created when there are pending operations."
+#: src/Win_GParted.cc:3159
+msgid "A new partition table cannot be created when there are pending operations."
 msgstr "نمی‌توان یک جدول افراز جدید ساخت وقتی عملیات‌هایی در انتظار هستند."
 
-#: src/Win_GParted.cc:3166
+#: src/Win_GParted.cc:3161
 msgid ""
-"Use the Edit menu to either clear or apply all operations before creating a "
-"new partition table."
+"Use the Edit menu to either clear or apply all operations before creating a new "
+"partition table."
 msgstr ""
 "از منوی ویرایش جهت پاک کردن عملیات‌ها و یا اعمال آنها قبل از ساخت یک جدول افراز "
 "جدید استفاده کنید."
 
-#: src/Win_GParted.cc:3181
+#: src/Win_GParted.cc:3176
 #, fuzzy
 #| msgid "Error while creating partition table."
 msgid "Error while creating partition table"
 msgstr "خطا در هنگام ساخت جدول افراز."
 
-#: src/Win_GParted.cc:3201
-msgid "Command gpart was not found"
-msgstr "فرمان gpart پیدا نشد"
-
-#: src/Win_GParted.cc:3202
-msgid "This feature uses gpart. Please install gpart and try again."
-msgstr ""
-"این امکان از gpart استفاده می‌کند. لطفا gpart را نصب و دوباره امتحان کنید."
-
-#. Dialog information
-#: src/Win_GParted.cc:3210
-msgid "A full disk scan is needed to find file systems."
-msgstr "یک پویشِ دیسکِ کامل جهت یافتن سیستم پرونده‌ها لازم است."
-
-#: src/Win_GParted.cc:3212
-msgid "The scan might take a very long time."
-msgstr "پویش ممکن است مدت زمان زیادی طول بکشد."
-
-#: src/Win_GParted.cc:3214
-msgid ""
-"After the scan you can mount any discovered file systems and copy the data to "
-"other media."
-msgstr ""
-"بعد از پویش شما می‌توانید هر گونه سیستم پرونده‌ای پیدا شده را سوار کنید و از "
-"اطلاعات آن به رسانه‌های دیگر رونوشت تهیه کنید."
-
-#: src/Win_GParted.cc:3216
-msgid "Do you want to continue?"
-msgstr "آیا می‌خواهید ادامه دهید؟"
-
-#. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: src/Win_GParted.cc:3220
-msgid "Search for file systems on %1"
-msgstr "جستجو برای سیستم پرونده‌ها بر روی %1"
-
-#. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: src/Win_GParted.cc:3231
-msgid "Searching for file systems on %1"
-msgstr "درحال جستجو برای سیستم پرونده‌ها بر روی %1"
-
-#. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: src/Win_GParted.cc:3247
-msgid "No file systems found on %1"
-msgstr "هیچ سیستم پرونده‌ای بر روی %1 پیدا نشد"
-
-#: src/Win_GParted.cc:3248
-msgid ""
-"The disk scan by gpart did not find any recognizable file systems on this disk."
-msgstr ""
-"«پویش دیسک» توسط gpart، هیچ سیستم پرونده‌ای قابل تشخیصی را بر روی دیسک پیدا "
-"نکرد."
-
-#: src/Win_GParted.cc:3525
+#: src/Win_GParted.cc:3454
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "آیا مطمئن هستید که می‌خواهید عملیات‌های در انتظار را اعمال کنید؟"
 
-#: src/Win_GParted.cc:3531
+#: src/Win_GParted.cc:3460
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "ویرایش پارتیشن‌ها می‌تواند باعث «از دست دادن اطلاعات» بشود."
 
-#: src/Win_GParted.cc:3533
+#: src/Win_GParted.cc:3462
 msgid "You are advised to backup your data before proceeding."
 msgstr "به شما توصیه می‌شود قبل از ادامه دادن از اطلاعات خود پشتیبان تهیه کنید."
 
-#: src/Win_GParted.cc:3535
+#: src/Win_GParted.cc:3464
 msgid "Apply operations to device"
 msgstr "اعمال عملیات‌ها بر روی دستگاه"
 
-#: src/Win_GParted.cc:3578
+#: src/Win_GParted.cc:3507
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: src/Win_GParted.cc:3582
+#: src/Win_GParted.cc:3511
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: src/Win_GParted.cc:3586
+#: src/Win_GParted.cc:3515
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: src/Win_GParted.cc:3595
+#: src/Win_GParted.cc:3524
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will destroy "
 "or damage the  Volume Group."
 msgstr ""
 
-#: src/Win_GParted.cc:3598
+#: src/Win_GParted.cc:3527
 msgid ""
-"To avoid destroying or damaging the Volume Group, you are advised to cancel "
-"and use external LVM commands to free the Physical Volume before attempting "
-"this operation."
+"To avoid destroying or damaging the Volume Group, you are advised to cancel and "
+"use external LVM commands to free the Physical Volume before attempting this "
+"operation."
 msgstr ""
 
-#: src/Win_GParted.cc:3601
+#: src/Win_GParted.cc:3530
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr ""
 
@@ -2634,14 +2433,14 @@ msgstr ""
 #: src/fat16.cc:34 src/ntfs.cc:37
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
-"Changing the Volume Serial Number on the Windows system partition, normally "
-"C:, might invalidate the WPA key. An invalid WPA key will prevent login until "
-"you reactivate Windows."
+"Changing the Volume Serial Number on the Windows system partition, normally C:, "
+"might invalidate the WPA key. An invalid WPA key will prevent login until you "
+"reactivate Windows."
 msgstr ""
-"بر روی سیستم‌های پرونده FAT و NTFS، شماره سریال جلد به عنوان UUID استفاده "
-"می‌شود. تغییر شماره سریال بر روی افراز سیستم ویندوز، به‌طور معمول C:، ممکن است "
-"باعث غیرمعتبر شدن کلید WPA شود. غیرمعتبر شدن کلید WPA باعث جلوگیری از ورود به "
-"سیستم تا زمان فعال‌سازی مجدد ویندوز می‌شود."
+"بر روی سیستم‌های پرونده FAT و NTFS، شماره سریال جلد به عنوان UUID استفاده می‌شود. "
+"تغییر شماره سریال بر روی افراز سیستم ویندوز، به‌طور معمول C:، ممکن است باعث "
+"غیرمعتبر شدن کلید WPA شود. غیرمعتبر شدن کلید WPA باعث جلوگیری از ورود به سیستم "
+"تا زمان فعال‌سازی مجدد ویندوز می‌شود."
 
 #: src/fat16.cc:38 src/ntfs.cc:43
 msgid ""
@@ -2662,17 +2461,14 @@ msgstr "_Swapoff"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
 #: src/linux_swap.cc:195
-msgid ""
-"Partition move action skipped because %1 file system does not contain data"
+msgid "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
 "جابجایی افراز نادیده گرفته شد، زیرا سیستم پرونده %1 شامل هیچ اطلاعاتی نیست"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
 #: src/linux_swap.cc:214
-msgid ""
-"Partition copy action skipped because %1 file system does not contain data"
-msgstr ""
-"رونوشت افراز نادیده گرفته شد، زیرا سیستم پرونده %1 شامل هیچ اطلاعاتی نیست"
+msgid "Partition copy action skipped because %1 file system does not contain data"
+msgstr "رونوشت افراز نادیده گرفته شد، زیرا سیستم پرونده %1 شامل هیچ اطلاعاتی نیست"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
 #: src/lvm2_pv.cc:31
@@ -2685,8 +2481,8 @@ msgstr "_از کار انداختن"
 
 #: src/lvm2_pv.cc:35
 msgid ""
-"The LVM2 Physical Volume can not currently be resized because it is a member "
-"of an exported Volume Group."
+"The LVM2 Physical Volume can not currently be resized because it is a member of "
+"an exported Volume Group."
 msgstr ""
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
@@ -2718,8 +2514,8 @@ msgstr ""
 
 #: src/ntfs.cc:41
 msgid ""
-"In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
-"half of the UUID is set to a new random value."
+"In an attempt to avoid invalidating the WPA key, on NTFS file systems only half "
+"of the UUID is set to a new random value."
 msgstr ""
 "برای جلوگیری از غیرمعتبر شدن کلید WPA، بر روی سیستم پرونده NTFS تنها نیمی از "
 "UUID بر روی مقدار اتفاقی جدید تنظیم می‌شود."
@@ -2744,9 +2540,138 @@ msgstr ""
 
 #: src/udf.cc:211
 msgid ""
-"mkudffs prior to version 1.1 does not support non-ASCII characters in the "
-"label."
+"mkudffs prior to version 1.1 does not support non-ASCII characters in the label."
 msgstr ""
+
+#~ msgid "Search disk for file systems"
+#~ msgstr "جستجو دیسک برای سیستم پرونده‌ها"
+
+#~ msgid "File systems found on %1"
+#~ msgstr "سیستم پرونده‌های پیدا شده بر روی %1"
+
+#~ msgid "Data found"
+#~ msgstr "اطلاعات پیدا شد"
+
+#~ msgid "Data found with inconsistencies"
+#~ msgstr "اطلاعات همراه با تناقصاتی پیدا شد"
+
+#~ msgid "WARNING!: The file systems marked with (!) are inconsistent."
+#~ msgstr "هشدار!: سیستم‌های پرونده‌ای مشخص شده با (!) متناقض هستند."
+
+#~ msgid "You might encounter errors trying to view these file systems."
+#~ msgstr "شما ممکن است با مشکلاتی در هنگام نمایش این سیستم‌های پرونده مواجه شوید."
+
+#~ msgid "The 'View' buttons create read-only views of each file system."
+#~ msgstr "دکمه‌های «نما»، نماهای «فقط-خواندنی» از هر سیستم پرونده می‌سازند."
+
+#~ msgid "All mounted views will be unmounted when you close this dialog."
+#~ msgstr "تمام نماهای سوار شده هنگامی که این محاوره را ببندید پیاده می‌شوند."
+
+#~ msgid "File systems"
+#~ msgstr "سیستم پرونده‌ها"
+
+#~ msgid "#%1: %2 (%3 MiB)"
+#~ msgstr "#%1: %2 (%3 مگابایت)"
+
+#~ msgid "View"
+#~ msgstr "نما"
+
+#~ msgid ""
+#~ "An error occurred while creating a temporary directory for use as a mount "
+#~ "point."
+#~ msgstr ""
+#~ "یک خطا در هنگام ساخت شاخه‌ی موقت جهت استفاده به عنوان نقطه سوار کردن رُخ داد."
+
+#~ msgid "Error"
+#~ msgstr "خطا"
+
+#~ msgid "Failed creating temporary directory"
+#~ msgstr "شکست در هنگام ساخت شاخه موقت"
+
+#~ msgid "An error occurred while creating the read-only view."
+#~ msgstr "یک خطا در هنگام ساخت نمای «فقط-خواندنی» رُخ داد."
+
+#~ msgid ""
+#~ "Either the file system can not be mounted (like swap), or there are "
+#~ "inconsistencies or errors in the file system."
+#~ msgstr ""
+#~ "اینکه آیا این سیستم پرونده می‌تواند سوار شود (مانند swap)، یا تناقضات و "
+#~ "خطاهایی در سیستم پرونده‌ها وجود دارد."
+
+#~ msgid "Failed creating read-only view"
+#~ msgstr "شکست در هنگام ساخت نمای «فقط-خواندنی»"
+
+#~ msgid "Error:"
+#~ msgstr "خطا:"
+
+#~ msgid "The file system is mounted on:"
+#~ msgstr "سیستم پرونده‌ها سوار شده است بر روی:"
+
+#~ msgid "Unable to open the default file manager"
+#~ msgstr "نمی‌توان مدیر پرونده پیش‌فرض را باز کرد"
+
+#, fuzzy
+#~| msgid ""
+#~| "Warning: The detected file system area overlaps with at least one existing "
+#~| "partition."
+#~ msgid ""
+#~ "Warning: The detected file system area overlaps with at least one existing "
+#~ "partition"
+#~ msgstr ""
+#~ "هشدار: ناحیه سیستم پرونده تشخیص داده شده، با حداقل یکی از پارتیشن‌ها مشترک "
+#~ "است."
+
+#~ msgid ""
+#~ "It is recommended that you do not use any overlapping file systems to avoid "
+#~ "disturbing existing data."
+#~ msgstr ""
+#~ "توصیه می‌شود از هیچ یک از سیستم‌های پرونده‌ی مشترک جهت جلوگیری از ایجاد اخلال "
+#~ "در اطلاعات موجود استفاده نکنید."
+
+#~ msgid "Do you want to try to deactivate the following mount points?"
+#~ msgstr "آیا مایلید سعی کنید «نقاط سوار کردن» مقابل را غیرفعال کنید؟"
+
+#~ msgid "_Attempt Data Rescue"
+#~ msgstr "_تلاش جهت بازگردانی اطلاعات"
+
+#~ msgid "Command gpart was not found"
+#~ msgstr "فرمان gpart پیدا نشد"
+
+#~ msgid "This feature uses gpart. Please install gpart and try again."
+#~ msgstr ""
+#~ "این امکان از gpart استفاده می‌کند. لطفا gpart را نصب و دوباره امتحان کنید."
+
+#~ msgid "A full disk scan is needed to find file systems."
+#~ msgstr "یک پویشِ دیسکِ کامل جهت یافتن سیستم پرونده‌ها لازم است."
+
+#~ msgid "The scan might take a very long time."
+#~ msgstr "پویش ممکن است مدت زمان زیادی طول بکشد."
+
+#~ msgid ""
+#~ "After the scan you can mount any discovered file systems and copy the data "
+#~ "to other media."
+#~ msgstr ""
+#~ "بعد از پویش شما می‌توانید هر گونه سیستم پرونده‌ای پیدا شده را سوار کنید و از "
+#~ "اطلاعات آن به رسانه‌های دیگر رونوشت تهیه کنید."
+
+#~ msgid "Do you want to continue?"
+#~ msgstr "آیا می‌خواهید ادامه دهید؟"
+
+#~ msgid "Search for file systems on %1"
+#~ msgstr "جستجو برای سیستم پرونده‌ها بر روی %1"
+
+#~ msgid "Searching for file systems on %1"
+#~ msgstr "درحال جستجو برای سیستم پرونده‌ها بر روی %1"
+
+#~ msgid "No file systems found on %1"
+#~ msgstr "هیچ سیستم پرونده‌ای بر روی %1 پیدا نشد"
+
+#~ msgid ""
+#~ "The disk scan by gpart did not find any recognizable file systems on this "
+#~ "disk."
+#~ msgstr ""
+#~ "«پویش دیسک» توسط gpart، هیچ سیستم پرونده‌ای قابل تشخیصی را بر روی دیسک پیدا "
+#~ "نکرد."
 
 #~ msgid "Default is to create an MS-DOS partition table."
 #~ msgstr "پیش‌فرض ساخت جدول پارتیشن MS-DOS است."
@@ -2772,8 +2697,8 @@ msgstr ""
 #~ "GParted requires libparted version 2.2 or higher to support devices with "
 #~ "sector sizes larger than 512 bytes."
 #~ msgstr ""
-#~ "برنامه GParted به نسخه ۲.۲ یا بالاتر از libparted جهت پشتیبانی از "
-#~ "دستگاه‌هایی با اندازه‌ی سکتور بزرگتر از ۵۱۲ بایت نیاز دارد."
+#~ "برنامه GParted به نسخه ۲.۲ یا بالاتر از libparted جهت پشتیبانی از دستگاه‌هایی "
+#~ "با اندازه‌ی سکتور بزرگتر از ۵۱۲ بایت نیاز دارد."
 
 #~ msgid "Linux Unified Key Setup encryption is not yet supported."
 #~ msgstr "رمزگذاری Linux Unified Key هنوز پشتیبانی نمی‌شود."
