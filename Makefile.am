@@ -18,7 +18,7 @@ $(DESKTOP_FILES): $(DESKTOP_IN_FILES)
 
 APPDATA_IN_FILES = gparted.appdata.xml.in
 APPDATA_FILES =$(APPDATA_IN_FILES:.xml.in=.xml)
-appdatadir = $(datadir)/appdata
+appdatadir = $(datadir)/metainfo
 appdata_DATA = $(APPDATA_FILES)
 
 $(APPDATA_FILES): $(APPDATA_IN_FILES)
