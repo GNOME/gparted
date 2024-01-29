@@ -16,12 +16,12 @@ desktop_DATA = $(DESKTOP_FILES)
 $(DESKTOP_FILES): $(DESKTOP_IN_FILES)
 	$(AM_V_GEN)$(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
 
-APPDATA_IN_FILES = gparted.appdata.xml.in
-APPDATA_FILES =$(APPDATA_IN_FILES:.xml.in=.xml)
-appdatadir = $(datadir)/metainfo
-appdata_DATA = $(APPDATA_FILES)
+APPSTREAM_IN_FILES = gparted.appdata.xml.in
+APPSTREAM_FILES =$(APPSTREAM_IN_FILES:.xml.in=.xml)
+appstreamdir = $(datadir)/metainfo
+appstream_DATA = $(APPSTREAM_FILES)
 
-$(APPDATA_FILES): $(APPDATA_IN_FILES)
+$(APPSTREAM_FILES): $(APPSTREAM_IN_FILES)
 	$(AM_V_GEN)$(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
 
 polkit_action_in_in_FILES = org.gnome.gparted.policy.in.in
@@ -78,14 +78,14 @@ dist-hook:
 	fi
 
 EXTRA_DIST =			\
-	$(APPDATA_IN_FILES)	\
-	$(APPDATA_FILES)	\
+	$(APPSTREAM_IN_FILES)	\
+	$(APPSTREAM_FILES)	\
 	$(DESKTOP_IN_IN_FILES)	\
 	$(DESKTOP_FILES)	\
 	$(polkit_action_in_in_FILES)  \
 	gparted.in
 
 DISTCLEANFILES =		\
-	$(appdata_DATA)		\
+	$(appstream_DATA)	\
 	$(desktop_DATA)		\
 	$(polkit_action_DATA)
