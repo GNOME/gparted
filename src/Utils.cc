@@ -153,6 +153,7 @@ Glib::ustring Utils::get_color(FSType fstype)
 		case FS_CLEARED:         return "#000000";  // Black
 		case FS_OTHER:           return "#000000";  // Black (never displayed)
 		case FS_EXTENDED:        return "#95E3E5";  // Cyan Hilight [*]
+		case FS_BCACHEFS:        return "#C26825";  // Orange Dark [*]
 		case FS_BTRFS:           return "#E58749";  // Orange Medium [*]
 		case FS_EXFAT:           return "#267726";  // Accent Green Dark
 		case FS_EXT2:            return "#7590AE";  // Blue Medium
@@ -347,6 +348,7 @@ const Glib::ustring Utils::get_filesystem_string(FSType fstype)
 		                          */
 		                         return _("cleared");
 		case FS_EXTENDED:        return "extended";
+		case FS_BCACHEFS:        return "bcachefs";
 		case FS_BTRFS:           return "btrfs";
 		case FS_EXFAT:           return "exfat";
 		case FS_EXT2:            return "ext2";

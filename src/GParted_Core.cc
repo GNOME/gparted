@@ -1246,6 +1246,8 @@ FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPart
 	{
 		if ( fsname == "extended" )
 			return FS_EXTENDED;
+		else if (fsname == "bcachefs")
+			return FS_BCACHEFS;
 		else if ( fsname == "btrfs" )
 			return FS_BTRFS;
 		else if ( fsname == "exfat" )
