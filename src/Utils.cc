@@ -185,7 +185,7 @@ Glib::ustring Utils::get_color(FSType fstype)
 		case FS_LINUX_SWSUSPEND: return "#884631";  // Red Dark
 		case FS_REFS:            return "#3EA281";  // Aquamarine Dark [*]
 		case FS_UFS:             return "#AA8F2C";  // Accent Yellow Shadow [+]
-		case FS_ZFS:             return "#C26825";  // Orange Dark [*]
+		case FS_ZFS:             return "#984F18";  // Orange Shadow [*]
 		case FS_USED:            return "#F8F8BA";  // Light Tan Yellow [*]
 		case FS_UNUSED:          return "#FFFFFF";  // White
 		default:                 return "#000000";  // Black
