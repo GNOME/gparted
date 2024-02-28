@@ -53,6 +53,7 @@ noinst_HEADERS = \
 	TreeView_Detail.h		\
 	Utils.h				\
 	Win_GParted.h			\
+	bcachefs.h			\
 	btrfs.h				\
 	exfat.h				\
 	ext2.h				\

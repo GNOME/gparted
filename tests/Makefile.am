@@ -50,6 +50,7 @@ gparted_core_OBJECTS =  \
 	$(top_builddir)/src/SupportedFileSystems.$(OBJEXT)  \
 	$(top_builddir)/src/SWRaid_Info.$(OBJEXT)           \
 	$(top_builddir)/src/Utils.$(OBJEXT)                 \
+	$(top_builddir)/src/bcachefs.$(OBJEXT)              \
 	$(top_builddir)/src/btrfs.$(OBJEXT)                 \
 	$(top_builddir)/src/exfat.$(OBJEXT)                 \
 	$(top_builddir)/src/ext2.$(OBJEXT)                  \

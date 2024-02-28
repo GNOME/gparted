@@ -18,6 +18,7 @@
 #include "SupportedFileSystems.h"
 #include "FileSystem.h"
 #include "Utils.h"
+#include "bcachefs.h"
 #include "btrfs.h"
 #include "exfat.h"
 #include "ext2.h"
@@ -59,6 +60,7 @@ SupportedFileSystems::SupportedFileSystems()
 	//     supported_filesystem() -> false
 	m_fs_objects[FS_UNKNOWN]         = nullptr;
 	m_fs_objects[FS_OTHER]           = nullptr;
+	m_fs_objects[FS_BCACHEFS]        = new bcachefs();
 	m_fs_objects[FS_BTRFS]           = new btrfs();
 	m_fs_objects[FS_EXFAT]           = new exfat();
 	m_fs_objects[FS_EXT2]            = new ext2(FS_EXT2);

@@ -260,6 +260,7 @@ int Utils::get_filesystem_label_maxlength(FSType fstype)
 	// afterwards, need a maximum length defining.
 	switch (fstype)
 	{
+		case FS_BCACHEFS:   return 32;
 		case FS_BTRFS:      return 255;
 		case FS_EXFAT:      return 11;
 		case FS_EXT2:       return 16;
@@ -408,6 +409,7 @@ const Glib::ustring Utils::get_filesystem_kernel_name( FSType fstype )
 {
 	switch ( fstype )
 	{
+		case FS_BCACHEFS : return "bcachefs";
 		case FS_BTRFS    : return "btrfs";
 		case FS_EXFAT    : return "exfat";
 		case FS_EXT2     : return "ext2";
@@ -435,6 +437,7 @@ const Glib::ustring Utils::get_filesystem_software(FSType fstype)
 {
 	switch (fstype)
 	{
+		case FS_BCACHEFS:   return "bcachefs-tools";
 		case FS_BTRFS:      return "btrfs-progs / btrfs-tools";
 		case FS_EXFAT:      return "exfatprogs";
 		case FS_EXT2:       return "e2fsprogs";

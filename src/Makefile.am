@@ -63,6 +63,7 @@ gpartedbin_SOURCES = \
 	TreeView_Detail.cc		\
 	Utils.cc			\
 	Win_GParted.cc			\
+	bcachefs.cc			\
 	btrfs.cc			\
 	exfat.cc			\
 	ext2.cc				\
