@@ -78,12 +78,14 @@ void FS_Info::load_cache_for_device_and_partition_names(const std::vector<Device
 }
 
 
-void FS_Info::load_cache_for_paths(const std::vector<Glib::ustring>& paths)
+void FS_Info::load_cache_for_one_device_name(const Glib::ustring& device_name)
 {
 	if (not_initialised_then_error())
 		return;
 
-	run_blkid_load_cache(paths);
+	std::vector<Glib::ustring> one_name;
+	one_name.push_back(device_name);
+	run_blkid_load_cache(one_name);
 }
 
 
