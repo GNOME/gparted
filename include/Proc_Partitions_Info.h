@@ -35,13 +35,24 @@ namespace GParted
 {
 
 
+struct DeviceAndPartitionNames
+{
+	Glib::ustring              m_device_name;
+	std::vector<Glib::ustring> m_partition_names;
+
+	DeviceAndPartitionNames(const Glib::ustring& devname, const std::vector<Glib::ustring>& ptnnames)
+	 : m_device_name(devname), m_partition_names(ptnnames)
+	{};
+};
+
+
 class Proc_Partitions_Info
 {
 public:
 	static void load_cache();
 	static const std::vector<Glib::ustring> & get_device_paths();
-	static std::vector<Glib::ustring> get_device_and_partition_paths_for(
-	                const std::vector<Glib::ustring>& device_paths);
+	static std::vector<DeviceAndPartitionNames> get_device_and_partition_names_for(
+	                const std::vector<Glib::ustring>& device_names);
 
 private:
 	static void initialize_if_required();

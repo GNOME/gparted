@@ -60,6 +60,24 @@ void FS_Info::clear_cache()
 }
 
 
+void FS_Info::load_cache_for_device_and_partition_names(const std::vector<DeviceAndPartitionNames>& dev_ptn_names)
+{
+	if (not_initialised_then_error())
+		return;
+
+	// Create plain vector from structured device and partition names
+	std::vector<Glib::ustring> all_names;
+	for (unsigned int i = 0; i < dev_ptn_names.size(); i++)
+	{
+		const DeviceAndPartitionNames& dpn = dev_ptn_names[i];
+		all_names.push_back(dpn.m_device_name);
+		all_names.insert(all_names.end(), dpn.m_partition_names.begin(), dpn.m_partition_names.end());
+	}
+
+	run_blkid_load_cache(all_names);
+}
+
+
 void FS_Info::load_cache_for_paths(const std::vector<Glib::ustring>& paths)
 {
 	if (not_initialised_then_error())

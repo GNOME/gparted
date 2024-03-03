@@ -14,10 +14,13 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef GPARTED_FS_INFO_H
 #define GPARTED_FS_INFO_H
 
+
 #include "BlockSpecial.h"
+#include "Proc_Partitions_Info.h"
 
 #include <glibmm/ustring.h>
 #include <vector>
@@ -41,6 +44,8 @@ class FS_Info
 {
 public:
 	static void clear_cache();
+	static void load_cache_for_device_and_partition_names(
+	                        const std::vector<DeviceAndPartitionNames>& dev_ptn_names);
 	static void load_cache_for_paths(const std::vector<Glib::ustring>& paths);
 	static Glib::ustring get_fs_type( const Glib::ustring & path );
 	static Glib::ustring get_label( const Glib::ustring & path, bool & found );
