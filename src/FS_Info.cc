@@ -75,6 +75,7 @@ void FS_Info::load_cache_for_device_and_partition_names(const std::vector<Device
 	}
 
 	run_blkid_load_cache(all_names);
+	apply_blkid_whole_drive_zfs_detection_workaround(dev_ptn_names);
 }
 
 
@@ -225,7 +226,7 @@ void FS_Info::set_command_found()
 }
 
 
-const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
+FS_Entry& FS_Info::get_cache_entry_by_path(const Glib::ustring& path)
 {
 	BlockSpecial bs = BlockSpecial( path );
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
@@ -282,6 +283,45 @@ void FS_Info::run_blkid_load_cache(const std::vector<Glib::ustring>& paths)
 	}
 
 	return;
+}
+
+
+// blkid has twice incorrectly reported zfs_members on the whole disk when it was only in
+// one of it's partitions, with the same UUID (ZFS pool UUID).  Detect this and clear the
+// cache entry for ZFS on the whole disk to avoid GParted displaying ZFS on the whole
+// disk.
+// *   util-linux issue 918 - blkid reports disk as zfs_member if it has a zfs_member
+//     partition
+//     https://github.com/util-linux/util-linux/issues/918
+// *   util-linux issue 4078 - blkid reports whole disk as zfs_member if the ending
+//     partition is a zfs_member
+//     https://github.com/util-linux/util-linux/issues/4078
+void FS_Info::apply_blkid_whole_drive_zfs_detection_workaround(
+                        const std::vector<DeviceAndPartitionNames>& dev_ptn_names)
+{
+	for (unsigned int i = 0; i < dev_ptn_names.size(); i++)
+	{
+		if (dev_ptn_names[i].m_partition_names.size() == 0)
+			continue;
+		FS_Entry& device_entry = get_cache_entry_by_path(dev_ptn_names[i].m_device_name);
+		for (unsigned int j = 0; j < dev_ptn_names[i].m_partition_names.size(); j++)
+		{
+			const FS_Entry& partition_entry = get_cache_entry_by_path(
+			                        dev_ptn_names[i].m_partition_names[j]);
+			if (device_entry.type    == "zfs_member"         &&
+			    partition_entry.type == "zfs_member"         &&
+			    device_entry.uuid    == partition_entry.uuid   )
+			{
+				// Clear incorrect whole disk ZFS entry with the same UUID
+				// as one of it's partitions.
+				device_entry.type.clear();
+				device_entry.sec_type.clear();
+				device_entry.uuid.clear();
+				device_entry.have_label = false;
+				device_entry.label.clear();
+			}
+		}
+	}
 }
 
 
