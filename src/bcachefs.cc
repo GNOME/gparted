@@ -43,6 +43,8 @@ FS bcachefs::get_filesystem_support()
 		fs.online_read       = FS::EXTERNAL;
 		fs.create            = FS::EXTERNAL;
 		fs.create_with_label = FS::EXTERNAL;
+		fs.read_label        = FS::EXTERNAL;
+		fs.read_uuid         = FS::EXTERNAL;
 	}
 
 	fs_limits.min_size = 32 * MEBIBYTE;
@@ -92,6 +94,40 @@ bool bcachefs::create(const Partition& new_partition, OperationDetail& operation
 	return ! execute_command("bcachefs format -L " + Glib::shell_quote(new_partition.get_filesystem_label()) +
 	                         " " + Glib::shell_quote(new_partition.get_path()),
 				 operationdetail, EXEC_CHECK_STATUS);
+}
+
+
+void bcachefs::read_label(Partition& partition)
+{
+	exit_status = Utils::execute_command("bcachefs show-super " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
+	{
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
+	}
+
+	partition.set_filesystem_label(Utils::regexp_label(output, "^Label:[[:blank:]]*(.*)$"));
+}
+
+
+void bcachefs::read_uuid(Partition& partition)
+{
+	exit_status = Utils::execute_command("bcachefs show-super " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
+	{
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
+	}
+
+	partition.uuid = Utils::regexp_label(output, "^External UUID:  *(" RFC4122_NONE_NIL_UUID_REGEXP ")");
 }
 
 
