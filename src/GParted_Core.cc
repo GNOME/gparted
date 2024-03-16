@@ -3765,6 +3765,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	// Not covered by the above are:
 	// *   Btrfs super block mirror copies
 	// *   One possible location of Promise FastTrack RAID super block
+	// *   Bcachefs super block backup
 	//
 	// Btrfs super blocks are located at: 64 KiB, 64 MiB, 256 GiB and 1 PiB.  The
 	// super block at 64 KiB will be erased by the zeroing from offset 0.  The super
@@ -3779,6 +3780,16 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	// location -3087 must be explicitly cleared.
 	//     util-linux v2.38.1: libblkid/src/subperblocks/promise_raid.c:probe_pdcraid()
         //     https://git.kernel.org/pub/scm/utils/util-linux/util-linux.git/tree/libblkid/src/superblocks/promise_raid.c?h=v2.38.1#n27
+	//
+	// Bcachefs super block backup is located at -1 MiB before the end of the device,
+	// rounded down to the file system's bucket size, where the bucket size is one of:
+	// 128 KiB, 256 KiB, 512 KiB or 1024 KiB.
+	// *   bcachefs-tools v1.6.4: c_src/libbcachefs.c:bch2_format()
+	//     https://evilpiepirate.org/git/bcachefs-tools.git/tree/c_src/libbcachefs.c?h=v1.6.4#n313
+	// *   bcachefs-tools v1.6.4: c_src/libbcachefs.c:bch2_pick_bucket_size()
+	//     https://evilpiepirate.org/git/bcachefs-tools.git/tree/c_src/libbcachefs.c?h=v1.6.4#n85
+	// *   bcachefs-tools v1.6.4: libcachefs/bcachefs_format.h:struct bch_sb
+	//     https://evilpiepirate.org/git/bcachefs-tools.git/tree/libbcachefs/bcachefs_format.h?h=v1.6.4#n907
 	struct {
 		Byte_Value offset;    // Negative offsets work backwards from the end of the partition
 		Byte_Value rounding;  // Minimum desired rounding for offset
@@ -3790,6 +3801,10 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		{  256LL * GIBIBYTE,   1LL           ,   4LL * KIBIBYTE },  // Btrfs super block mirror copy
 		{    1LL * PEBIBYTE,   1LL           ,   4LL * KIBIBYTE },  // Btrfs super block mirror copy
 		{ -3087LL * 512LL  ,   1LL           , 512LL            },  // Promise FastTrack RAID super block
+		{   -1LL * MEBIBYTE, 128LL * KIBIBYTE,   4LL * KIBIBYTE },  // Bcachefs backup super block
+		{   -1LL * MEBIBYTE, 256LL * KIBIBYTE,   4LL * KIBIBYTE },  // Bcachefs backup super block
+		{   -1LL * MEBIBYTE, 512LL * KIBIBYTE,   4LL * KIBIBYTE },  // Bcachefs backup super block
+		{   -1LL * MEBIBYTE,   1LL * MEBIBYTE,   4LL * KIBIBYTE },  // Bcachefs backup super block
 		{ -512LL * KIBIBYTE, 256LL * KIBIBYTE, 768LL * KIBIBYTE }   // Super blocks at end
 	} ;
 	for ( unsigned int i = 0 ; overall_success && i < sizeof( ranges ) / sizeof( ranges[0] ) ; i ++ )
