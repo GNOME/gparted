@@ -537,14 +537,17 @@ bool Utils::kernel_version_at_least( int major_ver, int minor_ver, int patch_ver
 Glib::ustring Utils::format_size( Sector sectors, Byte_Value sector_size )
 {
 	std::stringstream ss ;
-	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
+	ss << std::setiosflags(std::ios::fixed);
 
 	if ( (sectors * sector_size) < KIBIBYTE )
 	{
+		ss << std::setprecision(0);
 		ss << sector_to_unit( sectors, sector_size, UNIT_BYTE ) ;
 		return Glib::ustring::compose( _("%1 B"), ss .str() ) ;
 	}
-	else if ( (sectors * sector_size) < MEBIBYTE )
+
+	ss << std::setprecision(2);
+	if (sectors * sector_size < MEBIBYTE)
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_KIB ) ;
 		return Glib::ustring::compose( _("%1 KiB"), ss .str() ) ;
