@@ -45,6 +45,11 @@ FS bcachefs::get_filesystem_support()
 		fs.create_with_label = FS::EXTERNAL;
 		fs.read_label        = FS::EXTERNAL;
 		fs.read_uuid         = FS::EXTERNAL;
+		fs.grow              = FS::EXTERNAL;
+#ifdef ENABLE_ONLINE_RESIZE
+		if (Utils::kernel_version_at_least(3, 6, 0))
+			fs.online_grow = FS::EXTERNAL;
+#endif
 	}
 
 	fs_limits.min_size = 32 * MEBIBYTE;
@@ -128,6 +133,13 @@ void bcachefs::read_uuid(Partition& partition)
 	}
 
 	partition.uuid = Utils::regexp_label(output, "^External UUID:  *(" RFC4122_NONE_NIL_UUID_REGEXP ")");
+}
+
+
+bool bcachefs::resize(const Partition& partition_new, OperationDetail& operationdetail, bool fill_partition)
+{
+	return ! execute_command("bcachefs device resize " + Glib::shell_quote(partition_new.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS);
 }
 
 
