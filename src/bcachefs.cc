@@ -40,6 +40,7 @@ FS bcachefs::get_filesystem_support()
 
 	if (! Glib::find_program_in_path("bcachefs").empty())
 	{
+		fs.online_read       = FS::EXTERNAL;
 		fs.create            = FS::EXTERNAL;
 		fs.create_with_label = FS::EXTERNAL;
 	}
@@ -47,6 +48,42 @@ FS bcachefs::get_filesystem_support()
 	fs_limits.min_size = 16 * MEBIBYTE;
 
 	return fs;
+}
+
+
+void bcachefs::set_used_sectors(Partition& partition)
+{
+	// 'bcachefs fs usage' only reports usage for mounted file systems.
+	exit_status = Utils::execute_command("bcachefs fs usage " + Glib::shell_quote(partition.get_mountpoint()),
+	                                     output, error, true);
+	if (exit_status != 0)
+	{
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
+	}
+
+	// Device specific free space in bytes
+	long long dev_free_bytes = -1;
+	Glib::ustring::size_type index = output.find("free:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "free: %lld", &dev_free_bytes);
+
+	// Device specific size in bytes
+	long long dev_capacity_bytes = -1;
+	index = output.find("capacity:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "capacity: %lld", &dev_capacity_bytes);
+
+	if (dev_free_bytes > -1 && dev_capacity_bytes > -1)
+	{
+		Sector fs_size = dev_capacity_bytes / partition.sector_size;
+		Sector fs_free = dev_free_bytes / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		// Block size is not available in 'bcachefs fs usage' output.
+	}
 }
 
 

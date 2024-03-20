@@ -32,6 +32,7 @@ class bcachefs : public FileSystem
 {
 public:
 	FS get_filesystem_support();
+	void set_used_sectors(Partition& partition);
 	bool create(const Partition& new_partition, OperationDetail& operationdetail);
 };
 
