@@ -45,7 +45,7 @@ FS bcachefs::get_filesystem_support()
 		fs.create_with_label = FS::EXTERNAL;
 	}
 
-	fs_limits.min_size = 16 * MEBIBYTE;
+	fs_limits.min_size = 32 * MEBIBYTE;
 
 	return fs;
 }
