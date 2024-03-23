@@ -3807,6 +3807,8 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		{   -1LL * MEBIBYTE,   1LL * MEBIBYTE,   4LL * KIBIBYTE },  // Bcachefs backup super block
 		{ -512LL * KIBIBYTE, 256LL * KIBIBYTE, 768LL * KIBIBYTE }   // Super blocks at end
 	} ;
+	Byte_Value prev_byte_offset = -1;
+	Byte_Value prev_byte_len    = -1;
 	for ( unsigned int i = 0 ; overall_success && i < sizeof( ranges ) / sizeof( ranges[0] ) ; i ++ )
 	{
 		//Rounding is performed in multiples of the sector size because writes are in whole sectors.
@@ -3855,6 +3857,10 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 			byte_len = partition .get_byte_length() - byte_offset ;
 		}
 
+		if (byte_offset == prev_byte_offset && byte_len == prev_byte_len)
+			// Byte range identical to previous.  Skip.
+			continue;
+
 		OperationDetail & od = operationdetail .get_last_child() ;
 		Byte_Value written = 0LL ;
 		bool zero_success = false ;
@@ -3879,6 +3885,10 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 					break ;
 				written += amount ;
 			}
+
+			// Save byte range for detection of following identical range.
+			prev_byte_offset = byte_offset;
+			prev_byte_len    = byte_len;
 
 			od.get_last_child().set_success_and_capture_errors( zero_success );
 		}
