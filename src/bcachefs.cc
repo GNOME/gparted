@@ -16,6 +16,7 @@
 
 
 #include "bcachefs.h"
+#include "BlockSpecial.h"
 #include "FileSystem.h"
 #include "OperationDetail.h"
 #include "Partition.h"
@@ -72,6 +73,35 @@ void bcachefs::set_used_sectors(Partition& partition)
 			partition.push_back_message(error);
 		return;
 	}
+
+	// Example output:
+	//     # bcachefs fs usage /mnt/1 | egrep ' \(device |free:|capacity:'
+	//     (no label) (device 0):          sdb1              rw
+	//       free:                    522190848            3984
+	//       capacity:               1073741824            8192
+	//     (no label) (device 1):          sdb2              rw
+	//       free:                   1061945344            8102
+	//       capacity:               1073741824            8192
+	//
+	// Substring the output down to just the device section for this partition.
+	BlockSpecial wanted = BlockSpecial(partition.get_path());
+	bool found = false;
+	Glib::ustring::size_type start_offset = output.find(" (device ");
+	while (start_offset != Glib::ustring::npos)
+	{
+		Glib::ustring device_name = Utils::regexp_label(output.substr(start_offset),
+		                                                " \\(device [[:digit:]]+\\):[[:blank:]]+([[:graph:]]+)");
+		Glib::ustring::size_type end_offset = output.find(" (device ", start_offset + 9);
+		if (wanted == BlockSpecial("/dev/" + device_name))
+		{
+			output = output.substr(start_offset, end_offset - start_offset);
+			found = true;
+			break;
+		}
+		start_offset = end_offset;
+	}
+	if (! found)
+		return;
 
 	// Device specific free space in bytes
 	long long dev_free_bytes = -1;
