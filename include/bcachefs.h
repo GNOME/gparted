@@ -37,6 +37,7 @@ public:
 	void read_label(Partition& partition);
 	void read_uuid(Partition& partition);
 	bool resize(const Partition& partition_new, OperationDetail& operationdetail, bool fill_partition);
+	bool check_repair(const Partition& partition, OperationDetail& operationdetail);
 };
 
 

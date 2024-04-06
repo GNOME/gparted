@@ -50,6 +50,7 @@ FS bcachefs::get_filesystem_support()
 		if (Utils::kernel_version_at_least(3, 6, 0))
 			fs.online_grow = FS::EXTERNAL;
 #endif
+		fs.check             = FS::EXTERNAL;
 	}
 
 	fs_limits.min_size = 32 * MEBIBYTE;
@@ -139,6 +140,13 @@ void bcachefs::read_uuid(Partition& partition)
 bool bcachefs::resize(const Partition& partition_new, OperationDetail& operationdetail, bool fill_partition)
 {
 	return ! execute_command("bcachefs device resize " + Glib::shell_quote(partition_new.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS);
+}
+
+
+bool bcachefs::check_repair(const Partition& partition, OperationDetail& operationdetail)
+{
+	return ! execute_command("bcachefs fsck -f -y -v " + Glib::shell_quote(partition.get_path()),
 	                         operationdetail, EXEC_CHECK_STATUS);
 }
 
