@@ -1235,7 +1235,6 @@ FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPart
 {
 	g_assert(lp_device != nullptr);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
 
-	Glib::ustring fsname = "";
 	Glib::ustring path;
 	DMRaid dmraid;
 
@@ -1257,7 +1256,7 @@ FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPart
 	// (Q2) FS_Info (blkid) file system detection
 	// Blkid detects more signatures and generally has less limitations so use before
 	// libparted detection, but it doesn't report anything for extended partitions.
-	fsname = FS_Info::get_fs_type( path );
+	Glib::ustring fsname = FS_Info::get_fs_type(path);
 
 	// (Q3) Libparted file system detection
 	// Only used when blkid didn't report anything and only on partitions, not whole

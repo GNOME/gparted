@@ -3322,7 +3322,7 @@ void Win_GParted::activate_change_uuid()
 		                           Gtk::MESSAGE_WARNING,
 		                           Gtk::BUTTONS_OK,
 		                           true );
-		Glib::ustring tmp_msg = "" ;
+		Glib::ustring tmp_msg;
 		for ( i = 1 ; filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING, i ) != "" ; i++ )
 		{
 			if ( i > 1 )
@@ -3564,7 +3564,7 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	                                            true, false, false, Gtk::ALIGN_START);
 	grid->attach(*label_members, 0, 1, 1, 1);
 
-	Glib::ustring members_str = "" ;
+	Glib::ustring members_str;
 	if ( ! members .empty() )
 	{
 		for ( unsigned int i = 0 ; i < members .size() ; i ++ )

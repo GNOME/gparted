@@ -128,7 +128,7 @@ bool f2fs::create( const Partition & new_partition, OperationDetail & operationd
 
 bool f2fs::resize(const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition)
 {
-	Glib::ustring size = "";
+	Glib::ustring size;
 	if (! fill_partition)
 		// resize.f2fs works in sector size units of whatever device the file
 		// system is currently stored on.

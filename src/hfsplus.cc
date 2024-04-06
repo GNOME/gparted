@@ -55,7 +55,7 @@ FS hfsplus::get_filesystem_support()
 
 bool hfsplus::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	Glib::ustring cmd = "";
+	Glib::ustring cmd;
 	if( new_partition.get_filesystem_label().empty() )
 		cmd = "mkfs.hfsplus " + Glib::shell_quote( new_partition.get_path() );
 	else

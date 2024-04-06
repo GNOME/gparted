@@ -190,7 +190,7 @@ bool ntfs::create( const Partition & new_partition, OperationDetail & operationd
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool success;
-	Glib::ustring size = "" ;
+	Glib::ustring size;
 	if ( ! fill_partition )
 		size = " -s " + Utils::num_to_str(partition_new.get_byte_length());
 	Glib::ustring cmd = "ntfsresize --force --force" + size ;

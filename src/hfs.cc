@@ -57,7 +57,7 @@ FS hfs::get_filesystem_support()
 
 bool hfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	Glib::ustring cmd = "";
+	Glib::ustring cmd;
 	if( new_partition.get_filesystem_label().empty() )
 		cmd = "hformat " + Glib::shell_quote( new_partition.get_path() );
 	else

@@ -209,7 +209,7 @@ void fat16::read_label(Partition& partition)
 
 bool fat16::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	Glib::ustring cmd = "" ;
+	Glib::ustring cmd;
 	if ( partition.get_filesystem_label().empty() )
 		cmd = "mlabel -c -i " + Glib::shell_quote(partition.get_path()) + " ::";
 	else

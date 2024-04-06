@@ -176,7 +176,7 @@ bool reiserfs::create( const Partition & new_partition, OperationDetail & operat
 
 bool reiserfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 { 
-	Glib::ustring size = "" ;
+	Glib::ustring size;
 	if ( ! fill_partition )
 		size = " -s " + Utils::num_to_str(partition_new.get_byte_length());
 	const Glib::ustring resize_cmd = "echo y | resize_reiserfs" + size +

@@ -151,7 +151,7 @@ bool luks::resize( const Partition & partition_new, OperationDetail & operationd
 		}
 	}
 
-	Glib::ustring size = "";
+	Glib::ustring size;
 	if ( ! fill_partition )
 		// Cryptsetup resize takes the size of the encryption mapping, not the
 		// size of the underlying block device.  Both device-mapper and cryptsetup

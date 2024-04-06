@@ -228,7 +228,7 @@ void Dialog_Partition_Info::Display_Info()
 
 	Sector ptn_sectors = partition .get_sector_length() ;
 
-	Glib::ustring vgname = "" ;  //Also used in partition status message
+	Glib::ustring vgname;
 	if (filesystem_ptn.fstype == FS_LVM2_PV)
 		vgname = LVM2_PV_Info::get_vg_name( filesystem_ptn.get_path() );
 

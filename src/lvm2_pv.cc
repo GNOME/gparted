@@ -105,7 +105,7 @@ bool lvm2_pv::create( const Partition & new_partition, OperationDetail & operati
 
 bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	Glib::ustring size = "" ;
+	Glib::ustring size;
 	if ( ! fill_partition )
 		size = " --yes --setphysicalvolumesize " +
 		       Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K ";

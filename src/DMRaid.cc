@@ -210,12 +210,11 @@ void DMRaid::get_devices( std::vector<Glib::ustring> & device_list )
 Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 {
 	//Retrieve name of dmraid device
-	Glib::ustring dmraid_name = "" ;
-	Glib::ustring regexp = "" ;
+	Glib::ustring dmraid_name;
 
 	for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 	{
-		regexp = ".*(" + dmraid_devices[k] + ").*" ;
+		Glib::ustring regexp = ".*(" + dmraid_devices[k] + ").*";
 		if ( Utils::regexp_label( dev_path, regexp ) == dmraid_devices[k] )
 			dmraid_name = dmraid_devices[k] ;
 	}
@@ -256,7 +255,7 @@ void DMRaid::get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector
 	Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
 
 	//Loop through the entries in the directory
-	Glib::ustring filename = "" ;
+	Glib::ustring filename;
 	Glib::Dir dir( DEV_MAPPER_PATH );
 	while ( ( filename = dir .read_name() ) != "" )
 	{
@@ -277,9 +276,9 @@ int DMRaid::get_partition_number( const Glib::ustring & partition_name )
 Glib::ustring DMRaid::get_udev_dm_name( const Glib::ustring & dev_path )
 {
 	//Retrieve DM_NAME of device using udev information
-	Glib::ustring output = "" ;
-	Glib::ustring error  = "" ;
-	Glib::ustring dm_name = "" ;
+	Glib::ustring output;
+	Glib::ustring error;
+	Glib::ustring dm_name;
 
 	if (udevadm_found)
 		Utils::execute_command( "udevadm info --query=all --name=" + Glib::shell_quote( dev_path ),
