@@ -3563,18 +3563,8 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	Gtk::Label *label_members = Utils::mk_label("<b>" + Glib::ustring(members_label) + "</b>",
 	                                            true, false, false, Gtk::ALIGN_START);
 	grid->attach(*label_members, 0, 1, 1, 1);
-
-	Glib::ustring members_str;
-	if ( ! members .empty() )
-	{
-		for ( unsigned int i = 0 ; i < members .size() ; i ++ )
-		{
-			if ( i > 0 )
-				members_str += "\n" ;
-			members_str += members[i] ;
-		}
-	}
-	Gtk::Label *value_members = Utils::mk_label(members_str, true, false, true, Gtk::ALIGN_START);
+	Gtk::Label *value_members = Utils::mk_label(Glib::build_path("\n", members),
+	                                            true, false, true, Gtk::ALIGN_START);
 	grid->attach(*value_members, 1, 1, 1, 1);
 	value_members->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                  label_members->get_accessible());
