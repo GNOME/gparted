@@ -87,12 +87,12 @@ void exfat::set_used_sectors(Partition& partition)
 		return;
 	}
 
-	// Example output (lines of interest only):
-	//     $ dump.exfat /dev/sdb1
+	// Example output from exfatprogs >= 1.2.3 (lines of interest only):
+	//     # dump.exfat /dev/sdb1
 	//     Volume Length(sectors):                  524288
-	//     Sector Size Bits:                        9
-	//     Sector per Cluster bits:                 3
-	//     Free Clusters: 	                        23585
+	//     Bytes per Sector:                        512
+	//     Sectors per Cluster:                     8
+	//     Free Clusters: 	                        65024
 	//
 	// "exFAT file system specification"
 	// https://docs.microsoft.com/en-us/windows/win32/fileio/exfat-specification
@@ -106,17 +106,17 @@ void exfat::set_used_sectors(Partition& partition)
 	if (index < output.length())
 		sscanf(output.substr(index).c_str(), "Volume Length(sectors): %lld", &volume_length);
 
-	// FS sector size = 2^(bytes_per_sector_shift)
-	long long bytes_per_sector_shift = -1;
-	index = output.find("Sector Size Bits:");
+	// FS sector size
+	long long bytes_per_sector = -1;
+	index = output.find("Bytes per Sector:");
 	if (index < output.length())
-		sscanf(output.substr(index).c_str(), "Sector Size Bits: %lld", &bytes_per_sector_shift);
+		sscanf(output.substr(index).c_str(), "Bytes per Sector: %lld", &bytes_per_sector);
 
-	// Cluster size = sector_size * 2^(sectors_per_cluster_shift)
-	long long sectors_per_cluster_shift = -1;
-	index = output.find("Sector per Cluster bits:");
+	// Cluster size in FS sectors
+	long long sectors_per_cluster = -1;
+	index = output.find("Sectors per Cluster:");
 	if (index < output.length())
-		sscanf(output.substr(index).c_str(), "Sector per Cluster bits: %lld", &sectors_per_cluster_shift);
+		sscanf(output.substr(index).c_str(), "Sectors per Cluster: %lld", &sectors_per_cluster);
 
 	// Free clusters
 	long long free_clusters = -1;
@@ -124,13 +124,11 @@ void exfat::set_used_sectors(Partition& partition)
 	if (index < output.length())
 		sscanf(output.substr(index).c_str(), "Free Clusters: %lld", &free_clusters);
 
-	if ( volume_length             > -1 && bytes_per_sector_shift > -1 &&
-	     sectors_per_cluster_shift > -1 && free_clusters          > -1   )
+	if (volume_length > -1 && bytes_per_sector > -1 && sectors_per_cluster > -1 && free_clusters > -1)
 	{
-		Byte_Value sector_size = 1 << bytes_per_sector_shift;
-		Byte_Value cluster_size = sector_size * (1 << sectors_per_cluster_shift);
+		Byte_Value cluster_size = bytes_per_sector * sectors_per_cluster;
+		Sector fs_size = volume_length * bytes_per_sector / partition.sector_size;
 		Sector fs_free = free_clusters * cluster_size / partition.sector_size;
-		Sector fs_size = volume_length * sector_size / partition.sector_size;
 		partition.set_sector_usage(fs_size, fs_free);
 		partition.fs_block_size = cluster_size;
 	}
