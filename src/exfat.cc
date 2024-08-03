@@ -93,6 +93,12 @@ void exfat::set_used_sectors(Partition& partition)
 	//     Bytes per Sector:                        512
 	//     Sectors per Cluster:                     8
 	//     Free Clusters: 	                        65024
+	// Example output from exfatprogs <= 1.2.2 (lines of interest only):
+	//     # dump.exfat /dev/sdb1
+	//     Volume Length(sectors):                  524288
+	//     Sector Size Bits:                        9
+	//     Sectors per Cluster Bits:                3
+	//     Free Clusters: 	                        65019
 	//
 	// "exFAT file system specification"
 	// https://docs.microsoft.com/en-us/windows/win32/fileio/exfat-specification
@@ -111,12 +117,32 @@ void exfat::set_used_sectors(Partition& partition)
 	index = output.find("Bytes per Sector:");
 	if (index < output.length())
 		sscanf(output.substr(index).c_str(), "Bytes per Sector: %lld", &bytes_per_sector);
+	if (bytes_per_sector == -1)
+	{
+		// FS sector size = 2^(bytes_per_sector_shift)
+		long long bytes_per_sector_shift = -1;
+		index = output.find("Sector Size Bits:");
+		if (index < output.length())
+			sscanf(output.substr(index).c_str(), "Sector Size Bits: %lld", &bytes_per_sector_shift);
+		if (bytes_per_sector_shift > -1)
+			bytes_per_sector = 1 << bytes_per_sector_shift;
+	}
 
 	// Cluster size in FS sectors
 	long long sectors_per_cluster = -1;
 	index = output.find("Sectors per Cluster:");
 	if (index < output.length())
 		sscanf(output.substr(index).c_str(), "Sectors per Cluster: %lld", &sectors_per_cluster);
+	if (sectors_per_cluster == -1)
+	{
+		// Cluster size in FS sectors = 2^(sectors_per_cluster_shift)
+		long long sectors_per_cluster_shift = -1;
+		index = output.find("Sector per Cluster bits:");
+		if (index < output.length())
+			sscanf(output.substr(index).c_str(), "Sector per Cluster bits: %lld", &sectors_per_cluster_shift);
+		if (sectors_per_cluster_shift > -1)
+			sectors_per_cluster = 1 << sectors_per_cluster_shift;
+	}
 
 	// Free clusters
 	long long free_clusters = -1;
