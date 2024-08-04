@@ -51,9 +51,10 @@ const Glib::ustring & fat16::get_custom_text( CUSTOM_TEXT ttype, int index ) con
 	}
 }
 
+
 FS fat16::get_filesystem_support()
 {
-	FS fs( specific_type );
+	FS fs(m_specific_fstype);
 
 	// hack to disable silly mtools warnings
 	setenv( "MTOOLS_SKIP_CHECK", "1", 0 );
@@ -248,7 +249,7 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
+	Glib::ustring fat_size = m_specific_fstype == FS_FAT16 ? "16" : "32";
 	Glib::ustring label_args = new_partition.get_filesystem_label().empty() ? "" :
 	                           "-n " + Glib::shell_quote( sanitize_label( new_partition.get_filesystem_label() ) ) + " ";
 	return ! execute_command("mkfs.fat -F" + fat_size + " -v -I " + label_args +
@@ -291,7 +292,7 @@ const Glib::ustring fat16::sanitize_label( const Glib::ustring &label ) const
 			new_label.push_back( uppercase_label[i] );
 
 	// Pad with spaces to prevent mlabel writing corrupted labels.  See bug #700228.
-	new_label .resize( Utils::get_filesystem_label_maxlength( specific_type ), ' ' ) ;
+	new_label.resize( Utils::get_filesystem_label_maxlength(m_specific_fstype), ' ');
 
 	return new_label ;
 }
