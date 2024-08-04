@@ -31,22 +31,21 @@ namespace GParted
 
 FS ext2::get_filesystem_support()
 {
-	FS fs( specific_type );
+	FS fs(m_specific_fstype);
 
 	fs .busy = FS::GPARTED ;
 
-	mkfs_cmd = "mkfs." + Utils::get_filesystem_string( specific_type );
+	m_mkfs_cmd = "mkfs." + Utils::get_filesystem_string(m_specific_fstype);
 	bool have_64bit_feature = false;
-	if ( ! Glib::find_program_in_path( mkfs_cmd ).empty() )
+	if (! Glib::find_program_in_path(m_mkfs_cmd).empty())
 	{
 		fs .create = FS::EXTERNAL ;
 		fs .create_with_label = FS::EXTERNAL ;
 
 		// Determine mkfs.ext4 version specific capabilities.
-		force_auto_64bit = false;
-		if ( specific_type == FS_EXT4 )
+		if (m_specific_fstype == FS_EXT4)
 		{
-			Utils::execute_command( mkfs_cmd + " -V", output, error, true );
+			Utils::execute_command(m_mkfs_cmd + " -V", output, error, true);
 			int mke2fs_major_ver = 0;
 			int mke2fs_minor_ver = 0;
 			int mke2fs_patch_ver = 0;
@@ -72,8 +71,8 @@ FS ext2::get_filesystem_support()
 				// removed mke2fs.conf(5) auto_64-bit_support option to
 				// avoid the issues with multiple boot loaders not working
 				// with 64bit ext4 file systems.
-				force_auto_64bit =    (mke2fs_major_ver > 1)
-				                   || (mke2fs_major_ver == 1 && mke2fs_minor_ver >= 42);
+				m_force_auto_64bit =    (mke2fs_major_ver > 1)
+				                     || (mke2fs_major_ver == 1 && mke2fs_minor_ver >= 42);
 			}
 		}
 	}
@@ -128,7 +127,7 @@ FS ext2::get_filesystem_support()
 	}
 
 #ifdef ENABLE_ONLINE_RESIZE
-	if ( specific_type != FS_EXT2 && Utils::kernel_version_at_least( 3, 6, 0 ) )
+	if (m_specific_fstype != FS_EXT2 && Utils::kernel_version_at_least(3, 6, 0))
 		fs.online_grow = fs.grow;
 #endif
 
@@ -140,9 +139,9 @@ FS ext2::get_filesystem_support()
 	// and Resize/Move dialogs should limit FS correctly without this.  See bug
 	// #766910 comment #12 onwards for further discussion.
 	//     https://bugzilla.gnome.org/show_bug.cgi?id=766910#c12
-	if ( specific_type == FS_EXT2                             ||
-	     specific_type == FS_EXT3                             ||
-	     ( specific_type == FS_EXT4 && ! have_64bit_feature )    )
+	if (m_specific_fstype == FS_EXT2                           ||
+	    m_specific_fstype == FS_EXT3                           ||
+	    (m_specific_fstype == FS_EXT4 && ! have_64bit_feature)   )
 		fs_limits.max_size = Utils::floor_size( 16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE );
 
 	return fs ;
@@ -281,7 +280,7 @@ bool ext2::write_uuid( const Partition & partition, OperationDetail & operationd
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	Glib::ustring features;
-	if ( force_auto_64bit )
+	if (m_force_auto_64bit)
 	{
 		// (#766910) Manually implement mke2fs.conf(5) auto_64-bit_support option
 		// by setting or clearing the 64bit feature on the command line depending
@@ -291,11 +290,12 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 		else
 			features = " -O ^64bit";
 	}
-	return ! execute_command( mkfs_cmd + " -F" + features +
-	                          " -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
-	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::create_progress ) ) );
+	return ! execute_command(m_mkfs_cmd + " -F" + features +
+	                         " -L " + Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                         " " + Glib::shell_quote(new_partition.get_path()),
+	                         operationdetail,
+	                         EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
+	                         static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::create_progress)));
 }
 
 
@@ -333,7 +333,7 @@ bool ext2::move( const Partition & partition_new,
 	else
 		cmd = "e2image -ra -p -O " + offset + " " + Glib::shell_quote( partition_new.get_path() );
 
-	fs_block_size = partition_old.fs_block_size;
+	m_fs_block_size = partition_old.fs_block_size;
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
 	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::copy_progress ) ) );
 }
@@ -342,7 +342,7 @@ bool ext2::copy( const Partition & src_part,
                  Partition & dest_part,
                  OperationDetail & operationdetail )
 {
-	fs_block_size = src_part.fs_block_size;
+	m_fs_block_size = src_part.fs_block_size;
 	return ! execute_command( "e2image -ra -p " + Glib::shell_quote( src_part.get_path() ) +
 	                          " " + Glib::shell_quote( dest_part.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
@@ -430,9 +430,9 @@ void ext2::copy_progress( OperationDetail *operationdetail )
 	long long progress, target;
 	if ( sscanf( line.c_str(), "Copying %lld / %lld blocks", &progress, &target ) == 2 )
 	{
-		operationdetail->run_progressbar( (double)(progress * fs_block_size),
-		                                  (double)(target * fs_block_size),
-		                                  PROGRESSBAR_TEXT_COPY_BYTES );
+		operationdetail->run_progressbar((double)(progress * m_fs_block_size),
+		                                 (double)(target * m_fs_block_size),
+		                                 PROGRESSBAR_TEXT_COPY_BYTES);
 	}
 	// Or when finished, on any line of STDERR, looks like "Copied 258033 / 258033 blocks ..."
 	else if ( error.find( "\nCopied " ) != error.npos )
