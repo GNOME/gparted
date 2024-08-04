@@ -272,8 +272,8 @@ bool xfs::copy( const Partition & src_part,
 	if ( src_mount_point .empty() )
 		return false ;
 
-	dest_mount_point = mk_temp_dir( "dest", operationdetail );
-	if ( dest_mount_point .empty() )
+	m_dest_mount_point = mk_temp_dir("dest", operationdetail);
+	if (m_dest_mount_point.empty())
 	{
 		rm_temp_dir( src_mount_point, operationdetail ) ;
 		return false ;
@@ -287,26 +287,26 @@ bool xfs::copy( const Partition & src_part,
 	Byte_Value fs_size;
 	Byte_Value fs_free;
 	if ( Utils::get_mounted_filesystem_usage( src_mount_point, fs_size, fs_free, error ) == 0 )
-		src_used = fs_size - fs_free;
+		m_src_used = fs_size - fs_free;
 	else
-		src_used = -1LL;
+		m_src_used = -1LL;
 
 	if ( success )
 	{
 		success &= ! execute_command("mount -v -t xfs -o nouuid " + Glib::shell_quote(dest_part.get_path()) +
-		                             " " + Glib::shell_quote(dest_mount_point),
+		                             " " + Glib::shell_quote(m_dest_mount_point),
 		                             operationdetail, EXEC_CHECK_STATUS);
 
 		if ( success )
 		{
 			const Glib::ustring copy_cmd = "xfsdump -J - " + Glib::shell_quote( src_mount_point ) +
-			                               " | xfsrestore -J - " + Glib::shell_quote( dest_mount_point );
+			                               " | xfsrestore -J - " + Glib::shell_quote(m_dest_mount_point);
 			success &= ! execute_command( "sh -c " + Glib::shell_quote( copy_cmd ),
 			                              operationdetail,
 			                              EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_TIMED,
 			                              static_cast<TimedSlot>( sigc::mem_fun( *this, &xfs::copy_progress ) ) );
 
-			success &= ! execute_command( "umount -v " + Glib::shell_quote( dest_mount_point ),
+			success &= ! execute_command( "umount -v " + Glib::shell_quote(m_dest_mount_point),
 			                              operationdetail, EXEC_CHECK_STATUS );
 		}
 
@@ -314,7 +314,7 @@ bool xfs::copy( const Partition & src_part,
 		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
-	rm_temp_dir( dest_mount_point, operationdetail ) ;
+	rm_temp_dir(m_dest_mount_point, operationdetail);
 
 	rm_temp_dir( src_mount_point, operationdetail ) ;
 
@@ -333,7 +333,7 @@ bool xfs::check_repair( const Partition & partition, OperationDetail & operation
 // recorded source FS used bytes.
 bool xfs::copy_progress( OperationDetail * operationdetail )
 {
-	if ( src_used <= 0LL )
+	if (m_src_used <= 0LL)
 	{
 		operationdetail->stop_progressbar();
 		// Failed to get source FS used bytes.  Remove this timed callback early.
@@ -342,14 +342,14 @@ bool xfs::copy_progress( OperationDetail * operationdetail )
 	Byte_Value fs_size;
 	Byte_Value fs_free;
 	Byte_Value dst_used;
-	if ( Utils::get_mounted_filesystem_usage( dest_mount_point, fs_size, fs_free, error ) != 0 )
+	if (Utils::get_mounted_filesystem_usage(m_dest_mount_point, fs_size, fs_free, error) != 0)
 	{
 		operationdetail->stop_progressbar();
 		// Failed to get destination FS used bytes.  Remove this timed callback early.
 		return false;
 	}
 	dst_used = fs_size - fs_free;
-	operationdetail->run_progressbar( (double)dst_used, (double)src_used, PROGRESSBAR_TEXT_COPY_BYTES );
+	operationdetail->run_progressbar((double)dst_used, (double)m_src_used, PROGRESSBAR_TEXT_COPY_BYTES);
 	return true;
 }
 

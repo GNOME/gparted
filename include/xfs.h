@@ -32,6 +32,8 @@ namespace GParted
 class xfs : public FileSystem
 {
 public:
+	xfs() : m_src_used(-1LL)  {};
+
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
 	void read_label( Partition & partition ) ;
@@ -48,9 +50,10 @@ public:
 private:
 	bool copy_progress( OperationDetail * operationdetail );
 
-	Byte_Value src_used;             // Used bytes in the source FS of an XFS copy operation
-	Glib::ustring dest_mount_point;  // Temporary FS mount point of an XFS copy operation
+	Byte_Value    m_src_used;          // Used bytes in the source FS of an XFS copy operation
+	Glib::ustring m_dest_mount_point;  // Temporary FS mount point of an XFS copy operation
 };
+
 
 } //GParted
 
