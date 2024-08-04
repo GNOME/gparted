@@ -171,6 +171,10 @@ bool exfat::create(const Partition& new_partition, OperationDetail& operationdet
 
 void exfat::read_label(Partition& partition)
 {
+	if (partition.busy)
+		// Running tune.exfat on a mounted file system fails so don't try.
+		return;
+
 	exit_status = Utils::execute_command("tune.exfat -l " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -196,6 +200,10 @@ bool exfat::write_label(const Partition& partition, OperationDetail& operationde
 
 void exfat::read_uuid(Partition& partition)
 {
+	if (partition.busy)
+		// Running tune.exfat on a mounted file system fails so don't try.
+		return;
+
 	exit_status = Utils::execute_command("tune.exfat -i " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
