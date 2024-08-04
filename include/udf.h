@@ -30,7 +30,7 @@ namespace GParted
 class udf : public FileSystem
 {
 public:
-	udf() : old_mkudffs( false ) {};
+	udf() : m_old_mkudffs(false)  {};
 
 	FS get_filesystem_support();
 	FS_Limits get_filesystem_limits( const Partition & partition ) const;
@@ -45,8 +45,9 @@ private:
 	static bool contains_only_ascii( const Glib::ustring & str );
 	static size_t find_first_non_latin1( const Glib::ustring & str );
 
-	bool old_mkudffs;  // Pre 1.1 version of mkudffs
+	bool m_old_mkudffs;  // Pre 1.1 version of mkudffs
 };
+
 
 } //GParted
 

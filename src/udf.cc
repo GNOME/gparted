@@ -41,7 +41,6 @@ FS udf::get_filesystem_support()
 	fs.copy = FS::GPARTED;
 	fs.online_read = FS::GPARTED;
 
-	old_mkudffs = false;
 	if ( ! Glib::find_program_in_path( "mkudffs" ).empty() )
 	{
 		fs.create = FS::EXTERNAL;
@@ -49,7 +48,7 @@ FS udf::get_filesystem_support()
 
 		// Detect old mkudffs prior to version 1.1 by lack of --label option.
 		Utils::execute_command( "mkudffs --help", output, error, true );
-		old_mkudffs = Utils::regexp_label( output + error, "--label" ).empty();
+		m_old_mkudffs = Utils::regexp_label(output + error, "--label").empty();
 	}
 
 	if ( ! Glib::find_program_in_path( "udfinfo" ).empty() )
@@ -205,7 +204,7 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 		// Mkudffs from udftools prior to version 1.1 damages the label if it
 		// contains non-ASCII characters.  Therefore do not allow a label with
 		// such characters with old versions of mkudffs.
-		if ( old_mkudffs && ! contains_only_ascii( label ) )
+		if (m_old_mkudffs && ! contains_only_ascii(label))
 		{
 			operationdetail.add_child( OperationDetail(
 				_("mkudffs prior to version 1.1 does not support non-ASCII characters in the label."),
