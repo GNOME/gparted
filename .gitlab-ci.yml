@@ -16,24 +16,25 @@ stages:
               dosfstools mtools f2fs-tools jfsutils cryptsetup lvm2 udftools
               xfsprogs xfsprogs-extra xvfb-run kmod gzip eudev
 
-.centos_image_template: &centos_image_definition
-  # Use official CentOS image https://hub.docker.com/_/centos/.
-  image: centos:centos7
+.rocky_image_template: &rocky_image_definition
+  # Use official Rocky Linux image https://hub.docker.com/_/rockylinux/.
+  image: rockylinux:8
   before_script:
     - cat /proc/version
     - cat /etc/os-release
-    - yum update -y
-    - yum install -y which gnome-common yelp-tools glib2-devel gcc-c++
+    - dnf update -y
+    # Enable PowerTools repo for development packages.
+    - dnf install -y 'dnf-command(config-manager)'
+    - dnf config-manager --set-enabled powertools
+    - dnf install -y which gnome-common yelp-tools glib2-devel gcc-c++
                      libuuid-devel parted-devel gtkmm30-devel make polkit file
                      polkit-devel gettext-devel
     # Extra packages only needed during the test stage.
-    # Install EPEL repo first for f2fs-tools and ntfsprogs.
-    - yum install -y epel-release
-    - yum install -y btrfs-progs e2fsprogs exfatprogs f2fs-tools dosfstools
-                     mtools hfsplus-tools util-linux cryptsetup device-mapper
-                     lvm2 ntfsprogs udftools xfsprogs xfsdump
-                     xorg-x11-server-Xvfb kmod
-    - systemd-machine-id-setup
+    # Install EPEL repo first for exfatprogs and ntfsprogs.
+    - dnf install -y epel-release
+    - dnf install -y e2fsprogs dosfstools exfatprogs mtools util-linux
+                     cryptsetup device-mapper lvm2 ntfsprogs udftools xfsprogs
+                     xfsdump xorg-x11-server-Xvfb kmod
 
 .ubuntu_image_template: &ubuntu_image_definition
   # Use official Ubuntu image https://hub.docker.com/_/ubuntu/.
@@ -102,8 +103,8 @@ alpine_build:
   <<: *alpine_image_definition
   <<: *build_stage_definition
 
-centos_build:
-  <<: *centos_image_definition
+rocky_build:
+  <<: *rocky_image_definition
   <<: *build_stage_definition
 
 ubuntu_build:
@@ -116,8 +117,8 @@ alpine_test:
   <<: *alpine_image_definition
   <<: *test_stage_definition
 
-centos_test:
-  <<: *centos_image_definition
+rocky_test:
+  <<: *rocky_image_definition
   <<: *test_stage_definition
 
 ubuntu_test:
