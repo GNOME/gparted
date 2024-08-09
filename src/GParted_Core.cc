@@ -63,7 +63,6 @@ const std::time_t SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS = 1;
 const std::time_t SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS = 10;
 
 static bool udevadm_found = false;
-static bool hdparm_found = false;
 
 static const Glib::ustring GPARTED_BUG( _("GParted Bug") );
 
@@ -115,7 +114,6 @@ Glib::ustring GParted_Core::get_version_and_config_string()
 void GParted_Core::find_supported_core()
 {
 	udevadm_found = ! Glib::find_program_in_path( "udevadm" ).empty();
-	hdparm_found = ! Glib::find_program_in_path( "hdparm" ).empty();
 }
 
 
@@ -772,37 +770,16 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 
 void GParted_Core::set_device_serial_number( Device & device )
 {
-	if ( ! hdparm_found )
-		// Serial number left blank when the hdparm command is not installed.
+	if (! udevadm_found)
 		return;
 
 	Glib::ustring output;
 	Glib::ustring error;
-	Utils::execute_command( "hdparm -I " + Glib::shell_quote( device.get_path() ), output, error, true );
-	if ( ! error.empty() )
-	{
-		// hdparm reported an error message to stderr.  Assume it's a device
-		// without a hard drive serial number.
-		//
-		// Using hdparm -I to query Linux software RAID arrays and BIOS fake RAID
-		// arrays, both devices without their own hard drive serial numbers,
-		// produce this error:
-		//     HDIO_DRIVE_CMD(identify) failed: Inappropriate ioctl for device
-		//
-		// And querying USB flash drives, also a device type without their own
-		// hard drive serial numbers, generates this error:
-		//     SG_IO: bad/missing sense data, sb[]:  70 00 05 00 00 00 00 0a ...
-		device.serial_number = "none";
-	}
-	else
-	{
-		Glib::ustring serial_number = Utils::trim( Utils::regexp_label( output,
-				"^[[:blank:]]*Serial Number:[[:blank:]]*(.*)[[:blank:]]*$" ) );
-		if ( ! serial_number.empty() )
-			device.serial_number = serial_number;
-	}
-	// Otherwise serial number left blank when not found in the hdparm output.
+	Utils::execute_command("udevadm info --query=property --name=" + Glib::shell_quote(device.get_path()),
+	                       output, error, true);
+	device.serial_number = Utils::regexp_label(output, "^ID_SERIAL_SHORT=([^\n]*)$");
 }
+
 
 /**
  * Fills the device.partitions member of device by scanning
