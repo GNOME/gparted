@@ -283,9 +283,9 @@ Glib::ustring DMRaid::get_udev_dm_name( const Glib::ustring & dev_path )
 	//Retrieve DM_NAME of device using udev information
 	Glib::ustring output;
 	Glib::ustring error;
-	Utils::execute_command("udevadm info --query=all --name=" + Glib::shell_quote(dev_path),
+	Utils::execute_command("udevadm info --query=property --name=" + Glib::shell_quote(dev_path),
 	                       output, error, true);
-	dm_name = Utils::regexp_label(output, "^E: DM_NAME=([^\n]*)$");
+	dm_name = Utils::regexp_label(output, "^DM_NAME=([^\n]*)$");
 
 	return dm_name ;
 }
