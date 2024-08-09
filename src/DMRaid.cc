@@ -273,25 +273,23 @@ int DMRaid::get_partition_number( const Glib::ustring & partition_name )
 	return std::atoi( Utils::regexp_label( partition_name, dmraid_name + "p?([0-9]+)" ) .c_str() ) ;
 }
 
+
 Glib::ustring DMRaid::get_udev_dm_name( const Glib::ustring & dev_path )
 {
+	Glib::ustring dm_name;
+	if (! udevadm_found)
+		return dm_name;
+
 	//Retrieve DM_NAME of device using udev information
 	Glib::ustring output;
 	Glib::ustring error;
-	Glib::ustring dm_name;
-
-	if (udevadm_found)
-		Utils::execute_command( "udevadm info --query=all --name=" + Glib::shell_quote( dev_path ),
-		                        output, error, true );
-
-	if ( ! output .empty() )
-	{
-		Glib::ustring regexp = "^E: DM_NAME=([^\n]*)$" ;
-		dm_name = Utils::regexp_label( output, regexp ) ;
-	}
+	Utils::execute_command("udevadm info --query=all --name=" + Glib::shell_quote(dev_path),
+	                       output, error, true);
+	dm_name = Utils::regexp_label(output, "^E: DM_NAME=([^\n]*)$");
 
 	return dm_name ;
 }
+
 
 Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path )
 {
