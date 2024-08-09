@@ -94,7 +94,7 @@ b. Building from Source
       gtkmm3
       gettext
       polkit
-      yelp-tools          - required if help documentation is to be built
+      yelp-tools         - required if help documentation is to be built
 
    On RHEL, these dependencies may be obtained by running the following
    command as root:
@@ -317,7 +317,6 @@ system.  These commands include:
 
    blkid           - [mandatory requirement] used to detect file systems
                      libparted doesn't, read UUIDs and volume labels
-   hdparm          - used to query disk device serial numbers
    udisks          - used to prevent automounting of file systems
    hal-lock        - used to prevent automounting of file systems
    pkexec          - used to acquire root privileges in gparted shell
@@ -335,7 +334,8 @@ system.  These commands include:
    xdg-su          - alternatively used to acquire root privileges in
                      gparted shell script wrapper, last choice if
                      available when gparted source is configured
-   udevadm         - used in dmraid to query udev name
+   udevadm         - used to wait for udev rule execution and querying
+                     udev device properties
    yelp            - used to display help manual
                      (requires gvfs to be able to launch yelp)
    xhost           - used to grant root access to the X11 server, only
