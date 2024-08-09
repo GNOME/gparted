@@ -653,7 +653,7 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 
 	// Device info ...
 	device.set_path(device_path);
-	device.model       = lp_device->model;
+	device.model       = Utils::trim(lp_device->model);
 	device.length      = lp_device->length;
 	device.sector_size = lp_device->sector_size;
 	device.heads       = lp_device->bios_geom.heads;
