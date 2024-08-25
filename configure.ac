@@ -174,6 +174,23 @@ AS_IF(
 )
 
 
+dnl Check for libparted < 3.2 which needs explicit flush for coherency between
+dnl whole disk device and partition devices.
+LIBPARTED_FIXED_VERSION='3.2'
+AC_MSG_CHECKING([for libparted < $LIBPARTED_FIXED_VERSION (need explicit flush for device coherency workaround)])
+LIBPARTED_FIXED_INT=`echo "$LIBPARTED_FIXED_VERSION" |
+	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
+if test "$LIBPARTED_FOUND_INT" -lt "$LIBPARTED_FIXED_INT"; then
+	need_explicit_flush_workaround=yes
+	AC_DEFINE([ENABLE_EXPLICIT_FLUSH_WORKAROUND], 1,
+	          [Define to 1 to enable explicit flush for device coherency workaround])
+	AC_MSG_RESULT([(cached) yes])
+else
+	need_explicit_flush_workaround=no
+	AC_MSG_RESULT([(cached) no])
+fi
+
+
 dnl Check for libparted >= 3.2 for online resize support.
 LIBPARTED_WANTED_VERSION='3.2'
 AC_MSG_CHECKING([for libparted >= $LIBPARTED_WANTED_VERSION (online resize)])
@@ -377,6 +394,8 @@ echo "       Need delete old partitions before"
 echo "              creating a loop table workaround?  :  $need_loop_delete_old_ptns_workaround"
 echo "   Have old libparted file system resizing API?  :  $have_old_lp_fs_resize_api"
 echo "   Have new libparted file system resizing LIB?  :  $have_new_lp_fs_resize_lib"
+echo "   Need explicit flush for device coherency"
+echo "                                    workaround?  :  $need_explicit_flush_workaround"
 echo "                  Enable online resize support?  :  $enable_online_resize"
 echo ""
 echo " If all settings are OK, type make and then (as root) make install"
