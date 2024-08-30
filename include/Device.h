@@ -58,7 +58,9 @@ public:
 	int sector_size ;
 	int max_prims ;
 	int highest_busy ;
-	bool readonly ; 
+	bool readonly;  // Must changes to the partition table be prevented because the OS
+	                // can't be informed of the changes while other partitions are
+			// busy.
 
 private:
 	Glib::ustring path;

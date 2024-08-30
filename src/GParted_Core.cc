@@ -756,7 +756,12 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 
 		if (device.highest_busy)
 		{
+			// If any partitions are busy determine if the OS can be informed
+			// of changes made to the partition table.  If not GParted has to
+			// not allow operations which change the partition table, except
+			// creating new unformatted partitions.
 			device.readonly = ! commit_to_os(lp_disk, SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
+
 			// Clear libparted messages.  Typically these are:
 			//     The kernel was unable to re-read the partition table...
 			libparted_messages.clear();
