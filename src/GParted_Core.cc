@@ -4143,15 +4143,16 @@ bool GParted_Core::get_disk(PedDevice *lp_device, PedDisk*& lp_disk)
 
 bool GParted_Core::get_device_and_disk(const Glib::ustring& device_path, PedDevice*& lp_device, PedDisk*& lp_disk)
 {
-	if (get_device(device_path, lp_device))
-	{
-		if (get_disk(lp_device, lp_disk))
-			return true;
+	if (! get_device(device_path, lp_device))
+		return false;
 
+	if (! get_disk(lp_device, lp_disk))
+	{
 		destroy_device_and_disk(lp_device, lp_disk);
+		return false;
 	}
 
-	return false;
+	return true;
 }
 
 
