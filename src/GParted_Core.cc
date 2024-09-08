@@ -4094,38 +4094,34 @@ bool GParted_Core::flush_device( PedDevice * lp_device )
 
 bool GParted_Core::get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush )
 {
-	lp_device = ped_device_get( device_path.c_str() );
-	if ( lp_device )
+	lp_device = ped_device_get(device_path.c_str());
+	if (! lp_device)
+		return false;
+
+	if (flush)
 	{
-		if ( flush )
-		{
 #ifdef ENABLE_EXPLICIT_FLUSH_WORKAROUND
-			// Force cache coherency explicitly ourselves with libparted < 3.2
-			// which doesn't flush the Linux kernel caches when opening
-			// devices.  This is so that libparted reading the whole disk
-			// device and file system tools reading the partition devices read
-			// the same data.
-			flush_device( lp_device );
+		// Force cache coherency explicitly ourselves with libparted < 3.2 which
+		// doesn't flush the Linux kernel caches when opening devices.  This is so
+		// that libparted reading the whole disk device and file system tools
+		// reading the partition devices read the same data.
+		flush_device(lp_device);
 #endif
 
-			// (!46) Wait for udev rules to complete after either GParted
-			// explicit device flush or libparted inbuilt device flush in
-			// ped_device_get().  This is to avoid busy /dev/DISK entry when
-			// running file system specific query commands on the whole disk
-			// device in the call sequence after get_device(..., flush=true)
-			// in set_device_from_disk().
-			//
-			// This is still needed even with libparted 3.6 because a whole
-			// disk device FAT32 file system looks like it's partitioned and
-			// ped_device_get() still opens partition devices read-write when
-			// flushing, so still triggers device changes and udev rule
-			// execution.
-			settle_device(SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
-		}
-
-		return true;
+		// (!46) Wait for udev rules to complete after either GParted explicit
+		// device flush or libparted inbuilt device flush in ped_device_get().
+		// This is to avoid busy /dev/DISK entry when running file system specific
+		// query commands on the whole disk device in the call sequence after
+		// get_device(..., flush=true) in set_device_from_disk().
+		//
+		// This is still needed even with libparted 3.6 because a whole disk
+		// device FAT32 file system looks like it's partitioned and
+		// ped_device_get() still opens partition devices read-write when
+		// flushing, so still triggers device changes and udev rule execution.
+		settle_device(SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
 	}
-	return false;
+
+	return true;
 }
 
 
