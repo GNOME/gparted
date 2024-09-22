@@ -4150,12 +4150,8 @@ bool GParted_Core::commit_to_os( PedDisk* lp_disk, std::time_t timeout )
 	if ( dmraid .is_dmraid_device( lp_disk ->dev ->path ) )
 		succes = true ;
 	else
-	{
 #endif
 		succes = ped_disk_commit_to_os( lp_disk ) ;
-#ifndef USE_LIBPARTED_DMRAID
-	}
-#endif
 
 	// Wait for udev rules to complete and partition device nodes to settle from above
 	// ped_disk_commit_to_os() initiated kernel update of the partitions.
