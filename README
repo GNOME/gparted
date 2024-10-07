@@ -140,20 +140,6 @@ b. Building from Source
    dmraid support use the --enable-libparted-dmraid flag:
       E.g., ./configure --enable-libparted-dmraid
 
-   If you wish to build this package with online resize support then
-   the following is required:
-      a)  Linux kernel version 3.6 or higher.
-      b)  Libparted with online resize support.  Either:
-          i)  Libparted version 3.2 or later which includes online
-              resize support as standard.  In this case GParted is
-              automatically built with online resize support.
-          ii) Online resize support back ported into an earlier version
-              of libparted.  This is only known to be included in Debian
-              and derived distributions with parted version 2.3-14 and
-              higher.  In this case online resize support must be
-              specifically enabled with the --enable-online-resize flag:
-                E.g., ./configure --enable-online-resize
-
    If you wish to build GParted to allow it to use xhost to grant root
    access to the X11 server use the --enable-xhost-root flag.  This is
    required to allow GParted to display under Wayland.

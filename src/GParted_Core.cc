@@ -97,10 +97,6 @@ Glib::ustring GParted_Core::get_version_and_config_string()
 	str += " --enable-libparted-dmraid";
 	added_config_flag = true;
 #endif
-#ifdef ENABLE_ONLINE_RESIZE
-	str += " --enable-online-resize";
-	added_config_flag = true;
-#endif
 	if (! added_config_flag)
 		str += " (none)";
 	str += "\n";

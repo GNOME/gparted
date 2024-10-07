@@ -123,20 +123,6 @@ int main()
 )
 
 
-dnl Check for libparted >= 3.2 for online resize support.
-LIBPARTED_WANTED_VERSION='3.2'
-AC_MSG_CHECKING([for libparted >= $LIBPARTED_WANTED_VERSION (online resize)])
-LIBPARTED_WANTED_INT=`echo "$LIBPARTED_WANTED_VERSION" |
-	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
-if test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_WANTED_INT"; then
-	have_online_resize=yes
-	AC_MSG_RESULT([(cached) yes])
-else
-	have_online_resize=no
-	AC_MSG_RESULT([(cached) no])
-fi
-
-
 dnl gthread
 PKG_CHECK_MODULES([GTHREAD], [gthread-2.0])
 AC_SUBST([GTHREAD_LIBS])
@@ -244,27 +230,6 @@ else
 fi
 
 
-dnl======================
-dnl check whether to enable online resize support
-dnl======================
-AC_ARG_ENABLE(
-	[online-resize],
-	AS_HELP_STRING(
-		[--enable-online-resize],
-		[enable online resize support @<:@default=auto@:>@]),
-	[enable_online_resize=$enableval],
-	[enable_online_resize=$have_online_resize]
-)
-
-AC_MSG_CHECKING([whether online resize support is enabled])
-if test "x$enable_online_resize" = xyes; then
-	AC_DEFINE([ENABLE_ONLINE_RESIZE], [1], [Define to 1 if online resize is enabled])
-	AC_MSG_RESULT([yes])
-else
-	AC_MSG_RESULT([no])
-fi
-
-
 dnl Check whether to explicitly grant root access to the display.
 AC_ARG_ENABLE(
 	[xhost-root],
@@ -314,9 +279,6 @@ echo ""
 echo "           Use native libparted dmraid support?  :  $enable_libparted_dmraid"
 echo ""
 echo "   Explicitly grant root access to the display?  :  $enable_xhost_root"
-echo ""
-echo "       --- Features Based On Libparted Version ---"
-echo "                  Enable online resize support?  :  $enable_online_resize"
 echo ""
 echo " If all settings are OK, type make and then (as root) make install"
 echo "========================================================================"

@@ -72,10 +72,8 @@ FS jfs::get_filesystem_support()
 		fs.copy = FS::GPARTED;
 	}
 
-#ifdef ENABLE_ONLINE_RESIZE
 	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
 		fs .online_grow = fs .grow ;
-#endif
 
 	fs_limits.min_size = 16 * MEBIBYTE;
 

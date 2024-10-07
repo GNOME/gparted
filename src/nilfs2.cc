@@ -62,13 +62,11 @@ FS nilfs2::get_filesystem_support()
 	fs.copy = FS::GPARTED;
 	fs.move = FS::GPARTED;
 	fs .online_read = FS::GPARTED ;
-#ifdef ENABLE_ONLINE_RESIZE
 	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
 	{
 		fs .online_grow = fs .grow ;
 		fs .online_shrink = fs .shrink ;
 	}
-#endif
 
 	//Minimum FS size is 128M+4K using mkfs.nilfs2 defaults
 	fs_limits.min_size = 128 * MEBIBYTE + 4 * KIBIBYTE;

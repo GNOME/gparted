@@ -64,13 +64,11 @@ FS lvm2_pv::get_filesystem_support()
 		fs .check  = FS::EXTERNAL ;
 		fs .remove = FS::EXTERNAL ;
 		fs .online_read = FS::EXTERNAL ;
-#ifdef ENABLE_ONLINE_RESIZE
 		if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
 		{
 			fs .online_grow = fs .grow ;
 			fs .online_shrink = fs.shrink ;
 		}
-#endif
 	}
 
 	return fs ;

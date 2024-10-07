@@ -46,10 +46,8 @@ FS bcachefs::get_filesystem_support()
 		fs.read_label        = FS::EXTERNAL;
 		fs.read_uuid         = FS::EXTERNAL;
 		fs.grow              = FS::EXTERNAL;
-#ifdef ENABLE_ONLINE_RESIZE
 		if (Utils::kernel_version_at_least(3, 6, 0))
 			fs.online_grow = FS::EXTERNAL;
-#endif
 		fs.check             = FS::EXTERNAL;
 	}
 

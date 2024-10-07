@@ -111,13 +111,11 @@ FS btrfs::get_filesystem_support()
 		fs.move = FS::GPARTED;
 	}
 
-#ifdef ENABLE_ONLINE_RESIZE
 	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
 	{
 		fs .online_grow = fs .grow ;
 		fs .online_shrink = fs .shrink ;
 	}
-#endif
 
 	fs_limits.min_size = 256 * MEBIBYTE;
 

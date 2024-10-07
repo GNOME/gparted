@@ -1293,7 +1293,6 @@ void Win_GParted::set_valid_operations()
 	       selected_partition_ptr->type == TYPE_EXTENDED    )    )
 		allow_manage_flags( true );
 
-#ifdef ENABLE_ONLINE_RESIZE
 	// Online resizing always required the ability to update the partition table ...
 	if ( ! devices[current_device].readonly &&
 	     selected_filesystem.busy              )
@@ -1313,7 +1312,6 @@ void Win_GParted::set_valid_operations()
 		if (selected_partition_ptr->type == TYPE_EXTENDED)
 			allow_resize(true);
 	}
-#endif
 
 	// Allow labelling of mounted file systems that support it.
 	if (selected_filesystem.busy                    &&

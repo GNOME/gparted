@@ -67,13 +67,11 @@ FS luks::get_filesystem_support()
 		// the kernel, which it doesn't need.
 		fs.grow = FS::EXTERNAL;
 
-#ifdef ENABLE_ONLINE_RESIZE
 		if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
 		{
 			fs.online_grow   = FS::EXTERNAL;
 			fs.online_shrink = FS::EXTERNAL;
 		}
-#endif
 	}
 
 	return fs;

@@ -126,10 +126,8 @@ FS ext2::get_filesystem_support()
 		}
 	}
 
-#ifdef ENABLE_ONLINE_RESIZE
 	if (m_specific_fstype != FS_EXT2 && Utils::kernel_version_at_least(3, 6, 0))
 		fs.online_grow = fs.grow;
-#endif
 
 	// Maximum size of an ext2/3/4 volume is 2^32 - 1 blocks, except for ext4 with
 	// 64bit feature.  That is just under 16 TiB with a 4K block size.
