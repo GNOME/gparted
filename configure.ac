@@ -71,7 +71,7 @@ dnl Check for minimum required libparted version.
 dnl 1) Check using pkg-config.
 dnl    (Older distros tend to not provide pkg-config information for libparted).
 dnl 2) Check by linking and running a program to report libparted version directly.
-LIBPARTED_REQUIRED_VERSION='2.2'
+LIBPARTED_REQUIRED_VERSION='3.2'
 AC_MSG_CHECKING([for libparted >= $LIBPARTED_REQUIRED_VERSION (querying pkg-config)])
 LIBPARTED_REQUIRED_INT=`echo "$LIBPARTED_REQUIRED_VERSION" |
 	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
