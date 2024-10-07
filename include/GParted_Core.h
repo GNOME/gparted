@@ -218,9 +218,6 @@ private:
 	//general..	
 	void capture_libparted_messages( OperationDetail & operationdetail, bool success );
 
-#ifdef ENABLE_EXPLICIT_FLUSH_WORKAROUND
-	static bool flush_device( PedDevice * lp_device );
-#endif
 	static bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
 	static bool get_disk(PedDevice *lp_device, PedDisk*& lp_disk);
 	static bool get_device_and_disk(const Glib::ustring& device_path, PedDevice*& lp_device, PedDisk*& lp_disk);
