@@ -121,27 +121,6 @@ int main()
 )
 
 
-dnl Check for libparted 2.0 to 3.0 inclusive for a bug where loop table
-dnl creation doesn't delete old partitions.
-LIBPARTED_MIN_WANTED_VERSION='2.0'
-LIBPARTED_MAX_WANTED_VERSION='3.0'
-AC_MSG_CHECKING([for $LIBPARTED_MIN_WANTED_VERSION <= libparted <= $LIBPARTED_MAX_WANTED_VERSION (loop table creation doesn't delete old partitions)])
-LIBPARTED_MIN_WANTED_INT=`echo "$LIBPARTED_MIN_WANTED_VERSION" |
-	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
-LIBPARTED_MAX_WANTED_INT=`echo "$LIBPARTED_MAX_WANTED_VERSION" |
-	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
-if test "$LIBPARTED_MIN_WANTED_INT" -le "$LIBPARTED_FOUND_INT" -a \
-        "$LIBPARTED_FOUND_INT" -le "$LIBPARTED_MAX_WANTED_INT"; then
-	need_loop_delete_old_ptns_workaround=yes
-	AC_DEFINE([ENABLE_LOOP_DELETE_OLD_PTNS_WORKAROUND], 1,
-	          [Define to 1 to enable deletion of old partitions before creating a loop table workaround])
-	AC_MSG_RESULT([(cached) yes])
-else
-	need_loop_delete_old_ptns_workaround=no
-	AC_MSG_RESULT([(cached) no])
-fi
-
-
 dnl Check for ped_file_system_resize() function to determine the existence
 dnl of the API in the original parted library.  Available in parted <= 2.4.
 dnl
@@ -390,8 +369,6 @@ echo ""
 echo "   Explicitly grant root access to the display?  :  $enable_xhost_root"
 echo ""
 echo "       --- Features Based On Libparted Version ---"
-echo "       Need delete old partitions before"
-echo "              creating a loop table workaround?  :  $need_loop_delete_old_ptns_workaround"
 echo "   Have old libparted file system resizing API?  :  $have_old_lp_fs_resize_api"
 echo "   Have new libparted file system resizing LIB?  :  $have_new_lp_fs_resize_lib"
 echo "   Need explicit flush for device coherency"
