@@ -1609,12 +1609,10 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 					if ( p_filesystem )
 						p_filesystem->set_used_sectors( partition );
 					break;
-#ifdef HAVE_LIBPARTED_FS_RESIZE
 				case FS::LIBPARTED:
 					if ( lp_disk )
 						LP_set_used_sectors( partition, lp_disk );
 					break;
-#endif
 				default:
 					break;
 			}
@@ -1698,7 +1696,7 @@ void GParted_Core::mounted_fs_set_used_sectors( Partition & partition )
 	}
 }
 
-#ifdef HAVE_LIBPARTED_FS_RESIZE
+
 void GParted_Core::LP_set_used_sectors( Partition & partition, PedDisk* lp_disk )
 {
 	PedFileSystem* fs = nullptr;
@@ -1728,7 +1726,7 @@ void GParted_Core::LP_set_used_sectors( Partition & partition, PedDisk* lp_disk 
 		}
 	}
 }
-#endif
+
 
 void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition )
 {
@@ -2328,7 +2326,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	return succes ;
 }
 
-#ifdef HAVE_LIBPARTED_FS_RESIZE
+
 bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & partition_old,
 		  	      		            	   const Partition & partition_new,
 						    	   OperationDetail & operationdetail ) 
@@ -2385,6 +2383,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 	return return_value ;
 }
 
+
 void GParted_Core::thread_lp_ped_file_system_resize( PedFileSystem * fs,
                                                      PedGeometry * lp_geom,
                                                      bool * return_value )
@@ -2392,7 +2391,7 @@ void GParted_Core::thread_lp_ped_file_system_resize( PedFileSystem * fs,
 	*return_value = ped_file_system_resize(fs, lp_geom, nullptr);
 	g_idle_add((GSourceFunc)_mainquit, nullptr);
 }
-#endif
+
 
 bool GParted_Core::resize( const Partition & partition_old, 
 			   const Partition & partition_new,
@@ -2939,13 +2938,11 @@ bool GParted_Core::resize_filesystem_implement( const Partition & partition_old,
 			break;
 		case FS::GPARTED:
 			break;
-#ifdef HAVE_LIBPARTED_FS_RESIZE
 		case FS::LIBPARTED:
 			success = resize_move_filesystem_using_libparted( partition_old,
 			                                                  partition_new,
 			                                                  operationdetail.get_last_child() );
 			break;
-#endif
 		case FS::EXTERNAL:
 			success = (p_filesystem = get_filesystem_object(partition_new.fstype)) &&
 			          p_filesystem->resize( partition_new,

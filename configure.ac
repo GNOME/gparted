@@ -65,6 +65,8 @@ dnl======================
 AC_CHECK_LIB([uuid], [uuid_generate], [], AC_MSG_ERROR([*** libuuid not found.]))
 AC_CHECK_LIB([dl], [dlopen], [], AC_MSG_ERROR([*** libdl not found.]))
 AC_CHECK_LIB([parted], [ped_device_read], [], AC_MSG_ERROR([*** libparted not found.]))
+AC_CHECK_LIB([parted-fs-resize], [ped_file_system_resize], [],
+             AC_MSG_ERROR([*** libparted-fs-resize not found.]))
 
 
 dnl Check for minimum required libparted version.
@@ -121,38 +123,6 @@ int main()
 )
 
 
-dnl Check for ped_file_system_resize() function to determine the existence
-dnl of the API in the original parted library.  Available in parted <= 2.4.
-dnl
-dnl NOTE:
-dnl For AC_CHECK_LIB the default action-if-found ($3) includes extending
-dnl LIBS with the newly found library ($1) thus:
-dnl     LIBS="-l$1 $LIBS"
-dnl
-dnl As the default action-if-found is overridden, LIBS isn't extended so
-dnl saving and restoring LIBS isn't required.
-have_old_lp_fs_resize_api=no
-AC_CHECK_LIB(
-	[parted], [ped_file_system_resize],
-	[have_old_lp_fs_resize_api=yes]
-)
-
-
-dnl If not already found, check for ped_file_system_resize() function in
-dnl the parted-fs-resize library to determine the need to use the new
-dnl library.  Available in parted >= 3.1.
-have_new_lp_fs_resize_lib=no
-AS_IF(
-	[test "x$have_old_lp_fs_resize_api" != xyes],
-	[AC_CHECK_LIB(
-		[parted-fs-resize], [ped_file_system_resize],
-		[have_new_lp_fs_resize_lib=yes
-		 LIBS="-lparted-fs-resize $LIBS"
-		]
-	)]
-)
-
-
 dnl Check for libparted < 3.2 which needs explicit flush for coherency between
 dnl whole disk device and partition devices.
 LIBPARTED_FIXED_VERSION='3.2'
@@ -181,12 +151,6 @@ if test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_WANTED_INT"; then
 else
 	have_online_resize=no
 	AC_MSG_RESULT([(cached) no])
-fi
-
-
-dnl Check if have libparted fs resize capability
-if test [ ${have_old_lp_fs_resize_api} = yes -o ${have_new_lp_fs_resize_lib} = yes ]; then
-	AC_DEFINE([HAVE_LIBPARTED_FS_RESIZE], [1], [Define to 1 if have libparted fs resize capability])
 fi
 
 
@@ -369,8 +333,6 @@ echo ""
 echo "   Explicitly grant root access to the display?  :  $enable_xhost_root"
 echo ""
 echo "       --- Features Based On Libparted Version ---"
-echo "   Have old libparted file system resizing API?  :  $have_old_lp_fs_resize_api"
-echo "   Have new libparted file system resizing LIB?  :  $have_new_lp_fs_resize_lib"
 echo "   Need explicit flush for device coherency"
 echo "                                    workaround?  :  $need_explicit_flush_workaround"
 echo "                  Enable online resize support?  :  $enable_online_resize"

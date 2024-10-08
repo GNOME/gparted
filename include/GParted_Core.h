@@ -104,9 +104,7 @@ private:
 	bool is_busy(const Glib::ustring& device_path, FSType fstype, const Glib::ustring& partition_path);
 	void set_used_sectors( Partition & partition, PedDisk* lp_disk );
 	void mounted_fs_set_used_sectors(Partition& partition);
-#ifdef HAVE_LIBPARTED_FS_RESIZE
 	void LP_set_used_sectors( Partition & partition, PedDisk* lp_disk ) ;
-#endif
 	void set_flags( Partition & partition, PedPartition* lp_partition ) ;
 	
 	//operationstuff...
@@ -135,14 +133,12 @@ private:
 	bool move_filesystem( const Partition & partition_old,
 			      const Partition & partition_new,
 			      OperationDetail & operationdetail ) ;
-#ifdef HAVE_LIBPARTED_FS_RESIZE
 	bool resize_move_filesystem_using_libparted( const Partition & partition_old,
 				      		     const Partition & partition_new,
 					      	     OperationDetail & operationdetail ) ;
 	void thread_lp_ped_file_system_resize( PedFileSystem * fs,
 	                                       PedGeometry * lp_geom,
 	                                       bool * return_value );
-#endif
 	bool resize( const Partition & partition_old,
 		     const Partition & partition_new,
 		     OperationDetail & operationdetail ) ;

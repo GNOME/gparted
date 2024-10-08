@@ -86,11 +86,9 @@ FS fat16::get_filesystem_support()
 		fs .write_uuid = FS::EXTERNAL ;
 	}
 
-#ifdef HAVE_LIBPARTED_FS_RESIZE
 	//resizing of start and endpoint are provided by libparted
 	fs.grow = FS::LIBPARTED;
 	fs.shrink = FS::LIBPARTED;
-#endif
 	fs .move = FS::GPARTED ;
 	fs.copy = FS::GPARTED;
 	fs .online_read = FS::GPARTED ;

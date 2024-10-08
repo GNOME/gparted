@@ -31,11 +31,8 @@ FS hfs::get_filesystem_support()
 	FS fs( FS_HFS );
 
 	fs .busy = FS::GPARTED ;
-
-#ifdef HAVE_LIBPARTED_FS_RESIZE
 	fs.read = FS::LIBPARTED;
 	fs.shrink = FS::LIBPARTED;
-#endif
 
 	if ( ! Glib::find_program_in_path( "hformat" ) .empty() )
 	{
