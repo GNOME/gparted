@@ -40,6 +40,7 @@ namespace GParted
 //  btrfs_device_cache[BS("/dev/sdc1")] = {devid=2, members=[BS("/dev/sdd1"), BS("/dev/sdc1"), BS("/dev/sdb1")]}
 //  btrfs_device_cache[BS("/dev/sdd1")] = {devid=3, members=[BS("/dev/sdd1"), BS("/dev/sdc1"), BS("/dev/sdb1")]}
 std::map<BlockSpecial, BTRFS_Device> btrfs_device_cache;
+bool btrfs_found = false;
 
 FS btrfs::get_filesystem_support()
 {
@@ -57,8 +58,11 @@ FS btrfs::get_filesystem_support()
 		fs.create_with_label = FS::EXTERNAL;
 	}
 
+	btrfs_found = false;
 	if (! Glib::find_program_in_path("btrfs").empty())
 	{
+		btrfs_found = true;
+
 		// Use these btrfs multi-tool sub-commands without further checking for
 		// their availability:
 		//     btrfs check
@@ -408,6 +412,13 @@ std::vector<Glib::ustring> btrfs::get_members( const Glib::ustring & path )
 //Return btrfs device cache entry, incrementally loading cache as required
 const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 {
+	static BTRFS_Device not_found_btrfs_dev = {-1, };
+	if (! btrfs_found)
+		// Without the btrfs command it can't be executed to discover the devices
+		// in a btrfs file system and so btrfs_device_cache is never populated.
+		// Hence returning not found record even before searching the cache.
+		return not_found_btrfs_dev;
+
 	std::map<BlockSpecial, BTRFS_Device>::const_iterator bd_iter = btrfs_device_cache.find( BlockSpecial( path ) );
 	if ( bd_iter != btrfs_device_cache .end() )
 		return bd_iter ->second ;
@@ -456,8 +467,7 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 		return bd_iter ->second ;
 
 	//If for any reason we fail to parse the information return an "unknown" record
-	static BTRFS_Device btrfs_dev = { -1, } ;
-	return btrfs_dev ;
+	return not_found_btrfs_dev;
 }
 
 
