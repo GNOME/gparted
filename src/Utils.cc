@@ -31,6 +31,7 @@
 #include <glibmm/stringutils.h>
 #include <glibmm/shell.h>
 #include <glibmm/fileutils.h>
+#include <glibmm/convert.h>
 #include <gtkmm/main.h>
 #include <gtkmm/enums.h>
 #include <gtkmm/stock.h>
@@ -716,7 +717,9 @@ int Utils::execute_command( const Glib::ustring & command,
 			&out,
 			&err );
 	} catch (Glib::SpawnError &e) {
-		std::cerr << e.what() << std::endl;
+		std::string output_charset;
+		Glib::get_charset(output_charset);
+		std::cerr << Glib::convert_with_fallback(e.what().raw(), output_charset, "UTF-8", "") << std::endl;
 		return Utils::get_failure_status( e );
 	}
 	fcntl( out, F_SETFL, O_NONBLOCK );
