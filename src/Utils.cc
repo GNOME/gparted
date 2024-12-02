@@ -761,7 +761,7 @@ int Utils::execute_command( const Glib::ustring & command,
 // NOTE:
 // Together get_failure_status() and decode_wait_status() provide complete shell style
 // exit status handling.  See bash(1) manual page, EXIT STATUS section for details.
-int Utils::get_failure_status( Glib::SpawnError & e )
+int Utils::get_failure_status(const Glib::SpawnError& e)
 {
 	if ( e.code() == Glib::SpawnError::NOENT )
 		return 127;

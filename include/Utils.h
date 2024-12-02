@@ -166,7 +166,7 @@ public:
 	                            Glib::ustring & output,
 	                            Glib::ustring & error,
 				    bool use_C_locale = false );
-	static int get_failure_status( Glib::SpawnError & e );
+	static int get_failure_status(const Glib::SpawnError& e);
 	static int decode_wait_status( int wait_status );
 	static std::string convert_ustring(const Glib::ustring& ustr);
 	static Glib::ustring regexp_label( const Glib::ustring & text
