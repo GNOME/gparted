@@ -95,7 +95,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	}
 	catch ( Glib::Exception & e )
 	{
-		std::cout << e .what() << std::endl ;
+		std::cerr << Utils::convert_ustring(e.what()) << std::endl;
 	}
 
 	// Pack the main box
@@ -718,7 +718,7 @@ void Win_GParted::add_custom_css()
 	}
 	catch (Glib::Error& e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << Utils::convert_ustring(e.what()) << std::endl;
 	}
 
 	Gtk::StyleContext::add_provider_for_screen(default_screen,

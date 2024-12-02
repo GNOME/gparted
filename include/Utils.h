@@ -34,6 +34,7 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+#include <string>
 
 #define UUID_STRING_LENGTH 36
 //Match RFC 4122 UUID strings.  Exclude Nil UUID (all zeros) by excluding
@@ -167,6 +168,7 @@ public:
 				    bool use_C_locale = false );
 	static int get_failure_status( Glib::SpawnError & e );
 	static int decode_wait_status( int wait_status );
+	static std::string convert_ustring(const Glib::ustring& ustr);
 	static Glib::ustring regexp_label( const Glib::ustring & text
 	                                 , const Glib::ustring & pattern
 	                                 ) ;

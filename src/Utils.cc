@@ -717,9 +717,7 @@ int Utils::execute_command( const Glib::ustring & command,
 			&out,
 			&err );
 	} catch (Glib::SpawnError &e) {
-		std::string output_charset;
-		Glib::get_charset(output_charset);
-		std::cerr << Glib::convert_with_fallback(e.what().raw(), output_charset, "UTF-8", "") << std::endl;
+		std::cerr << Utils::convert_ustring(e.what().raw()) << std::endl;
 		return Utils::get_failure_status( e );
 	}
 	fcntl( out, F_SETFL, O_NONBLOCK );
@@ -785,6 +783,17 @@ int Utils::decode_wait_status( int wait_status )
 	std::cerr << "Unexpected wait status " << wait_status << std::endl;
 	return 255;
 }
+
+
+// Convert Unicode string to the locale's character set.  Any characters which aren't
+// converted are simply skipped.
+std::string Utils::convert_ustring(const Glib::ustring& ustr)
+{
+	std::string output_charset;
+	Glib::get_charset(output_charset);
+	return Glib::convert_with_fallback(ustr.raw(), output_charset, "UTF-8", "");
+}
+
 
 Glib::ustring Utils::regexp_label( const Glib::ustring & text
                                  , const Glib::ustring & pattern

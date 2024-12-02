@@ -154,7 +154,7 @@ int FileSystem::execute_command_internal(const Glib::ustring& command, const cha
 			&out,
 			&err );
 	} catch (Glib::SpawnError &e) {
-		std::cerr << e.what() << std::endl;
+		std::cerr << Utils::convert_ustring(e.what()) << std::endl;
 		cmd_operationdetail.add_child( OperationDetail( e.what(), STATUS_ERROR, FONT_ITALIC ) );
 		return Utils::get_failure_status( e );
 	}
