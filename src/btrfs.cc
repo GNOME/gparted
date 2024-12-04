@@ -73,6 +73,7 @@ FS btrfs::get_filesystem_support()
 		fs.busy = FS::EXTERNAL;
 
 		fs.read = FS::EXTERNAL;
+		fs.online_read = FS::EXTERNAL;
 		fs .read_label = FS::EXTERNAL ;
 		fs .read_uuid = FS::EXTERNAL ;
 		fs.check = FS::EXTERNAL;
@@ -106,7 +107,6 @@ FS btrfs::get_filesystem_support()
 		fs.move = FS::GPARTED;
 	}
 
-	fs .online_read = FS::EXTERNAL ;
 #ifdef ENABLE_ONLINE_RESIZE
 	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
 	{
