@@ -37,7 +37,6 @@ FS bcachefs::get_filesystem_support()
 	fs.busy = FS::GPARTED;
 	fs.move = FS::GPARTED;
 	fs.copy = FS::GPARTED;
-	fs.online_read = FS::GPARTED;
 
 	if (! Glib::find_program_in_path("bcachefs").empty())
 	{
