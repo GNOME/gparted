@@ -76,12 +76,12 @@ FS btrfs::get_filesystem_support()
 		// multi-device btrfs file file system.
 		fs.busy = FS::EXTERNAL;
 
-		fs.read = FS::EXTERNAL;
-		fs.online_read = FS::EXTERNAL;
-		fs .read_label = FS::EXTERNAL ;
-		fs .read_uuid = FS::EXTERNAL ;
-		fs.check = FS::EXTERNAL;
-		fs.write_label = FS::EXTERNAL;
+		fs.read               = FS::EXTERNAL;
+		fs.online_read        = FS::EXTERNAL;
+		fs.read_label         = FS::EXTERNAL;
+		fs.read_uuid          = FS::EXTERNAL;
+		fs.check              = FS::EXTERNAL;
+		fs.write_label        = FS::EXTERNAL;
 		fs.online_write_label = FS::EXTERNAL;
 
 		//Resizing of btrfs requires mount, umount and kernel
