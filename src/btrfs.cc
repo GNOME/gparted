@@ -45,7 +45,11 @@ FS btrfs::get_filesystem_support()
 {
 	FS fs( FS_BTRFS );
 
-	fs .busy = FS::EXTERNAL ;
+	// Always set an initial fallback so at a minimum GParted_Core::is_busy() will use
+	// the built-in file system mounted detection method when the btrfs command is not
+	// found.  This can only determine if the mounting device is mounted or not, not
+	// any of the other members of a multi-device btrfs file system.
+	fs.busy = FS::GPARTED;
 
 	if ( ! Glib::find_program_in_path( "mkfs.btrfs" ) .empty() )
 	{
@@ -63,6 +67,10 @@ FS btrfs::get_filesystem_support()
 		//     btrfs filesystem show
 		//     btrfs inspect-internal dump-super
 		// as they are all available in btrfs-progs >= 4.5.
+
+		// Perform full busy detection which also handles all members of a
+		// multi-device btrfs file file system.
+		fs.busy = FS::EXTERNAL;
 
 		fs.read = FS::EXTERNAL;
 		fs .read_label = FS::EXTERNAL ;
