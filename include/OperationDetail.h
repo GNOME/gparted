@@ -45,6 +45,29 @@ enum Font {
 	FONT_BOLD_ITALIC = 3
 } ;
 
+
+enum ExecFlags
+{
+	EXEC_NONE            = 1 << 0,
+	EXEC_CHECK_STATUS    = 1 << 1,  // Set the status of the command in the operation
+	                                // details based on the exit status being zero or
+	                                // non-zero.  Must either use this flag when calling
+	                                // ::execute_command() or call ::set_status()
+					// afterwards.
+	EXEC_CANCEL_SAFE     = 1 << 2,
+	EXEC_PROGRESS_STDOUT = 1 << 3,  // Run progress tracking callback after reading new
+	                                // data on stdout from command.
+	EXEC_PROGRESS_STDERR = 1 << 4,  // Same but for stderr.
+	EXEC_PROGRESS_TIMED  = 1 << 5   // Run progress tracking callback periodically.
+};
+
+inline ExecFlags operator|(ExecFlags lhs, ExecFlags rhs)
+	{ return static_cast<ExecFlags>(static_cast<unsigned>(lhs) | static_cast<unsigned>(rhs)); }
+
+inline ExecFlags operator&(ExecFlags lhs, ExecFlags rhs)
+	{ return static_cast<ExecFlags>(static_cast<unsigned>(lhs) & static_cast<unsigned>(rhs)); }
+
+
 class OperationDetail
 {
 
