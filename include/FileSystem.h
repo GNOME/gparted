@@ -26,7 +26,6 @@
 
 #include <fstream>
 #include <sys/stat.h>
-#include <sigc++/slot.h>
 
 namespace GParted
 {
@@ -122,21 +121,7 @@ public:
 	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) { return true; };
 
 protected:
-	typedef sigc::slot<void, OperationDetail *> StreamSlot;
-	typedef sigc::slot<bool, OperationDetail *> TimedSlot;
-
-	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-	                     ExecFlags flags = EXEC_NONE );
-	int execute_command(const Glib::ustring& command, const char *input, OperationDetail& operationdetail,
-	                    ExecFlags flags = EXEC_NONE);
-	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-	                     ExecFlags flags,
-	                     StreamSlot stream_progress_slot );
-	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-	                     ExecFlags flags,
-	                     TimedSlot timed_progress_slot );
 	void set_status( OperationDetail & operationdetail, bool success );
-	void execute_command_eof();
 	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;
 	void rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail ) ;
 
@@ -147,16 +132,6 @@ protected:
 	//those are used in several places..
 	Glib::ustring output, error ;
 	int exit_status ;
-
-private:
-	int execute_command_internal(const Glib::ustring& command, const char *input,
-	                             OperationDetail& operationdetail,
-	                             ExecFlags flags,
-	                             StreamSlot stream_progress_slot,
-	                             TimedSlot timed_progress_slot);
-	void store_exit_status( GPid pid, int status );
-	bool running;
-	int pipecount;
 };
 
 } //GParted
