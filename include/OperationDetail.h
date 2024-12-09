@@ -103,6 +103,11 @@ public:
 	void run_progressbar(double progress, double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_TIME_REMAINING);
 	void stop_progressbar();
 
+	int execute_command(const Glib::ustring& command, ExecFlags flags = EXEC_NONE);
+	int execute_command(const Glib::ustring& command, const char* input, ExecFlags flags = EXEC_NONE);
+	int execute_command(const Glib::ustring& command, ExecFlags flags, StreamSlot stream_progress_slot);
+	int execute_command(const Glib::ustring& command, ExecFlags flags, TimedSlot timed_progress_slot);
+
 	sigc::signal< void, const OperationDetail & > signal_update ;
 	sigc::signal< void, bool > signal_cancel;
 	sigc::signal< void, OperationDetail &, bool > signal_capture_errors;
@@ -113,6 +118,10 @@ private:
 	void on_update( const OperationDetail & operationdetail ) ;
 	void cancel( bool force );
 	const ProgressBar& get_progressbar() const;
+
+	int execute_command_internal(const Glib::ustring& command, const char* input, ExecFlags flags,
+	                             StreamSlot stream_progress_slot,
+	                             TimedSlot timed_progress_slot);
 
 	Glib::ustring description ;
 	OperationDetailStatus status ; 

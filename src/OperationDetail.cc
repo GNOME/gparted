@@ -16,14 +16,32 @@
 
 
 #include "OperationDetail.h"
+#include "PipeCapture.h"
 #include "ProgressBar.h"
 #include "Utils.h"
+
+#include <cerrno>
+#include <unistd.h>
+#include <fcntl.h>
+#include <glibmm/main.h>
+#include <glibmm/ustring.h>
+#include <glibmm/stringutils.h>
+#include <glibmm/spawn.h>
+#include <glibmm/shell.h>
+#include <gtkmm/main.h>
+
 
 namespace GParted
 {
 
 // The single progress bar for the current operation
 static ProgressBar single_progressbar;
+
+
+static bool running = false;
+static int pipecount = 0;
+static int exit_status = 0;
+
 
 OperationDetail::OperationDetail() : cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 ),
                                      no_more_children( false )
@@ -196,6 +214,45 @@ void OperationDetail::stop_progressbar()
 	}
 }
 
+
+// Execute command and capture stdout and stderr to operation details.
+int OperationDetail::execute_command(const Glib::ustring& command, ExecFlags flags)
+{
+	StreamSlot empty_stream_slot;
+	TimedSlot empty_timed_slot;
+	return execute_command_internal(command, nullptr, flags, empty_stream_slot, empty_timed_slot);
+}
+
+
+// Execute command, pass string to stdin and capture stdout and stderr to operation
+// details.
+int OperationDetail::execute_command(const Glib::ustring& command, const char *input, ExecFlags flags)
+{
+	StreamSlot empty_stream_slot;
+	TimedSlot empty_timed_slot;
+	return execute_command_internal(command, input, flags, empty_stream_slot, empty_timed_slot);
+}
+
+
+// Execute command, capture stdout and stderr to operation details and run progress
+// tracking callback when either stdout or stderr is updated (as requested by flag
+// EXEC_PROGRESS_STDOUT or EXEC_PROGRESS_STDERR respectively).
+int OperationDetail::execute_command(const Glib::ustring& command, ExecFlags flags, StreamSlot stream_progress_slot)
+{
+	TimedSlot empty_timed_slot;
+	return execute_command_internal(command, nullptr, flags, stream_progress_slot, empty_timed_slot);
+}
+
+
+// Execute command, capture stdout and stderr to operation details and run progress
+// tracking callback periodically (when requested by flag EXEC_PROGRESS_TIMED).
+int OperationDetail::execute_command(const Glib::ustring& command, ExecFlags flags, TimedSlot timed_progress_slot)
+{
+	StreamSlot empty_stream_slot;
+	return execute_command_internal(command, nullptr, flags, empty_stream_slot, timed_progress_slot);
+}
+
+
 // Private methods
 
 void OperationDetail::add_child_implement( const OperationDetail & operationdetail )
@@ -231,5 +288,138 @@ const ProgressBar& OperationDetail::get_progressbar() const
 {
 	return single_progressbar;
 }
+
+
+static void setup_child_process()
+{
+	setpgrp();
+}
+
+
+static void execute_command_eof()
+{
+	if (--pipecount)
+		return;  // Wait for second pipe to encounter EOF.
+	if (! running)  // Already got exit status.
+		Gtk::Main::quit();
+}
+
+
+static void store_exit_status(GPid pid, int status)
+{
+	exit_status = Utils::decode_wait_status(status);
+	running = false;
+	if (pipecount == 0)  // Both pipes finished first.
+		Gtk::Main::quit();
+	Glib::spawn_close_pid(pid);
+}
+
+
+static void update_command_output(OperationDetail* operationdetail, Glib::ustring* str)
+{
+	operationdetail->set_description(*str, FONT_ITALIC);
+}
+
+
+static void cancel_command(bool force, Glib::Pid pid, bool cancel_safe)
+{
+	if (force || cancel_safe)
+		kill(-pid, SIGINT);
+}
+
+
+int OperationDetail::execute_command_internal(const Glib::ustring& command, const char *input, ExecFlags flags,
+                                              StreamSlot stream_progress_slot,
+                                              TimedSlot timed_progress_slot)
+{
+	add_child(OperationDetail(command, STATUS_EXECUTE, FONT_BOLD_ITALIC));
+	OperationDetail& cmd_operationdetail = get_last_child();
+	Glib::Pid pid;
+	int in = -1;
+	// set up pipes for capture
+	int out;
+	int err;
+	Glib::ustring output;
+	Glib::ustring error;
+	// spawn external process
+	running = true;
+	try {
+		Glib::spawn_async_with_pipes(std::string("."),
+		                             Glib::shell_parse_argv(command),
+		                             Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
+		                             sigc::ptr_fun(setup_child_process),
+		                             &pid,
+		                             (input != nullptr) ? &in : 0,
+		                             &out,
+		                             &err);
+	}
+	catch (Glib::SpawnError &e)
+	{
+		std::cerr << e.what() << std::endl;
+		cmd_operationdetail.add_child(OperationDetail( e.what(), STATUS_ERROR, FONT_ITALIC));
+		return Utils::get_failure_status(e);
+	}
+	fcntl(out, F_SETFL, O_NONBLOCK);
+	fcntl(err, F_SETFL, O_NONBLOCK);
+	Glib::signal_child_watch().connect(sigc::ptr_fun(store_exit_status), pid);
+	pipecount = 2;
+	PipeCapture outputcapture(out, output);
+	PipeCapture errorcapture(err, error);
+	outputcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
+	errorcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
+	cmd_operationdetail.add_child(OperationDetail(output, STATUS_NONE, FONT_ITALIC));
+	cmd_operationdetail.add_child(OperationDetail(error, STATUS_NONE, FONT_ITALIC));
+	std::vector<OperationDetail*>& children = cmd_operationdetail.get_childs();
+	outputcapture.signal_update.connect(sigc::bind(sigc::ptr_fun(update_command_output),
+	                                               children[children.size() - 2],
+	                                               &output));
+	errorcapture.signal_update.connect(sigc::bind(sigc::ptr_fun(update_command_output),
+	                                              children[children.size() - 1],
+	                                              &error));
+	sigc::connection timed_conn;
+	if (flags & EXEC_PROGRESS_STDOUT && ! stream_progress_slot.empty())
+		// Register progress tracking callback called when stdout updates
+		outputcapture.signal_update.connect(sigc::bind(stream_progress_slot, &cmd_operationdetail));
+	else if (flags & EXEC_PROGRESS_STDERR && ! stream_progress_slot.empty())
+		// Register progress tracking callback called when stderr updates
+		errorcapture.signal_update.connect(sigc::bind(stream_progress_slot, &cmd_operationdetail));
+	else if (flags & EXEC_PROGRESS_TIMED && ! timed_progress_slot.empty())
+		// Register progress tracking callback called every 500 ms
+		timed_conn = Glib::signal_timeout().connect(sigc::bind(timed_progress_slot, &cmd_operationdetail), 500);
+	outputcapture.connect_signal();
+	errorcapture.connect_signal();
+
+	cmd_operationdetail.signal_cancel.connect(sigc::bind(sigc::ptr_fun(cancel_command),
+	                                                     pid,
+	                                                     flags & EXEC_CANCEL_SAFE));
+
+	if (input != nullptr && in != -1)
+	{
+		// Write small amount of input to pipe to the child process.  Linux will
+		// always accept up to 4096 bytes without blocking.  See pipe(7).
+		size_t len = strlen(input);
+		ssize_t written = write(in, input, len);
+		if (written == -1 || (size_t)written < len)
+		{
+			int e = errno;
+			std::cerr << "Write to child failed: " << Glib::strerror(e) << std::endl;
+			cmd_operationdetail.add_child(OperationDetail("Write to child failed: " + Glib::strerror(e),
+			                                              STATUS_NONE, FONT_ITALIC));
+		}
+		close(in);
+	}
+
+	Gtk::Main::run();
+
+	if (flags & EXEC_CHECK_STATUS)
+		cmd_operationdetail.set_success_and_capture_errors(exit_status == 0);
+	close(out);
+	close(err);
+	if (timed_conn.connected())
+		timed_conn.disconnect();
+	cmd_operationdetail.stop_progressbar();
+	return exit_status;
+}
+
 
 } //GParted
