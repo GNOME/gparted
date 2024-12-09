@@ -641,8 +641,8 @@ int main(int argc, char** argv)
 	GParted::ensure_x11_display(argc, argv);
 
 	// Initialise threading in GParted to allow FileSystem interface classes to
-	// successfully use Utils:: and Filesystem::execute_command().  Must be before
-	// InitGoogleTest().
+	// successfully use Utils:: and OperationDetail::execute_command().  Must be
+	// before InitGoogleTest().
 	GParted::GParted_Core::mainthread = Glib::Thread::self();
 	Gtk::Main gtk_main = Gtk::Main();
 

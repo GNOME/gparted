@@ -163,9 +163,10 @@ void exfat::set_used_sectors(Partition& partition)
 
 bool exfat::create(const Partition& new_partition, OperationDetail& operationdetail)
 {
-	return ! execute_command("mkfs.exfat -L " + Glib::shell_quote(new_partition.get_filesystem_label()) +
-	                         " " + Glib::shell_quote(new_partition.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+	return ! operationdetail.execute_command("mkfs.exfat -L " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
 
 
@@ -192,9 +193,10 @@ void exfat::read_label(Partition& partition)
 
 bool exfat::write_label(const Partition& partition, OperationDetail& operationdetail)
 {
-	return ! execute_command("tune.exfat -L " + Glib::shell_quote(partition.get_filesystem_label()) +
-	                         " " + Glib::shell_quote(partition.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+	return ! operationdetail.execute_command("tune.exfat -L " +
+	                        Glib::shell_quote(partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
 
 
@@ -222,15 +224,16 @@ void exfat::read_uuid(Partition& partition)
 
 bool exfat::write_uuid(const Partition& partition, OperationDetail& operationdetail)
 {
-	return ! execute_command("tune.exfat -I " + random_serial() + " " + Glib::shell_quote(partition.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS);
+	return ! operationdetail.execute_command("tune.exfat -I " + random_serial() + " " +
+	                        Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
 
 
 bool exfat::check_repair(const Partition& partition, OperationDetail& operationdetail)
 {
-	return ! execute_command("fsck.exfat -y -v " + Glib::shell_quote(partition.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+	return ! operationdetail.execute_command("fsck.exfat -y -v " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
 
 

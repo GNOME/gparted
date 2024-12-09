@@ -124,9 +124,10 @@ void bcachefs::set_used_sectors(Partition& partition)
 
 bool bcachefs::create(const Partition& new_partition, OperationDetail& operationdetail)
 {
-	return ! execute_command("bcachefs format -L " + Glib::shell_quote(new_partition.get_filesystem_label()) +
-	                         " " + Glib::shell_quote(new_partition.get_path()),
-				 operationdetail, EXEC_CHECK_STATUS);
+	return ! operationdetail.execute_command("bcachefs format -L " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
 
 
@@ -166,15 +167,17 @@ void bcachefs::read_uuid(Partition& partition)
 
 bool bcachefs::resize(const Partition& partition_new, OperationDetail& operationdetail, bool fill_partition)
 {
-	return ! execute_command("bcachefs device resize " + Glib::shell_quote(partition_new.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS);
+	return ! operationdetail.execute_command("bcachefs device resize " +
+	                        Glib::shell_quote(partition_new.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
 
 
 bool bcachefs::check_repair(const Partition& partition, OperationDetail& operationdetail)
 {
-	return ! execute_command("bcachefs fsck -f -y -v " + Glib::shell_quote(partition.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS);
+	return ! operationdetail.execute_command("bcachefs fsck -f -y -v " +
+	                        Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
 
 

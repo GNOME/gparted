@@ -43,16 +43,19 @@ FS minix::get_filesystem_support()
 	return fs;
 }
 
+
 bool minix::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.minix -3 " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("mkfs.minix -3 " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool minix::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "fsck.minix " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	return ! operationdetail.execute_command("fsck.minix " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
+
 
 } //GParted

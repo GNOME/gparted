@@ -215,7 +215,7 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 		cmd = "mlabel -i " + Glib::shell_quote(partition.get_path()) +
 		      " ::" + Glib::shell_quote(sanitize_label(partition.get_filesystem_label()));
 
-	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command(cmd, EXEC_CHECK_STATUS);
 }
 
 
@@ -240,8 +240,8 @@ void fat16::read_uuid(Partition& partition)
 
 bool fat16::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command("mlabel -s -n -i " + Glib::shell_quote(partition.get_path()) + " ::",
-	                         operationdetail, EXEC_CHECK_STATUS);
+	return ! operationdetail.execute_command("mlabel -s -n -i " + Glib::shell_quote(partition.get_path()) + " ::",
+	                        EXEC_CHECK_STATUS);
 }
 
 
@@ -250,17 +250,16 @@ bool fat16::create( const Partition & new_partition, OperationDetail & operation
 	Glib::ustring fat_size = m_specific_fstype == FS_FAT16 ? "16" : "32";
 	Glib::ustring label_args = new_partition.get_filesystem_label().empty() ? "" :
 	                           "-n " + Glib::shell_quote( sanitize_label( new_partition.get_filesystem_label() ) ) + " ";
-	return ! execute_command("mkfs.fat -F" + fat_size + " -v -I " + label_args +
-	                         Glib::shell_quote(new_partition.get_path()),
-	                         operationdetail,
-	                         EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+	return ! operationdetail.execute_command("mkfs.fat -F" + fat_size + " -v -I " + label_args +
+	                        Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
+
 
 bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command("fsck.fat -a -w -v " + Glib::shell_quote(partition.get_path()),
-	                              operationdetail,
-	                              EXEC_CANCEL_SAFE);
+	exit_status = operationdetail.execute_command("fsck.fat -a -w -v " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );
 	return success;

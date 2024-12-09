@@ -135,12 +135,15 @@ void reiserfs::read_label( Partition & partition )
 	}
 }
 	
+
 bool reiserfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "reiserfstune --label " + Glib::shell_quote( partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("reiserfstune --label " +
+	                        Glib::shell_quote(partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 void reiserfs::read_uuid( Partition & partition )
 {
@@ -158,19 +161,22 @@ void reiserfs::read_uuid( Partition & partition )
 	}
 }
 
+
 bool reiserfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "reiserfstune -u random " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("reiserfstune -u random " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkreiserfs -f -f --label " +
-	                          Glib::shell_quote( new_partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	return ! operationdetail.execute_command("mkreiserfs -f -f --label " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
+
 
 bool reiserfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 { 
@@ -179,7 +185,7 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 		size = " -s " + Utils::num_to_str(partition_new.get_byte_length());
 	const Glib::ustring resize_cmd = "echo y | resize_reiserfs" + size +
 	                                 " " + Glib::shell_quote( partition_new.get_path() );
-	exit_status = execute_command( "sh -c " + Glib::shell_quote( resize_cmd ), operationdetail );
+	exit_status = operationdetail.execute_command("sh -c " + Glib::shell_quote(resize_cmd));
 	// NOTE: Neither resize_reiserfs manual page nor the following commit, which first
 	// added this check, indicate why exit status 1 also indicates success.  Commit
 	// from 2006-05-23:
@@ -190,11 +196,12 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	return success;
 }
 
+
 bool reiserfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " +
-	                               Glib::shell_quote( partition.get_path() ),
-	                               operationdetail, EXEC_CANCEL_SAFE );
+	exit_status = operationdetail.execute_command("reiserfsck --yes --fix-fixable --quiet " +
+	                        Glib::shell_quote(partition.get_path()),
+	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );
 	return success;

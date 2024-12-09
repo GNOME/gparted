@@ -135,17 +135,20 @@ bool btrfs::is_busy( const Glib::ustring & path )
 	return ! get_mount_device( path ) .empty() ;
 }
 
+
 bool btrfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.btrfs -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("mkfs.btrfs -L " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool btrfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command("btrfs check " + Glib::shell_quote(partition.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS);
+	return ! operationdetail.execute_command("btrfs check " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
 
 
@@ -259,9 +262,9 @@ bool btrfs::write_label( const Partition & partition, OperationDetail & operatio
 	else
 		path = partition.get_path();
 
-	return ! execute_command("btrfs filesystem label " + Glib::shell_quote(path) +
-	                         " " + Glib::shell_quote(partition.get_filesystem_label()),
-	                         operationdetail, EXEC_CHECK_STATUS);
+	return ! operationdetail.execute_command("btrfs filesystem label " + Glib::shell_quote(path) +
+	                        " " + Glib::shell_quote(partition.get_filesystem_label()),
+	                        EXEC_CHECK_STATUS);
 }
 
 
@@ -285,9 +288,9 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point .empty() )
 			return false ;
-		success &= ! execute_command( "mount -v -t btrfs " + Glib::shell_quote( path ) +
-		                              " " + Glib::shell_quote( mount_point ),
-		                              operationdetail, EXEC_CHECK_STATUS );
+		success &= ! operationdetail.execute_command("mount -v -t btrfs " + Glib::shell_quote(path) +
+		                        " " + Glib::shell_quote(mount_point),
+		                        EXEC_CHECK_STATUS);
 	}
 	else
 	{
@@ -309,13 +312,13 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			size = Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
 		else
 			size = "max" ;
-		success &= ! execute_command("btrfs filesystem resize " + devid_str + ":" + size +
-		                             " " + Glib::shell_quote(mount_point),
-                                             operationdetail, EXEC_CHECK_STATUS);
+		success &= ! operationdetail.execute_command("btrfs filesystem resize " + devid_str + ":" + size +
+		                        " " + Glib::shell_quote(mount_point),
+		                        EXEC_CHECK_STATUS);
 
 		if ( ! partition_new .busy )
-			success &= ! execute_command( "umount -v " + Glib::shell_quote( mount_point ),
-			                              operationdetail, EXEC_CHECK_STATUS );
+			success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
+			                        EXEC_CHECK_STATUS);
 	}
 
 	if ( ! partition_new .busy )
@@ -363,9 +366,10 @@ void btrfs::read_uuid(Partition& partition)
 
 bool btrfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfstune -f -u " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("btrfstune -f -u " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 void btrfs::clear_cache()
 {

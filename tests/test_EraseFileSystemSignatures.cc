@@ -256,7 +256,7 @@ int main(int argc, char** argv)
 	GParted::ensure_x11_display(argc, argv);
 
 	// Initialise threading in GParted to successfully use Utils:: and
-	// FileSystem::execute_command().  Must be before InitGoogleTest().
+	// OperationDetail::execute_command().  Must be before InitGoogleTest().
 	GParted::GParted_Core::mainthread = Glib::Thread::self();
 	Gtk::Main gtk_main = Gtk::Main();
 

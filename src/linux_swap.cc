@@ -137,12 +137,14 @@ void linux_swap::read_label( Partition & partition )
 	}
 }
 
+
 bool linux_swap::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "swaplabel -L " + Glib::shell_quote( partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("swaplabel -L " + Glib::shell_quote(partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 void linux_swap::read_uuid( Partition & partition )
 {
@@ -163,17 +165,20 @@ void linux_swap::read_uuid( Partition & partition )
 
 bool linux_swap::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "swaplabel -U " + Glib::shell_quote( Utils::generate_uuid() ) +
-	                          " " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("swaplabel -U " + Glib::shell_quote(Utils::generate_uuid()) +
+	                        " " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkswap -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("mkswap -L " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool linux_swap::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
@@ -182,8 +187,9 @@ bool linux_swap::resize( const Partition & partition_new, OperationDetail & oper
 	if ( ! partition_new .uuid .empty() )
 		command +=  " -U " + Glib::shell_quote( partition_new.uuid ) + " ";
 	command += Glib::shell_quote( partition_new.get_path() );
-	return ! execute_command( command, operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command(command, EXEC_CHECK_STATUS);
 }
+
 
 bool linux_swap::move( const Partition & partition_new
                      , const Partition & partition_old

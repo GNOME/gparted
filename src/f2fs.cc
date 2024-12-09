@@ -120,9 +120,10 @@ void f2fs::set_used_sectors(Partition & partition)
 
 bool f2fs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.f2fs -l " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("mkfs.f2fs -l " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
 
 
@@ -134,15 +135,15 @@ bool f2fs::resize(const Partition & partition_new, OperationDetail & operationde
 		// system is currently stored on.
 		size = "-t " + Utils::num_to_str(partition_new.get_sector_length()) + " ";
 
-	return ! execute_command("resize.f2fs " + size + Glib::shell_quote(partition_new.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS);
+	return ! operationdetail.execute_command("resize.f2fs " + size + Glib::shell_quote(partition_new.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
 
 
 bool f2fs::check_repair(const Partition & partition, OperationDetail & operationdetail)
 {
-	return ! execute_command("fsck.f2fs -f -a " + Glib::shell_quote(partition.get_path()),
-	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+	return ! operationdetail.execute_command("fsck.f2fs -f -a " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
 
 

@@ -189,12 +189,14 @@ void jfs::read_label( Partition & partition )
 	}
 }
 
+
 bool jfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "jfs_tune -L " + Glib::shell_quote( partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("jfs_tune -L " + Glib::shell_quote(partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 void jfs::read_uuid( Partition & partition )
 {
@@ -213,18 +215,22 @@ void jfs::read_uuid( Partition & partition )
 	}
 }
 
+
 bool jfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "jfs_tune -U random " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("jfs_tune -U random " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.jfs -q -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	return ! operationdetail.execute_command("mkfs.jfs -q -L " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
+
 
 bool jfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
@@ -236,23 +242,24 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point .empty() )
 			return false ;
-		success &= ! execute_command( "mount -v -t jfs " + Glib::shell_quote( partition_new.get_path() ) +
-		                              " " + Glib::shell_quote( mount_point ),
-		                              operationdetail, EXEC_CHECK_STATUS );
+		success &= ! operationdetail.execute_command("mount -v -t jfs " +
+		                        Glib::shell_quote(partition_new.get_path()) +
+		                        " " + Glib::shell_quote(mount_point),
+		                        EXEC_CHECK_STATUS);
 	}
 	else
 		mount_point = partition_new .get_mountpoint() ;
 
 	if ( success )
 	{
-		success &= ! execute_command( "mount -v -t jfs -o remount,resize " +
-		                              Glib::shell_quote( partition_new.get_path() ) +
-		                              " " + Glib::shell_quote( mount_point ),
-		                              operationdetail, EXEC_CHECK_STATUS );
+		success &= ! operationdetail.execute_command("mount -v -t jfs -o remount,resize " +
+		                        Glib::shell_quote(partition_new.get_path()) +
+		                        " " + Glib::shell_quote(mount_point),
+		                        EXEC_CHECK_STATUS);
 
 		if ( ! partition_new .busy )
-			success &= ! execute_command( "umount -v " + Glib::shell_quote( mount_point ),
-			                              operationdetail, EXEC_CHECK_STATUS );
+			success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
+			                        EXEC_CHECK_STATUS);
 	}
 
 	if ( ! partition_new .busy )
@@ -261,10 +268,11 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 	return success ;
 }
 
+
 bool jfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "jfs_fsck -f " + Glib::shell_quote( partition.get_path() ),
-	                               operationdetail, EXEC_CANCEL_SAFE );
+	exit_status = operationdetail.execute_command("jfs_fsck -f " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );
 	return success;

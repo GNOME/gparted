@@ -157,35 +157,42 @@ void ntfs::read_label( Partition & partition )
 	}
 }
 
+
 bool ntfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfslabel --force " + Glib::shell_quote( partition.get_path() ) +
-	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("ntfslabel --force " + Glib::shell_quote(partition.get_path()) +
+	                        " " + Glib::shell_quote(partition.get_filesystem_label()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 void ntfs::read_uuid( Partition & partition )
 {
 }
 
+
 bool ntfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
 	if ( partition .uuid == UUID_RANDOM_NTFS_HALF )
-		return ! execute_command( "ntfslabel --new-half-serial " + Glib::shell_quote( partition.get_path() ),
-		                          operationdetail, EXEC_CHECK_STATUS );
+		return ! operationdetail.execute_command("ntfslabel --new-half-serial " +
+		                        Glib::shell_quote(partition.get_path()),
+		                        EXEC_CHECK_STATUS);
 	else
-		return ! execute_command( "ntfslabel --new-serial " + Glib::shell_quote( partition.get_path() ),
-		                          operationdetail, EXEC_CHECK_STATUS );
+		return ! operationdetail.execute_command("ntfslabel --new-serial " +
+		                        Glib::shell_quote(partition.get_path()),
+		                        EXEC_CHECK_STATUS);
 
 	return true ;
 }
 
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkntfs -Q -v -F -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	return ! operationdetail.execute_command("mkntfs -Q -v -F -L " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
+
 
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
@@ -197,37 +204,41 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 
 	//simulation..
 	operationdetail .add_child( OperationDetail( _("run simulation") ) ) ;
-	success = ! execute_command( cmd + " --no-action " + Glib::shell_quote( partition_new.get_path() ),
-	                             operationdetail.get_last_child(), EXEC_CHECK_STATUS );
-	operationdetail.get_last_child().set_success_and_capture_errors( success );
+	OperationDetail& child_od = operationdetail.get_last_child();
+	success = ! child_od.execute_command(cmd + " --no-action " + Glib::shell_quote(partition_new.get_path()),
+	                        EXEC_CHECK_STATUS);
+	child_od.set_success_and_capture_errors(success);
 	if ( ! success )
 		return false;
 
 	// Real resize
 	operationdetail.add_child( OperationDetail( _("real resize") ) );
-	success = ! execute_command( cmd + " " + Glib::shell_quote( partition_new.get_path() ),
-		                     operationdetail.get_last_child(), EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
-		                     static_cast<StreamSlot>( sigc::mem_fun( *this, &ntfs::resize_progress ) ) );
-	operationdetail.get_last_child().set_success_and_capture_errors( success );
+	child_od = operationdetail.get_last_child();
+	success = ! child_od.execute_command(cmd + " " + Glib::shell_quote(partition_new.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
+	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ntfs::resize_progress)));
+	child_od.set_success_and_capture_errors(success);
 	return success;
 }
+
 
 bool ntfs::copy( const Partition & src_part,
 		 Partition & dest_part, 
 		 OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfsclone -f --overwrite " + Glib::shell_quote( dest_part.get_path() ) +
-	                          " " + Glib::shell_quote( src_part.get_path() ),
-	                          operationdetail,
-	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
-		                  static_cast<StreamSlot>( sigc::mem_fun( *this, &ntfs::clone_progress ) ) );
+	return ! operationdetail.execute_command("ntfsclone -f --overwrite " + Glib::shell_quote(dest_part.get_path()) +
+	                        " " + Glib::shell_quote(src_part.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
+	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ntfs::clone_progress)));
 }
+
 
 bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfsresize -i -f -v " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("ntfsresize -i -f -v " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 //Private methods
 

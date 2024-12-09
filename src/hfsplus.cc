@@ -58,13 +58,15 @@ bool hfsplus::create( const Partition & new_partition, OperationDetail & operati
 	else
 		cmd = "mkfs.hfsplus -v " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
 		      " " + Glib::shell_quote( new_partition.get_path() );
-	return ! execute_command( cmd , operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command(cmd, EXEC_CHECK_STATUS);
 }
+
 
 bool hfsplus::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "fsck.hfsplus -f -y " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("fsck.hfsplus -f -y " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 } //GParted

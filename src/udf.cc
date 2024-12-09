@@ -145,12 +145,14 @@ void udf::read_label( Partition & partition )
 	}
 }
 
+
 bool udf::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "udflabel --utf8 " + Glib::shell_quote( partition.get_path() ) +
-	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("udflabel --utf8 " + Glib::shell_quote(partition.get_path()) +
+	                        " " + Glib::shell_quote(partition.get_filesystem_label()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 void udf::read_uuid( Partition & partition )
 {
@@ -169,11 +171,14 @@ void udf::read_uuid( Partition & partition )
 	}
 }
 
+
 bool udf::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "udflabel --utf8 --uuid=random " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("udflabel --utf8 --uuid=random " +
+	                        Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool udf::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
@@ -246,11 +251,11 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 
 	// TODO: Add GUI option for choosing different optical disks and UDF revision.
 	// For now format as UDF revision 2.01 for hard disk media type.
-	return ! execute_command( "mkudffs --utf8 --media-type=hd --udfrev=0x201 " +
-	                          blocksize_args + label_args + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail,
-	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	return ! operationdetail.execute_command("mkudffs --utf8 --media-type=hd --udfrev=0x201 " +
+	                        blocksize_args + label_args + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
+
 
 // Private methods
 

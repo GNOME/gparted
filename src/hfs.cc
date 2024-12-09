@@ -60,14 +60,16 @@ bool hfs::create( const Partition & new_partition, OperationDetail & operationde
 	else
 		cmd = "hformat -l " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
 		      " " + Glib::shell_quote( new_partition.get_path() );
-	return ! execute_command( cmd , operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command(cmd, EXEC_CHECK_STATUS);
 }
+
 
 bool hfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	//FIXME: find out what the returnvalue is in case of modified.. also check what the -a flag does.. (there is no manpage)
-	return ! execute_command( "hfsck -v " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("hfsck -v " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 } //GParted

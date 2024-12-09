@@ -95,11 +95,13 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 	partition.append_messages( error_messages );
 }
 
+
 bool lvm2_pv::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "lvm pvcreate -M 2 " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("lvm pvcreate -M 2 " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
@@ -107,15 +109,18 @@ bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operati
 	if ( ! fill_partition )
 		size = " --yes --setphysicalvolumesize " +
 		       Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K ";
-	return ! execute_command( "lvm pvresize -v " + size + Glib::shell_quote( partition_new.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("lvm pvresize -v " + size +
+	                        Glib::shell_quote(partition_new.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "lvm pvck -v " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("lvm pvck -v " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
 {
@@ -126,7 +131,8 @@ bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationde
 	else
 		//Must force the removal of a PV which is a member of a VG
 		cmd = "lvm pvremove --force --force --yes " + Glib::shell_quote( partition.get_path() );
-	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command(cmd, EXEC_CHECK_STATUS);
 }
+
 
 } //GParted

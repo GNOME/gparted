@@ -136,12 +136,15 @@ void nilfs2::read_label( Partition & partition )
 	}
 }
 
+
 bool nilfs2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "nilfs-tune -L " + Glib::shell_quote( partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("nilfs-tune -L " +
+	                        Glib::shell_quote(partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 void nilfs2::read_uuid( Partition & partition )
 {
@@ -160,19 +163,23 @@ void nilfs2::read_uuid( Partition & partition )
 	}
 }
 
+
 bool nilfs2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "nilfs-tune -U " + Glib::shell_quote( Utils::generate_uuid() ) +
-	                          " " + Glib::shell_quote( partition .get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("nilfs-tune -U " + Glib::shell_quote(Utils::generate_uuid()) +
+	                        " " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool nilfs2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.nilfs2 -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
-	                          " " + Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("mkfs.nilfs2 -L " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool nilfs2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
@@ -185,9 +192,10 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		if ( mount_point .empty() )
 			return false ;
 
-		success &= ! execute_command( "mount -v -t nilfs2 " + Glib::shell_quote( partition_new.get_path() ) +
-		                              " " + Glib::shell_quote( mount_point ),
-		                              operationdetail, EXEC_CHECK_STATUS );
+		success &= ! operationdetail.execute_command("mount -v -t nilfs2 " +
+		                        Glib::shell_quote(partition_new.get_path()) +
+		                        " " + Glib::shell_quote(mount_point),
+		                        EXEC_CHECK_STATUS);
 	}
 
 	if ( success )
@@ -195,12 +203,13 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		Glib::ustring size;
 		if ( ! fill_partition )
 			size = " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
-		success &= ! execute_command("nilfs-resize -v -y " + Glib::shell_quote(partition_new.get_path()) + size,
-		                             operationdetail, EXEC_CHECK_STATUS);
+		success &= ! operationdetail.execute_command("nilfs-resize -v -y " +
+		                        Glib::shell_quote(partition_new.get_path()) + size,
+		                        EXEC_CHECK_STATUS);
 
 		if ( ! partition_new. busy )
-			success &= ! execute_command( "umount -v " + Glib::shell_quote( mount_point ),
-			                              operationdetail, EXEC_CHECK_STATUS );
+			success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
+			                        EXEC_CHECK_STATUS);
 	}
 
 	if ( ! partition_new .busy )

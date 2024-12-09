@@ -244,13 +244,15 @@ void ext2::read_label( Partition & partition )
 	}
 }
 
+
 bool ext2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	// Called when file system is unmounted *and* when mounted.
-	return ! execute_command( "e2label " + Glib::shell_quote( partition.get_path() ) +
-	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("e2label " + Glib::shell_quote(partition.get_path()) +
+	                        " " + Glib::shell_quote(partition.get_filesystem_label()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 void ext2::read_uuid( Partition & partition )
 {
@@ -269,11 +271,13 @@ void ext2::read_uuid( Partition & partition )
 	}
 }
 
+
 bool ext2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "tune2fs -U random " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! operationdetail.execute_command("tune2fs -U random " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CHECK_STATUS);
 }
+
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
@@ -288,12 +292,11 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 		else
 			features = " -O ^64bit";
 	}
-	return ! execute_command(m_mkfs_cmd + " -F" + features +
-	                         " -L " + Glib::shell_quote(new_partition.get_filesystem_label()) +
-	                         " " + Glib::shell_quote(new_partition.get_path()),
-	                         operationdetail,
-	                         EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
-	                         static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::create_progress)));
+	return ! operationdetail.execute_command(m_mkfs_cmd + " -F" + features +
+	                        " -L " + Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                        " " + Glib::shell_quote(new_partition.get_path()),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
+	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::create_progress)));
 }
 
 
@@ -303,17 +306,17 @@ bool ext2::resize(const Partition& partition_new, OperationDetail& operationdeta
 	if ( ! fill_partition )
 		size = " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
 
-	return ! execute_command("resize2fs -p " + Glib::shell_quote(partition_new.get_path()) + size,
-	                         operationdetail, EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
-	                         static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::resize_progress)));
+	return ! operationdetail.execute_command("resize2fs -p " + Glib::shell_quote(partition_new.get_path()) + size,
+	                        EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
+	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::resize_progress)));
 }
 
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "e2fsck -f -y -v -C 0 " + Glib::shell_quote( partition.get_path() ),
-	                               operationdetail, EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
-	                               static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::check_repair_progress ) ) );
+	exit_status = operationdetail.execute_command("e2fsck -f -y -v -C 0 " + Glib::shell_quote(partition.get_path()),
+	                        EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
+	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::check_repair_progress)));
 	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
 	set_status( operationdetail, success );
 	return success;
@@ -332,20 +335,22 @@ bool ext2::move( const Partition & partition_new,
 		cmd = "e2image -ra -p -O " + offset + " " + Glib::shell_quote( partition_new.get_path() );
 
 	m_fs_block_size = partition_old.fs_block_size;
-	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
-	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::copy_progress ) ) );
+	return ! operationdetail.execute_command(cmd, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
+	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::copy_progress)));
 }
+
 
 bool ext2::copy( const Partition & src_part,
                  Partition & dest_part,
                  OperationDetail & operationdetail )
 {
 	m_fs_block_size = src_part.fs_block_size;
-	return ! execute_command( "e2image -ra -p " + Glib::shell_quote( src_part.get_path() ) +
-	                          " " + Glib::shell_quote( dest_part.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
-	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::copy_progress ) ) );
+	return ! operationdetail.execute_command("e2image -ra -p " + Glib::shell_quote(src_part.get_path()) +
+	                        " " + Glib::shell_quote( dest_part.get_path() ),
+	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
+	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::copy_progress)));
 }
+
 
 //Private methods
 
