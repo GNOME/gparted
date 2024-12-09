@@ -18,13 +18,15 @@
 #ifndef GPARTED_OPERATIONDETAIL_H
 #define GPARTED_OPERATIONDETAIL_H
 
+
 #include "ProgressBar.h"
 
 #include <glibmm/ustring.h>
 #include <glibmm/markup.h>
-
+#include <sigc++/slot.h>
 #include <vector>
 #include <ctime>
+
 
 namespace GParted
 {
@@ -66,6 +68,11 @@ inline ExecFlags operator|(ExecFlags lhs, ExecFlags rhs)
 
 inline ExecFlags operator&(ExecFlags lhs, ExecFlags rhs)
 	{ return static_cast<ExecFlags>(static_cast<unsigned>(lhs) & static_cast<unsigned>(rhs)); }
+
+
+class OperationDetail;
+typedef sigc::slot<void, OperationDetail*> StreamSlot;
+typedef sigc::slot<bool, OperationDetail*> TimedSlot;
 
 
 class OperationDetail
