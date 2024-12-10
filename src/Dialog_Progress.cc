@@ -567,15 +567,15 @@ void Dialog_Progress::write_operation_details(const OperationDetail& operationde
 	}
 	
 	out << std::endl << "</td>" << std::endl << "</tr>" << std::endl ;
-	
-	if ( operationdetail .get_childs(). size() )
+
+	if (operationdetail.get_children().size())
 	{
 		out << "<tr>" << std::endl
 		<< "<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>" << std::endl
 		<< "<td>" << std::endl ;
 
-		for (unsigned int i = 0; i < operationdetail.get_childs().size(); i++)
-			write_operation_details(*(operationdetail.get_childs()[i]), out);
+		for (unsigned int i = 0; i < operationdetail.get_children().size(); i++)
+			write_operation_details(*(operationdetail.get_children()[i]), out);
 
 		out << "</td>" << std::endl << "</tr>" << std::endl ;
 	}

@@ -186,15 +186,18 @@ void OperationDetail::add_child( const OperationDetail & operationdetail )
 	add_child_implement( operationdetail );
 }
 
-std::vector<OperationDetail*> & OperationDetail::get_childs()
+
+std::vector<OperationDetail*>& OperationDetail::get_children()
 {
-	return sub_details ;
+	return sub_details;
 }
 
-const std::vector<OperationDetail*> & OperationDetail::get_childs() const
+
+const std::vector<OperationDetail*>& OperationDetail::get_children() const
 {
-	return sub_details ;
+	return sub_details;
 }
+
 
 OperationDetail & OperationDetail::get_last_child()
 {
@@ -388,7 +391,7 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	errorcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
 	cmd_operationdetail.add_child(OperationDetail(cmd_status.output, STATUS_NONE, FONT_ITALIC));
 	cmd_operationdetail.add_child(OperationDetail(cmd_status.error, STATUS_NONE, FONT_ITALIC));
-	std::vector<OperationDetail*>& children = cmd_operationdetail.get_childs();
+	std::vector<OperationDetail*>& children = cmd_operationdetail.get_children();
 	outputcapture.signal_update.connect(sigc::bind(sigc::ptr_fun(update_command_output),
 	                                               children[children.size() - 2],
 	                                               &cmd_status.output));

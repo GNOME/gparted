@@ -109,9 +109,9 @@ std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
 		out << "  (" << od.get_status() << ")";
 	out << "\n";
 
-	for (size_t i = 0; i < od.get_childs().size(); i++)
+	for (size_t i = 0; i < od.get_children().size(); i++)
 	{
-		out << *od.get_childs()[i];
+		out << *od.get_children()[i];
 	}
 	return out;
 }

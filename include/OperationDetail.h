@@ -97,8 +97,8 @@ public:
 	Glib::ustring get_elapsed_time() const ;
 	
 	void add_child( const OperationDetail & operationdetail ) ;
-	std::vector<OperationDetail*> & get_childs() ;
-	const std::vector<OperationDetail*> & get_childs() const ;
+	std::vector<OperationDetail*>& get_children();
+	const std::vector<OperationDetail*>& get_children() const;
 	OperationDetail & get_last_child() ;
 	void run_progressbar(double progress, double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_TIME_REMAINING);
 	void stop_progressbar();
