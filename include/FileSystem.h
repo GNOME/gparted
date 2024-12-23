@@ -121,7 +121,6 @@ public:
 	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) { return true; };
 
 protected:
-	void set_status( OperationDetail & operationdetail, bool success );
 	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;
 	void rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail ) ;
 

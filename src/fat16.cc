@@ -268,9 +268,10 @@ bool fat16::check_repair( const Partition & partition, OperationDetail & operati
 	                        Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
-	set_status( operationdetail, success );
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
 	return success;
 }
+
 
 //Private methods
 

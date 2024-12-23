@@ -288,8 +288,9 @@ bool jfs::check_repair( const Partition & partition, OperationDetail & operation
 	int exit_status = operationdetail.execute_command("jfs_fsck -f " + Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
-	set_status( operationdetail, success );
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
 	return success;
 }
+
 
 } //GParted

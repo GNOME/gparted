@@ -54,8 +54,8 @@ enum ExecFlags
 	EXEC_CHECK_STATUS    = 1 << 1,  // Set the status of the command in the operation
 	                                // details based on the exit status being zero or
 	                                // non-zero.  Must either use this flag when calling
-	                                // ::execute_command() or call ::set_status()
-					// afterwards.
+	                                // ::execute_command() or manually call
+					// ::set_success_and_capture_errors() afterwards.
 	EXEC_CANCEL_SAFE     = 1 << 2,
 	EXEC_PROGRESS_STDOUT = 1 << 3,  // Run progress tracking callback after reading new
 	                                // data on stdout from command.

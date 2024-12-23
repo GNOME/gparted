@@ -198,7 +198,7 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	//     7bb7e8a84f164cd913384509a6adc3739a9d8b78
 	//     Use ped_device_read and ped_device_write instead of 'dd' to copy
 	bool success = ( exit_status == 0 || exit_status == 1 );
-	set_status( operationdetail, success );
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
 	return success;
 }
 
@@ -209,8 +209,9 @@ bool reiserfs::check_repair( const Partition & partition, OperationDetail & oper
 	                        Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
-	set_status( operationdetail, success );
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
 	return success;
 }
+
 
 } //GParted

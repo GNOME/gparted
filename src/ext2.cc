@@ -327,7 +327,7 @@ bool ext2::check_repair( const Partition & partition, OperationDetail & operatio
 	                        EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
 	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::check_repair_progress)));
 	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
-	set_status( operationdetail, success );
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
 	return success;
 }
 

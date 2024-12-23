@@ -180,7 +180,7 @@ bool xfs::write_label( const Partition & partition, OperationDetail & operationd
 		// output starting with the fixed text, reporting the new label.
 		const Glib::ustring& output = operationdetail.get_command_output();
 		bool success = output.compare(0, 9, "label = \"") == 0;
-		set_status(operationdetail, success);
+		operationdetail.get_last_child().set_success_and_capture_errors(success);
 		return success;
 	}
 	else

@@ -53,12 +53,6 @@ const Glib::ustring & FileSystem::get_generic_text( CUSTOM_TEXT ttype, int index
 }
 
 
-void FileSystem::set_status( OperationDetail & operationdetail, bool success )
-{
-	operationdetail.get_last_child().set_success_and_capture_errors( success );
-}
-
-
 //Create uniquely named temporary directory and add results to operation detail
 Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail )
 {
