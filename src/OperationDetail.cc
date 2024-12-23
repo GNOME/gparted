@@ -29,6 +29,8 @@
 #include <glibmm/spawn.h>
 #include <glibmm/shell.h>
 #include <gtkmm/main.h>
+#include <sigc++/bind.h>
+#include <sigc++/signal.h>
 
 
 namespace GParted

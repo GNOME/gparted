@@ -24,6 +24,8 @@
 #include <gtkmm/imagemenuitem.h>
 #include <gtkmm/separatormenuitem.h>
 #include <gtkmm/checkmenuitem.h>
+#include <sigc++/slot.h>
+
 
 namespace GParted
 {

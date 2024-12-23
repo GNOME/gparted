@@ -30,6 +30,7 @@
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
+#include <sigc++/signal.h>
 #include <vector>
 
 

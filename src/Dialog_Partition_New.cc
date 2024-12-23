@@ -25,6 +25,8 @@
 #include <glibmm/ustring.h>
 #include <gtkmm/label.h>
 #include <atkmm/relation.h>
+#include <sigc++/bind.h>
+#include <sigc++/signal.h>
 
 
 namespace GParted

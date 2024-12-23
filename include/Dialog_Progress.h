@@ -30,6 +30,8 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/expander.h>
+#include <sigc++/connection.h>
+#include <sigc++/signal.h>
 #include <fstream>
 #include <vector>
 

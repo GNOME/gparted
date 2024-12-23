@@ -24,6 +24,8 @@
 #include <gtkmm/menu.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/treeview.h>
+#include <sigc++/signal.h>
+
 
 namespace GParted
 {

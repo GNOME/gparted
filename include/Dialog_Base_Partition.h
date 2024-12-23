@@ -31,6 +31,8 @@
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/grid.h>
 #include <gtkmm/box.h>
+#include <sigc++/connection.h>
+
 
 namespace GParted
 {

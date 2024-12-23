@@ -24,6 +24,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/button.h>
 #include <gtk/gtk.h>
+#include <sigc++/signal.h>
 
 
 namespace GParted

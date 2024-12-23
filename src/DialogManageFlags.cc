@@ -20,6 +20,8 @@
 #include <gtkmm/main.h>
 #include <gtkmm/stock.h>
 #include <gdkmm/cursor.h>
+#include <sigc++/signal.h>
+
 
 namespace GParted
 {

@@ -21,6 +21,8 @@
 #include "PartitionVector.h"
 
 #include <gtkmm/drawingarea.h>
+#include <sigc++/signal.h>
+
 
 namespace GParted
 {

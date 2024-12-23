@@ -63,6 +63,8 @@
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
 #include <glibmm/main.h>
+#include <sigc++/bind.h>
+#include <sigc++/signal.h>
 
 
 namespace GParted

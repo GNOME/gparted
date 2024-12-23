@@ -36,6 +36,7 @@
 #include <gtkmm/enums.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/stockitem.h>
+#include <sigc++/signal.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>

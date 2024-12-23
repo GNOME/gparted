@@ -53,6 +53,9 @@
 #include <glibmm/shell.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
+#include <sigc++/bind.h>
+#include <sigc++/signal.h>
+
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 

@@ -24,7 +24,9 @@
 #include <glibmm/thread.h>
 #include <glibmm/stringutils.h>
 #include <gtkmm/main.h>
+#include <sigc++/signal.h>
 #include <errno.h>
+
 
 namespace GParted {
 

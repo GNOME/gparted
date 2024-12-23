@@ -24,6 +24,7 @@
 #include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
+#include <sigc++/signal.h>
 
 
 namespace GParted

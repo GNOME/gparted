@@ -35,6 +35,7 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/progressbar.h>
 #include <gtkmm/window.h>
+#include <sigc++/connection.h>
 
 
 namespace GParted

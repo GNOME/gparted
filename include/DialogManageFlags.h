@@ -23,6 +23,8 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
+#include <sigc++/signal.h>
+
 
 namespace GParted
 {

@@ -24,6 +24,8 @@
 #include <glibmm/ustring.h>
 #include <glibmm/refptr.h>
 #include <glibmm/iochannel.h>
+#include <sigc++/signal.h>
+
 
 namespace GParted {
 

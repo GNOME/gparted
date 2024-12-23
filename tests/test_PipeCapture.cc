@@ -33,7 +33,8 @@
 #include <string.h>
 #include <errno.h>
 #include <string>
-#include <sigc++/sigc++.h>
+#include <sigc++/bind.h>
+#include <sigc++/signal.h>
 #include <glib.h>
 #include <glibmm.h>
 

@@ -23,9 +23,9 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/entry.h>
-
 #include <gtkmm/stock.h>
 #include <gdkmm/pixbuf.h>
+#include <sigc++/signal.h>
 
 
 namespace GParted

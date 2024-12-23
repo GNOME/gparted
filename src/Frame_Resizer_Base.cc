@@ -18,6 +18,7 @@
 #include "Frame_Resizer_Base.h"
 
 #include <gdkmm/general.h>
+#include <sigc++/signal.h>
 
 
 namespace GParted

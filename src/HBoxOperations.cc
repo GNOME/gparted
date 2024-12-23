@@ -19,6 +19,8 @@
 #include "Utils.h"
 
 #include <gtkmm/stock.h>
+#include <sigc++/signal.h>
+
 
 namespace GParted
 {
