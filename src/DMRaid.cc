@@ -331,39 +331,39 @@ Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path 
 	return partition_path ;
 }
 
+
 bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail )
 {
 	//Create all missing dev mapper entries for a specified device.
 
-	bool exit_status = true ;
+	bool success = true;
 
 	/*TO TRANSLATORS: looks like  create missing /dev/mapper entries */ 
-	Glib::ustring tmp = Glib::ustring::compose( _("create missing %1 entries"), DEV_MAPPER_PATH );
-	operationdetail .add_child( OperationDetail( tmp ) );
+	operationdetail.add_child(OperationDetail(
+	                        Glib::ustring::compose(_("create missing %1 entries"), DEV_MAPPER_PATH)));
+	OperationDetail& child_od = operationdetail.get_last_child();
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
 	//  and the partition number.
-	if (operationdetail.get_last_child().execute_command("dmraid -ay -P \"\" -v"))
-		exit_status = false;  // command failed
+	if (child_od.execute_command("dmraid -ay -P \"\" -v"))
+		success = false;  // command failed
 
-	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
-	return exit_status ;
+	child_od.set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 {
 	//Create all missing dev mapper entries for a specified device.
 
 	Glib::ustring output, error ;
-	bool exit_status = true ;
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
 	//  and the partition number.
-	if ( Utils::execute_command( "dmraid -ay -P \"\" -v", output, error, true ) )
-		exit_status = false;  // command failed
-
-	return exit_status ;
+	return ! Utils::execute_command("dmraid -ay -P \"\" -v", output, error, true);
 }
+
 
 void DMRaid::get_affected_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & affected_entries )
 {
@@ -419,33 +419,36 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 
 	std::vector<Glib::ustring> affected_entries ;
 	Glib::ustring command ;
-	bool exit_status = true ;
+	bool success = true;
 
 	/*TO TRANSLATORS: looks like  delete affected /dev/mapper entries */ 
-	Glib::ustring tmp = Glib::ustring::compose( _("delete affected %1 entries"), DEV_MAPPER_PATH );
-	operationdetail .add_child( OperationDetail( tmp ) );
+	operationdetail.add_child(OperationDetail(
+	                        Glib::ustring::compose(_("delete affected %1 entries"), DEV_MAPPER_PATH)));
+	OperationDetail& child_od = operationdetail.get_last_child();
 
 	get_affected_dev_map_entries( partition, affected_entries ) ;
 
 	for ( unsigned int k=0; k < affected_entries .size(); k++ )
 	{
 		command = "dmsetup remove " + Glib::shell_quote( DEV_MAPPER_PATH + affected_entries[k] );
-		if (operationdetail.get_last_child().execute_command(command))
-			exit_status = false ;	//command failed
+		if (child_od.execute_command(command))
+			success = false;  // command failed
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
-	return exit_status ;
+	child_od.set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail & operationdetail )
 {
 	//Delete a single partition which may be represented by multiple dev mapper entries
-	bool exit_status = true ;
+	bool success = true;
 
 	/*TO TRANSLATORS: looks like  delete /dev/mapper entry */ 
-	Glib::ustring tmp = Glib::ustring::compose( _("delete %1 entry"), DEV_MAPPER_PATH );
-	operationdetail .add_child( OperationDetail( tmp ) );
+	operationdetail.add_child(OperationDetail(
+	                        Glib::ustring::compose(_("delete %1 entry"), DEV_MAPPER_PATH)));
+	OperationDetail& child_od = operationdetail.get_last_child();
 
 	std::vector<Glib::ustring> partition_entries ;
 	get_partition_dev_map_entries( partition, partition_entries ) ;
@@ -453,13 +456,14 @@ bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail 
 	for ( unsigned int k = 0; k < partition_entries .size(); k++ )
 	{
 		Glib::ustring command = "dmsetup remove " + Glib::shell_quote( partition_entries[k] );
-		if (operationdetail.get_last_child().execute_command(command))
-			exit_status = false ;	//command failed
+		if (child_od.execute_command(command))
+			success = false;  // command failed
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
-	return exit_status ;
+	child_od.set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool DMRaid::purge_dev_map_entries( const Glib::ustring & dev_path )
 {
@@ -468,7 +472,7 @@ bool DMRaid::purge_dev_map_entries( const Glib::ustring & dev_path )
 	std::vector<Glib::ustring> dir_list ;
 	Glib::ustring command ;
 	Glib::ustring output, error ;
-	bool exit_status = true ;
+	bool success = true;
 
 	get_dmraid_dir_entries( dev_path, dir_list ) ;
 
@@ -476,11 +480,12 @@ bool DMRaid::purge_dev_map_entries( const Glib::ustring & dev_path )
 	{
 		command = "dmsetup remove " + Glib::shell_quote( DEV_MAPPER_PATH + dir_list[k] );
 		if ( Utils::execute_command( command, output, error, true ) )
-			exit_status = false ;	//command failed
+			success = false;  // command failed
 	}
 
-	return exit_status ;
+	return success;
 }
+
 
 bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail & operationdetail )
 {
@@ -490,20 +495,21 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 	if (partition.type == TYPE_EXTENDED)
 		return true ;
 
-	bool exit_status = true ;
+	bool success = true;
 
 	/*TO TRANSLATORS: looks like  update /dev/mapper entry */ 
-	Glib::ustring tmp = Glib::ustring::compose( _("update %1 entry"), DEV_MAPPER_PATH );
-	operationdetail .add_child( OperationDetail( tmp ) );
+	operationdetail.add_child(OperationDetail(
+	                        Glib::ustring::compose(_("update %1 entry"), DEV_MAPPER_PATH)));
+	OperationDetail& child_od = operationdetail.get_last_child();
 
-	if( ! delete_dev_map_entry( partition , operationdetail .get_last_child() ) )
-		exit_status = false ;	//command failed
+	if (! delete_dev_map_entry(partition, child_od))
+		success = false;  // command failed
 
-	if( ! create_dev_map_entries( partition , operationdetail .get_last_child() ) )
-		exit_status = false ;	//command failed
+	if (! create_dev_map_entries(partition, child_od))
+		success = false;  // command failed
 
-	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
-	return exit_status ;
+	child_od.set_success_and_capture_errors(success);
+	return success;
 }
 
 
