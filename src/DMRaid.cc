@@ -16,6 +16,7 @@
 
 #include "DMRaid.h"
 #include "BlockSpecial.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 #include "Utils.h"
 
@@ -179,24 +180,6 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 	return device_found ;
 }
 
-//FIXME:  Copy of code from FileSystem.cc.
-//        This should be replaced when a general execute_command with asynchronous updates is built.
-int DMRaid::execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) 
-{
-	Glib::ustring output, error ;
-
-	operationdetail .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
-
-	int exit_status = Utils::execute_command( command, output, error );
-
-	if ( ! output .empty() )
-		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
-	
-	if ( ! error .empty() )
-		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
-
-	return exit_status ;
-}
 
 void DMRaid::get_devices( std::vector<Glib::ustring> & device_list )
 {
@@ -360,7 +343,7 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
 	//  and the partition number.
-	if ( execute_command( "dmraid -ay -P \"\" -v", operationdetail.get_last_child() ) )
+	if (operationdetail.get_last_child().execute_command("dmraid -ay -P \"\" -v"))
 		exit_status = false;  // command failed
 
 	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
@@ -447,7 +430,7 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 	for ( unsigned int k=0; k < affected_entries .size(); k++ )
 	{
 		command = "dmsetup remove " + Glib::shell_quote( DEV_MAPPER_PATH + affected_entries[k] );
-		if ( execute_command( command, operationdetail .get_last_child() ) )
+		if (operationdetail.get_last_child().execute_command(command))
 			exit_status = false ;	//command failed
 	}
 
@@ -470,7 +453,7 @@ bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail 
 	for ( unsigned int k = 0; k < partition_entries .size(); k++ )
 	{
 		Glib::ustring command = "dmsetup remove " + Glib::shell_quote( partition_entries[k] );
-		if ( execute_command( command, operationdetail .get_last_child() ) )
+		if (operationdetail.get_last_child().execute_command(command))
 			exit_status = false ;	//command failed
 	}
 
