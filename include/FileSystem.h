@@ -19,13 +19,13 @@
 #ifndef GPARTED_FILESYSTEM_H
 #define GPARTED_FILESYSTEM_H
 
-#include "Operation.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 #include "PipeCapture.h"
 #include "Utils.h"
 
-#include <fstream>
-#include <sys/stat.h>
+#include <glibmm/ustring.h>
+
 
 namespace GParted
 {

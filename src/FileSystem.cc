@@ -16,11 +16,16 @@
 
 #include "FileSystem.h"
 #include "GParted_Core.h"
+#include "OperationDetail.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <cerrno>
 #include <iostream>
 #include <glibmm/miscutils.h>
 #include <glibmm/stringutils.h>
+#include <glibmm/ustring.h>
 
 
 namespace GParted

@@ -21,6 +21,7 @@
 #include "Partition.h"
 
 #include <cerrno>
+#include <fstream>
 #include <glibmm/miscutils.h>
 #include <glibmm/stringutils.h>
 #include <glibmm/shell.h>
