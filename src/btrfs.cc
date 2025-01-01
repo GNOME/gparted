@@ -275,6 +275,7 @@ bool btrfs::write_label( const Partition & partition, OperationDetail & operatio
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool success = true ;
+	int exit_status = 0;
 	const Glib::ustring& path = partition_new.get_path();
 	const BTRFS_Device& btrfs_dev = get_cache_entry(path);
 
@@ -292,9 +293,11 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point .empty() )
 			return false ;
-		success &= ! operationdetail.execute_command("mount -v -t btrfs " + Glib::shell_quote(path) +
+		exit_status = operationdetail.execute_command("mount -v -t btrfs " + Glib::shell_quote(path) +
 		                        " " + Glib::shell_quote(mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 	}
 	else
 	{
@@ -316,13 +319,19 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			size = Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
 		else
 			size = "max" ;
-		success &= ! operationdetail.execute_command("btrfs filesystem resize " + devid_str + ":" + size +
+		exit_status = operationdetail.execute_command("btrfs filesystem resize " + devid_str + ":" + size +
 		                        " " + Glib::shell_quote(mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 
-		if ( ! partition_new .busy )
-			success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
+		if (! partition_new.busy)
+		{
+			exit_status = operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
 			                        EXEC_CHECK_STATUS);
+			if (exit_status != 0)
+				success = false;
+		}
 	}
 
 	if ( ! partition_new .busy )

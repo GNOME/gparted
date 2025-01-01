@@ -241,31 +241,39 @@ bool jfs::create( const Partition & new_partition, OperationDetail & operationde
 bool jfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool success = true ;
-
+	int exit_status = 0;
 	Glib::ustring mount_point ;
 	if ( ! partition_new .busy )
 	{
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point .empty() )
 			return false ;
-		success &= ! operationdetail.execute_command("mount -v -t jfs " +
+		exit_status = operationdetail.execute_command("mount -v -t jfs " +
 		                        Glib::shell_quote(partition_new.get_path()) +
 		                        " " + Glib::shell_quote(mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 	}
 	else
 		mount_point = partition_new .get_mountpoint() ;
 
 	if ( success )
 	{
-		success &= ! operationdetail.execute_command("mount -v -t jfs -o remount,resize " +
+		exit_status = operationdetail.execute_command("mount -v -t jfs -o remount,resize " +
 		                        Glib::shell_quote(partition_new.get_path()) +
 		                        " " + Glib::shell_quote(mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 
 		if ( ! partition_new .busy )
-			success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
+		{
+			exit_status = operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
 			                        EXEC_CHECK_STATUS);
+			if (exit_status != 0)
+				success = false;
+		}
 	}
 
 	if ( ! partition_new .busy )

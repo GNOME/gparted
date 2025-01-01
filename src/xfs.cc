@@ -235,29 +235,37 @@ bool xfs::create( const Partition & new_partition, OperationDetail & operationde
 bool xfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool success = true ;
-
+	int exit_status = 0;
 	Glib::ustring mount_point ;
 	if ( ! partition_new .busy )
 	{
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point.empty() )
 			return false ;
-		success &= ! operationdetail.execute_command("mount -v -t xfs " +
+		exit_status = operationdetail.execute_command("mount -v -t xfs " +
 		                        Glib::shell_quote(partition_new.get_path()) +
 		                        " " + Glib::shell_quote(mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 	}
 	else
 		mount_point = partition_new .get_mountpoint() ;
 
 	if ( success )
 	{
-		success &= ! operationdetail.execute_command("xfs_growfs " + Glib::shell_quote(mount_point),
+		exit_status = operationdetail.execute_command("xfs_growfs " + Glib::shell_quote(mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 
 		if ( ! partition_new .busy )
-			success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
+		{
+			exit_status = operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
 			                        EXEC_CHECK_STATUS);
+			if (exit_status != 0)
+				success = false;
+		}
 	}
 
 	if ( ! partition_new .busy )
@@ -271,13 +279,12 @@ bool xfs::copy( const Partition & src_part,
 		OperationDetail & operationdetail )
 {
 	bool success = true ;
-
-	success &= ! operationdetail.execute_command("mkfs.xfs -f -L " +
+	int exit_status = operationdetail.execute_command("mkfs.xfs -f -L " +
 	                        Glib::shell_quote(dest_part.get_filesystem_label()) +
 	                        " -m uuid=" + Glib::shell_quote(dest_part.uuid) +
 	                        " " + Glib::shell_quote(dest_part.get_path()),
 	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
-	if ( ! success )
+	if (exit_status != 0)
 		return false ;
 
 	Glib::ustring src_mount_point = mk_temp_dir( "src", operationdetail ) ;
@@ -291,10 +298,12 @@ bool xfs::copy( const Partition & src_part,
 		return false ;
 	}
 
-	success &= ! operationdetail.execute_command("mount -v -t xfs -o noatime,ro " +
+	exit_status = operationdetail.execute_command("mount -v -t xfs -o noatime,ro " +
 	                        Glib::shell_quote(src_part.get_path()) +
 	                        " " + Glib::shell_quote(src_mount_point),
 	                        EXEC_CHECK_STATUS);
+	if (exit_status != 0)
+		success = false;
 
 	// Get source FS used bytes, needed in progress update calculation
 	Byte_Value fs_size;
@@ -307,29 +316,36 @@ bool xfs::copy( const Partition & src_part,
 
 	if ( success )
 	{
-		success &= ! operationdetail.execute_command("mount -v -t xfs -o nouuid " +
+		exit_status = operationdetail.execute_command("mount -v -t xfs -o nouuid " +
 		                        Glib::shell_quote(dest_part.get_path()) +
 		                        " " + Glib::shell_quote(m_dest_mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 
 		if ( success )
 		{
 			const Glib::ustring copy_cmd = "xfsdump -J - " + Glib::shell_quote( src_mount_point ) +
 			                               " | xfsrestore -J - " + Glib::shell_quote(m_dest_mount_point);
-			success &= ! operationdetail.execute_command("sh -c " + Glib::shell_quote(copy_cmd),
+			exit_status = operationdetail.execute_command("sh -c " + Glib::shell_quote(copy_cmd),
 			                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_TIMED,
 			                        static_cast<TimedSlot>(sigc::mem_fun(*this, &xfs::copy_progress)));
+			if (exit_status != 0)
+				exit_status = false;
 
-			success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(m_dest_mount_point),
+			exit_status = operationdetail.execute_command("umount -v " + Glib::shell_quote(m_dest_mount_point),
 			                        EXEC_CHECK_STATUS);
+			if (exit_status != 0)
+				exit_status = false;
 		}
 
-		success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(src_mount_point),
+		exit_status = operationdetail.execute_command("umount -v " + Glib::shell_quote(src_mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 	}
 
 	rm_temp_dir(m_dest_mount_point, operationdetail);
-
 	rm_temp_dir( src_mount_point, operationdetail ) ;
 
 	return success ;

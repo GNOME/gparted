@@ -190,7 +190,7 @@ bool nilfs2::create( const Partition & new_partition, OperationDetail & operatio
 bool nilfs2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool success = true ;
-
+	int exit_status = 0;
 	Glib::ustring mount_point ;
 	if ( ! partition_new .busy )
 	{
@@ -198,10 +198,12 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		if ( mount_point .empty() )
 			return false ;
 
-		success &= ! operationdetail.execute_command("mount -v -t nilfs2 " +
+		exit_status = operationdetail.execute_command("mount -v -t nilfs2 " +
 		                        Glib::shell_quote(partition_new.get_path()) +
 		                        " " + Glib::shell_quote(mount_point),
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 	}
 
 	if ( success )
@@ -209,13 +211,19 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		Glib::ustring size;
 		if ( ! fill_partition )
 			size = " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
-		success &= ! operationdetail.execute_command("nilfs-resize -v -y " +
+		exit_status = operationdetail.execute_command("nilfs-resize -v -y " +
 		                        Glib::shell_quote(partition_new.get_path()) + size,
 		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			success = false;
 
 		if ( ! partition_new. busy )
-			success &= ! operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
+		{
+			exit_status = operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
 			                        EXEC_CHECK_STATUS);
+			if (exit_status != 0)
+				success = false;
+		}
 	}
 
 	if ( ! partition_new .busy )

@@ -826,7 +826,8 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 
 					//Try device_name + p + partition_number
 					dmraid_path = device .get_path() + "p" + Utils::num_to_str( lp_partition ->num ) ;
-					partition_is_busy |= is_busy(device.get_path(), fstype, dmraid_path);
+					partition_is_busy =    partition_is_busy
+					                    || is_busy(device.get_path(), fstype, dmraid_path);
 				}
 				else
 #endif
@@ -1560,20 +1561,33 @@ bool GParted_Core::is_busy(const Glib::ustring& device_path, FSType fstype, cons
 	{
 		DMRaid dmraid;
 
-		//Still search GParted internal mounted partitions map in case an
-		//  unknown file system is mounted
-		busy = Mount_Info::is_dev_mounted(partition_path);
-
 		// Custom checks for recognised but other not-supported file system types.
-		busy |= (fstype == FS_LINUX_SWRAID && SWRaid_Info::is_member_active(partition_path));
-		busy |= (fstype == FS_ATARAID      && (SWRaid_Info::is_member_active(partition_path) ||
-		                                       dmraid.is_member_active(partition_path)         ));
-		busy |= (fstype == FS_BCACHE       && BCache_Info::is_active(device_path, partition_path));
-		busy |= (fstype == FS_JBD          && Utils::is_dev_busy(partition_path));
+		switch (fstype)
+		{
+			case FS_LINUX_SWRAID:
+				busy = SWRaid_Info::is_member_active(partition_path);
+				break;
+			case FS_ATARAID:
+				busy = SWRaid_Info::is_member_active(partition_path) ||
+				       dmraid.is_member_active(partition_path);
+				break;
+			case FS_BCACHE:
+				busy = BCache_Info::is_active(device_path, partition_path);
+				break;
+			case FS_JBD:
+				busy = Utils::is_dev_busy(partition_path);
+				break;
+			default:
+				// Still search GParted internal mounted partitions map in
+				// case an unknown file system is mounted.
+				busy = Mount_Info::is_dev_mounted(partition_path);
+				break;
+		}
 	}
 
 	return busy ;
 }
+
 
 void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 {
@@ -3878,7 +3892,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 
 			od.get_last_child().set_success_and_capture_errors( zero_success );
 		}
-		overall_success &= zero_success ;
+		overall_success = overall_success && zero_success;
 	}
 	if ( buf )
 		free( buf ) ;
@@ -3922,7 +3936,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 			settle_device(SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS);
 		}
 		od.get_last_child().set_success_and_capture_errors( flush_success );
-		overall_success &= flush_success ;
+		overall_success = overall_success && flush_success;
 	}
 	destroy_device_and_disk( lp_device, lp_disk ) ;
 
