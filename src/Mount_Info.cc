@@ -178,7 +178,7 @@ void Mount_Info::add_mountpoint_entry(MountMapping& map,
                                       const Glib::ustring& mountpoint)
 {
 	// Only add node path if mount point exists
-	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
+	if (Glib::file_test(mountpoint, Glib::FILE_TEST_EXISTS))
 	{
 		// Map::operator[] default constructs MountEntry for new keys (nodes).
 		MountEntry & mountentry = map[BlockSpecial( node )];

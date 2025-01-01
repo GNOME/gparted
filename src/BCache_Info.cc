@@ -31,7 +31,7 @@ namespace GParted
 // otherwise.  Equivalent to does the directory /sys/block/DEV[/PTN]/bcache exist?
 bool BCache_Info::is_active(const Glib::ustring& device_path, const Glib::ustring& partition_path)
 {
-	return file_test(get_sysfs_bcache_path(device_path, partition_path), Glib::FILE_TEST_IS_DIR);
+	return Glib::file_test(get_sysfs_bcache_path(device_path, partition_path), Glib::FILE_TEST_IS_DIR);
 }
 
 

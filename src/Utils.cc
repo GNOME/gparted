@@ -967,7 +967,7 @@ bool Utils::is_dev_busy(const Glib::ustring& path)
 const Glib::ustring& Utils::first_directory(const std::vector<Glib::ustring>& paths)
 {
 	for (unsigned int i = 0; i < paths.size(); i++)
-		if (file_test(paths[i], Glib::FILE_TEST_IS_DIR))
+		if (Glib::file_test(paths[i], Glib::FILE_TEST_IS_DIR))
 			return paths[i];
 
 	static const Glib::ustring not_found;

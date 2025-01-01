@@ -3491,7 +3491,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 				PedPartition *lp_partition = get_lp_partition( lp_disk, partition );
 				if ( lp_partition )  // FIXME: add check to see if lp_partition->type matches partition.type..
 				{
-					if ( ! file_test( curr_path, Glib::FILE_TEST_EXISTS ) )
+					if (! Glib::file_test(curr_path, Glib::FILE_TEST_EXISTS))
 					{
 						// Re-set the real partition path from libparted.
 						//
