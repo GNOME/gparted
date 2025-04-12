@@ -38,9 +38,12 @@ namespace GParted
 static ProgressBar single_progressbar;
 
 
-static bool running = false;
-static int pipecount = 0;
-static int exit_status = 0;
+// Single set of coordination data between execute_command_internal() and callback helpers
+static struct CommandStatus {
+	bool running;
+	int  pipecount;
+	int  exit_status;
+} cmd_status = {false, 0, 0};
 
 
 OperationDetail::OperationDetail() : cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 ),
@@ -298,18 +301,18 @@ static void setup_child_process()
 
 static void execute_command_eof()
 {
-	if (--pipecount)
+	if (--cmd_status.pipecount)
 		return;  // Wait for second pipe to encounter EOF.
-	if (! running)  // Already got exit status.
+	if (! cmd_status.running)  // Already got exit status.
 		Gtk::Main::quit();
 }
 
 
 static void store_exit_status(GPid pid, int status)
 {
-	exit_status = Utils::decode_wait_status(status);
-	running = false;
-	if (pipecount == 0)  // Both pipes finished first.
+	cmd_status.exit_status = Utils::decode_wait_status(status);
+	cmd_status.running = false;
+	if (cmd_status.pipecount == 0)  // Both pipes finished first.
 		Gtk::Main::quit();
 	Glib::spawn_close_pid(pid);
 }
@@ -342,7 +345,9 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	Glib::ustring output;
 	Glib::ustring error;
 	// spawn external process
-	running = true;
+	cmd_status.running = true;
+	cmd_status.pipecount = 2;
+	cmd_status.exit_status = 255;  // Set to actual value by store_exit_status()
 	try {
 		Glib::spawn_async_with_pipes(std::string("."),
 		                             Glib::shell_parse_argv(command),
@@ -362,7 +367,6 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	fcntl(out, F_SETFL, O_NONBLOCK);
 	fcntl(err, F_SETFL, O_NONBLOCK);
 	Glib::signal_child_watch().connect(sigc::ptr_fun(store_exit_status), pid);
-	pipecount = 2;
 	PipeCapture outputcapture(out, output);
 	PipeCapture errorcapture(err, error);
 	outputcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
@@ -412,13 +416,13 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	Gtk::Main::run();
 
 	if (flags & EXEC_CHECK_STATUS)
-		cmd_operationdetail.set_success_and_capture_errors(exit_status == 0);
+		cmd_operationdetail.set_success_and_capture_errors(cmd_status.exit_status == 0);
 	close(out);
 	close(err);
 	if (timed_conn.connected())
 		timed_conn.disconnect();
 	cmd_operationdetail.stop_progressbar();
-	return exit_status;
+	return cmd_status.exit_status;
 }
 
 
