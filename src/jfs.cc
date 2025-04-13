@@ -287,7 +287,15 @@ bool jfs::check_repair( const Partition & partition, OperationDetail & operation
 {
 	int exit_status = operationdetail.execute_command("jfs_fsck -f " + Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
-	bool success = ( exit_status == 0 || exit_status == 1 );
+	// From jfs_fsck(8) manual page:
+	//     EXIT CODE
+	//         The exit code returned by jfs_fsck represents one of the following
+	//         conditions:
+	//             0   No errors
+	//             1   File system errors corrected and/or transaction log replayed
+	//                 successfully
+	//             2   File system errors corrected, system should be rebooted
+	bool success = (exit_status == 0 || exit_status == 1);
 	operationdetail.get_last_child().set_success_and_capture_errors(success);
 	return success;
 }

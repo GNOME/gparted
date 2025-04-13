@@ -208,7 +208,13 @@ bool reiserfs::check_repair( const Partition & partition, OperationDetail & oper
 	int exit_status = operationdetail.execute_command("reiserfsck --yes --fix-fixable --quiet " +
 	                        Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
-	bool success = ( exit_status == 0 || exit_status == 1 );
+	// From reiserfsck(8) manual page:
+	//     EXIT CODES
+	//         reiserfsck uses the following exit codes:
+	//             0  - No errors.
+	//             1  - File system errors corrected.
+	//             2  - Reboot is needed.
+	bool success = (exit_status == 0 || exit_status == 1);
 	operationdetail.get_last_child().set_success_and_capture_errors(success);
 	return success;
 }

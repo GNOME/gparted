@@ -267,7 +267,13 @@ bool fat16::check_repair( const Partition & partition, OperationDetail & operati
 	int exit_status = operationdetail.execute_command("fsck.fat -a -w -v " +
 	                        Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
-	bool success = ( exit_status == 0 || exit_status == 1 );
+	// From fsck.fat(8) manual page:
+	//     EXIT STATUS
+	//         0   No recoverable errors have been detected.
+	//         1   Recoverable errors have been detected or fsck.fat has discovered an
+	//             internal inconsistency.
+	//         2   Usage error.
+	bool success = (exit_status == 0 || exit_status == 1);
 	operationdetail.get_last_child().set_success_and_capture_errors(success);
 	return success;
 }
