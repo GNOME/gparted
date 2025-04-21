@@ -244,6 +244,7 @@ bool ntfs::check_repair( const Partition & partition, OperationDetail & operatio
 
 void ntfs::resize_progress( OperationDetail *operationdetail )
 {
+	const Glib::ustring& output = operationdetail->get_command_output();
 	Glib::ustring line = Utils::last_line( output );
 	// Text progress on the LAST LINE looks like " 15.24 percent completed"
 	// NOTE:
@@ -267,8 +268,10 @@ void ntfs::resize_progress( OperationDetail *operationdetail )
 	}
 }
 
+
 void ntfs::clone_progress( OperationDetail *operationdetail )
 {
+	const Glib::ustring& output = operationdetail->get_command_output();
 	Glib::ustring line = Utils::last_line( output );
 	// Text progress on the LAST LINE looks like " 15.24 progress completed"
 	float percent;

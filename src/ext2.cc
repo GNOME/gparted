@@ -356,6 +356,7 @@ bool ext2::copy( const Partition & src_part,
 
 void ext2::resize_progress( OperationDetail *operationdetail )
 {
+	const Glib::ustring& output = operationdetail->get_command_output();
 	Glib::ustring line = Utils::last_line( output );
 	size_t llen = line.length();
 	// There may be multiple text progress bars on subsequent last lines which look
@@ -386,8 +387,10 @@ void ext2::resize_progress( OperationDetail *operationdetail )
 	}
 }
 
+
 void ext2::create_progress( OperationDetail *operationdetail )
 {
+	const Glib::ustring& output = operationdetail->get_command_output();
 	Glib::ustring line = Utils::last_line( output );
 	// Text progress on the LAST LINE looks like "Writing inode tables:  105/1600"
 	long long progress, target;
@@ -402,8 +405,10 @@ void ext2::create_progress( OperationDetail *operationdetail )
 	}
 }
 
+
 void ext2::check_repair_progress( OperationDetail *operationdetail )
 {
+	const Glib::ustring& output = operationdetail->get_command_output();
 	Glib::ustring line = Utils::last_line( output );
 	// Text progress on the LAST LINE looks like
 	// "/dev/sdd3: |=====================================================   \ 95.1%   "
@@ -426,8 +431,10 @@ void ext2::check_repair_progress( OperationDetail *operationdetail )
 	}
 }
 
+
 void ext2::copy_progress( OperationDetail *operationdetail )
 {
+	const Glib::ustring& error = operationdetail->get_command_error();
 	Glib::ustring line = Utils::last_line( error );
 	// Text progress on the LAST LINE of STDERR looks like "Copying 146483 / 258033 blocks ..."
 	long long progress, target;

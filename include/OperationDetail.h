@@ -107,6 +107,8 @@ public:
 	int execute_command(const Glib::ustring& command, const char* input, ExecFlags flags = EXEC_NONE);
 	int execute_command(const Glib::ustring& command, ExecFlags flags, StreamSlot stream_progress_slot);
 	int execute_command(const Glib::ustring& command, ExecFlags flags, TimedSlot timed_progress_slot);
+	static const Glib::ustring& get_command_output();
+	static const Glib::ustring& get_command_error();
 
 	sigc::signal< void, const OperationDetail & > signal_update ;
 	sigc::signal< void, bool > signal_cancel;

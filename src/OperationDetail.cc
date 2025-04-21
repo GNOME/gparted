@@ -38,12 +38,17 @@ namespace GParted
 static ProgressBar single_progressbar;
 
 
-// Single set of coordination data between execute_command_internal() and callback helpers
+// Single set of coordination data between execute_command_internal() and helpers
 static struct CommandStatus {
-	bool running;
-	int  pipecount;
-	int  exit_status;
-} cmd_status = {false, 0, 0};
+	bool          running;
+	int           pipecount;
+	Glib::ustring output;
+	Glib::ustring error;
+	int           exit_status;
+
+	// Default constructor to initialise POD (Plain Old Data) members
+	CommandStatus() : running(false), pipecount(0), exit_status(0)  {};
+} cmd_status;
 
 
 OperationDetail::OperationDetail() : cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 ),
@@ -256,6 +261,18 @@ int OperationDetail::execute_command(const Glib::ustring& command, ExecFlags fla
 }
 
 
+const Glib::ustring& OperationDetail::get_command_output()
+{
+	return cmd_status.output;
+}
+
+
+const Glib::ustring& OperationDetail::get_command_error()
+{
+	return cmd_status.error;
+}
+
+
 // Private methods
 
 void OperationDetail::add_child_implement( const OperationDetail & operationdetail )
@@ -342,8 +359,6 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	// set up pipes for capture
 	int out;
 	int err;
-	Glib::ustring output;
-	Glib::ustring error;
 	// spawn external process
 	cmd_status.running = true;
 	cmd_status.pipecount = 2;
@@ -367,19 +382,19 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	fcntl(out, F_SETFL, O_NONBLOCK);
 	fcntl(err, F_SETFL, O_NONBLOCK);
 	Glib::signal_child_watch().connect(sigc::ptr_fun(store_exit_status), pid);
-	PipeCapture outputcapture(out, output);
-	PipeCapture errorcapture(err, error);
+	PipeCapture outputcapture(out, cmd_status.output);
+	PipeCapture errorcapture(err, cmd_status.error);
 	outputcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
 	errorcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
-	cmd_operationdetail.add_child(OperationDetail(output, STATUS_NONE, FONT_ITALIC));
-	cmd_operationdetail.add_child(OperationDetail(error, STATUS_NONE, FONT_ITALIC));
+	cmd_operationdetail.add_child(OperationDetail(cmd_status.output, STATUS_NONE, FONT_ITALIC));
+	cmd_operationdetail.add_child(OperationDetail(cmd_status.error, STATUS_NONE, FONT_ITALIC));
 	std::vector<OperationDetail*>& children = cmd_operationdetail.get_childs();
 	outputcapture.signal_update.connect(sigc::bind(sigc::ptr_fun(update_command_output),
 	                                               children[children.size() - 2],
-	                                               &output));
+	                                               &cmd_status.output));
 	errorcapture.signal_update.connect(sigc::bind(sigc::ptr_fun(update_command_output),
 	                                              children[children.size() - 1],
-	                                              &error));
+	                                              &cmd_status.error));
 	sigc::connection timed_conn;
 	if (flags & EXEC_PROGRESS_STDOUT && ! stream_progress_slot.empty())
 		// Register progress tracking callback called when stdout updates
