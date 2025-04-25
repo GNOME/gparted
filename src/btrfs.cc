@@ -336,8 +336,8 @@ void btrfs::read_label(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("btrfs filesystem label " + Glib::shell_quote(partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("btrfs filesystem label " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())

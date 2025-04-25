@@ -69,8 +69,8 @@ void reiser4::set_used_sectors(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("debugfs.reiser4 " + Glib::shell_quote(partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("debugfs.reiser4 " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())
@@ -137,8 +137,8 @@ void reiser4::read_uuid( Partition & partition )
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("debugfs.reiser4 " + Glib::shell_quote( partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("debugfs.reiser4 " + Glib::shell_quote( partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())

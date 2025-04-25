@@ -90,8 +90,8 @@ void jfs::set_used_sectors( Partition & partition )
 	// unmounted.
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("jfs_debugfs " + Glib::shell_quote(partition.get_path()),
-	                                     "superblock\nx\ndmap\nx\nquit\n", output, error, true);
+	int exit_status = Utils::execute_command("jfs_debugfs " + Glib::shell_quote(partition.get_path()),
+	                        "superblock\nx\ndmap\nx\nquit\n", output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())
@@ -277,7 +277,7 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 
 bool jfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = operationdetail.execute_command("jfs_fsck -f " + Glib::shell_quote(partition.get_path()),
+	int exit_status = operationdetail.execute_command("jfs_fsck -f " + Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );

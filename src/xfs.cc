@@ -103,9 +103,9 @@ void xfs::set_used_sectors(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("xfs_db -r -c 'sb 0' -c 'print blocksize' -c 'print dblocks'"
-	                                     " -c 'print fdblocks' " + Glib::shell_quote(partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("xfs_db -r -c 'sb 0' -c 'print blocksize' -c 'print dblocks'"
+	                        " -c 'print fdblocks' " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())

@@ -58,8 +58,8 @@ void f2fs::set_used_sectors(Partition & partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("dump.f2fs -d 1 " + Glib::shell_quote(partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("dump.f2fs -d 1 " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())

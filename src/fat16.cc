@@ -117,8 +117,8 @@ void fat16::set_used_sectors( Partition & partition )
 	// https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system#File_Allocation_Table
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("mdir -i " + Glib::shell_quote(partition.get_path()) + " ::/",
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("mdir -i " + Glib::shell_quote(partition.get_path()) + " ::/",
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())
@@ -195,8 +195,8 @@ void fat16::read_label(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("mlabel -s -i " + Glib::shell_quote(partition.get_path()) + " ::",
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("mlabel -s -i " + Glib::shell_quote(partition.get_path()) + " ::",
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())
@@ -227,8 +227,8 @@ void fat16::read_uuid(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("mdir -f -i " + Glib::shell_quote(partition.get_path()) + " ::/",
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("mdir -f -i " + Glib::shell_quote(partition.get_path()) + " ::/",
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())
@@ -264,7 +264,8 @@ bool fat16::create( const Partition & new_partition, OperationDetail & operation
 
 bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = operationdetail.execute_command("fsck.fat -a -w -v " + Glib::shell_quote(partition.get_path()),
+	int exit_status = operationdetail.execute_command("fsck.fat -a -w -v " +
+	                        Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );

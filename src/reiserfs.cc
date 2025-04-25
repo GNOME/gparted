@@ -84,8 +84,8 @@ void reiserfs::set_used_sectors(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("debugreiserfs " + Glib::shell_quote(partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("debugreiserfs " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())
@@ -191,7 +191,7 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 		size = " -s " + Utils::num_to_str(partition_new.get_byte_length());
 	const Glib::ustring resize_cmd = "echo y | resize_reiserfs" + size +
 	                                 " " + Glib::shell_quote( partition_new.get_path() );
-	exit_status = operationdetail.execute_command("sh -c " + Glib::shell_quote(resize_cmd));
+	int exit_status = operationdetail.execute_command("sh -c " + Glib::shell_quote(resize_cmd));
 	// NOTE: Neither resize_reiserfs manual page nor the following commit, which first
 	// added this check, indicate why exit status 1 also indicates success.  Commit
 	// from 2006-05-23:
@@ -205,7 +205,7 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 
 bool reiserfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = operationdetail.execute_command("reiserfsck --yes --fix-fixable --quiet " +
+	int exit_status = operationdetail.execute_command("reiserfsck --yes --fix-fixable --quiet " +
 	                        Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );

@@ -182,8 +182,8 @@ void exfat::read_label(Partition& partition)
 
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("tune.exfat -l " + Glib::shell_quote(partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("tune.exfat -l " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())
@@ -214,8 +214,8 @@ void exfat::read_uuid(Partition& partition)
 
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("tune.exfat -i " + Glib::shell_quote(partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("tune.exfat -i " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())

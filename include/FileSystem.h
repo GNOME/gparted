@@ -129,8 +129,6 @@ protected:
 	                      // classes either assign fixed values in get_filesystem_support()
 	                      // or implement get_filesystem_limits() for dynamic values.
 
-	//this is used in several places..
-	int exit_status ;
 };
 
 

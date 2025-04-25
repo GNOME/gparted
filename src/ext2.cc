@@ -157,8 +157,8 @@ void ext2::set_used_sectors(Partition& partition)
 	// free space using resize2fs itself falling back to using dumpe2fs.
 	Glib::ustring output;
 	Glib::ustring error;
-	exit_status = Utils::execute_command("dumpe2fs -h " + Glib::shell_quote(partition.get_path()),
-	                                     output, error, true);
+	int exit_status = Utils::execute_command("dumpe2fs -h " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
 	if (exit_status != 0)
 	{
 		if (! output.empty())
@@ -322,7 +322,8 @@ bool ext2::resize(const Partition& partition_new, OperationDetail& operationdeta
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = operationdetail.execute_command("e2fsck -f -y -v -C 0 " + Glib::shell_quote(partition.get_path()),
+	int exit_status = operationdetail.execute_command("e2fsck -f -y -v -C 0 " +
+	                        Glib::shell_quote(partition.get_path()),
 	                        EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
 	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::check_repair_progress)));
 	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
