@@ -172,6 +172,7 @@ bool xfs::write_label( const Partition & partition, OperationDetail & operationd
 		// In some error situations xfs_io reports exit status zero and writes a
 		// failure message to stdout.  Therefore determine success based on the
 		// output starting with the fixed text, reporting the new label.
+		const Glib::ustring& output = operationdetail.get_command_output();
 		bool success = output.compare(0, 9, "label = \"") == 0;
 		set_status(operationdetail, success);
 		return success;
