@@ -37,6 +37,8 @@ FS ext2::get_filesystem_support()
 
 	m_mkfs_cmd = "mkfs." + Utils::get_filesystem_string(m_specific_fstype);
 	bool have_64bit_feature = false;
+	Glib::ustring output;
+	Glib::ustring error;
 	if (! Glib::find_program_in_path(m_mkfs_cmd).empty())
 	{
 		fs .create = FS::EXTERNAL ;
@@ -153,6 +155,8 @@ void ext2::set_used_sectors(Partition& partition)
 	// avoid overhead subtraction.  When mounted read the free space from
 	// the kernel via the statvfs() system call.  When unmounted read the
 	// free space using resize2fs itself falling back to using dumpe2fs.
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("dumpe2fs -h " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -229,6 +233,8 @@ void ext2::set_used_sectors(Partition& partition)
 
 void ext2::read_label( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "e2label " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                   )
 	{
@@ -256,6 +262,8 @@ bool ext2::write_label( const Partition & partition, OperationDetail & operation
 
 void ext2::read_uuid( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "tune2fs -l " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                      )
 	{

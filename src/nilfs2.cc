@@ -77,6 +77,8 @@ FS nilfs2::get_filesystem_support()
 
 void nilfs2::set_used_sectors(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("nilfs-tune -l " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -117,6 +119,8 @@ void nilfs2::set_used_sectors(Partition& partition)
 
 void nilfs2::read_label( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "nilfs-tune -l " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                         )
 	{
@@ -148,6 +152,8 @@ bool nilfs2::write_label( const Partition & partition, OperationDetail & operati
 
 void nilfs2::read_uuid( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "nilfs-tune -l " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                         )
 	{

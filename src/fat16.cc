@@ -115,6 +115,8 @@ void fat16::set_used_sectors( Partition & partition )
 {
 	// Use mdir's scanning of the FAT to get the free space.
 	// https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system#File_Allocation_Table
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("mdir -i " + Glib::shell_quote(partition.get_path()) + " ::/",
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -191,6 +193,8 @@ void fat16::set_used_sectors( Partition & partition )
 
 void fat16::read_label(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("mlabel -s -i " + Glib::shell_quote(partition.get_path()) + " ::",
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -221,6 +225,8 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 
 void fat16::read_uuid(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("mdir -f -i " + Glib::shell_quote(partition.get_path()) + " ::/",
 	                                     output, error, true);
 	if (exit_status != 0)

@@ -129,10 +129,10 @@ protected:
 	                      // classes either assign fixed values in get_filesystem_support()
 	                      // or implement get_filesystem_limits() for dynamic values.
 
-	//those are used in several places..
-	Glib::ustring output, error ;
+	//this is used in several places..
 	int exit_status ;
 };
+
 
 } //GParted
 

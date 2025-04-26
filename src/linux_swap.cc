@@ -123,6 +123,8 @@ void linux_swap::set_used_sectors( Partition & partition )
 
 void linux_swap::read_label( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "swaplabel " + Glib::shell_quote( partition.get_path() ), output, error, true ) )
 	{
 		partition.set_filesystem_label( Utils::regexp_label( output, "^LABEL:[[:blank:]]*(.*)$" ) );
@@ -148,6 +150,8 @@ bool linux_swap::write_label( const Partition & partition, OperationDetail & ope
 
 void linux_swap::read_uuid( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "swaplabel " + Glib::shell_quote( partition.get_path() ), output, error, true ) )
 	{
 		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;

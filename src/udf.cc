@@ -47,6 +47,8 @@ FS udf::get_filesystem_support()
 		fs.create_with_label = FS::EXTERNAL;
 
 		// Detect old mkudffs prior to version 1.1 by lack of --label option.
+		Glib::ustring output;
+		Glib::ustring error;
 		Utils::execute_command( "mkudffs --help", output, error, true );
 		m_old_mkudffs = Utils::regexp_label(output + error, "--label").empty();
 	}
@@ -79,6 +81,8 @@ FS_Limits udf::get_filesystem_limits( const Partition & partition ) const
 
 void udf::set_used_sectors( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command( "udfinfo --utf8 " + Glib::shell_quote( partition.get_path() ),
 	                                      output, error, true );
 	if ( exit_status != 0 )
@@ -130,6 +134,8 @@ void udf::set_used_sectors( Partition & partition )
 
 void udf::read_label( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "udflabel --utf8 " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                           )
 	{
@@ -156,6 +162,8 @@ bool udf::write_label( const Partition & partition, OperationDetail & operationd
 
 void udf::read_uuid( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "udfinfo --utf8 " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                          )
 	{

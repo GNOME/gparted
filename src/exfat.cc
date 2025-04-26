@@ -40,6 +40,8 @@ FS exfat::get_filesystem_support()
 	if (! Glib::find_program_in_path("dump.exfat").empty())
 		fs.read = FS::EXTERNAL;
 
+	Glib::ustring output;
+	Glib::ustring error;
 	if (! Glib::find_program_in_path("mkfs.exfat").empty())
 	{
 		Utils::execute_command("mkfs.exfat -V", output, error, true);
@@ -75,6 +77,8 @@ FS exfat::get_filesystem_support()
 
 void exfat::set_used_sectors(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	Utils::execute_command("dump.exfat " + Glib::shell_quote(partition.get_path()), output, error, true);
 	// dump.exfat returns non-zero status for both success and failure.  Instead use
 	// non-empty stderr to identify failure.
@@ -176,6 +180,8 @@ void exfat::read_label(Partition& partition)
 		// Running tune.exfat on a mounted file system fails so don't try.
 		return;
 
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("tune.exfat -l " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -206,6 +212,8 @@ void exfat::read_uuid(Partition& partition)
 		// Running tune.exfat on a mounted file system fails so don't try.
 		return;
 
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("tune.exfat -i " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)

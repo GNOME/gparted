@@ -52,6 +52,8 @@ FS xfs::get_filesystem_support()
 	{
 		// Check for online label support in xfs_io from xfsprogs >= 4.17 and
 		// for kernel >= 4.18 before enabling support.
+		Glib::ustring output;
+		Glib::ustring error;
 		Utils::execute_command("xfs_io -c help", output, error, true);
 		if (output.find("\nlabel") < output.length() && Utils::kernel_version_at_least(4, 18, 0))
 			fs.online_write_label = FS::EXTERNAL;
@@ -99,6 +101,8 @@ FS xfs::get_filesystem_support()
 
 void xfs::set_used_sectors(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("xfs_db -r -c 'sb 0' -c 'print blocksize' -c 'print dblocks'"
 	                                     " -c 'print fdblocks' " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
@@ -139,6 +143,8 @@ void xfs::set_used_sectors(Partition& partition)
 
 void xfs::read_label( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "xfs_db -r -c 'label' " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                                )
 	{
@@ -192,6 +198,8 @@ bool xfs::write_label( const Partition & partition, OperationDetail & operationd
 
 void xfs::read_uuid( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "xfs_admin -u " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                        )
 	{
@@ -291,6 +299,7 @@ bool xfs::copy( const Partition & src_part,
 	// Get source FS used bytes, needed in progress update calculation
 	Byte_Value fs_size;
 	Byte_Value fs_free;
+	Glib::ustring error;
 	if ( Utils::get_mounted_filesystem_usage( src_mount_point, fs_size, fs_free, error ) == 0 )
 		m_src_used = fs_size - fs_free;
 	else
@@ -349,6 +358,7 @@ bool xfs::copy_progress( OperationDetail * operationdetail )
 	Byte_Value fs_size;
 	Byte_Value fs_free;
 	Byte_Value dst_used;
+	Glib::ustring error;
 	if (Utils::get_mounted_filesystem_usage(m_dest_mount_point, fs_size, fs_free, error) != 0)
 	{
 		operationdetail->stop_progressbar();

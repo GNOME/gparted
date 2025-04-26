@@ -88,6 +88,8 @@ void jfs::set_used_sectors( Partition & partition )
 	// of the file system.  Read free space from the kernel via statvfs() when mounted
 	// for the up to date figure, and from the on disk Aggregate Disk Map (dmap) when
 	// unmounted.
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("jfs_debugfs " + Glib::shell_quote(partition.get_path()),
 	                                     "superblock\nx\ndmap\nx\nquit\n", output, error, true);
 	if (exit_status != 0)
@@ -174,6 +176,8 @@ void jfs::set_used_sectors( Partition & partition )
 
 void jfs::read_label( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "jfs_tune -l " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                       )
 	{
@@ -200,6 +204,8 @@ bool jfs::write_label( const Partition & partition, OperationDetail & operationd
 
 void jfs::read_uuid( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "jfs_tune -l " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                       )
 	{

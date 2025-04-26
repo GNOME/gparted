@@ -60,6 +60,8 @@ FS bcachefs::get_filesystem_support()
 void bcachefs::set_used_sectors(Partition& partition)
 {
 	// 'bcachefs fs usage' only reports usage for mounted file systems.
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("bcachefs fs usage " + Glib::shell_quote(partition.get_mountpoint()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -133,6 +135,8 @@ bool bcachefs::create(const Partition& new_partition, OperationDetail& operation
 
 void bcachefs::read_label(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("bcachefs show-super " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -150,6 +154,8 @@ void bcachefs::read_label(Partition& partition)
 
 void bcachefs::read_uuid(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("bcachefs show-super " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)

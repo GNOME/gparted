@@ -82,6 +82,8 @@ FS reiserfs::get_filesystem_support()
 
 void reiserfs::set_used_sectors(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("debugreiserfs " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -120,6 +122,8 @@ void reiserfs::set_used_sectors(Partition& partition)
 
 void reiserfs::read_label( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "debugreiserfs " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                         )
 	{
@@ -147,6 +151,8 @@ bool reiserfs::write_label( const Partition & partition, OperationDetail & opera
 
 void reiserfs::read_uuid( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "debugreiserfs " + Glib::shell_quote( partition .get_path() ), output, error, true ) )
 	{
 		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;

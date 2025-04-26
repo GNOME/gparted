@@ -100,6 +100,8 @@ FS btrfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "btrfstune" ).empty() )
 	{
+		Glib::ustring output;
+		Glib::ustring error;
 		Utils::execute_command( "btrfstune --help", output, error, true );
 		if ( Utils::regexp_label( output + error, "^[[:blank:]]*(-u)[[:blank:]]" ) == "-u" )
 			fs.write_uuid = FS::EXTERNAL;
@@ -201,6 +203,8 @@ void btrfs::set_used_sectors(Partition& partition)
 	// This calculation also ignores that btrfs allocates chunks at the volume manager
 	// level.  So when fully compacted there will be partially filled chunks for
 	// metadata and data for each storage profile (RAID level) not accounted for.
+	Glib::ustring output;
+	Glib::ustring error;
 	Utils::execute_command("btrfs inspect-internal dump-super " + Glib::shell_quote(partition.get_path()),
 		               output, error, true);
 	// btrfs inspect-internal dump-super returns zero exit status for both success and
@@ -330,6 +334,8 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 
 void btrfs::read_label(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("btrfs filesystem label " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -347,6 +353,8 @@ void btrfs::read_label(Partition& partition)
 
 void btrfs::read_uuid(Partition& partition)
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	Utils::execute_command("btrfs inspect-internal dump-super " + Glib::shell_quote(partition.get_path()),
 		               output, error, true);
 	// btrfs inspect-internal dump-super returns zero exit status for both success and
@@ -425,7 +433,8 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 	if ( bd_iter != btrfs_device_cache .end() )
 		return bd_iter ->second ;
 
-	Glib::ustring output, error ;
+	Glib::ustring output;
+	Glib::ustring error;
 	std::vector<int> devid_list ;
 	std::vector<Glib::ustring> path_list ;
 	Utils::execute_command("btrfs filesystem show " + Glib::shell_quote(path), output, error, true);

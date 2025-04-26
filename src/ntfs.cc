@@ -103,8 +103,11 @@ FS ntfs::get_filesystem_support()
 	return fs ;
 }
 
+
 void ntfs::set_used_sectors( Partition & partition ) 
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	exit_status = Utils::execute_command("ntfsinfo --mft --force " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
@@ -140,8 +143,11 @@ void ntfs::set_used_sectors( Partition & partition )
 	}
 }
 
+
 void ntfs::read_label( Partition & partition )
 {
+	Glib::ustring output;
+	Glib::ustring error;
 	if ( ! Utils::execute_command( "ntfslabel --force " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, false )                                            )
 	{
