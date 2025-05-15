@@ -138,8 +138,8 @@ dnl Check for glibmm minimum required version.
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.32.0])
 
 
-dnl Require C++11 compilation.
-AX_CXX_COMPILE_STDCXX_11()
+dnl Require C++14 compilation.
+AX_CXX_COMPILE_STDCXX_14()
 
 
 dnl Check for gtkmm >= 3.22 to determine availability of Gtk::ScrolledWindow::set_propagate_natural_width().
