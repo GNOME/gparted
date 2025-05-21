@@ -36,6 +36,11 @@
 namespace GParted
 {
 
+
+namespace  // unnamed
+{
+
+
 // The single progress bar for the current operation
 static ProgressBar single_progressbar;
 
@@ -51,6 +56,47 @@ static struct CommandStatus {
 	// Default constructor to initialise POD (Plain Old Data) members
 	CommandStatus() : running(false), pipecount(0), exit_status(0)  {};
 } cmd_status;
+
+
+static void setup_child_process()
+{
+	setpgrp();
+}
+
+
+static void execute_command_eof()
+{
+	if (--cmd_status.pipecount)
+		return;  // Wait for second pipe to encounter EOF.
+	if (! cmd_status.running)  // Already got exit status.
+		Gtk::Main::quit();
+}
+
+
+static void store_exit_status(GPid pid, int status)
+{
+	cmd_status.exit_status = Utils::decode_wait_status(status);
+	cmd_status.running = false;
+	if (cmd_status.pipecount == 0)  // Both pipes finished first.
+		Gtk::Main::quit();
+	Glib::spawn_close_pid(pid);
+}
+
+
+static void update_command_output(OperationDetail* operationdetail, Glib::ustring* str)
+{
+	operationdetail->set_description(*str, FONT_ITALIC);
+}
+
+
+static void cancel_command(bool force, Glib::Pid pid, bool cancel_safe)
+{
+	if (force || cancel_safe)
+		kill(-pid, SIGINT);
+}
+
+
+}  // unnamed namespace
 
 
 OperationDetail::OperationDetail() : cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 ),
@@ -315,44 +361,6 @@ const ProgressBar& OperationDetail::get_progressbar() const
 }
 
 
-static void setup_child_process()
-{
-	setpgrp();
-}
-
-
-static void execute_command_eof()
-{
-	if (--cmd_status.pipecount)
-		return;  // Wait for second pipe to encounter EOF.
-	if (! cmd_status.running)  // Already got exit status.
-		Gtk::Main::quit();
-}
-
-
-static void store_exit_status(GPid pid, int status)
-{
-	cmd_status.exit_status = Utils::decode_wait_status(status);
-	cmd_status.running = false;
-	if (cmd_status.pipecount == 0)  // Both pipes finished first.
-		Gtk::Main::quit();
-	Glib::spawn_close_pid(pid);
-}
-
-
-static void update_command_output(OperationDetail* operationdetail, Glib::ustring* str)
-{
-	operationdetail->set_description(*str, FONT_ITALIC);
-}
-
-
-static void cancel_command(bool force, Glib::Pid pid, bool cancel_safe)
-{
-	if (force || cancel_safe)
-		kill(-pid, SIGINT);
-}
-
-
 int OperationDetail::execute_command_internal(const Glib::ustring& command, const char *input, ExecFlags flags,
                                               StreamSlot stream_progress_slot,
                                               TimedSlot timed_progress_slot)
@@ -446,4 +454,4 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 }
 
 
-} //GParted
+}  // namespace GParted
