@@ -48,6 +48,77 @@
 namespace GParted
 {
 
+
+namespace  // unnamed
+{
+
+
+class CommandStatus
+{
+public:
+	bool        running;
+	int         pipecount;
+	int         exit_status;
+	bool        foreground;
+	Glib::Mutex mutex;
+	Glib::Cond  cond;
+
+	void store_exit_status(GPid pid, int status);
+	void execute_command_eof();
+};
+
+
+void CommandStatus::store_exit_status(GPid pid, int status)
+{
+	exit_status = Utils::decode_wait_status(status);
+	running = false;
+	if (pipecount == 0)  // pipes finished first
+	{
+		if (foreground)
+			Gtk::Main::quit();
+		else {
+			mutex.lock();
+			cond.signal();
+			mutex.unlock();
+		}
+	}
+	Glib::spawn_close_pid(pid);
+}
+
+
+void CommandStatus::execute_command_eof()
+{
+	if (--pipecount)
+		return;  // wait for second pipe to eof
+	if (! running)  // already got exit status
+	{
+		if (foreground)
+			Gtk::Main::quit();
+		else {
+			mutex.lock();
+			cond.signal();
+			mutex.unlock();
+		}
+	}
+}
+
+
+static void set_locale()
+{
+	setenv("LC_ALL", "C", 1);
+}
+
+
+static void _store_exit_status(GPid pid, gint status, gpointer data)
+{
+	CommandStatus *sp = (CommandStatus *)data;
+	sp->store_exit_status(pid, status);
+}
+
+
+}  // unnamed namespace
+
+
 const Glib::ustring DEV_MAPPER_PATH = "/dev/mapper/";
 
 Sector Utils::round( double double_value )
@@ -626,64 +697,6 @@ int Utils::execute_command( const Glib::ustring & command )
 	Glib::ustring dummy ;
 	return execute_command(command, nullptr, dummy, dummy);
 }
-
-class CommandStatus
-{
-public:
-	bool running;
-	int pipecount;
-	int exit_status;
-	bool foreground;
-	Glib::Mutex mutex;
-	Glib::Cond cond;
-	void store_exit_status( GPid pid, int status );
-	void execute_command_eof();
-};
-
-void CommandStatus::store_exit_status( GPid pid, int status )
-{
-	exit_status = Utils::decode_wait_status( status );
-	running = false;
-	if (pipecount == 0) // pipes finished first
-	{
-		if (foreground)
-			Gtk::Main::quit();
-		else {
-			mutex.lock();
-			cond.signal();
-			mutex.unlock();
-		}
-	}
-	Glib::spawn_close_pid( pid );
-}
-
-void CommandStatus::execute_command_eof()
-{
-	if (--pipecount)
-		return; // wait for second pipe to eof
-	if ( !running ) // already got exit status
-	{
-		if (foreground)
-			Gtk::Main::quit();
-		else {
-			mutex.lock();
-			cond.signal();
-			mutex.unlock();
-		}
-	}
-}
-
-static void set_locale()
-{
-	setenv( "LC_ALL", "C", 1 );
-}
-
-static void _store_exit_status( GPid pid, gint status, gpointer data )
-{
-	CommandStatus *sp = (CommandStatus *)data;
-	sp->store_exit_status( pid, status );
-}
-
 int Utils::execute_command( const Glib::ustring & command,
 			    Glib::ustring & output,
 			    Glib::ustring & error,
@@ -1021,4 +1034,5 @@ bool Utils::get_kernel_version( int & major_ver, int & minor_ver, int & patch_ve
 	return success ;
 }
 
-} //GParted..
+
+}  // namespace GParted
