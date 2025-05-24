@@ -103,7 +103,7 @@ void CommandStatus::execute_command_eof()
 }
 
 
-static void set_locale()
+static void set_C_locale()
 {
 	setenv("LC_ALL", "C", 1);
 }
@@ -725,7 +725,7 @@ int Utils::execute_command( const Glib::ustring & command,
 			std::string( "." ),
 			Glib::shell_parse_argv( command ),
 			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
-			use_C_locale ? sigc::ptr_fun( set_locale ) : sigc::slot< void >(),
+			use_C_locale ? sigc::ptr_fun(set_C_locale) : sigc::slot<void>(),
 			&pid,
 			(input != nullptr) ? &in : 0,
 			&out,
