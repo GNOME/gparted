@@ -23,8 +23,14 @@
 #include <iostream>
 #include <vector>
 
+
 namespace GParted
 {
+
+
+namespace  // unnamed
+{
+
 
 struct PWEntry
 {
@@ -201,6 +207,10 @@ const char * PWStore::get_protected_mem()
 // The single password RAM store
 static PWStore single_pwstore;
 
+
+}  // unnamed namespace
+
+
 // PasswordRAMStore public methods
 
 bool PasswordRAMStore::store( const Glib::ustring & key, const char * password )
@@ -226,6 +236,7 @@ const char * PasswordRAMStore::lookup( const Glib::ustring & key )
 	return single_pwstore.lookup( key );
 }
 
+
 // PasswordRAMStore private methods
 
 void PasswordRAMStore::erase_all()
@@ -238,4 +249,5 @@ const char * PasswordRAMStore::get_protected_mem()
 	return single_pwstore.get_protected_mem();
 }
 
-} //GParted
+
+}  // namespace GParted

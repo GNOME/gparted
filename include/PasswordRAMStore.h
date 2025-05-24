@@ -31,8 +31,10 @@
 
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 {
+
 
 class PasswordRAMStore
 {
@@ -49,6 +51,8 @@ private:
 	static const char * get_protected_mem();
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_PASSWORDRAMSTORE_H */
