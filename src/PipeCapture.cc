@@ -31,11 +31,82 @@ namespace GParted
 {
 
 
-const size_t READBUF_SIZE = 64*KIBIBYTE;
+namespace  // unnamed
+{
 
 
-const gunichar UTF8_PARTIAL = (gunichar)-2;
-const gunichar UTF8_INVALID = (gunichar)-1;
+static const size_t READBUF_SIZE = 64*KIBIBYTE;
+
+
+static const gunichar UTF8_PARTIAL = (gunichar)-2;
+static const gunichar UTF8_INVALID = (gunichar)-1;
+
+
+static int utf8_char_length(unsigned char firstbyte)
+{
+	// Recognise the size of FSS-UTF (1992) / UTF-8 (1993) characters given the first
+	// byte.  Characters can be up to 6 bytes.  (Later UTF-8 (2003) limited characters
+	// to 4 bytes and 21-bits of Unicode code-space).
+	// Reference:
+	//     https://en.wikipedia.org/wiki/UTF-8
+	if ((firstbyte & 0x80) == 0x00)       // 0xxxxxxx - 1 byte UTF-8 char
+		return 1;
+	else if ((firstbyte & 0xE0) == 0xC0)  // 110xxxxx - First byte of a 2 byte UTF-8 char
+		return 2;
+	else if ((firstbyte & 0xF0) == 0xE0)  // 1110xxxx - First byte of a 3 byte UTF-8 char
+		return 3;
+	else if ((firstbyte & 0xF8) == 0xF0)  // 11110xxx - First byte of a 4 byte UTF-8 char
+		return 4;
+	else if ((firstbyte & 0xFC) == 0xF8)  // 111110xx - First byte of a 5 byte UTF-8 char
+		return 5;
+	else if ((firstbyte & 0xFE) == 0xFC)  // 1111110x - First byte of a 6 byte UTF-8 char
+		return 6;
+	else if ((firstbyte & 0xC0) == 0x80)  // 10xxxxxx - Continuation byte
+		return -1;
+	else                                  // Invalid byte
+		return -1;
+}
+
+
+// GLib's g_utf8_get_char_validated() always considers strings as being NUL terminated,
+// even when max_len is specified, hence can't read NUL characters.  This wrapper can read
+// NUL characters when max_len is specified.
+// Reference:
+//     https://developer.gnome.org/glib/stable/glib-Unicode-Manipulation.html#g-utf8-get-char-validated
+static gunichar get_utf8_char_validated(const char* p, gssize max_len)
+{
+	gunichar uc = g_utf8_get_char_validated(p, max_len);
+	if (uc == UTF8_PARTIAL && max_len > 0)
+	{
+		// Report NUL character as such.
+		if (*p == '\0')
+			return '\0';
+
+		// If g_utf8_get_char_validated() found a NUL byte in the middle of a
+		// multi-byte character, even when there are more bytes available as
+		// specified by max_len, it reports a partial UTF-8 character.  Report
+		// this case as an invalid character instead.
+		int len = utf8_char_length(*p);
+		if (len == -1 || (gssize)len <= max_len)
+			uc = UTF8_INVALID;
+	}
+	return uc;
+}
+
+
+static void append_unichar_vector_to_utf8(std::string& str, const std::vector<gunichar>& ucvec)
+{
+	const size_t MAX_UTF8_BYTES = 6;
+	char buf[MAX_UTF8_BYTES];
+	for (unsigned int i = 0; i < ucvec.size(); i++)
+	{
+		int bytes_written = g_unichar_to_utf8(ucvec[i], buf);
+		str.append(buf, bytes_written);
+	}
+}
+
+
+}  // unnamed namespace
 
 
 PipeCapture::PipeCapture(int fd, Glib::ustring& buffer)
@@ -237,69 +308,6 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	// signal completion
 	signal_eof.emit();
 	return false;
-}
-
-void PipeCapture::append_unichar_vector_to_utf8( std::string & str, const std::vector<gunichar> & ucvec )
-{
-	const size_t MAX_UTF8_BYTES = 6;
-	char buf[MAX_UTF8_BYTES];
-	for ( unsigned int i = 0 ; i < ucvec.size() ; i ++ )
-	{
-		int bytes_written = g_unichar_to_utf8( ucvec[i], buf );
-		str.append( buf, bytes_written );
-	}
-}
-
-
-// GLib's g_utf8_get_char_validated() always considers strings as being NUL terminated,
-// even when max_len is specified, hence can't read NUL characters.  This wrapper can read
-// NUL characters when max_len is specified.
-// Reference:
-//     https://developer.gnome.org/glib/stable/glib-Unicode-Manipulation.html#g-utf8-get-char-validated
-gunichar PipeCapture::get_utf8_char_validated(const char *p, gssize max_len)
-{
-	gunichar uc = g_utf8_get_char_validated(p, max_len);
-	if (uc == UTF8_PARTIAL && max_len > 0)
-	{
-		// Report NUL character as such.
-		if (*p == '\0')
-			return '\0';
-
-		// If g_utf8_get_char_validated() found a NUL byte in the middle of a
-		// multi-byte character, even when there are more bytes available as
-		// specified by max_len, it reports a partial UTF-8 character.  Report
-		// this case as an invalid character instead.
-		int len = utf8_char_length(*p);
-		if (len == -1 || (gssize)len <= max_len)
-			uc = UTF8_INVALID;
-	}
-	return uc;
-}
-
-
-int PipeCapture::utf8_char_length( unsigned char firstbyte )
-{
-	// Recognise the size of FSS-UTF (1992) / UTF-8 (1993) characters given the first
-	// byte.  Characters can be up to 6 bytes.  (Later UTF-8 (2003) limited characters
-	// to 4 bytes and 21-bits of Unicode code-space).
-	// Reference:
-	//     https://en.wikipedia.org/wiki/UTF-8
-	if ( ( firstbyte & 0x80 ) == 0x00 )       // 0xxxxxxx - 1 byte UTF-8 char
-		return 1;
-	else if ( ( firstbyte & 0xE0 ) == 0xC0 )  // 110xxxxx - First byte of a 2 byte UTF-8 char
-		return 2;
-	else if ( ( firstbyte & 0xF0 ) == 0xE0 )  // 1110xxxx - First byte of a 3 byte UTF-8 char
-		return 3;
-	else if ( ( firstbyte & 0xF8 ) == 0xF0 )  // 11110xxx - First byte of a 4 byte UTF-8 char
-		return 4;
-	else if ( ( firstbyte & 0xFC ) == 0xF8 )  // 111110xx - First byte of a 5 byte UTF-8 char
-		return 5;
-	else if ( ( firstbyte & 0xFE ) == 0xFC )  // 1111110x - First byte of a 6 byte UTF-8 char
-		return 6;
-	else if ( ( firstbyte & 0xC0 ) == 0x80 )  // 10xxxxxx - Continuation byte
-		return -1;
-	else                                      // Invalid byte
-		return -1;
 }
 
 

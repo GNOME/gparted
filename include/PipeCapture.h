@@ -46,10 +46,6 @@ private:
 	static gboolean _OnReadable( GIOChannel *source,
 	                             GIOCondition condition,
 	                             gpointer data );
-	static void append_unichar_vector_to_utf8( std::string & str,
-	                                           const std::vector<gunichar> & ucvec );
-	static gunichar get_utf8_char_validated(const char *p, gssize max_len);
-	static int utf8_char_length( unsigned char firstbyte );
 
 	Glib::RefPtr<Glib::IOChannel> channel;  // Wrapper around fd
 	std::vector<char> readbuf;      // Bytes read from IOChannel (fd)
