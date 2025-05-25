@@ -55,35 +55,13 @@ std::vector<Glib::ustring> DMRaid::dmraid_devices ;
 std::vector<DMRaid_Member> DMRaid::dmraid_member_cache;
 
 
-DMRaid::DMRaid()
+void DMRaid::load_cache()
 {
-	//Ensure that cache has been loaded at least once
-	if ( ! dmraid_cache_initialized )
-	{
-		dmraid_cache_initialized = true ;
-		set_commands_found() ;
-		load_dmraid_cache() ;
-	}
+	set_commands_found();
+	load_dmraid_cache();
+	dmraid_cache_initialized = true;
 }
 
-DMRaid::DMRaid( const bool & do_refresh )
-{
-	//Ensure that cache has been loaded at least once
-	if ( ! dmraid_cache_initialized )
-	{
-		dmraid_cache_initialized = true ;
-		set_commands_found() ;
-		if ( do_refresh == false )
-			load_dmraid_cache() ;
-	}
-
-	if ( do_refresh )
-		load_dmraid_cache() ;
-}
-
-DMRaid::~DMRaid()
-{
-}
 
 void DMRaid::load_dmraid_cache()
 {
