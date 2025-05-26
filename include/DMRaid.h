@@ -52,7 +52,7 @@ public:
 	static void load_cache();
 	static bool is_dmraid_supported();
 	static bool is_dmraid_device(const Glib::ustring& dev_path);
-	static void get_devices(std::vector<Glib::ustring>& dmraid_devices);
+	static std::vector<Glib::ustring> get_devices();
 	static Glib::ustring get_dmraid_name(const Glib::ustring& dev_path);
 	static Glib::ustring make_path_dmraid_compatible(Glib::ustring partition_path);
 	static bool create_dev_map_entries(const Partition& partition, OperationDetail& operationdetail);

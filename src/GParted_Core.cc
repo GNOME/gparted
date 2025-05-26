@@ -181,8 +181,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			//Try to find all dmraid devices
 			if (DMRaid::is_dmraid_supported())
 			{
-				std::vector<Glib::ustring> dmraid_devices ;
-				DMRaid::get_devices(dmraid_devices);
+				std::vector<Glib::ustring> dmraid_devices = DMRaid::get_devices();
 				for ( unsigned int k=0; k < dmraid_devices .size(); k++ ) {
 					set_thread_status_message( Glib::ustring::compose( _("Scanning %1"), dmraid_devices[k] ) ) ;
 #ifndef USE_LIBPARTED_DMRAID
