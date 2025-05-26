@@ -159,14 +159,17 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 }
 
 
-void DMRaid::get_devices( std::vector<Glib::ustring> & device_list )
+std::vector<Glib::ustring> DMRaid::get_devices()
 {
 	//Retrieve list of dmraid devices
-	device_list .clear() ;
+	std::vector<Glib::ustring> device_list;
 
 	for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 		device_list.push_back( DEV_MAPPER_PATH + dmraid_devices[k] );
+
+	return device_list;
 }
+
 
 Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 {
