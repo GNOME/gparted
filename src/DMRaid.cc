@@ -381,7 +381,7 @@ std::vector<Glib::ustring> DMRaid::get_affected_dev_map_entries(const Partition&
 }
 
 
-void DMRaid::get_partition_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & partition_entries )
+std::vector<Glib::ustring> DMRaid::get_partition_dev_map_entries(const Partition& partition)
 {
 	//Build list of all /dev/mapper entries for a partition.
 
@@ -390,6 +390,7 @@ void DMRaid::get_partition_dev_map_entries( const Partition & partition, std::ve
 
 	//Retrieve all partition numbers equal to the number of the partition.
 	Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
+	std::vector<Glib::ustring> partition_entries;
 	for ( unsigned int k=0; k < dir_list .size(); k++ )
 	{
 		if ( Utils::regexp_label( dir_list[k], "^(" + dmraid_name + ")" ) == dmraid_name )
@@ -399,7 +400,10 @@ void DMRaid::get_partition_dev_map_entries( const Partition & partition, std::ve
 				partition_entries .push_back( dir_list[k] ) ;
 		}
 	}
+
+	return partition_entries;
 }
+
 
 bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, OperationDetail & operationdetail )
 {
@@ -437,9 +441,7 @@ bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail 
 	                        Glib::ustring::compose(_("delete %1 entry"), DEV_MAPPER_PATH)));
 	OperationDetail& child_od = operationdetail.get_last_child();
 
-	std::vector<Glib::ustring> partition_entries ;
-	get_partition_dev_map_entries( partition, partition_entries ) ;
-	
+	std::vector<Glib::ustring> partition_entries = get_partition_dev_map_entries(partition);
 	for ( unsigned int k = 0; k < partition_entries .size(); k++ )
 	{
 		Glib::ustring command = "dmsetup remove " + Glib::shell_quote( partition_entries[k] );
