@@ -67,7 +67,7 @@ public:
 private:
 	static void load_dmraid_cache();
 	static void set_commands_found();
-	static void get_dmraid_dir_entries(const Glib::ustring& dev_path, std::vector<Glib::ustring>& dir_list);
+	static std::vector<Glib::ustring> get_dmraid_dir_entries(const Glib::ustring& dev_path);
 	static int get_partition_number(const Glib::ustring& partition_name);
 	static Glib::ustring get_udev_dm_name(const Glib::ustring& dev_path);
 	static bool delete_dev_map_entry(const Partition& partition, OperationDetail& operationdetail);
