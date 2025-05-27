@@ -212,13 +212,15 @@ Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 	return dmraid_name ;
 }
 
-void DMRaid::get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector<Glib::ustring> & dir_list )
+
+std::vector<Glib::ustring> DMRaid::get_dmraid_dir_entries(const Glib::ustring& dev_path)
 {
 	//Build list of all device entries matching device path
 
 	Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
 
 	//Loop through the entries in the directory
+	std::vector<Glib::ustring> dir_list;
 	Glib::ustring filename;
 	Glib::Dir dir( DEV_MAPPER_PATH );
 	while ( ( filename = dir .read_name() ) != "" )
@@ -229,7 +231,10 @@ void DMRaid::get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector
 		if ( Utils::regexp_label( filename, "^(" + dmraid_name + ")" ) == dmraid_name )
 			dir_list .push_back( filename ) ;
 	}
+
+	return dir_list;
 }
+
 
 int DMRaid::get_partition_number( const Glib::ustring & partition_name )
 {
@@ -351,8 +356,7 @@ void DMRaid::get_affected_dev_map_entries( const Partition & partition, std::vec
 	//Build list of affected /dev/mapper entries when a partition is to be deleted.
 
 	//Retrieve list of matching directory entries
-	std::vector<Glib::ustring> dir_list ;
-	get_dmraid_dir_entries( partition .device_path, dir_list );
+	std::vector<Glib::ustring> dir_list = get_dmraid_dir_entries(partition.device_path);
 
 	//All partition numbers equal to the number of the partition to be deleted
 	//  will be affected.
@@ -378,8 +382,7 @@ void DMRaid::get_partition_dev_map_entries( const Partition & partition, std::ve
 	//Build list of all /dev/mapper entries for a partition.
 
 	//Retrieve list of matching directory entries
-	std::vector<Glib::ustring> dir_list ;
-	get_dmraid_dir_entries( partition .device_path, dir_list );
+	std::vector<Glib::ustring> dir_list = get_dmraid_dir_entries(partition.device_path);
 
 	//Retrieve all partition numbers equal to the number of the partition.
 	Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
@@ -450,12 +453,10 @@ bool DMRaid::purge_dev_map_entries( const Glib::ustring & dev_path )
 {
 	//Delete all dev mapper entries for dmraid device
 
-	std::vector<Glib::ustring> dir_list ;
+	std::vector<Glib::ustring> dir_list = get_dmraid_dir_entries(dev_path);
 	Glib::ustring command ;
 	Glib::ustring output, error ;
 	bool success = true;
-
-	get_dmraid_dir_entries( dev_path, dir_list ) ;
 
 	for ( unsigned int k=0; k < dir_list .size(); k++ )
 	{
