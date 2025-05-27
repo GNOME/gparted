@@ -71,8 +71,7 @@ private:
 	static int get_partition_number(const Glib::ustring& partition_name);
 	static Glib::ustring get_udev_dm_name(const Glib::ustring& dev_path);
 	static bool delete_dev_map_entry(const Partition& partition, OperationDetail& operationdetail);
-	static void get_affected_dev_map_entries(const Partition& partition,
-	                                         std::vector<Glib::ustring>& affected_entries);
+	static std::vector<Glib::ustring> get_affected_dev_map_entries(const Partition& partition);
 	static void get_partition_dev_map_entries(const Partition& partition,
 	                                          std::vector<Glib::ustring>& partition_entries);
 	static std::vector<Glib::ustring> lookup_dmraid_members(const Glib::ustring& array);

@@ -351,7 +351,7 @@ bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 }
 
 
-void DMRaid::get_affected_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & affected_entries )
+std::vector<Glib::ustring> DMRaid::get_affected_dev_map_entries(const Partition& partition)
 {
 	//Build list of affected /dev/mapper entries when a partition is to be deleted.
 
@@ -364,6 +364,7 @@ void DMRaid::get_affected_dev_map_entries( const Partition & partition, std::vec
 	//  partition numbers greater than the number of the partition to be deleted
 	//  will be affected.
 	Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
+	std::vector<Glib::ustring> affected_entries;
 	for ( unsigned int k=0; k < dir_list .size(); k++ )
 	{
 		if ( Utils::regexp_label( dir_list[k], "^(" + dmraid_name + ")" ) == dmraid_name )
@@ -375,7 +376,10 @@ void DMRaid::get_affected_dev_map_entries( const Partition & partition, std::vec
 				affected_entries .push_back( dir_list[k] ) ;
 		}
 	}
+
+	return affected_entries;
 }
+
 
 void DMRaid::get_partition_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & partition_entries )
 {
@@ -401,7 +405,6 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 {
 	// Delete all affected dev mapper entries (logical partitions >= specified partition)
 
-	std::vector<Glib::ustring> affected_entries ;
 	Glib::ustring command ;
 	bool success = true;
 
@@ -410,7 +413,7 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 	                        Glib::ustring::compose(_("delete affected %1 entries"), DEV_MAPPER_PATH)));
 	OperationDetail& child_od = operationdetail.get_last_child();
 
-	get_affected_dev_map_entries( partition, affected_entries ) ;
+	std::vector<Glib::ustring> affected_entries = get_affected_dev_map_entries(partition);
 
 	for ( unsigned int k=0; k < affected_entries .size(); k++ )
 	{
