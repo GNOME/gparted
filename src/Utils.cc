@@ -177,6 +177,8 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::mk_pixbuf(Gtk::Widget& widget,
                                            Gtk::IconSize icon_size)
 {
 	Glib::RefPtr<Gdk::Pixbuf> theme_icon = widget.render_icon_pixbuf(stock_id, icon_size);
+	if (! theme_icon)
+		return theme_icon;
 
 	// Ensure icon size
 	int width = 0;
