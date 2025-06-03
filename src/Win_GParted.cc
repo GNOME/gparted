@@ -28,9 +28,11 @@
 #include "Dialog_FileSystem_Label.h"
 #include "Dialog_Partition_Name.h"
 #include "DialogManageFlags.h"
+#include "FileSystem.h"
 #include "GParted_Core.h"
 #include "MenuHelpers.h"
 #include "Mount_Info.h"
+#include "Operation.h"
 #include "OperationCopy.h"
 #include "OperationCheck.h"
 #include "OperationCreate.h"
@@ -1008,7 +1010,7 @@ void Win_GParted::Refresh_Visual()
 	//     Call chain: (example clicking on a partition in the disk graphic)
 	//
 	//         DrawingAreaVisualDisk::on_button_press_event()
-	//             DawingAreaVisualDisk::set_selected( visual_partitions, x, y )
+	//             DrawingAreaVisualDisk::set_selected( visual_partitions, x, y )
 	//                 signal_partition_selected.emit( ..., false )
 	//                     Win_GParted::on_partition_selected( partition_ptr, src_is_treeview )
 	//                         treeview_detail.set_selected( treestore_detail->children(), partition_ptr )
