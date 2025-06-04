@@ -44,9 +44,13 @@ DialogFeatures::DialogFeatures()
 	//initialize icons
 	icon_yes = Utils::mk_pixbuf(*this, Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
 	icon_no = Utils::mk_pixbuf(*this, Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-	icon_blank = Gdk::Pixbuf::create( Gdk::COLORSPACE_RGB, true, 8,
-	                                  icon_yes ->get_width(), icon_yes ->get_height() );
-	icon_blank ->fill( 0xFFFFFF00 );
+	int width = 0;
+	int height = 0;
+	if (Gtk::IconSize::lookup(Gtk::ICON_SIZE_LARGE_TOOLBAR, width, height) && width > 0 && height > 0)
+	{
+		icon_blank = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, width, height);
+		icon_blank->fill(0xFFFFFF00);
+	}
 
 	//treeview
 	Gtk::TreeView::Column *col;
