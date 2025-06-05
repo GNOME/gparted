@@ -1,9 +1,8 @@
 # Nonstandard package files for distribution
 EXTRA_DIST =  \
-	LICENSE                                        \
-	README.md                                      \
-	include/gtest/internal/custom/README.md        \
-	include/gtest/internal/gtest-type-util.h.pump
+	LICENSE                                  \
+	README.md                                \
+	include/gtest/internal/custom/README.md
 
 # Google Test source files that we don't compile directly.  (Instead
 # they are #included by gtest-all.cc).
@@ -12,6 +11,7 @@ EXTRA_DIST =  \
 #     find src include '(' -name '*.h' -o -name '*.cc' ')' -print | \
 #     egrep -v 'gtest-all.cc|gtest_main.cc' | sort
 GTEST_SRC =  \
+	include/gtest/gtest-assertion-result.h              \
 	include/gtest/gtest-death-test.h                    \
 	include/gtest/gtest.h                               \
 	include/gtest/gtest-matchers.h                      \
@@ -34,6 +34,7 @@ GTEST_SRC =  \
 	include/gtest/internal/gtest-port.h                 \
 	include/gtest/internal/gtest-string.h               \
 	include/gtest/internal/gtest-type-util.h            \
+	src/gtest-assertion-result.cc                       \
 	src/gtest.cc                                        \
 	src/gtest-death-test.cc                             \
 	src/gtest-filepath.cc                               \
