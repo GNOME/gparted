@@ -46,11 +46,11 @@ public:
 private:
 	void load_one_filesystem(const FS& fs);
 
-	Gtk::Frame legend_frame;
-	Gtk::TreeView treeview_filesystems;
-	Gtk::TreeRow treerow;
-	Gtk::ScrolledWindow filesystems_scrolled ;
-	Glib::RefPtr<Gtk::ListStore> liststore_filesystems;
+	Gtk::Frame                   m_legend_frame;
+	Gtk::TreeView                m_treeview_filesystems;
+	Gtk::TreeRow                 m_treerow;
+	Gtk::ScrolledWindow          m_filesystems_scrolled;
+	Glib::RefPtr<Gtk::ListStore> m_liststore_filesystems;
 
 	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord
 	{
@@ -86,9 +86,11 @@ private:
 		}
 	};
 
-	treeview_filesystems_Columns treeview_filesystems_columns;
+	treeview_filesystems_Columns m_treeview_filesystems_columns;
 
-	Glib::RefPtr<Gdk::Pixbuf> icon_yes, icon_no, icon_blank;
+	Glib::RefPtr<Gdk::Pixbuf> m_icon_yes;
+	Glib::RefPtr<Gdk::Pixbuf> m_icon_no;
+	Glib::RefPtr<Gdk::Pixbuf> m_icon_blank;
 };
 
 
