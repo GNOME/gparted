@@ -80,11 +80,11 @@ FS fat16::get_filesystem_support()
 		fs.check = FS::EXTERNAL;
 	}
 
-	if ( ! Glib::find_program_in_path( "mlabel" ) .empty() ) {
-		fs .read_label = FS::EXTERNAL ;
-		fs .write_label = FS::EXTERNAL ;
-		fs .write_uuid = FS::EXTERNAL ;
-	}
+	bool fatlabel_found = ! Glib::find_program_in_path("fatlabel").empty();
+	bool mlabel_found   = ! Glib::find_program_in_path("mlabel").empty();
+	if (fatlabel_found)                  { fs.read_label  = FS::EXTERNAL; }
+	if (fatlabel_found && mlabel_found)  { fs.write_label = FS::EXTERNAL; }
+	if (mlabel_found)                    { fs.write_uuid  = FS::EXTERNAL; }
 
 	//resizing of start and endpoint are provided by libparted
 	fs.grow = FS::LIBPARTED;
@@ -195,7 +195,7 @@ void fat16::read_label(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	int exit_status = Utils::execute_command("mlabel -s -i " + Glib::shell_quote(partition.get_path()) + " ::",
+	int exit_status = Utils::execute_command("fatlabel " + Glib::shell_quote(partition.get_path()),
 	                        output, error, true);
 	if (exit_status != 0)
 	{
@@ -206,7 +206,7 @@ void fat16::read_label(Partition& partition)
 		return;
 	}
 
-	partition.set_filesystem_label(Utils::trim(Utils::regexp_label(output, "Volume label is ([^(]*)")));
+	partition.set_filesystem_label(Utils::trim(output));
 }
 
 
@@ -214,10 +214,12 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 {
 	Glib::ustring cmd;
 	if ( partition.get_filesystem_label().empty() )
+		// Use mlabel to clear the label because fatlabel --reset option didn't
+		// exist before dosfstools 4.2 and that isn't available everywhere yet.
 		cmd = "mlabel -c -i " + Glib::shell_quote(partition.get_path()) + " ::";
 	else
-		cmd = "mlabel -i " + Glib::shell_quote(partition.get_path()) +
-		      " ::" + Glib::shell_quote(sanitize_label(partition.get_filesystem_label()));
+		cmd = "fatlabel " + Glib::shell_quote(partition.get_path()) + " " +
+		      Glib::shell_quote(sanitize_label(partition.get_filesystem_label()));
 
 	return ! operationdetail.execute_command(cmd, EXEC_CHECK_STATUS);
 }
