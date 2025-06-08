@@ -73,8 +73,8 @@ FS reiserfs::get_filesystem_support()
 	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
 		fs. online_grow = fs. grow ;
 
-	//Actual minimum is at least 18 blocks larger than 32 MiB for the journal offset
-	fs_limits.min_size = 34 * MEBIBYTE;
+	// Actual minimum is at least 18 blocks larger than 32 MiB for the journal offset
+	m_fs_limits.min_size = 34 * MEBIBYTE;
 
 	return fs ;
 }

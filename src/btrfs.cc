@@ -119,7 +119,7 @@ FS btrfs::get_filesystem_support()
 		fs .online_shrink = fs .shrink ;
 	}
 
-	fs_limits.min_size = 256 * MEBIBYTE;
+	m_fs_limits.min_size = 256 * MEBIBYTE;
 
 	return fs ;
 }

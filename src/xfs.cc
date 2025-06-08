@@ -94,7 +94,7 @@ FS xfs::get_filesystem_support()
 		fs .online_grow = fs .grow ;
 
 	// From xfsprogs 5.19.0 the smallest creatable file system is 300 MiB.
-	fs_limits.min_size = 300 * MEBIBYTE;
+	m_fs_limits.min_size = 300 * MEBIBYTE;
 
 	return fs ;
 }
