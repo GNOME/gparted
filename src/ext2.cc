@@ -143,7 +143,7 @@ FS ext2::get_filesystem_support()
 	if (m_specific_fstype == FS_EXT2                           ||
 	    m_specific_fstype == FS_EXT3                           ||
 	    (m_specific_fstype == FS_EXT4 && ! have_64bit_feature)   )
-		fs_limits.max_size = Utils::floor_size( 16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE );
+		m_fs_limits.max_size = Utils::floor_size(16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE);
 
 	return fs ;
 }

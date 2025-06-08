@@ -51,7 +51,7 @@ FS bcachefs::get_filesystem_support()
 		fs.check             = FS::EXTERNAL;
 	}
 
-	fs_limits.min_size = 32 * MEBIBYTE;
+	m_fs_limits.min_size = 32 * MEBIBYTE;
 
 	return fs;
 }
