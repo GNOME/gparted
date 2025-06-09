@@ -330,9 +330,6 @@ const Glib::ustring fat16::sanitize_label( const Glib::ustring &label ) const
 		     uppercase_label[i] >= ' '                                             )
 			new_label.push_back( uppercase_label[i] );
 
-	// Pad with spaces to prevent mlabel writing corrupted labels.  See bug #700228.
-	new_label.resize( Utils::get_filesystem_label_maxlength(m_specific_fstype), ' ');
-
 	return new_label ;
 }
 
