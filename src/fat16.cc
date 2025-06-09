@@ -86,6 +86,26 @@ FS fat16::get_filesystem_support()
 	if (fatlabel_found && mlabel_found)  { fs.write_label = FS::EXTERNAL; }
 	if (mlabel_found)                    { fs.write_uuid  = FS::EXTERNAL; }
 
+	if (fatlabel_found)
+	{
+		Glib::ustring output;
+		Glib::ustring error;
+		Utils::execute_command("fatlabel --version", output, error, true);
+		int fatlabel_major_ver = 0;
+		int fatlabel_minor_ver = 0;
+		if (sscanf(output.c_str(), "fatlabel %d.%d", &fatlabel_major_ver, &fatlabel_minor_ver) == 2)
+		{
+			// When a FAT file system doesn't have a label it will have no
+			// volume entry in the root directory and the FAT Boot Sector will
+			// contain "NO NAME".  fatlabel <= 4.1 incorrectly fell back to
+			// reporting the label from the FAT Boot Sector when there was no
+			// volume entry in the root directory.  Detect old versions of
+			// fatlabel with this fault.
+			m_ignore_label_noname =    (fatlabel_major_ver < 4)
+			                        || (fatlabel_major_ver == 4 && fatlabel_minor_ver <= 1);
+		}
+	}
+
 	//resizing of start and endpoint are provided by libparted
 	fs.grow = FS::LIBPARTED;
 	fs.shrink = FS::LIBPARTED;
@@ -206,7 +226,13 @@ void fat16::read_label(Partition& partition)
 		return;
 	}
 
-	partition.set_filesystem_label(Utils::trim(output));
+	Glib::ustring label = Utils::trim(output);
+	if (m_ignore_label_noname && label == "NO NAME")
+		// fatlabel <= 4.1 reported the label as "NO NAME".  Ignore it as it was
+		// very likely read from the the FAT Boot Sector when the FAT file system
+		// has no label.
+		label = "";
+	partition.set_filesystem_label(label);
 }
 
 
