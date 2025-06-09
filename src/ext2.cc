@@ -55,9 +55,9 @@ FS ext2::get_filesystem_support()
 			if (sscanf(error.c_str(), "mke2fs %d.%d.%d",
 			           &mke2fs_major_ver, &mke2fs_minor_ver, &mke2fs_patch_ver) >= 2)
 			{
-				// Ext4 64bit feature was added in e2fsprogs 1.42, but
-				// only enable large volumes from 1.42.9 when a large
-				// number of 64bit bugs were fixed.
+				// Ext4 64bit feature was added in e2fsprogs 1.42.  Only
+				// enable large volumes with 1.42.9 and later when a large
+				// number of 64bit related bugs were fixed.
 				// *   Release notes, E2fsprogs 1.42 (November 29, 2011)
 				//     http://e2fsprogs.sourceforge.net/e2fsprogs-release.html#1.42
 				// *   Release notes, E2fsprogs 1.42.9 (December 28, 2013)
