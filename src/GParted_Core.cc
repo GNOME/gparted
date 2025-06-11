@@ -2289,7 +2289,6 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		case FS::NONE:
 			break ;
 		case FS::GPARTED:
-			success = false;
 			if ( partition_new .test_overlap( partition_old ) )
 			{
 				success = copy_filesystem_internal(partition_old,
