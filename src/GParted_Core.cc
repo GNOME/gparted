@@ -522,9 +522,10 @@ bool GParted_Core::new_disklabel( const Glib::ustring & device_path, const Glib:
 	return return_value ;	
 }
 
+
 bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) 
 {
-	bool succes = false ;
+	bool success = false;
 	PedDevice* lp_device = nullptr;
 	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
@@ -535,14 +536,15 @@ bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring
 			PedPartitionFlag lp_flag = ped_partition_flag_get_by_name( flag .c_str() ) ;
 
 			if ( lp_flag > 0 && ped_partition_set_flag( lp_partition, lp_flag, state ) )
-				succes = commit( lp_disk ) ;
+				success = commit(lp_disk);
 		}
 	
 		destroy_device_and_disk( lp_device, lp_disk ) ;
 	}
 
-	return succes ;
+	return success;
 }
+
 
 const std::vector<FS> & GParted_Core::get_filesystems() const 
 {
@@ -1870,18 +1872,19 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		destroy_device_and_disk( lp_device, lp_disk ) ;
 	}
 
-	bool succes = new_partition .partition_number > 0 ;
+	bool success = new_partition.partition_number > 0;
 
 #ifndef USE_LIBPARTED_DMRAID
 	//create dev map entries if dmraid
-	if (succes && DMRaid::is_dmraid_device(new_partition.device_path))
-		succes = DMRaid::create_dev_map_entries(new_partition, operationdetail.get_last_child());
+	if (success && DMRaid::is_dmraid_device(new_partition.device_path))
+		success = DMRaid::create_dev_map_entries(new_partition, operationdetail.get_last_child());
 #endif
 
-	operationdetail.get_last_child().set_success_and_capture_errors( succes );
-	return succes ;
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
+	return success;
 }
-	
+
+
 bool GParted_Core::create_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
 	if (partition.fstype == FS_LUKS && partition.busy)
@@ -1896,8 +1899,8 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 							/*TO TRANSLATORS: looks like create new ext3 file system */ 
 							_("create new %1 file system"),
 							Utils::get_filesystem_string(partition.fstype))));
-	
-	bool succes = false ;
+
+	bool success = false;
 	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition.fstype).create)
 	{
@@ -1908,8 +1911,8 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 		case FS::LIBPARTED:
 			break ;
 		case FS::EXTERNAL:
-			succes = (p_filesystem = get_filesystem_object(partition.fstype)) &&
-				 p_filesystem ->create( partition, operationdetail .get_last_child() ) ;
+			success = (p_filesystem = get_filesystem_object(partition.fstype)) &&
+				  p_filesystem->create(partition, operationdetail.get_last_child());
 
 			break ;
 
@@ -1917,9 +1920,10 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 			break ;
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( succes );
-	return succes ;
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool GParted_Core::format( const Partition & partition, OperationDetail & operationdetail )
 {
@@ -1944,21 +1948,21 @@ bool GParted_Core::delete_partition( const Partition & partition, OperationDetai
 {
 	operationdetail .add_child( OperationDetail( _("delete partition") ) ) ;
 
-	bool succes = false ;
+	bool success = false;
 	PedDevice* lp_device = nullptr;
 	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		PedPartition* lp_partition = get_lp_partition( lp_disk, partition );
 
-		succes = ped_disk_delete_partition( lp_disk, lp_partition ) && commit( lp_disk ) ;
-	
+		success = ped_disk_delete_partition(lp_disk, lp_partition) && commit(lp_disk);
+
 		destroy_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 #ifndef USE_LIBPARTED_DMRAID
 	//delete partition dev mapper entry, and delete and recreate all other affected dev mapper entries if dmraid
-	if (succes && DMRaid::is_dmraid_device(partition.device_path))
+	if (success && DMRaid::is_dmraid_device(partition.device_path))
 	{
 		PedDevice* lp_device = nullptr;
 		PedDisk* lp_disk = nullptr;
@@ -1966,19 +1970,20 @@ bool GParted_Core::delete_partition( const Partition & partition, OperationDetai
 		if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 		{
 			if (! DMRaid::delete_affected_dev_map_entries(partition, operationdetail.get_last_child()))
-				succes = false ;	//comand failed
+				success = false;  // comand failed
 
 			if (! DMRaid::create_dev_map_entries(partition, operationdetail.get_last_child()))
-				succes = false ;	//command failed
+				success = false;  // command failed
 
 			destroy_device_and_disk( lp_device, lp_disk ) ;
 		}
 	}
 #endif
 
-	operationdetail.get_last_child().set_success_and_capture_errors( succes );
-	return succes ;
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool GParted_Core::remove_filesystem( const Partition & partition, OperationDetail & operationdetail )
 {
@@ -2032,24 +2037,25 @@ bool GParted_Core::label_filesystem( const Partition & partition, OperationDetai
 			                  partition.get_filesystem_label(), partition.get_path() ) ) );
 	}
 
-	bool succes = false ;
+	bool success = false;
 	FileSystem* p_filesystem = nullptr;
 	const FS& fs_cap = get_fs(partition.fstype);
 	FS::Support support = (partition.busy) ? fs_cap.online_write_label : fs_cap.write_label;
 	switch (support)
 	{
 		case FS::EXTERNAL:
-			succes =    (p_filesystem = get_filesystem_object(partition.fstype))
-			         && p_filesystem->write_label( partition, operationdetail.get_last_child() );
+			success =    (p_filesystem = get_filesystem_object(partition.fstype))
+			          && p_filesystem->write_label(partition, operationdetail.get_last_child());
 			break;
 
 		default:
 			break;
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( succes );
-	return succes ;	
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool GParted_Core::name_partition( const Partition & partition, OperationDetail & operationdetail )
 {
@@ -2100,22 +2106,23 @@ bool GParted_Core::change_filesystem_uuid( const Partition & partition, Operatio
 									 ) ) ) ;
 	}
 
-	bool succes = false ;
+	bool success = false;
 	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition.fstype).write_uuid)
 	{
 		case FS::EXTERNAL:
-			succes =    (p_filesystem = get_filesystem_object(partition.fstype))
-			         && p_filesystem->write_uuid( partition, operationdetail.get_last_child() );
+			success =    (p_filesystem = get_filesystem_object(partition.fstype))
+			          && p_filesystem->write_uuid(partition, operationdetail.get_last_child());
 			break;
 
 		default:
 			break;
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( succes );
-	return succes ;
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool GParted_Core::resize_move( const Partition & partition_old,
                                 Partition & partition_new,
@@ -2274,7 +2281,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		return true ;
 	}
 
-	bool succes = false ;
+	bool success = false;
 	FileSystem* p_filesystem = nullptr;
 	Sector total_done = 0;
 	switch (get_fs(partition_old.fstype).move)
@@ -2282,18 +2289,18 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		case FS::NONE:
 			break ;
 		case FS::GPARTED:
-			succes = false ;
+			success = false;
 			if ( partition_new .test_overlap( partition_old ) )
 			{
-				succes = copy_filesystem_internal( partition_old,
+				success = copy_filesystem_internal(partition_old,
 				                                   partition_new,
 				                                   operationdetail.get_last_child(),
 				                                   total_done,
-				                                   true );
+				                                   true);
 
 				operationdetail.get_last_child().get_last_child()
-					.set_success_and_capture_errors( succes );
-				if ( ! succes )
+				                        .set_success_and_capture_errors(success);
+				if (! success)
 				{
 					rollback_move_filesystem( partition_old,
 					                          partition_new,
@@ -2302,29 +2309,28 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				}
 			}
 			else
-				succes = copy_filesystem_internal( partition_old,
+				success = copy_filesystem_internal(partition_old,
 				                                   partition_new,
 				                                   operationdetail.get_last_child(),
 				                                   total_done,
-				                                   true );
+				                                   true);
 
 			break ;
 		case FS::LIBPARTED:
 			break ;
 		case FS::EXTERNAL:
-			succes = (p_filesystem = get_filesystem_object(partition_new.fstype)) &&
-			         p_filesystem ->move( partition_old
-			                            , partition_new
-			                            , operationdetail .get_last_child()
-			                            ) ;
+			success = (p_filesystem = get_filesystem_object(partition_new.fstype)) &&
+			          p_filesystem->move(partition_old,
+			                             partition_new,
+			                            operationdetail.get_last_child());
 			break ;
 
 		default:
 			break ;
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( succes );
-	return succes ;
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
+	return success;
 }
 
 
@@ -3142,11 +3148,11 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	Byte_Value done = 0 ;
 	Glib::Timer timer ;
 	double smallest_time = 1000000 ;
-	bool succes = true ;
+	bool success = true;
 	OperationDetail & benchmark_od = operationdetail.get_last_child();
 
 	//Benchmark copy times using different block sizes to determine optimal size
-	while (succes                                         &&
+	while (success                                        &&
 	       llabs(done) + benchmark_copysize <= src_length &&
 	       benchmark_blocksize <= benchmark_copysize        )
 	{
@@ -3157,7 +3163,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 				                       Utils::format_size(benchmark_blocksize, 1))));
 
 		timer .reset() ;
-		succes = CopyBlocks( src_device,
+		success = CopyBlocks(src_device,
 		                     dst_device,
 		                     offset_read  + (done / src_sector_size),
 		                     offset_write + (done / dst_sector_size),
@@ -3166,12 +3172,12 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		                     benchmark_od,
 		                     total_done,
 		                     src_length,
-		                     cancel_safe ).copy();
+		                     cancel_safe).copy();
 		timer.stop() ;
 
 		benchmark_od.get_last_child().add_child( OperationDetail(
 			Glib::ustring::compose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
-		benchmark_od.get_last_child().set_success_and_capture_errors( succes );
+		benchmark_od.get_last_child().set_success_and_capture_errors(success);
 
 		if ( timer .elapsed() <= smallest_time )
 		{
@@ -3185,15 +3191,15 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		else
 			done += benchmark_copysize;
 	}
-	
-	if ( succes )
+
+	if (success)
 		operationdetail .get_last_child() .add_child( OperationDetail( Glib::ustring::compose( 
 				/*TO TRANSLATORS: looks like  optimal block size is 1.00 MiB */
 				_("optimal block size is %1"),
 				Utils::format_size( optimal_blocksize, 1 ) ),
 				STATUS_NONE ) ) ;
 
-	if ( succes && llabs( done ) < src_length )
+	if (success && llabs(done) < src_length)
 	{
 		Byte_Value remaining_length = src_length - llabs( done );
 		operationdetail.add_child( OperationDetail(
@@ -3201,7 +3207,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 				Glib::ustring::compose( _("copy %1 using a block size of %2"),
 				                  Utils::format_size( remaining_length, 1 ),
 				                  Utils::format_size( optimal_blocksize, 1 ) ) ) );
-		succes = CopyBlocks( src_device,
+		success = CopyBlocks(src_device,
 		                     dst_device,
 		                     src_start + ((done > 0 ? done : 0) / src_sector_size),
 		                     dst_start + ((done > 0 ? done : 0) / dst_sector_size),
@@ -3210,16 +3216,17 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		                     operationdetail,
 		                     total_done,
 		                     src_length,
-		                     cancel_safe ).copy();
-		operationdetail.get_last_child().set_success_and_capture_errors( succes );
+		                     cancel_safe).copy();
+		operationdetail.get_last_child().set_success_and_capture_errors(success);
 	}
 
 	operationdetail .add_child( OperationDetail( 
 		Glib::ustring::compose( /*TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied */
 		                  _("%1 (%2 B) copied"), Utils::format_size( total_done, 1 ), total_done ),
 		STATUS_NONE ) ) ;
-	return succes ;
+	return success;
 }
+
 
 void GParted_Core::rollback_move_filesystem( const Partition & partition_src,
                                              const Partition & partition_dst,
@@ -3291,8 +3298,8 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 						/* TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them */
 						_("check file system on %1 for errors and (if possible) fix them"),
 						  partition .get_path() ) ) ) ;
-	
-	bool succes = false ;
+
+	bool success = false;
 	FileSystem* p_filesystem = nullptr;
 	switch (get_fs(partition.fstype).check)
 	{
@@ -3310,18 +3317,18 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 		case FS::LIBPARTED:
 			break ;
 		case FS::EXTERNAL:
-			succes = (p_filesystem = get_filesystem_object(partition.fstype)) &&
-				 p_filesystem ->check_repair( partition, operationdetail .get_last_child() ) ;
-
+			success = (p_filesystem = get_filesystem_object(partition.fstype)) &&
+			          p_filesystem->check_repair(partition, operationdetail.get_last_child());
 			break ;
 
 		default:
 			break ;
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( succes );
-	return succes ;
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool GParted_Core::check_repair_maximize( const Partition & partition,
                                           OperationDetail & operationdetail )
@@ -3571,8 +3578,8 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 					Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ),
 		STATUS_NONE,
 		FONT_ITALIC ) ) ;
-	
-	bool succes = false ;
+
+	bool success = false;
 	PedDevice* lp_device = nullptr;
 	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
@@ -3597,9 +3604,9 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 				{
 					partition_new .sector_start = lp_partition ->geom .start ;
 					partition_new .sector_end = lp_partition ->geom .end ;
-					succes = true ;
+					success = true;
 				}
-					
+
 				ped_constraint_destroy( constraint );
 			}
 		}
@@ -3607,7 +3614,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 		destroy_device_and_disk( lp_device, lp_disk ) ;
 	}
 
-	if ( succes ) 
+	if (success) 
 	{
 		operationdetail .get_last_child() .add_child( 
 			OperationDetail(
@@ -3620,12 +3627,13 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			FONT_ITALIC ) ) ;
 
 		//Update dev mapper entry if partition is dmraid.
-		succes = succes && update_dmraid_entry( partition_new, operationdetail );
+		success = success && update_dmraid_entry(partition_new, operationdetail);
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( succes );
-	return succes ;
+	operationdetail.get_last_child().set_success_and_capture_errors(success);
+	return success;
 }
+
 
 bool GParted_Core::update_dmraid_entry( const Partition & partition, OperationDetail & operationdetail )
 {
@@ -4131,9 +4139,9 @@ bool GParted_Core::commit( PedDisk* lp_disk )
 	// trying to doing the same thing.
 	bool opened = ped_device_open( lp_disk->dev );
 
-	bool succes = ped_disk_commit_to_dev( lp_disk ) ;
-	
-	succes = commit_to_os( lp_disk, SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS ) && succes;
+	bool success = ped_disk_commit_to_dev(lp_disk);
+
+	success = commit_to_os(lp_disk, SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS) && success;
 
 	if ( opened )
 	{
@@ -4143,25 +4151,27 @@ bool GParted_Core::commit( PedDisk* lp_disk )
 		settle_device( SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS );
 	}
 
-	return succes ;
+	return success;
 }
+
 
 bool GParted_Core::commit_to_os( PedDisk* lp_disk, std::time_t timeout )
 {
-	bool succes ;
+	bool success;
 #ifndef USE_LIBPARTED_DMRAID
 	if (DMRaid::is_dmraid_device(lp_disk->dev->path))
-		succes = true ;
+		success= true;
 	else
 #endif
-		succes = ped_disk_commit_to_os( lp_disk ) ;
+		success = ped_disk_commit_to_os(lp_disk);
 
 	// Wait for udev rules to complete and partition device nodes to settle from above
 	// ped_disk_commit_to_os() initiated kernel update of the partitions.
 	settle_device( timeout ) ;
 
-	return succes ;
+	return success;
 }
+
 
 void GParted_Core::settle_device( std::time_t timeout )
 {
