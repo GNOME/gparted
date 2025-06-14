@@ -249,7 +249,7 @@ void Dialog_Progress::on_signal_show()
 	//replace 'cancel' with 'close'
 	canceltimer.disconnect();
 	delete cancelbutton;
-	cancelbutton = 0;
+	cancelbutton = nullptr;
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
 
 	pulsetimer.disconnect();
