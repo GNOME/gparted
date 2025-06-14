@@ -116,8 +116,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 		if ( partitions[t] == *new_partition )
 			break;
 
-	Sector previous, next ;
-	previous = next = 0 ;
+	Sector previous = 0;
+	Sector next = 0;
 	const Partition* prev_unalloc_partition = nullptr;
 	//also check the partitions file system ( if this is a 'resize-only' then previous should be 0 )	
 	if (t >= 1 && partitions[t-1].type == TYPE_UNALLOCATED && ! this->fixed_start)
@@ -241,8 +241,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	while (t < partitions.size() && partitions[t].type != TYPE_EXTENDED)
 		t++;
 
-	Sector previous, next ;
-	previous = next = 0 ;
+	Sector previous = 0;
+	Sector next = 0;
 	const Partition* prev_unalloc_partition = nullptr;
 	//calculate length and start of previous
 	if (t > 0 && partitions[t-1].type == TYPE_UNALLOCATED)
@@ -278,7 +278,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	frame_resizer_base ->set_x_end( Utils::round( new_partition->get_sector_length() / ( total_length / 500.00 ) ) + frame_resizer_base->get_x_start() );
 	
 	//used is a bit different here... we consider start of first logical to end last logical as used space
-	Sector first =0, last = 0, used =0 ;
+	Sector first = 0;
+	Sector last = 0;
+	Sector used = 0;
 	if ( ! ( new_partition->logicals.size()      == 1                &&
 	         new_partition->logicals.back().type == TYPE_UNALLOCATED    ) )
 	{

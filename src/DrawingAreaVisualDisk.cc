@@ -366,10 +366,10 @@ void DrawingAreaVisualDisk::on_size_allocate( Gtk::Allocation & allocation )
 
 	MIN_SIZE = BORDER * 2 + 2 ;
 
-	int available_size = allocation .get_width() - (2 * MAIN_BORDER),
-	calced = 0,
-	px_left ;
-	
+	int available_size = allocation.get_width() - (2 * MAIN_BORDER);
+	int calced = 0;
+	int px_left;
+
 	do
 	{
 		px_left = available_size - TOT_SEP ;
