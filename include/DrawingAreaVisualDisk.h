@@ -113,7 +113,7 @@ private:
 		}
 	};
 
-	std::vector<VisualPartition> visual_partitions;
+	std::vector<VisualPartition> m_visual_partitions;
 	const VisualPartition* selected_vp;
 	int TOT_SEP, MIN_SIZE ;
 

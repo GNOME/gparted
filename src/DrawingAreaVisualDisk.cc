@@ -50,7 +50,7 @@ void DrawingAreaVisualDisk::load_partitions( const PartitionVector & partitions,
 	clear() ;	
 	
 	TOT_SEP = get_total_separator_px( partitions ) ;
-	set_static_data( partitions, visual_partitions, device_length ) ;
+	set_static_data(partitions, m_visual_partitions, device_length);
 
 	queue_resize() ;
 }
@@ -58,14 +58,15 @@ void DrawingAreaVisualDisk::load_partitions( const PartitionVector & partitions,
 void DrawingAreaVisualDisk::set_selected( const Partition * partition_ptr )
 {
 	selected_vp = nullptr;
-	set_selected( visual_partitions, partition_ptr );
+	set_selected(m_visual_partitions, partition_ptr);
 
 	queue_draw() ;
 }
 
+
 void DrawingAreaVisualDisk::clear()
 {
-	visual_partitions .clear() ;
+	m_visual_partitions.clear();
 	selected_vp = nullptr;
 
 	queue_resize() ;
@@ -330,7 +331,7 @@ bool DrawingAreaVisualDisk::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	cr->set_line_cap(Cairo::LINE_CAP_BUTT);     // default
 	cr->set_dash(std::vector<double>(1, 4.0), 0.0);
 
-	draw_partitions(cr, visual_partitions);
+	draw_partitions(cr, m_visual_partitions);
 
 	//selection 
 	if ( selected_vp )
@@ -351,9 +352,9 @@ bool DrawingAreaVisualDisk::on_button_press_event( GdkEventButton * event )
 	bool ret_val = Gtk::DrawingArea::on_button_press_event( event ) ;
 
 	selected_vp = nullptr;
-	set_selected( visual_partitions, static_cast<int>( event ->x ), static_cast<int>( event ->y ) ) ;
+	set_selected(m_visual_partitions, static_cast<int>(event->x), static_cast<int>(event->y));
 	queue_draw() ;
-	
+
 	if ( selected_vp )
 	{
 		signal_partition_selected.emit( selected_vp->partition_ptr, false );
@@ -384,7 +385,7 @@ void DrawingAreaVisualDisk::on_size_allocate( Gtk::Allocation & allocation )
 		do 
 		{
 			px_left -= ( calced - available_size ) ;
-			calced = calc_length( visual_partitions, px_left ) ;
+			calced = calc_length(m_visual_partitions, px_left);
 		}
 		while ( calced > available_size && px_left > 0 ) ; 
 		
@@ -393,18 +394,18 @@ void DrawingAreaVisualDisk::on_size_allocate( Gtk::Allocation & allocation )
 	while ( px_left <= 0 && MIN_SIZE > 0 ) ; 
 
 	//due to rounding a few px may be lost. here we salvage them.. 
-	if ( visual_partitions .size() && calced > 0 )
+	if (m_visual_partitions.size() && calced > 0)
 	{
 		px_left = available_size - calced ;
 		
 		while ( px_left > 0 )
-			px_left = spreadout_leftover_px( visual_partitions, px_left ) ;
+			px_left = spreadout_leftover_px(m_visual_partitions, px_left);
 	}
-	
+
 	//and calculate the rest..
-	calc_position_and_height( visual_partitions, MAIN_BORDER, MAIN_BORDER ) ;//0, 0 ) ;
-	calc_usage( visual_partitions ) ;
-	calc_text( visual_partitions ) ;
+	calc_position_and_height(m_visual_partitions, MAIN_BORDER, MAIN_BORDER);  // 0, 0);
+	calc_usage(m_visual_partitions);
+	calc_text(m_visual_partitions);
 	queue_draw();
 }
 
