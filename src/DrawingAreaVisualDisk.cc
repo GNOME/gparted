@@ -33,7 +33,7 @@ namespace GParted
 
 
 DrawingAreaVisualDisk::DrawingAreaVisualDisk()
- : m_selected_vp(nullptr)
+ : m_selected_vp(nullptr), m_tot_sep(0), m_min_size(0)
 {
 	// Set some standard colors
 	color_used.set(Utils::get_color(FS_USED));
@@ -48,8 +48,8 @@ DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 void DrawingAreaVisualDisk::load_partitions( const PartitionVector & partitions, Sector device_length )
 {
 	clear() ;	
-	
-	TOT_SEP = get_total_separator_px( partitions ) ;
+
+	m_tot_sep = get_total_separator_px(partitions);
 	set_static_data(partitions, m_visual_partitions, device_length);
 
 	queue_resize() ;
@@ -120,9 +120,9 @@ int DrawingAreaVisualDisk::calc_length(std::vector<VisualPartition>& visual_part
 			visual_partitions[ t ] .length = 
 				calc_length( visual_partitions[ t ] .logicals, 
 					     visual_partitions[ t ] .length - (2 * BORDER) ) + (2 * BORDER) ;
-		else if ( visual_partitions[ t ] .length < MIN_SIZE )
-			visual_partitions[ t ] .length = MIN_SIZE ;
-	
+		else if (visual_partitions[t].length < m_min_size)
+			visual_partitions[t].length = m_min_size;
+
 		calced_length += visual_partitions[ t ] .length ;
 	}
 	
@@ -390,7 +390,7 @@ void DrawingAreaVisualDisk::on_size_allocate( Gtk::Allocation & allocation )
 {
 	Gtk::DrawingArea::on_size_allocate( allocation ) ;
 
-	MIN_SIZE = BORDER * 2 + 2 ;
+	m_min_size = BORDER * 2 + 2;
 
 	int available_size = allocation.get_width() - (2 * MAIN_BORDER);
 	int calced = 0;
@@ -398,7 +398,7 @@ void DrawingAreaVisualDisk::on_size_allocate( Gtk::Allocation & allocation )
 
 	do
 	{
-		px_left = available_size - TOT_SEP ;
+		px_left = available_size - m_tot_sep;
 		calced = available_size ; //for first time :)
 		do 
 		{
@@ -406,10 +406,10 @@ void DrawingAreaVisualDisk::on_size_allocate( Gtk::Allocation & allocation )
 			calced = calc_length(m_visual_partitions, px_left);
 		}
 		while ( calced > available_size && px_left > 0 ) ; 
-		
-		MIN_SIZE-- ;
+
+		m_min_size--;
 	}
-	while ( px_left <= 0 && MIN_SIZE > 0 ) ; 
+	while (px_left <= 0 && m_min_size > 0);
 
 	//due to rounding a few px may be lost. here we salvage them.. 
 	if (m_visual_partitions.size() && calced > 0)

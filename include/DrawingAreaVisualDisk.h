@@ -117,7 +117,8 @@ private:
 
 	std::vector<VisualPartition> m_visual_partitions;
 	const VisualPartition*       m_selected_vp;
-	int TOT_SEP, MIN_SIZE ;
+	int                          m_tot_sep;
+	int                          m_min_size;
 
 	Gdk::RGBA color_used;
 	Gdk::RGBA color_unused;
