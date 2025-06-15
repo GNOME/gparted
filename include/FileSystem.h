@@ -121,8 +121,8 @@ public:
 	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) { return true; };
 
 protected:
-	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;
-	void rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail ) ;
+	static Glib::ustring mk_temp_dir(const Glib::ustring& infix, OperationDetail& operationdetail);
+	static void rm_temp_dir(const Glib::ustring& dir_name, OperationDetail& operationdetail);
 
 	FS_Limits m_fs_limits;  // File system minimum and maximum size limits.  In derived
 	                        // classes either assign fixed values in get_filesystem_support()

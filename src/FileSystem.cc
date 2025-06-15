@@ -161,50 +161,49 @@ Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDet
 	//Looks like "mkdir -v" command was run to the user
 	operationdetail .add_child( OperationDetail(
 			Glib::ustring( "mkdir -v " ) + dir_buf, STATUS_EXECUTE, FONT_BOLD_ITALIC ) ) ;
+	OperationDetail& child_od = operationdetail.get_last_child();
 	if (mkdir(dir_buf, 0700) != 0)
 	{
 		int e = errno ;
-		operationdetail .get_last_child() .add_child( OperationDetail(
+		child_od.add_child(OperationDetail(
 		                        Glib::ustring::compose("mkdir(\"%1\", 0700): %2", dir_buf, Glib::strerror(e)),
 		                        STATUS_NONE));
-		operationdetail.get_last_child().set_success_and_capture_errors( false );
-		dir_buf[0] = '\0';
-	}
-	else
-	{
-		operationdetail .get_last_child() .add_child( OperationDetail(
-		                        Glib::ustring::compose(_("Created directory %1"), dir_buf),
-		                        STATUS_NONE));
-		operationdetail.get_last_child().set_success_and_capture_errors( true );
+		child_od.set_success_and_capture_errors(false);
+		return "";
 	}
 
+	child_od.add_child(OperationDetail(
+	                        Glib::ustring::compose(_("Created directory %1"), dir_buf),
+	                        STATUS_NONE));
+	child_od.set_success_and_capture_errors(true);
 	return Glib::ustring(dir_buf);
 }
 
 
 //Remove directory and add results to operation detail
-void FileSystem::rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail )
+void FileSystem::rm_temp_dir(const Glib::ustring& dir_name, OperationDetail& operationdetail)
 {
 	//Looks like "rmdir -v" command was run to the user
 	operationdetail .add_child( OperationDetail( Glib::ustring( "rmdir -v " ) + dir_name,
 	                                             STATUS_EXECUTE, FONT_BOLD_ITALIC ) ) ;
+	OperationDetail& child_od = operationdetail.get_last_child();
 	if ( rmdir( dir_name .c_str() ) )
 	{
 		// Don't mark operation as errored just because rmdir failed.  Set to
 		// Warning instead.
 		int e = errno ;
-		operationdetail .get_last_child() .add_child( OperationDetail(
+		child_od.add_child(OperationDetail(
 		                        Glib::ustring::compose("rmdir(\"%1\"): ", dir_name) + Glib::strerror(e),
 		                        STATUS_NONE));
-		operationdetail.get_last_child().set_status( STATUS_WARNING );
+		child_od.set_status(STATUS_WARNING);
+		return;
 	}
-	else
-	{
-		operationdetail .get_last_child() .add_child( OperationDetail(
+
+	child_od.add_child(OperationDetail(
 				/*TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp */
 				Glib::ustring::compose( _("Removed directory %1"), dir_name ), STATUS_NONE ) ) ;
-		operationdetail.get_last_child().set_success_and_capture_errors( true );
-	}
+	child_od.set_success_and_capture_errors(true);
 }
+
 
 } //GParted
