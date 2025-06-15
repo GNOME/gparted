@@ -31,6 +31,80 @@
 namespace GParted
 {
 
+
+namespace  // unnamed
+{
+
+
+// Custom deleter class for use with smart pointer type:
+//     std::unique_ptr<Glib::ustring, TempWorkingDirDeleter>
+// A custom deleter is only called when it contains a none nullptr when destructed.  When
+// called this deleter removes the temporary working directory from the file system and
+// then deletes (frees) the memory storing it's name.
+struct TempWorkingDirDeleter
+{
+	void operator()(const Glib::ustring* dir_name)
+	{
+		if (rmdir(dir_name->c_str()) != 0)
+		{
+			int e = errno;
+			std::cerr << "rmdir(\"" << *dir_name << "\"): " + Glib::strerror(e) << std::endl;
+		}
+		delete dir_name;
+		dir_name = nullptr;
+	}
+};
+
+
+typedef std::unique_ptr<Glib::ustring, TempWorkingDirDeleter> UniqueTempWorkingDirPtr;
+
+
+// Unique smart pointer managing the temporary working directory.  Contains either the
+// nullptr or a pointer to the name of the temporary working directory only when GParted
+// successfully created said directory.  This global variable goes out of scope and is
+// destructed after main() returns or exit() is called.  At which point the temporary
+// working directory is removed, only if it was created.
+static UniqueTempWorkingDirPtr temp_working_dir = nullptr;
+
+
+// Create private temporary working directory named "$TMPDIR/gparted-XXXXXX" with
+// permissions 0700 using mkdtemp(3).  Everything is logged to the operation detail.  On
+// success returns unique pointer to the created directory name or on error returns unique
+// pointer of the nullptr.
+UniqueTempWorkingDirPtr mk_temp_working_dir(OperationDetail& operationdetail)
+{
+	char dir_buf[4096+1];
+	snprintf(dir_buf, sizeof(dir_buf), "%s/gparted-XXXXXX", Glib::get_tmp_dir().c_str());
+
+	// Looks like "mkdir -v" command was run to the user
+	operationdetail.add_child(OperationDetail(
+	                        Glib::ustring("mkdir -v ") + dir_buf, STATUS_EXECUTE, FONT_BOLD_ITALIC));
+	OperationDetail& child_od = operationdetail.get_last_child();
+	const char* dir_name = mkdtemp(dir_buf);
+	if (nullptr == dir_name)
+	{
+		int e = errno;
+		child_od.add_child(OperationDetail(
+		                        Glib::ustring::compose("mkdtemp(\"%1\"): %2", dir_buf, Glib::strerror(e)),
+		                        STATUS_NONE));
+		child_od.set_success_and_capture_errors(false);
+		return UniqueTempWorkingDirPtr(nullptr);
+	}
+
+	// Update command with actually created temporary working directory
+	child_od.set_description(Glib::ustring("mkdir -v ") + dir_name, FONT_BOLD_ITALIC);
+	child_od.add_child(OperationDetail(
+	                        /* TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp */
+	                        Glib::ustring::compose(_("Created directory %1"), dir_name), STATUS_NONE));
+	child_od.set_success_and_capture_errors(true);
+
+	return UniqueTempWorkingDirPtr(new Glib::ustring(dir_name));
+}
+
+
+}  // unnamed namespace
+
+
 FileSystem::FileSystem()
 {
 }
@@ -58,44 +132,55 @@ const Glib::ustring & FileSystem::get_generic_text( CUSTOM_TEXT ttype, int index
 }
 
 
-//Create uniquely named temporary directory and add results to operation detail
+// Create uniquely named temporary mount point directory and add results to operation
+// detail.  Will be named "$TMPDIR/gparted-XXXXXX/mnt-N" or ".../mnt-INFIX-N".  Returns
+// the name of the created directory or the empty string on error.
 Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail )
 {
-	// Construct template like "$TMPDIR/gparted-XXXXXX" or "$TMPDIR/gparted-INFIX-XXXXXX"
-	Glib::ustring dir_template = Glib::get_tmp_dir() + "/gparted-" ;
-	if ( ! infix .empty() )
-		dir_template += infix + "-" ;
-	dir_template += "XXXXXX" ;
-	//Secure Programming for Linux and Unix HOWTO, Chapter 6. Avoid Buffer Overflow
-	//  http://tldp.org/HOWTO/Secure-Programs-HOWTO/library-c.html
-	char dir_buf[4096+1];
-	sprintf( dir_buf, "%.*s", (int) sizeof(dir_buf)-1, dir_template .c_str() ) ;
+	// Create private temporary working directory once when first needed.
+	if (nullptr == temp_working_dir)
+	{
+		temp_working_dir = mk_temp_working_dir(operationdetail);
+		if (nullptr == temp_working_dir)
+			return "";
+	}
+
+	// Prepare unique temporary mount point directory name.  Use forever incrementing
+	// number (mnt_number) to make names unique.  This is so that there is no chance
+	// of mounting over the top of a previous file system in the unlikely event that
+	// it could not be unmounted.
+	static unsigned int mnt_number = 0;
+	mnt_number++;
+	char dir_buf [4096+1];
+	snprintf(dir_buf, sizeof(dir_buf), "%s/mnt-%s%s%u",
+	                        temp_working_dir->c_str(),      // "$TMPDIR/gparted-XXXXXX"
+	                        infix.c_str(),
+	                        (infix.size() > 0 ? "-" : ""),
+	                        mnt_number);
 
 	//Looks like "mkdir -v" command was run to the user
 	operationdetail .add_child( OperationDetail(
 			Glib::ustring( "mkdir -v " ) + dir_buf, STATUS_EXECUTE, FONT_BOLD_ITALIC ) ) ;
-	const char * dir_name = mkdtemp( dir_buf ) ;
-	if (nullptr == dir_name)
+	if (mkdir(dir_buf, 0700) != 0)
 	{
 		int e = errno ;
 		operationdetail .get_last_child() .add_child( OperationDetail(
-				Glib::ustring::compose( "mkdtemp(%1): %2", dir_buf, Glib::strerror( e ) ), STATUS_NONE ) ) ;
+		                        Glib::ustring::compose("mkdir(\"%1\", 0700): %2", dir_buf, Glib::strerror(e)),
+		                        STATUS_NONE));
 		operationdetail.get_last_child().set_success_and_capture_errors( false );
-		dir_name = "" ;
+		dir_buf[0] = '\0';
 	}
 	else
 	{
-		//Update command with actually created temporary directory
-		operationdetail .get_last_child() .set_description(
-				Glib::ustring( "mkdir -v " ) + dir_name, FONT_BOLD_ITALIC ) ;
 		operationdetail .get_last_child() .add_child( OperationDetail(
-				/*TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp */
-				Glib::ustring::compose( _("Created directory %1"), dir_name ), STATUS_NONE ) ) ;
+		                        Glib::ustring::compose(_("Created directory %1"), dir_buf),
+		                        STATUS_NONE));
 		operationdetail.get_last_child().set_success_and_capture_errors( true );
 	}
 
-	return Glib::ustring( dir_name ) ;
+	return Glib::ustring(dir_buf);
 }
+
 
 //Remove directory and add results to operation detail
 void FileSystem::rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail )
@@ -109,7 +194,8 @@ void FileSystem::rm_temp_dir( const Glib::ustring dir_name, OperationDetail & op
 		// Warning instead.
 		int e = errno ;
 		operationdetail .get_last_child() .add_child( OperationDetail(
-				Glib::ustring::compose( "rmdir(%1): ", dir_name ) + Glib::strerror( e ), STATUS_NONE ) ) ;
+		                        Glib::ustring::compose("rmdir(\"%1\"): ", dir_name) + Glib::strerror(e),
+		                        STATUS_NONE));
 		operationdetail.get_last_child().set_status( STATUS_WARNING );
 	}
 	else
