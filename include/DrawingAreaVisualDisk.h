@@ -119,12 +119,12 @@ private:
 	const VisualPartition*       m_selected_vp;
 	int                          m_tot_sep;
 	int                          m_min_size;
-
-	Gdk::RGBA color_used;
-	Gdk::RGBA color_unused;
-	Gdk::RGBA color_unallocated;
-	Gdk::RGBA color_text;
+	const Gdk::RGBA              m_color_used;
+	const Gdk::RGBA              m_color_unused;
+	const Gdk::RGBA              m_color_unallocated;
+	const Gdk::RGBA              m_color_text;
 };
+
 
 } //GParted
 

@@ -33,17 +33,14 @@ namespace GParted
 
 
 DrawingAreaVisualDisk::DrawingAreaVisualDisk()
- : m_selected_vp(nullptr), m_tot_sep(0), m_min_size(0)
+ : m_selected_vp(nullptr), m_tot_sep(0), m_min_size(0), m_color_used(Utils::get_color(FS_USED)),
+   m_color_unused(Utils::get_color(FS_UNUSED)), m_color_unallocated(Utils::get_color(FS_UNALLOCATED)),
+   m_color_text("black")
 {
-	// Set some standard colors
-	color_used.set(Utils::get_color(FS_USED));
-	color_unused.set(Utils::get_color(FS_UNUSED));
-	color_unallocated.set(Utils::get_color(FS_UNALLOCATED));
-	color_text .set( "black" );
 	add_events( Gdk::BUTTON_PRESS_MASK );
-
 	set_size_request( -1, HEIGHT ) ;
 }
+
 
 void DrawingAreaVisualDisk::load_partitions( const PartitionVector & partitions, Sector device_length )
 {
@@ -237,7 +234,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
 	//used..
 	if ( vp .used_length > 0 )
 	{
-		Gdk::Cairo::set_source_rgba(cr, color_used);
+		Gdk::Cairo::set_source_rgba(cr, m_color_used);
 		cr->rectangle(vp.x_used_start,
 		              vp.y_usage_start,
 		              vp.used_length,
@@ -248,7 +245,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
 	//unused
 	if ( vp .unused_length > 0 )
 	{
-		Gdk::Cairo::set_source_rgba(cr, color_unused);
+		Gdk::Cairo::set_source_rgba(cr, m_color_unused);
 		cr->rectangle(vp.x_unused_start,
 		              vp.y_usage_start,
 		              vp.unused_length,
@@ -259,7 +256,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
 	//unallocated
 	if ( vp .unallocated_length > 0 )
 	{
-		Gdk::Cairo::set_source_rgba(cr, color_unallocated);
+		Gdk::Cairo::set_source_rgba(cr, m_color_unallocated);
 		cr->rectangle(vp.x_unallocated_start,
 		              vp.y_usage_start,
 		              vp.unallocated_length,
@@ -270,7 +267,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
 	//text
 	if ( vp .x_text > 0 )
 	{
-		Gdk::Cairo::set_source_rgba(cr, color_text);
+		Gdk::Cairo::set_source_rgba(cr, m_color_text);
 		cr->move_to(vp.x_text, vp.y_text);
 		vp.pango_layout->show_in_cairo_context(cr);
 	}
@@ -355,7 +352,7 @@ bool DrawingAreaVisualDisk::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	//selection 
 	if (m_selected_vp)
 	{
-		Gdk::Cairo::set_source_rgba(cr, color_used);
+		Gdk::Cairo::set_source_rgba(cr, m_color_used);
 		cr->rectangle(m_selected_vp->x_start + BORDER/2,
 		              m_selected_vp->y_start + BORDER/2,
 		              m_selected_vp->length - BORDER,
