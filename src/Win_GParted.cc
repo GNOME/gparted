@@ -986,15 +986,15 @@ void Win_GParted::Refresh_Visual()
 	//
 	// (3) Loads the disk graphic and partition list with partitions to be shown in
 	//     the GUI.  Both classes store pointers pointing back to each partition
-	//     object in the vector of display partitions.
+	//     object in the current display device's vector of partitions.
 	//
-	//     Aliases:   Win_GParted::display_partitions[]
+	//     Aliases:   Win_GParted::m_display_device.partitions[]
 	//     Call chain:
 	//
 	//         Win_GParted::Refresh_Visual()
-	//             drawingarea_visualdisk.load_partitions( display_partitions, device_sectors )
+	//             drawingarea_visualdisk.load_partitions(m_display_device.partitions, device_sectors)
 	//                 DrawingAreaVisualDisk::set_static_data( ... )
-	//             treeview_detail.load_partitions( display_partitions )
+	//             treeview_detail.load_partitions(m_display_device.partitions)
 	//                 TreeView_Detail::create_row()
 	//                 TreeView_Detail::load_partitions()
 	//                     TreeView_Detail::create_row()
