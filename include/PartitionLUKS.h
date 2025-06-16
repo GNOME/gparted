@@ -42,8 +42,8 @@ public:
 	               Byte_Value sector_size,
 	               bool busy );
 
-	Partition & get_encrypted()              { return encrypted; };
-	const Partition & get_encrypted() const  { return encrypted; };
+	Partition& get_encrypted()              { return m_encrypted; };
+	const Partition& get_encrypted() const  { return m_encrypted; };
 
 	Sector get_header_size() const           { return header_size; };
 
@@ -63,7 +63,7 @@ public:
 	virtual const Glib::ustring get_filesystem_string() const;
 
 private:
-	Partition encrypted;
+	Partition m_encrypted;
 	Sector header_size = 0;  // Size of the LUKS header (everything up to the start of the mapping)
 };
 

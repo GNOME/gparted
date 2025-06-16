@@ -40,24 +40,25 @@ Partition * PartitionLUKS::clone_as_plain() const
 	Partition * plain_ptn = new Partition( *this );
 
 	// Copy over file system attributes.
-	plain_ptn->fstype        = this->encrypted.fstype;
-	plain_ptn->uuid          = this->encrypted.uuid;
-	plain_ptn->busy          = this->encrypted.busy;
-	plain_ptn->fs_block_size = this->encrypted.fs_block_size;
-	Sector fs_size = this->header_size + this->encrypted.sectors_used + this->encrypted.sectors_unused;
-	plain_ptn->set_sector_usage( fs_size, this->encrypted.sectors_unused );
+	plain_ptn->fstype        = this->m_encrypted.fstype;
+	plain_ptn->uuid          = this->m_encrypted.uuid;
+	plain_ptn->busy          = this->m_encrypted.busy;
+	plain_ptn->fs_block_size = this->m_encrypted.fs_block_size;
+	Sector fs_size = this->header_size + this->m_encrypted.sectors_used + this->m_encrypted.sectors_unused;
+	plain_ptn->set_sector_usage(fs_size, this->m_encrypted.sectors_unused);
 	plain_ptn->clear_mountpoints();
-	plain_ptn->add_mountpoints( this->encrypted.get_mountpoints() );
-	if ( this->encrypted.filesystem_label_known() )
-		plain_ptn->set_filesystem_label( this->encrypted.get_filesystem_label() );
+	plain_ptn->add_mountpoints(this->m_encrypted.get_mountpoints());
+	if (this->m_encrypted.filesystem_label_known())
+		plain_ptn->set_filesystem_label(this->m_encrypted.get_filesystem_label());
 	plain_ptn->clear_messages();
-	plain_ptn->append_messages( this->encrypted.get_messages() );
+	plain_ptn->append_messages(this->m_encrypted.get_messages());
 
 	return plain_ptn;
 }
 
+
 // Mostly a convenience method calling Partition::set_unpartitioned() on the encrypted
-// Partition but also sets private header_size.  Makes encrypted Partition object look
+// Partition but also sets private header_size.  Makes m_encrypted Partition object look
 // like a whole disk device as /dev/mapper/CRYPTNAME contains no partition table and the
 // file system starts from sector 0 going to the very end.
 void PartitionLUKS::set_luks( const Glib::ustring & path,
@@ -67,23 +68,25 @@ void PartitionLUKS::set_luks( const Glib::ustring & path,
                               Byte_Value sector_size,
                               bool busy )
 {
-	encrypted.set_unpartitioned( path,
-	                             path,
-	                             fstype,
-	                             mapping_size,
-	                             sector_size,
-	                             busy );
+	m_encrypted.set_unpartitioned(path,
+	                              path,
+	                              fstype,
+	                              mapping_size,
+	                              sector_size,
+	                              busy);
 	this->header_size = header_size;
 }
+
 
 bool PartitionLUKS::sector_usage_known() const
 {
 	if ( busy )
 		// For an open dm-crypt mapping the usage of both the LUKS and encrypted
 		// file system must be known.
-		return Partition::sector_usage_known() && encrypted.sector_usage_known();
+		return Partition::sector_usage_known() && m_encrypted.sector_usage_known();
 	return Partition::sector_usage_known();
 }
+
 
 // An encrypted partition is laid out, and usage figures calculated like this:
 //
@@ -91,14 +94,14 @@ bool PartitionLUKS::sector_usage_known() const
 //     |<---------------------------------------->| <- this PartitionLUKS object
 //     LUKS   LUKS
 //     Header Mapping
-//     |<--->||<----------------------->|           <- encrypted Partition object member
+//     |<--->||<----------------------->|           <- this->m_encrypted Partition object member
 //     hhhhhhh                                      <- this->header_size
 //     1111111111111111111111111111111111uuuuuuuuuu <- this->sectors_{used,unused,unallocated}
 //            Encrypted file system
 //            |<----------------->|
-//            111111111111110000000uuuuuu           <- encrypted.sectors_{used,unused,unallocated}
-//                                                     encrypted.sector_start = 0
-//                                                     encrypted.sector_end = (last sector in LUKS mapping)
+//            111111111111110000000uuuuuu           <- m_encrypted.sectors_{used,unused,unallocated}
+//                                                     m_encrypted.sector_start = 0
+//                                                     m_encrypted.sector_end = (last sector in LUKS mapping)
 //
 //     1111111111111111111110000000uuuuuuuuuuuuuuuu <- Overall usage figures as used in the following
 //                                                     usage related methods.
@@ -110,11 +113,11 @@ bool PartitionLUKS::sector_usage_known() const
 //
 // Calculations:
 //     total_used        = LUKS Header size + Encrypted file system used
-//                       = this->header_size + encrypted.sectors_used
+//                       = this->header_size + m_encrypted.sectors_used
 //     total_unallocated = LUKS unallocated + Encrypted file system unallocated
-//                       = this->sectors_unallocated + encrypted.sectors_unallocated
+//                       = this->sectors_unallocated + m_encrypted.sectors_unallocated
 //     total_unused      = LUKS unused + Encrypted file system unused
-//                       = 0 + encrypted.sectors_unused
+//                       = 0 + m_encrypted.sectors_unused
 //
 //     By definition LUKS unused is 0 (See luks::set_used_sectors()).
 
@@ -125,10 +128,10 @@ Sector PartitionLUKS::estimated_min_size() const
 	if ( busy )
 	{
 		// For an open dm-crypt mapping work with above described totals.
-		if ( sectors_used >= 0 && encrypted.sectors_used >= 0 )
+		if (sectors_used >= 0 && m_encrypted.sectors_used >= 0)
 		{
-			Sector total_used        = header_size + encrypted.sectors_used;
-			Sector total_unallocated = sectors_unallocated + encrypted.sectors_unallocated;
+			Sector total_used        = header_size + m_encrypted.sectors_used;
+			Sector total_unallocated = sectors_unallocated + m_encrypted.sectors_unallocated;
 			return total_used + std::min( total_unallocated, significant_threshold );
 		}
 		return -1;
@@ -143,10 +146,10 @@ Sector PartitionLUKS::get_sectors_used() const
 	if ( busy )
 	{
 		// For an open dm-crypt mapping work with above described totals.
-		if ( sectors_used >= 0 && encrypted.sectors_used >= 0 )
+		if (sectors_used >= 0 && m_encrypted.sectors_used >= 0)
 		{
-			Sector total_used        = header_size + encrypted.sectors_used;
-			Sector total_unallocated = sectors_unallocated + encrypted.sectors_unallocated;
+			Sector total_used        = header_size + m_encrypted.sectors_used;
+			Sector total_unallocated = sectors_unallocated + m_encrypted.sectors_unallocated;
 			if ( total_unallocated < significant_threshold )
 				return total_used + total_unallocated;
 			else
@@ -162,9 +165,10 @@ Sector PartitionLUKS::get_sectors_used() const
 Sector PartitionLUKS::get_sectors_unused() const
 {
 	if ( busy )
-		return encrypted.get_sectors_unused();
+		return m_encrypted.get_sectors_unused();
 	return Partition::get_sectors_unused();
 }
+
 
 // Return user displayable unallocated sectors.
 // See Partition::get_sectors_unallocated() for unallocated threshold reasoning.
@@ -173,7 +177,7 @@ Sector PartitionLUKS::get_sectors_unallocated() const
 	if ( busy )
 	{
 		// For an open dm-crypt mapping work with above described totals.
-		Sector total_unallocated = sectors_unallocated + encrypted.sectors_unallocated;
+		Sector total_unallocated = sectors_unallocated + m_encrypted.sectors_unallocated;
 		if ( total_unallocated < significant_threshold )
 			return 0;
 		else
@@ -190,16 +194,17 @@ void PartitionLUKS::resize( const Partition & new_size )
 	set_sector_usage( get_sector_length(), 0LL );
 
 	Sector mapping_size = get_sector_length() - header_size;
-	encrypted.sector_end = mapping_size - 1LL;
+	m_encrypted.sector_end = mapping_size - 1LL;
 
-	Sector fs_unused = mapping_size - encrypted.sectors_used;
-	encrypted.set_sector_usage( mapping_size, fs_unused );
+	Sector fs_unused = mapping_size - m_encrypted.sectors_used;
+	m_encrypted.set_sector_usage(mapping_size, fs_unused);
 }
+
 
 bool PartitionLUKS::have_messages() const
 {
 	if ( busy )
-		return Partition::have_messages() || encrypted.have_messages();
+		return Partition::have_messages() || m_encrypted.have_messages();
 	return Partition::have_messages();
 }
 
@@ -208,7 +213,7 @@ std::vector<Glib::ustring> PartitionLUKS::get_messages() const
 	if ( busy )
 	{
 		std::vector<Glib::ustring> msgs  = Partition::get_messages();
-		std::vector<Glib::ustring> msgs2 = encrypted.get_messages();
+		std::vector<Glib::ustring> msgs2 = m_encrypted.get_messages();
 		msgs.insert( msgs.end(), msgs2.begin(), msgs2.end() );
 		return msgs;
 	}
@@ -218,27 +223,30 @@ std::vector<Glib::ustring> PartitionLUKS::get_messages() const
 void PartitionLUKS::clear_messages()
 {
 	Partition::clear_messages();
-	encrypted.clear_messages();
+	m_encrypted.clear_messages();
 }
+
 
 const Partition & PartitionLUKS::get_filesystem_partition() const
 {
 	if ( busy )
-		return encrypted;
+		return m_encrypted;
 	return *this;
 }
+
 
 Partition & PartitionLUKS::get_filesystem_partition()
 {
 	if ( busy )
-		return encrypted;
+		return m_encrypted;
 	return *this;
 }
+
 
 const Glib::ustring PartitionLUKS::get_filesystem_string() const
 {
 	if ( busy )
-		return Utils::get_filesystem_string(true, encrypted.fstype);
+		return Utils::get_filesystem_string(true, m_encrypted.fstype);
 	return Utils::get_encrypted_string();
 }
 
