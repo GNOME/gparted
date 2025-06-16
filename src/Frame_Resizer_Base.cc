@@ -255,8 +255,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		
 		else if ( GRIP_MOVE )
 		{
-			temp_x = X_START + static_cast<int>( ev ->x - X_START_MOVE );
-			temp_y = X_END - X_START ;
+			int temp_x = X_START + static_cast<int>(ev->x - X_START_MOVE);
+			int temp_y = X_END - X_START;
 
 			if ( temp_x > (GRIPPER + X_MIN_SPACE_BEFORE) && temp_x + temp_y < 500 + GRIPPER + BORDER * 2 )
 			{
