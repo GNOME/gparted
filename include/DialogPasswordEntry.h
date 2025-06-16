@@ -38,8 +38,8 @@ public:
 private:
 	void on_button_unlock();
 
-	Gtk::Entry *entry;
-	Gtk::Label *error_message;
+	Gtk::Entry *m_entry;
+	Gtk::Label *m_error_message;
 };
 
 } //GParted
