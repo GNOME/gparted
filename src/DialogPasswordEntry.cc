@@ -52,21 +52,21 @@ DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib:
 	Gtk::Box *entry_hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	Gtk::Label *label_passphrase = Utils::mk_label("<b>" + Glib::ustring(_("Passphrase:")) + "</b>");
 	entry_hbox->pack_start(*label_passphrase);
-	entry = manage( new Gtk::Entry() );
-	entry->set_width_chars( 30 );
-	entry->set_visibility( false );
-	entry->set_activates_default( true );
-	entry->grab_focus();
-	entry->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_passphrase->get_accessible());
-	entry_hbox->pack_start( *entry );
+	m_entry = manage(new Gtk::Entry());
+	m_entry->set_width_chars(30);
+	m_entry->set_visibility(false);
+	m_entry->set_activates_default(true);
+	m_entry->grab_focus();
+	m_entry->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_passphrase->get_accessible());
+	entry_hbox->pack_start(*m_entry);
 	vbox->pack_start( *entry_hbox );
 
 	// Line 3: blank
 	vbox->pack_start( *Utils::mk_label( "" ) );
 
 	// Line 4: error message
-	error_message = Utils::mk_label( "" );
-	vbox->pack_start( *error_message );
+	m_error_message = Utils::mk_label("");
+	vbox->pack_start(*m_error_message);
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	Gtk::Button *unlock_button = this->add_button( _("Unlock"), Gtk::RESPONSE_OK );
@@ -84,24 +84,27 @@ const char * DialogPasswordEntry::get_password()
 	// Avoid using the gtkmm C++ entry->get_text() because that constructs a
 	// Glib::ustring, copying the password from the underlying C GtkEntry object into
 	// an unsecured malloced chunk of memory.
-	return (const char *)gtk_entry_get_text( GTK_ENTRY( entry->gobj() ) );
+	return (const char *)gtk_entry_get_text(GTK_ENTRY(m_entry->gobj()));
 }
+
 
 void DialogPasswordEntry::set_error_message( const Glib::ustring & message )
 {
-	error_message->set_label( message );
+	m_error_message->set_label(message);
 	// After unlock failure, also select failed password and make the password entry
 	// box have focus ready for retyping the correct password.
-	entry->select_region( 0, -1 );
-	entry->grab_focus();
+	m_entry->select_region(0, -1);
+	m_entry->grab_focus();
 }
+
 
 // Private methods
 
 void DialogPasswordEntry::on_button_unlock()
 {
 	// Clear any previous unlock failure message before starting new attempt.
-	error_message->set_label( "" );
+	m_error_message->set_label("");
 }
+
 
 } //GParted
