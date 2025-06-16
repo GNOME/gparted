@@ -45,7 +45,7 @@ public:
 	Partition& get_encrypted()              { return m_encrypted; };
 	const Partition& get_encrypted() const  { return m_encrypted; };
 
-	Sector get_header_size() const           { return header_size; };
+	Sector get_header_size() const          { return m_header_size; };
 
 	virtual bool sector_usage_known() const;
 	virtual Sector estimated_min_size() const;
@@ -64,7 +64,7 @@ public:
 
 private:
 	Partition m_encrypted;
-	Sector header_size = 0;  // Size of the LUKS header (everything up to the start of the mapping)
+	Sector    m_header_size = 0;  // Size of the LUKS header (everything up to the start of the mapping)
 };
 
 
