@@ -67,9 +67,9 @@ void DialogManageFlags::load_treeview()
 
 	for ( std::map<Glib::ustring, bool>::iterator iter = flag_info .begin() ; iter != flag_info .end() ; ++iter )
 	{
-		row = *( liststore_flags ->append() ) ;
-		row[m_treeview_flags_columns.flag]   = iter->first;
-		row[m_treeview_flags_columns.status] = iter->second;
+		m_row = *(liststore_flags->append());
+		m_row[m_treeview_flags_columns.flag]   = iter->first;
+		m_row[m_treeview_flags_columns.status] = iter->second;
 	}
 }
 
@@ -83,10 +83,10 @@ void DialogManageFlags::on_flag_toggled( const Glib::ustring & path )
 
 	m_changed = true;
 
-	row = *( liststore_flags ->get_iter( path ) ) ;
-	row[m_treeview_flags_columns.status] = ! row[m_treeview_flags_columns.status];
+	m_row = *(liststore_flags->get_iter(path));
+	m_row[m_treeview_flags_columns.status] = ! m_row[m_treeview_flags_columns.status];
 
-	signal_toggle_flag.emit(partition, row[m_treeview_flags_columns.flag], row[m_treeview_flags_columns.status]);
+	signal_toggle_flag.emit(partition, m_row[m_treeview_flags_columns.flag], m_row[m_treeview_flags_columns.status]);
 
 	flag_info = signal_get_flags .emit( partition ) ;
 	load_treeview() ;
