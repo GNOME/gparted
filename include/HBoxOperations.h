@@ -57,20 +57,22 @@ private:
 	Glib::RefPtr<Gtk::ListStore> liststore_operations ;
 	std::map<int, Gtk::MenuItem*> menu_popup_items;
 
-	struct treeview_operations_Columns : public Gtk::TreeModelColumnRecord             
+	struct TreeView_Operations_Columns : public Gtk::TreeModelColumnRecord
 	{
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
-				
-		treeview_operations_Columns() 
+
+		TreeView_Operations_Columns()
 		{ 
 			add( operation_description );
 			add( operation_icon );
 		} 
 	};
-	treeview_operations_Columns treeview_operations_columns;
+	TreeView_Operations_Columns m_treeview_operations_columns;
 };
 
+
 } //GParted
+
 
 #endif /* GPARTED_HBOXOPERATIONS_H */
