@@ -31,10 +31,10 @@
 namespace GParted
 { 
 
-TreeView_Detail::TreeView_Detail()
-{
-	block = false ;
 
+TreeView_Detail::TreeView_Detail()
+ : m_block(false)
+{
 	m_treestore_detail = Gtk::TreeStore::create(m_treeview_detail_columns);
 	set_model(m_treestore_detail);
 	set_rules_hint( true );
@@ -83,15 +83,16 @@ TreeView_Detail::TreeView_Detail()
 	}
 }
 
+
 void TreeView_Detail::load_partitions( const PartitionVector & partitions )
 {
 	bool show_names       = false;
 	bool show_mountpoints = false;
 	bool show_labels      = false;
 
-	block = true;
+	m_block = true;
 	m_treestore_detail->clear();
-	block = false;
+	m_block = false;
 
 	load_partitions( partitions, show_names, show_mountpoints, show_labels );
 
@@ -103,11 +104,12 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions )
 	expand_all() ;
 }
 
+
 void TreeView_Detail::set_selected( const Partition * partition_ptr )
 {
-	block = true ;
+	m_block = true;
 	set_selected(m_treestore_detail->children(), partition_ptr);
-	block = false ;
+	m_block = false;
 }
 
 
@@ -249,7 +251,7 @@ void TreeView_Detail::on_row_activated( const Gtk::TreeModel::Path & path, Gtk::
 
 void TreeView_Detail::on_selection_changed() 
 {
-	if (! block && m_treeselection->get_selected() != 0)
+	if (! m_block && m_treeselection->get_selected() != 0)
 	{
 		Gtk::TreeRow row = static_cast<Gtk::TreeRow>(*m_treeselection->get_selected());
 		signal_partition_selected.emit(row[m_treeview_detail_columns.partition_ptr], true);
