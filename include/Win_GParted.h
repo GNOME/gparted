@@ -242,21 +242,21 @@ private:
 	Glib::RefPtr<Gtk::ListStore> liststore_devices ;
 	sigc::connection combo_devices_changed_connection;
 
-	struct treeview_devices_Columns : public Gtk::TreeModelColumnRecord
+	struct TreeView_Devices_Columns : public Gtk::TreeModelColumnRecord
 	{
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > icon ;
 		Gtk::TreeModelColumn<Glib::ustring> device ;
 		Gtk::TreeModelColumn<Glib::ustring> size ;
 
-		treeview_devices_Columns()
+		TreeView_Devices_Columns()
 		{
 			add( icon ) ;
 			add( device ) ;
 			add( size ) ;
 		}
 	};
-	treeview_devices_Columns treeview_devices_columns ;
-	
+	TreeView_Devices_Columns m_treeview_devices_columns;
+
 	// Indices for toolbar
 	int
 	TOOLBAR_NEW,
