@@ -28,7 +28,7 @@ namespace GParted
 
 
 DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::ustring, bool> flag_info)
- : m_changed(false), partition(partition)
+ : m_changed(false), m_partition(partition)
 {
 	set_title( Glib::ustring::compose( _("Manage flags on %1"), partition .get_path() ) );
 	set_resizable( false ) ;
@@ -87,13 +87,14 @@ void DialogManageFlags::on_flag_toggled( const Glib::ustring & path )
 	m_row = *(m_liststore_flags->get_iter(path));
 	m_row[m_treeview_flags_columns.status] = ! m_row[m_treeview_flags_columns.status];
 
-	signal_toggle_flag.emit(partition, m_row[m_treeview_flags_columns.flag], m_row[m_treeview_flags_columns.status]);
+	signal_toggle_flag.emit(m_partition, m_row[m_treeview_flags_columns.flag], m_row[m_treeview_flags_columns.status]);
 
-	flag_info = signal_get_flags .emit( partition ) ;
+	flag_info = signal_get_flags .emit(m_partition);
 	load_treeview() ;
 	
 	set_sensitive( true ) ;
 	get_window() ->set_cursor() ;
 }
+
 
 }//GParted
