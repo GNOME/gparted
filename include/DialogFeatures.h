@@ -52,7 +52,7 @@ private:
 	Gtk::ScrolledWindow          m_filesystems_scrolled;
 	Glib::RefPtr<Gtk::ListStore> m_liststore_filesystems;
 
-	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord
+	struct TreeView_FileSystems_Columns : public Gtk::TreeModelColumnRecord
 	{
 		Gtk::TreeModelColumn<Glib::ustring> fsname;
 		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> create;
@@ -68,7 +68,7 @@ private:
 		Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> uuid;
 		Gtk::TreeModelColumn<Glib::ustring> software;
 
-		treeview_filesystems_Columns()
+		TreeView_FileSystems_Columns()
 		{ 
 			add(fsname);
 			add(create);
@@ -86,7 +86,7 @@ private:
 		}
 	};
 
-	treeview_filesystems_Columns m_treeview_filesystems_columns;
+	TreeView_FileSystems_Columns m_treeview_filesystems_columns;
 
 	Glib::RefPtr<Gdk::Pixbuf> m_icon_yes;
 	Glib::RefPtr<Gdk::Pixbuf> m_icon_no;
