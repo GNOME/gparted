@@ -48,19 +48,19 @@ private:
 	Gtk::TreeRow row ;
 	
 	Glib::RefPtr<Gtk::ListStore> liststore_flags ;
-	
-	struct treeview_flags_Columns : public Gtk::TreeModelColumnRecord             
+
+	struct TreeView_Flags_Columns : public Gtk::TreeModelColumnRecord
 	{
 		Gtk::TreeModelColumn<Glib::ustring> flag ;
 		Gtk::TreeModelColumn<bool> status ;
 		
-		treeview_flags_Columns()
+		TreeView_Flags_Columns()
 		{
 			add( flag ) ;
 			add( status ) ;
 		}
 	} ;
-	treeview_flags_Columns treeview_flags_columns ;	
+	TreeView_Flags_Columns m_treeview_flags_columns;
 
 	const Partition & partition;  // (Alias to element in Win_GParted::display_partitions[] vector).
 	std::map<Glib::ustring, bool> flag_info ;
