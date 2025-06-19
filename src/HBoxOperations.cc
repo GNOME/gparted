@@ -29,11 +29,11 @@ HBoxOperations::HBoxOperations()
  : Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)
 {
 	//create listview for pending operations
-	liststore_operations = Gtk::ListStore::create( treeview_operations_columns );
+	liststore_operations = Gtk::ListStore::create(m_treeview_operations_columns);
 	treeview_operations .set_model( liststore_operations );
 	treeview_operations .set_headers_visible( false );
-	treeview_operations .append_column( "", treeview_operations_columns .operation_icon );
-	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
+	treeview_operations.append_column("", m_treeview_operations_columns.operation_icon);
+	treeview_operations.append_column("", m_treeview_operations_columns.operation_description);
 	treeview_operations .get_selection() ->set_mode( Gtk::SELECTION_NONE ) ;
 	treeview_operations .signal_button_press_event() .connect( 
 		sigc::mem_fun( *this, &HBoxOperations::on_signal_button_press_event ), false ) ;
@@ -81,10 +81,10 @@ void HBoxOperations::load_operations(const std::vector<Operation *>& operations)
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
 	{	
 		treerow = *( liststore_operations ->append() );
-		treerow[ treeview_operations_columns .operation_description ] = operations[ t ] ->description ;
-		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] ->icon ;
+		treerow[m_treeview_operations_columns.operation_description] = operations[t]->description;
+		treerow[m_treeview_operations_columns.operation_icon]        = operations[t]->icon;
 	}
-		
+
 	//make scrollwindow focus on the last operation in the list	
 	if ( liststore_operations ->children() .size() > 0 )
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( static_cast<Gtk::TreeRow>( 
