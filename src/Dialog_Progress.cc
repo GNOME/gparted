@@ -82,14 +82,14 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::
 		icon_info = Utils::mk_pixbuf(*this, Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR);
 		icon_warning = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
 
-		treestore_operations = Gtk::TreeStore::create( treeview_operations_columns);
+		treestore_operations = Gtk::TreeStore::create(m_treeview_operations_columns);
 		treeview_operations.set_model(treestore_operations);
 		treeview_operations.set_headers_visible(false);
 		treeview_operations.set_rules_hint(true);
 		treeview_operations.set_size_request(700, 250);
-		treeview_operations.append_column("", treeview_operations_columns.operation_description);
-		treeview_operations.append_column("", treeview_operations_columns.elapsed_time);
-		treeview_operations.append_column("", treeview_operations_columns.status_icon);
+		treeview_operations.append_column("", m_treeview_operations_columns.operation_description);
+		treeview_operations.append_column("", m_treeview_operations_columns.elapsed_time);
+		treeview_operations.append_column("", m_treeview_operations_columns.status_icon);
 
 		treeview_operations.get_column(0)->set_expand(true);
 		treeview_operations.get_column(0)->set_cell_data_func(
@@ -103,7 +103,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::
 			this->operations[i]->operation_detail.set_treepath(Utils::num_to_str(i));
 
 			treerow = *(treestore_operations->append());
-			treerow[treeview_operations_columns.operation_description] =
+			treerow[m_treeview_operations_columns.operation_description] =
 				this->operations[i]->operation_detail.get_description();
 		}
 
@@ -135,30 +135,30 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 	{
 		Gtk::TreeRow treerow = *iter ;
 
-		treerow[ treeview_operations_columns .operation_description ] = operationdetail .get_description() ;
-		treerow[ treeview_operations_columns .elapsed_time ] = operationdetail .get_elapsed_time() ;
+		treerow[m_treeview_operations_columns.operation_description] = operationdetail.get_description();
+		treerow[m_treeview_operations_columns.elapsed_time] = operationdetail.get_elapsed_time();
 
 		switch ( operationdetail .get_status() )
 		{
 			case STATUS_EXECUTE:
-				treerow[ treeview_operations_columns .status_icon ] = icon_execute ;
+				treerow[m_treeview_operations_columns.status_icon] = icon_execute;
 				break ;
 			case STATUS_SUCCESS:
-				treerow[treeview_operations_columns.status_icon] = icon_success;
+				treerow[m_treeview_operations_columns.status_icon] = icon_success;
 				break ;
 			case STATUS_ERROR:
-				treerow[ treeview_operations_columns .status_icon ] = icon_error ;
+				treerow[m_treeview_operations_columns.status_icon] = icon_error;
 				break ;
 			case STATUS_INFO:
-				treerow[ treeview_operations_columns .status_icon ] = icon_info ;
+				treerow[m_treeview_operations_columns.status_icon] = icon_info;
 				break ;
 			case STATUS_WARNING:
-				treerow[treeview_operations_columns.status_icon] = icon_warning;
+				treerow[m_treeview_operations_columns.status_icon] = icon_warning;
 				warnings++ ;
 				break ;
 			case STATUS_NONE:
 				static_cast< Glib::RefPtr<Gdk::Pixbuf> >(
-					treerow[ treeview_operations_columns .status_icon ] ) .clear() ;
+					treerow[m_treeview_operations_columns.status_icon]).clear();
 				break ;
 		}
 
@@ -314,8 +314,9 @@ void Dialog_Progress::on_signal_show()
 void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter )
 {
 	dynamic_cast<Gtk::CellRendererText *>( renderer ) ->property_markup() = 
-		static_cast<Gtk::TreeRow>( *iter )[ treeview_operations_columns .operation_description ] ;
+		static_cast<Gtk::TreeRow>(*iter)[m_treeview_operations_columns.operation_description];
 }
+
 
 bool Dialog_Progress::cancel_timeout()
 {
