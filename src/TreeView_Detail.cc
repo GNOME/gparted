@@ -35,11 +35,11 @@ TreeView_Detail::TreeView_Detail()
 {
 	block = false ;
 
-	treestore_detail = Gtk::TreeStore::create(m_treeview_detail_columns);
-	set_model( treestore_detail );
+	m_treestore_detail = Gtk::TreeStore::create(m_treeview_detail_columns);
+	set_model(m_treestore_detail);
 	set_rules_hint( true );
-	treeselection = get_selection();
-	treeselection ->signal_changed() .connect( sigc::mem_fun( *this, &TreeView_Detail::on_selection_changed ) );
+	m_treeselection = get_selection();
+	m_treeselection->signal_changed().connect(sigc::mem_fun(*this, &TreeView_Detail::on_selection_changed));
 
 	//append columns
 	append_column(_("Partition"), m_treeview_detail_columns.path);
@@ -90,7 +90,7 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions )
 	bool show_labels      = false;
 
 	block = true;
-	treestore_detail ->clear() ;
+	m_treestore_detail->clear();
 	block = false;
 
 	load_partitions( partitions, show_names, show_mountpoints, show_labels );
@@ -106,14 +106,16 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions )
 void TreeView_Detail::set_selected( const Partition * partition_ptr )
 {
 	block = true ;
-	set_selected( treestore_detail->children(), partition_ptr );
+	set_selected(m_treestore_detail->children(), partition_ptr);
 	block = false ;
 }
 
+
 void TreeView_Detail::clear()
 {
-	treestore_detail ->clear() ;
+	m_treestore_detail->clear();
 }
+
 
 void TreeView_Detail::load_partitions( const PartitionVector & partitions,
                                        bool & show_names,
@@ -124,7 +126,8 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions,
 	Gtk::TreeRow row ;
 	for ( unsigned int i = 0 ; i < partitions .size() ; i++ ) 
 	{	
-		row = parent_row ? *( treestore_detail ->append( parent_row .children() ) ) : *( treestore_detail ->append() ) ;
+		row = parent_row ? *(m_treestore_detail->append(parent_row.children()))
+		                 : *(m_treestore_detail->append());
 		create_row( row, partitions[i], show_names, show_mountpoints, show_labels );
 
 		if (partitions[i].type == TYPE_EXTENDED)
@@ -243,11 +246,12 @@ void TreeView_Detail::on_row_activated( const Gtk::TreeModel::Path & path, Gtk::
 	signal_partition_activated .emit() ;
 }
 
+
 void TreeView_Detail::on_selection_changed() 
 {
-	if ( ! block && treeselection ->get_selected() != 0 )
+	if (! block && m_treeselection->get_selected() != 0)
 	{
-		Gtk::TreeRow row = static_cast<Gtk::TreeRow>( * treeselection ->get_selected() ) ;
+		Gtk::TreeRow row = static_cast<Gtk::TreeRow>(*m_treeselection->get_selected());
 		signal_partition_selected.emit(row[m_treeview_detail_columns.partition_ptr], true);
 	}
 }

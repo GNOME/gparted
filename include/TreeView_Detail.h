@@ -62,9 +62,9 @@ private:
 	bool on_button_press_event( GdkEventButton * event );
 	void on_row_activated( const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn * column ) ;
 	void on_selection_changed() ;
-	
-	Glib::RefPtr<Gtk::TreeStore> treestore_detail;
-	Glib::RefPtr<Gtk::TreeSelection> treeselection;
+
+	Glib::RefPtr<Gtk::TreeStore>     m_treestore_detail;
+	Glib::RefPtr<Gtk::TreeSelection> m_treeselection;
 
 	bool block ;
 
