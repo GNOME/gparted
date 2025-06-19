@@ -78,21 +78,21 @@ private:
 	Glib::RefPtr<Gdk::Pixbuf> icon_warning;
 
 	Glib::RefPtr<Gtk::TreeStore> treestore_operations;
-	
-	struct treeview_operations_Columns : public Gtk::TreeModelColumnRecord             
+
+	struct TreeView_Operations_Columns : public Gtk::TreeModelColumnRecord
 	{
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
 		Gtk::TreeModelColumn<Glib::ustring> elapsed_time ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > status_icon;
-				
-		treeview_operations_Columns() 
+
+		TreeView_Operations_Columns()
 		{ 
 			add( operation_description );
 			add( elapsed_time );
 			add( status_icon ) ;
 		} 
 	};
-	treeview_operations_Columns treeview_operations_columns;
+	TreeView_Operations_Columns m_treeview_operations_columns;
 
 	const std::vector<Device>& m_devices;
 	std::vector<Operation *> operations ;
