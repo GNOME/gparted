@@ -62,7 +62,7 @@ private:
 	TreeView_Flags_Columns m_treeview_flags_columns;
 
 	const Partition& m_partition;  // (Alias to element in Win_GParted::m_display_device.partitions[] vector).
-	std::map<Glib::ustring, bool> flag_info ;
+	std::map<Glib::ustring, bool> m_flag_info;
 };
 
 

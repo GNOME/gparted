@@ -28,7 +28,7 @@ namespace GParted
 
 
 DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::ustring, bool> flag_info)
- : m_changed(false), m_partition(partition)
+ : m_changed(false), m_partition(partition), m_flag_info(flag_info)
 {
 	set_title( Glib::ustring::compose( _("Manage flags on %1"), partition .get_path() ) );
 	set_resizable( false ) ;
@@ -53,8 +53,6 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	m_treeview_flags.set_size_request(300, -1);
 	get_content_area()->pack_start(m_treeview_flags, Gtk::PACK_SHRINK);
 
-	this ->flag_info = flag_info ;
-	
 	load_treeview() ;
 	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ->grab_focus() ;
 		
@@ -66,7 +64,7 @@ void DialogManageFlags::load_treeview()
 {
 	m_liststore_flags->clear();
 
-	for ( std::map<Glib::ustring, bool>::iterator iter = flag_info .begin() ; iter != flag_info .end() ; ++iter )
+	for (std::map<Glib::ustring, bool>::iterator iter = m_flag_info.begin(); iter != m_flag_info.end(); ++iter)
 	{
 		m_row = *(m_liststore_flags->append());
 		m_row[m_treeview_flags_columns.flag]   = iter->first;
@@ -89,7 +87,7 @@ void DialogManageFlags::on_flag_toggled( const Glib::ustring & path )
 
 	signal_toggle_flag.emit(m_partition, m_row[m_treeview_flags_columns.flag], m_row[m_treeview_flags_columns.status]);
 
-	flag_info = signal_get_flags .emit(m_partition);
+	m_flag_info = signal_get_flags.emit(m_partition);
 	load_treeview() ;
 	
 	set_sensitive( true ) ;
