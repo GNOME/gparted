@@ -386,13 +386,13 @@ void Win_GParted::init_toolbar()
 	toolbutton->set_tooltip_text(_("Apply All Operations"));
 
 	//initialize and pack combo_devices
-	liststore_devices = Gtk::ListStore::create( treeview_devices_columns ) ;
+	liststore_devices = Gtk::ListStore::create(m_treeview_devices_columns);
 	combo_devices .set_model( liststore_devices ) ;
 
-	combo_devices .pack_start( treeview_devices_columns .icon, false ) ;
-	combo_devices .pack_start( treeview_devices_columns .device ) ;
-	combo_devices .pack_start( treeview_devices_columns .size, false ) ;
-	
+	combo_devices.pack_start(m_treeview_devices_columns.icon, false);
+	combo_devices.pack_start(m_treeview_devices_columns.device);
+	combo_devices.pack_start(m_treeview_devices_columns.size, false);
+
 	combo_devices_changed_connection =
 		combo_devices .signal_changed() .connect( sigc::mem_fun(*this, &Win_GParted::combo_devices_changed) );
 
@@ -745,10 +745,11 @@ void Win_GParted::refresh_combo_devices()
 	{
 		//combo...
 		treerow = *( liststore_devices ->append() ) ;
-		treerow[ treeview_devices_columns .icon ] =
-			Utils::mk_pixbuf(*this, Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		treerow[ treeview_devices_columns .device ] = devices[ i ] .get_path() ;
-		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ; 
+		treerow[m_treeview_devices_columns.icon] =
+		                Utils::mk_pixbuf(*this, Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		treerow[m_treeview_devices_columns.device] = devices[i].get_path();
+		treerow[m_treeview_devices_columns.size] =
+		                "(" + Utils::format_size(devices[i].length, devices[i].sector_size) + ")";
 
 		// Devices submenu...
 		Gtk::Box *hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
