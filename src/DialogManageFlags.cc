@@ -39,8 +39,8 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	get_content_area()->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
 	//setup treeview
-	liststore_flags = Gtk::ListStore::create(m_treeview_flags_columns);
-	m_treeview_flags.set_model(liststore_flags);
+	m_liststore_flags = Gtk::ListStore::create(m_treeview_flags_columns);
+	m_treeview_flags.set_model(m_liststore_flags);
 	m_treeview_flags.set_headers_visible(false);
 
 	m_treeview_flags.append_column("", m_treeview_flags_columns.status);
@@ -61,13 +61,14 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	show_all_children() ;
 }
 
+
 void DialogManageFlags::load_treeview()
 {
-	liststore_flags ->clear() ;
+	m_liststore_flags->clear();
 
 	for ( std::map<Glib::ustring, bool>::iterator iter = flag_info .begin() ; iter != flag_info .end() ; ++iter )
 	{
-		m_row = *(liststore_flags->append());
+		m_row = *(m_liststore_flags->append());
 		m_row[m_treeview_flags_columns.flag]   = iter->first;
 		m_row[m_treeview_flags_columns.status] = iter->second;
 	}
@@ -83,7 +84,7 @@ void DialogManageFlags::on_flag_toggled( const Glib::ustring & path )
 
 	m_changed = true;
 
-	m_row = *(liststore_flags->get_iter(path));
+	m_row = *(m_liststore_flags->get_iter(path));
 	m_row[m_treeview_flags_columns.status] = ! m_row[m_treeview_flags_columns.status];
 
 	signal_toggle_flag.emit(partition, m_row[m_treeview_flags_columns.flag], m_row[m_treeview_flags_columns.status]);

@@ -46,7 +46,7 @@ private:
 	Gtk::TreeView m_treeview_flags;
 	Gtk::TreeRow  m_row;
 
-	Glib::RefPtr<Gtk::ListStore> liststore_flags ;
+	Glib::RefPtr<Gtk::ListStore> m_liststore_flags;
 
 	struct TreeView_Flags_Columns : public Gtk::TreeModelColumnRecord
 	{
