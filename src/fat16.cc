@@ -227,7 +227,18 @@ void fat16::read_label(Partition& partition)
 		return;
 	}
 
-	Glib::ustring label = Utils::trim(output);
+	// (#286) Separate fatlabel output using heuristic that the label is on the last
+	// or only line and optional FSCK type messages are before that.
+	Glib::ustring label = Utils::trim_trailing_new_line(output);
+	Glib::ustring::size_type prev_new_line = label.find_last_of('\n');
+	if (prev_new_line != label.npos)
+	{
+		Glib::ustring fsck_messages = label.substr(0, prev_new_line);
+		partition.push_back_message(fsck_messages);
+		label = label.substr(prev_new_line, label.npos);
+	}
+	label = Utils::trim(label);
+
 	if (m_ignore_label_noname && label == "NO NAME")
 		// fatlabel <= 4.1 reported the label as "NO NAME".  Ignore it as it was
 		// very likely read from the the FAT Boot Sector when the FAT file system
