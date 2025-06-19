@@ -42,9 +42,8 @@ public:
 private:
 	void load_treeview() ;
 	void on_flag_toggled( const Glib::ustring & path ) ;
-	
-	
-	Gtk::TreeView treeview_flags ;
+
+	Gtk::TreeView m_treeview_flags;
 	Gtk::TreeRow row ;
 	
 	Glib::RefPtr<Gtk::ListStore> liststore_flags ;

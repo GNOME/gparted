@@ -40,18 +40,18 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 
 	//setup treeview
 	liststore_flags = Gtk::ListStore::create(m_treeview_flags_columns);
-	treeview_flags .set_model( liststore_flags ) ;
-	treeview_flags .set_headers_visible( false ) ;
+	m_treeview_flags.set_model(liststore_flags);
+	m_treeview_flags.set_headers_visible(false);
 
-	treeview_flags.append_column("", m_treeview_flags_columns.status);
-	treeview_flags.append_column("", m_treeview_flags_columns.flag);
-	static_cast<Gtk::CellRendererToggle *>( treeview_flags .get_column_cell_renderer( 0 ) ) 
+	m_treeview_flags.append_column("", m_treeview_flags_columns.status);
+	m_treeview_flags.append_column("", m_treeview_flags_columns.flag);
+	static_cast<Gtk::CellRendererToggle*>(m_treeview_flags.get_column_cell_renderer(0))
 		->property_activatable() = true ;
-	static_cast<Gtk::CellRendererToggle *>( treeview_flags .get_column_cell_renderer( 0 ) ) 
+	static_cast<Gtk::CellRendererToggle*>(m_treeview_flags.get_column_cell_renderer(0))
 		->signal_toggled() .connect( sigc::mem_fun( *this, &DialogManageFlags::on_flag_toggled ) ) ;
 
-	treeview_flags .set_size_request( 300, -1 ) ;
-	get_content_area()->pack_start(treeview_flags, Gtk::PACK_SHRINK);
+	m_treeview_flags.set_size_request(300, -1);
+	get_content_area()->pack_start(m_treeview_flags, Gtk::PACK_SHRINK);
 
 	this ->flag_info = flag_info ;
 	
