@@ -34,30 +34,30 @@ namespace GParted
 TreeView_Detail::TreeView_Detail()
 {
 	block = false ;
-	
-	treestore_detail = Gtk::TreeStore::create( treeview_detail_columns );
+
+	treestore_detail = Gtk::TreeStore::create(m_treeview_detail_columns);
 	set_model( treestore_detail );
 	set_rules_hint( true );
 	treeselection = get_selection();
 	treeselection ->signal_changed() .connect( sigc::mem_fun( *this, &TreeView_Detail::on_selection_changed ) );
 
 	//append columns
-	append_column( _("Partition"), treeview_detail_columns .path );
-	append_column( _("Name"), treeview_detail_columns.name );
-	append_column( _("File System"), treeview_detail_columns .color );
-	append_column( _("Mount Point"), treeview_detail_columns .mountpoint );
-	append_column( _("Label"), treeview_detail_columns .label );
-	append_column( _("Size"), treeview_detail_columns .size );
-	append_column( _("Used"), treeview_detail_columns .used );
-	append_column( _("Unused"), treeview_detail_columns .unused );
-	append_column( _("Flags"), treeview_detail_columns .flags );
+	append_column(_("Partition"), m_treeview_detail_columns.path);
+	append_column(_("Name"), m_treeview_detail_columns.name);
+	append_column(_("File System"), m_treeview_detail_columns.color);
+	append_column(_("Mount Point"), m_treeview_detail_columns.mountpoint);
+	append_column(_("Label"), m_treeview_detail_columns.label);
+	append_column(_("Size"), m_treeview_detail_columns.size);
+	append_column(_("Used"), m_treeview_detail_columns.used);
+	append_column(_("Unused"), m_treeview_detail_columns.unused);
+	append_column(_("Flags"), m_treeview_detail_columns.flags);
 
 	// Tree view column "Partition"; add icon cells.
-	get_column( 0 ) ->pack_start( treeview_detail_columns .icon2, false );
-	get_column( 0 ) ->pack_start( treeview_detail_columns .icon1, false );
+	get_column(0)->pack_start(m_treeview_detail_columns.icon2, false);
+	get_column(0)->pack_start(m_treeview_detail_columns.icon1, false);
 
 	// Tree view column "File System"; add file system text cell.
-	get_column(2)->pack_start(treeview_detail_columns.fsname, true);
+	get_column(2)->pack_start(m_treeview_detail_columns.fsname, true);
 	// Color pixbuf cell is left aligned.
 	get_column(2)->get_first_cell()->property_xalign() = Gtk::ALIGN_START;
 	// File system text cell is left aligned.
@@ -137,7 +137,7 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows,
 {
 	for ( unsigned int t = 0 ; t < rows .size() ; t++ )
 	{
-		if ( * static_cast<const Partition *>( rows[t][treeview_detail_columns.partition_ptr] ) == *partition_ptr )
+		if (*static_cast<const Partition*>(rows[t][m_treeview_detail_columns.partition_ptr]) == *partition_ptr)
 		{
 			if ( inside_extended )
 				expand_all() ;
@@ -161,67 +161,67 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 {
 	const Partition & filesystem_ptn = partition.get_filesystem_partition();
 	if ( filesystem_ptn.busy )
-		treerow[ treeview_detail_columns .icon1 ] = 
-			Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON);
+		treerow[m_treeview_detail_columns.icon1] =
+		                Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON);
 
 	if ( partition.have_messages() > 0 )
 	{
-		if ( ! static_cast< Glib::RefPtr<Gdk::Pixbuf> >( treerow[ treeview_detail_columns .icon1 ] )  )
-			treerow[ treeview_detail_columns .icon1 ] = 
-				Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
+		if (! static_cast<Glib::RefPtr<Gdk::Pixbuf>>(treerow[m_treeview_detail_columns.icon1]))
+			treerow[m_treeview_detail_columns.icon1] =
+			                Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 		else
-			treerow[ treeview_detail_columns .icon2 ] = 
-				Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
+			treerow[m_treeview_detail_columns.icon2] =
+			                Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 	}
 
-	
-	treerow[ treeview_detail_columns .path ] = partition .get_path() ;
+	treerow[m_treeview_detail_columns.path] = partition.get_path();
 
 	//this fixes a weird issue (see #169683 for more info)
 	if (partition.type == TYPE_EXTENDED && partition.busy)
-		treerow[ treeview_detail_columns .path ] = treerow[ treeview_detail_columns .path ] + "   " ;
+		treerow[m_treeview_detail_columns.path] = treerow[m_treeview_detail_columns.path] + "   ";
 
 	// name
-	treerow[treeview_detail_columns.name] = partition.name;
+	treerow[m_treeview_detail_columns.name] = partition.name;
 	if ( ! partition.name.empty() )
 		show_names = true;
 
 	// file system
-	treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf(filesystem_ptn.fstype, 16, 16);
-	treerow[treeview_detail_columns.fsname] = partition.get_filesystem_string();
+	treerow[m_treeview_detail_columns.color] = Utils::get_color_as_pixbuf(filesystem_ptn.fstype, 16, 16);
+	treerow[m_treeview_detail_columns.fsname] = partition.get_filesystem_string();
 
 	// mount point
 	const std::vector<Glib::ustring>& temp_mountpoints = filesystem_ptn.get_mountpoints();
-	treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", temp_mountpoints );
+	treerow[m_treeview_detail_columns.mountpoint] = Glib::build_path( ", ", temp_mountpoints );
 	if ( ! temp_mountpoints.empty() )
 		show_mountpoints = true;
 
 	//label
 	const Glib::ustring& temp_filesystem_label = filesystem_ptn.get_filesystem_label();
-	treerow[treeview_detail_columns.label] = temp_filesystem_label;
+	treerow[m_treeview_detail_columns.label] = temp_filesystem_label;
 	if ( ! temp_filesystem_label.empty() )
 		show_labels = true;
 
 	//size
-	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_sector_length(), partition .sector_size ) ;
-	
+	treerow[m_treeview_detail_columns.size] = Utils::format_size(partition.get_sector_length(), partition.sector_size);
+
 	//used
 	Sector used = partition .get_sectors_used() ;
-	treerow[ treeview_detail_columns .used ] =
+	treerow[m_treeview_detail_columns.used] =
 		used == -1 ? "---" : Utils::format_size( used, partition .sector_size ) ;
 
 	//unused
 	Sector unused = partition .get_sectors_unused() ;
-	treerow[ treeview_detail_columns .unused ] = 
+	treerow[m_treeview_detail_columns.unused] =
 		unused == -1 ? "---" : Utils::format_size( unused, partition .sector_size ) ;
 
 	//flags	
-	treerow[ treeview_detail_columns .flags ] = 
+	treerow[m_treeview_detail_columns.flags] =
 		Glib::build_path( ", ", partition .flags ) ;
 
 	// Hidden column (pointer to partition object)
-	treerow[treeview_detail_columns.partition_ptr] = & partition;
+	treerow[m_treeview_detail_columns.partition_ptr] = &partition;
 }
+
 
 bool TreeView_Detail::on_button_press_event( GdkEventButton * event )
 {
@@ -248,8 +248,9 @@ void TreeView_Detail::on_selection_changed()
 	if ( ! block && treeselection ->get_selected() != 0 )
 	{
 		Gtk::TreeRow row = static_cast<Gtk::TreeRow>( * treeselection ->get_selected() ) ;
-		signal_partition_selected.emit( row[treeview_detail_columns.partition_ptr], true );
+		signal_partition_selected.emit(row[m_treeview_detail_columns.partition_ptr], true);
 	}
 }
+
 	
 } //GParted
