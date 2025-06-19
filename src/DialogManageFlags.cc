@@ -40,12 +40,12 @@ DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib
 	get_content_area()->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
 	//setup treeview
-	liststore_flags = Gtk::ListStore::create( treeview_flags_columns ) ;
+	liststore_flags = Gtk::ListStore::create(m_treeview_flags_columns);
 	treeview_flags .set_model( liststore_flags ) ;
 	treeview_flags .set_headers_visible( false ) ;
 
-	treeview_flags .append_column( "", treeview_flags_columns .status ) ;
-	treeview_flags .append_column( "", treeview_flags_columns .flag ) ;
+	treeview_flags.append_column("", m_treeview_flags_columns.status);
+	treeview_flags.append_column("", m_treeview_flags_columns.flag);
 	static_cast<Gtk::CellRendererToggle *>( treeview_flags .get_column_cell_renderer( 0 ) ) 
 		->property_activatable() = true ;
 	static_cast<Gtk::CellRendererToggle *>( treeview_flags .get_column_cell_renderer( 0 ) ) 
@@ -69,10 +69,11 @@ void DialogManageFlags::load_treeview()
 	for ( std::map<Glib::ustring, bool>::iterator iter = flag_info .begin() ; iter != flag_info .end() ; ++iter )
 	{
 		row = *( liststore_flags ->append() ) ;
-		row[ treeview_flags_columns .flag ] = iter ->first ;
-		row[ treeview_flags_columns .status ] = iter ->second ;
+		row[m_treeview_flags_columns.flag]   = iter->first;
+		row[m_treeview_flags_columns.status] = iter->second;
 	}
 }
+
 
 void DialogManageFlags::on_flag_toggled( const Glib::ustring & path ) 
 {
@@ -84,9 +85,9 @@ void DialogManageFlags::on_flag_toggled( const Glib::ustring & path )
 	any_change = true ;
 
 	row = *( liststore_flags ->get_iter( path ) ) ;
-	row[ treeview_flags_columns .status ] = ! row[ treeview_flags_columns .status ] ;
+	row[m_treeview_flags_columns.status] = ! row[m_treeview_flags_columns.status];
 
-	signal_toggle_flag .emit( partition, row[ treeview_flags_columns .flag ], row[ treeview_flags_columns .status ] ) ;
+	signal_toggle_flag.emit(partition, row[m_treeview_flags_columns.flag], row[m_treeview_flags_columns.status]);
 
 	flag_info = signal_get_flags .emit( partition ) ;
 	load_treeview() ;
