@@ -84,7 +84,7 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > icon2 ;
 		Gtk::TreeModelColumn<Glib::ustring> flags;
 		Gtk::TreeModelColumn<const Partition *> partition_ptr;  // Hidden column.  (Alias to element in
-		                                                        // Win_GParted::display_partitions[] vector).
+		                                                        // Win_GParted::m_display_device.partitions[] vector).
 
 		TreeView_Detail_Columns()
 		{
