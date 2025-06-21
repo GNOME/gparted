@@ -1006,7 +1006,7 @@ void Win_GParted::Refresh_Visual()
 	//     class to update it's selection.
 	//
 	//     Data owner: const Partition * Win_GParted::selected_partition_ptr
-	//     Aliases:    Win_GParted::display_partitions[]
+	//     Aliases:    Win_GParted::m_display_device.partitions[]
 	//     Lifetime:   Valid until the next call to Refresh_Visual().
 	//     Call chain: (example clicking on a partition in the disk graphic)
 	//

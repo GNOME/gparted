@@ -48,7 +48,7 @@ private:
 	// Signal handler
 	bool drawingarea_on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
-	const Partition & partition;  // (Alias to element in Win_GParted::display_partitions[] vector).
+	const Partition& partition;  // (Alias to element in Win_GParted::m_display_device.partitions[] vector).
 
 	Gtk::Box *hbox;
 	Gtk::DrawingArea drawingarea ;
