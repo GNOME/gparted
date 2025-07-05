@@ -3179,8 +3179,8 @@ void Win_GParted::activate_manage_flags()
 	
 	dialog .run() ;
 	dialog .hide() ;
-	
-	if ( dialog .any_change )
+
+	if (dialog.m_changed)
 		menu_gparted_refresh_devices() ;
 }
 

@@ -37,8 +37,8 @@ public:
 	sigc::signal< std::map<Glib::ustring, bool>, const Partition & > signal_get_flags ;
 	sigc::signal< bool, const Partition &, const Glib::ustring &, bool > signal_toggle_flag ;
 
-	bool any_change ;
-	
+	bool m_changed;
+
 private:
 	void load_treeview() ;
 	void on_flag_toggled( const Glib::ustring & path ) ;
