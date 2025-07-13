@@ -32,15 +32,16 @@ public:
 			 const Partition & partition_new ) ;
 	virtual ~OperationFormat();
 
+	OperationFormat(const OperationFormat& src) = delete;             // Copy construction prohibited
+	OperationFormat& operator=(const OperationFormat& rhs) = delete;  // Copy assignment prohibited
+
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
-	OperationFormat( const OperationFormat & src );              // Not implemented copy constructor
-	OperationFormat & operator=( const OperationFormat & rhs );  // Not implemented copy assignment operator
-
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
-} ;
+};
+
 
 } //GParted
 

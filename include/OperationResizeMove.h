@@ -32,12 +32,12 @@ public:
 			     const Partition & partition_new ) ;
 	virtual ~OperationResizeMove();
 
+	OperationResizeMove(const OperationResizeMove& src) = delete;             // Copy construction prohibited
+	OperationResizeMove& operator=(const OperationResizeMove& rhs) = delete;  // Copy assignment prohibited
+
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
-	OperationResizeMove( const OperationResizeMove & src );              // Not implemented copy constructor
-	OperationResizeMove & operator=( const OperationResizeMove & rhs );  // Not implemented copy assignment operator
-
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 

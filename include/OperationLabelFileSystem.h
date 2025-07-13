@@ -32,15 +32,16 @@ public:
 	                          const Partition & partition_new );
 	virtual ~OperationLabelFileSystem();
 
+	OperationLabelFileSystem(const OperationLabelFileSystem& src) = delete;             // Copy construction prohibited
+	OperationLabelFileSystem& operator=(const OperationLabelFileSystem& rhs) = delete;  // Copy assignment prohibited
+
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
-	OperationLabelFileSystem( const OperationLabelFileSystem & src );              // Not implemented copy constructor
-	OperationLabelFileSystem & operator=( const OperationLabelFileSystem & rhs );  // Not implemented copy assignment operator
-
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
-} ;
+};
+
 
 } //GParted
 

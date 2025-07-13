@@ -30,12 +30,12 @@ public:
 	OperationDelete( const Device & device, const Partition & partition_orig ) ;
 	virtual ~OperationDelete();
 
+	OperationDelete(const OperationDelete& src) = delete;             // Copy construction prohibited
+	OperationDelete& operator=(const OperationDelete& rhs) = delete;  // Copy assignment prohibited
+
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
-	OperationDelete( const OperationDelete & src );              // Not implemented copy constructor
-	OperationDelete & operator=( const OperationDelete & rhs );  // Not implemented copy assignment operator
-
 	Partition & get_partition_new();
 	const Partition & get_partition_new() const;
 

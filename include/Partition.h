@@ -70,6 +70,8 @@ public:
 	virtual ~Partition();
 	virtual Partition * clone() const;
 
+	Partition& operator=(Partition& rhs) = delete;  // Copy assignment prohibited
+
 	void Reset() ;
 	
 	//simple Set-functions.  only for convenience, since most members are public
@@ -180,8 +182,6 @@ public:
 	Byte_Value fs_block_size;  // Block size of of the file system, or -1 when unknown.
 
 private:
-	Partition & operator=( Partition & rhs );  // Not implemented copy assignment operator
-
 	static void get_usage_triple_helper( Sector stot, Sector s1, Sector s2, Sector s3, int imax, int & i1, int & i2, int & i3 ) ;
 
 	Sector calc_significant_unallocated_sectors() const ;

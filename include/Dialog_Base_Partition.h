@@ -44,6 +44,9 @@ public:
 	Dialog_Base_Partition(const Device& device);
 	~Dialog_Base_Partition( ) ;
 
+	Dialog_Base_Partition(const Dialog_Base_Partition& src) = delete;             // Copy construction prohibited
+	Dialog_Base_Partition& operator=(const Dialog_Base_Partition& rhs) = delete;  // Copy assignment prohibited
+
 	void Set_Resizer( bool extended ) ;
 	const Partition & Get_New_Partition();
 
@@ -102,9 +105,6 @@ protected:
 	FS_Limits fs_limits;  // Working copy of file system min/max size limits
 
 private:
-	Dialog_Base_Partition( const Dialog_Base_Partition & src );              // Not implemented copy constructor
-	Dialog_Base_Partition & operator=( const Dialog_Base_Partition & rhs );  // Not implemented copy assignment operator
-
 	void update_button_resize_move_sensitivity();
 
 	Gtk::Box vbox_resize_move;

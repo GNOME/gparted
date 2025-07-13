@@ -40,13 +40,12 @@ public:
 	                     const std::vector<FS> & FILESYSTEMS );
 	~Dialog_Partition_New();
 
+	Dialog_Partition_New(const Dialog_Partition_New& src) = delete;             // Copy construction prohibited
+	Dialog_Partition_New& operator=(const Dialog_Partition_New& rhs) = delete;  // Copy assignment prohibited
+
 	const Partition & Get_New_Partition();
 
 private:
-	Dialog_Partition_New( const Dialog_Partition_New & src );              // Not implemented copy constructor
-	Dialog_Partition_New & operator=( const Dialog_Partition_New & rhs );  // Not implemented copy assignment operator
-
-
 	void set_data( const Device & device,
 	               const Partition & partition,
 	               bool any_extended,

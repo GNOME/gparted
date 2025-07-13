@@ -36,6 +36,9 @@ public:
 	ProgressBar();
 	~ProgressBar();
 
+	ProgressBar(const ProgressBar& src) = delete;             // Copy construction prohibited
+	ProgressBar& operator=(const ProgressBar& rhs) = delete;  // Copy assignment prohibited
+
 	void start(double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_TIME_REMAINING);
 	void update( double progress );
 	void stop();
@@ -44,9 +47,6 @@ public:
 	const Glib::ustring& get_text() const;
 
 private:
-	ProgressBar( const ProgressBar & src );              // Not implemented copy constructor
-	ProgressBar & operator=( const ProgressBar & rhs );  // Not implemented copy assignment operator
-
 	void do_update();
 
 	bool              m_running;    // Is this progress bar running?

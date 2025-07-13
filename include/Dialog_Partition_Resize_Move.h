@@ -36,10 +36,10 @@ public:
 	                             const PartitionVector& partitions);
 	~Dialog_Partition_Resize_Move();
 
-private:
-	Dialog_Partition_Resize_Move( const Dialog_Partition_Resize_Move & src );              // Not implemented copy constructor
-	Dialog_Partition_Resize_Move & operator=( const Dialog_Partition_Resize_Move & rhs );  // Not implemented assignment operator
+	Dialog_Partition_Resize_Move(const Dialog_Partition_Resize_Move& src) = delete;             // Copy construction prohibited
+	Dialog_Partition_Resize_Move& operator=(const Dialog_Partition_Resize_Move& rhs) = delete;  // Copy assignment prohibited
 
+private:
 	void set_data( const Partition & selected_partition, const PartitionVector & partitions );
 	void Resize_Move_Normal( const PartitionVector & partitions );
 	void Resize_Move_Extended( const PartitionVector & partitions );

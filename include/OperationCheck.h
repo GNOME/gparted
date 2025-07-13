@@ -30,15 +30,16 @@ public:
 	OperationCheck( const Device & device, const Partition & partition ) ;
 	virtual ~OperationCheck();
 
+	OperationCheck(const OperationCheck& src) = delete;             // Copy construction prohibited
+	OperationCheck& operator=(const OperationCheck& rhs) = delete;  // Copy assignment prohibited
+
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
-	OperationCheck( const OperationCheck & src );              // Not implemented copy constructor
-	OperationCheck & operator=( const OperationCheck & rhs );  // Not implemented copy assignment operator
-
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
-} ;
+};
+
 
 } //GParted
 

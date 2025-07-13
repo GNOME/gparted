@@ -33,15 +33,16 @@ public:
 	                   ) ;
 	virtual ~OperationChangeUUID();
 
+	OperationChangeUUID(const OperationChangeUUID& src) = delete;             // Copy construction prohibited
+	OperationChangeUUID& operator=(const OperationChangeUUID& rhs) = delete;  // Copy assignment prohibited
+
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
-	OperationChangeUUID( const OperationChangeUUID & src );              // Not implemented copy constructor
-	OperationChangeUUID & operator=( const OperationChangeUUID & rhs );  // Not implemented copy assignment operator
-
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
-} ;
+};
+
 
 } //GParted
 

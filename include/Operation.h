@@ -45,6 +45,9 @@ public:
 	Operation() ;
 	virtual ~Operation() {}
 
+	Operation(const Operation& src) = delete;             // Copy construction prohibited
+	Operation& operator=(const Operation& rhs) = delete;  // Copy assignment prohibited
+
 	Partition & get_partition_original();
 	const Partition & get_partition_original() const;
 	virtual Partition & get_partition_new();
@@ -73,19 +76,8 @@ protected:
 
 	Partition * partition_original;
 	Partition * partition_new;
-
-private:
-	// Disable compiler generated copy constructor and copy assignment operator by
-	// providing private declarations and no definition.  Code which tries to copy
-	// construct or copy assign this class will fail to compile.
-	// References:
-	// *   Disable copy constructor
-	//     http://stackoverflow.com/questions/6077143/disable-copy-constructor
-	// *   Disable compiler-generated copy-assignment operator [duplicate]
-	//     http://stackoverflow.com/questions/7823845/disable-compiler-generated-copy-assignment-operator
-	Operation( const Operation & src );              // Not implemented copy constructor
-	Operation & operator=( const Operation & rhs );  // Not implemented copy assignment operator
 };
+
 
 } //GParted
 

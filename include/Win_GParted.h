@@ -50,10 +50,10 @@ public:
 	Win_GParted( const std::vector<Glib::ustring> & user_devices ) ;
 	~Win_GParted();
 
-private:
-	Win_GParted( const Win_GParted & src );              // Not implemented copy constructor
-	Win_GParted & operator=( const Win_GParted & rhs );  // Not implemented copy assignment operator
+	Win_GParted(const Win_GParted& src) = delete;             // Copy construction prohibited
+	Win_GParted& operator=(const Win_GParted& rhs) = delete;  // Copy assignment prohibited
 
+private:
 	void init_menubar() ;
 	void init_toolbar() ;
 	void init_partition_menu() ;
