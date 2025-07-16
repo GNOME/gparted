@@ -28,7 +28,7 @@ namespace GParted
 class fat16 : public FileSystem
 {
 public:
-	fat16(enum FSType fstype) : m_specific_fstype(fstype), m_ignore_label_noname(false)  {};
+	fat16(FSType fstype) : m_specific_fstype(fstype), m_ignore_label_noname(false)  {};
 
 	const Glib::ustring & get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) const;
 	FS get_filesystem_support() ;
@@ -44,8 +44,8 @@ private:
 	const Glib::ustring sanitize_label( const Glib::ustring & label ) const;
 	static Glib::ustring remove_spaces(const Glib::ustring& str);
 
-	const enum FSType m_specific_fstype;
-	bool              m_ignore_label_noname;
+	const FSType m_specific_fstype;
+	bool         m_ignore_label_noname;
 };
 
 

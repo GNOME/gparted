@@ -32,7 +32,7 @@ namespace GParted
 class ext2 : public FileSystem
 {
 public:
-	ext2(enum FSType fstype) : m_specific_fstype(fstype), m_fs_block_size(0LL), m_force_auto_64bit(false)  {};
+	ext2(FSType fstype) : m_specific_fstype(fstype), m_fs_block_size(0LL), m_force_auto_64bit(false)  {};
 
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
@@ -56,8 +56,8 @@ private:
 	void check_repair_progress( OperationDetail *operationdetail );
 	void copy_progress( OperationDetail *operationdetail );
 
-	const enum FSType m_specific_fstype;
-	Glib::ustring     m_mkfs_cmd;
+	const FSType  m_specific_fstype;
+	Glib::ustring m_mkfs_cmd;
 
 	Byte_Value m_fs_block_size;     // Holds file system block size for the copy_progress() callback
 	bool       m_force_auto_64bit;  // Manually setting ext4 64bit feature on creation
