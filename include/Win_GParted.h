@@ -45,9 +45,10 @@ namespace GParted
 
 enum MergeType
 {
-	MERGE_LAST_WITH_PREV = 0,
-	MERGE_LAST_WITH_ANY  = 1,
-	MERGE_ALL_ADJACENT   = 2
+	MERGE_LAST_WITH_PREV          = 0,
+	MERGE_LAST_WITH_ANY           = 1,
+	MERGE_ALL_ADJACENT            = 2,
+	MERGE_LAST_WITH_PREV_SAME_PTN = 3
 };
 
 class Win_GParted : public Gtk::Window
@@ -77,6 +78,7 @@ private:
 	void Add_Operation( const Device & device, Operation * operation );
 	bool merge_two_operations( unsigned int first, unsigned int second );
 	void merge_operations( MergeType mergetype );
+	static bool operations_affect_same_partition(const Operation& first_op, const Operation& second_op);
 	void Refresh_Visual();
 	bool valid_display_partition_ptr( const Partition * partition_ptr );
 	bool Quit_Check_Operations();
