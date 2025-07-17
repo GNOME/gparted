@@ -2148,7 +2148,6 @@ void Win_GParted::activate_resize()
 		// it again with the new size and position ( unless it's an EXTENDED )
 		if ( selected_partition_ptr->status == STAT_NEW && selected_partition_ptr->type != TYPE_EXTENDED )
 		{
-			resized_ptn->status = STAT_NEW;
 			// On a partition which is pending creation only resize/move and
 			// format operations are possible.  These operations are always
 			// mergeable with the pending operation which will create the
