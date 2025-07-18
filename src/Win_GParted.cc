@@ -2627,6 +2627,7 @@ void Win_GParted::activate_format( FSType new_fs )
 		// is added as a separate action when full LUKS read-write support is
 		// implemented.
 		temp_ptn = new Partition;
+		temp_ptn->status = selected_partition_ptr->status;
 	}
 	else
 	{
