@@ -918,8 +918,7 @@ bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second 
 // new                 *                   none                            activate_new()
 // delete              Real                none                            activate_delete()
 // delete              New                 MERGE_ALL_ADJACENT              activate_delete()
-// format              Real                MERGE_LAST_WITH_PREV            activate_format()
-// format              New                 MERGE_LAST_WITH_ANY             activate_format()
+// format              *                   MERGE_LAST_WITH_PREV_SAME_PTN   activate_format()
 // check               Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_check()
 // label file system   Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_label_filesystem()
 // name partition      Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_name_partition()
@@ -2714,30 +2713,13 @@ void Win_GParted::activate_format( FSType new_fs )
 	}
 	else
 	{
-		// When formatting a partition which already exists on the disk, all
-		// possible operations could be pending so only try merging with the
-		// previous operation.
-		MergeType mergetype = MERGE_LAST_WITH_PREV;
-
-		// If selected partition is NEW we simply remove the NEW operation from
-		// the list and add it again with the new file system
-		if ( selected_partition_ptr->status == STAT_NEW )
-		{
-			// On a partition which is pending creation only resize/move and
-			// format operations are possible.  These operations are always
-			// mergeable with the pending operation which will create the
-			// partition.  Hence merge with any earlier operations to achieve
-			// this.
-			mergetype = MERGE_LAST_WITH_ANY;
-		}
-
 		Operation * operation = new OperationFormat( devices[current_device],
 		                                             *selected_partition_ptr,
 		                                             *temp_ptn );
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
 
 		Add_Operation( devices[current_device], operation );
-		merge_operations( mergetype );
+		merge_operations(MERGE_LAST_WITH_PREV_SAME_PTN);
 
 		show_operationslist();
 	}
