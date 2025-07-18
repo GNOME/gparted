@@ -880,6 +880,7 @@ void Win_GParted::add_operation(const Device& device, Operation* operation)
 
 	operation->create_description();
 	operations.push_back(operation);
+	merge_operations();
 }
 
 
@@ -901,25 +902,9 @@ bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second 
 	return false;
 }
 
-// Try to merge pending operations in the operations[] vector.
-//
-// Summary of the operation merging enablement coded into the ::activate_*() methods:
-//
-// Operation type      Partition status    Mergeable   Method
-// -----------------   ----------------    ---------   -----------------
-// resize/move         *                   Yes         activate_resize()
-// paste               *                   No          activate_paste()
-// new                 *                   No          activate_new()
-// delete              *                   No          activate_delete()
-// format              *                   Yes         activate_format()
-// check               Real [1]            Yes         activate_check()
-// label file system   Real [1]            Yes         activate_label_filesystem()
-// name partition      Real [1]            Yes         activate_name_partition()
-// new UUID            Real [1]            Yes         activate_change_uuid()
-//
-// [1] The UI only allows these operations to be applied to real partitions; where as the
-//     other mergeable operations can be applied to both real partitions and new, pending
-//     create partitions.
+
+// Try to merge the newly added operation with a previous operation affecting the same
+// partition(s) in the operations[] vector.
 void Win_GParted::merge_operations()
 {
 	unsigned int num_ops = operations.size();
@@ -1061,7 +1046,6 @@ void Win_GParted::Refresh_Visual()
 	//
 	//         Win_GParted::activate_label_filesystem()
 	//             Win_GParted::add_operation(devices[current_device], operation)
-	//             Win_GParted::merge_operations()
 	//             Win_GParted::show_operationslist()
 	//                 Win_GParted::Refresh_Visual()
 	//
@@ -2140,7 +2124,6 @@ void Win_GParted::activate_resize()
 		}
 
 		add_operation(devices[current_device], operation);
-		merge_operations();
 	}
 
 	show_operationslist() ;
@@ -2678,7 +2661,6 @@ void Win_GParted::activate_format( FSType new_fs )
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
 
 		add_operation(devices[current_device], operation);
-		merge_operations();
 
 		show_operationslist();
 	}
@@ -3222,7 +3204,6 @@ void Win_GParted::activate_check()
 	operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 	add_operation(devices[current_device], operation);
-	merge_operations();
 
 	show_operationslist() ;
 }
@@ -3254,7 +3235,6 @@ void Win_GParted::activate_label_filesystem()
 		part_temp = nullptr;
 
 		add_operation(devices[current_device], operation);
-		merge_operations();
 
 		show_operationslist() ;
 	}
@@ -3286,7 +3266,6 @@ void Win_GParted::activate_name_partition()
 		part_temp = nullptr;
 
 		add_operation(devices[current_device], operation);
-		merge_operations();
 
 		show_operationslist();
 	}
@@ -3342,7 +3321,6 @@ void Win_GParted::activate_change_uuid()
 	temp_ptn = nullptr;
 
 	add_operation(devices[current_device], operation);
-	merge_operations();
 
 	show_operationslist() ;
 }
