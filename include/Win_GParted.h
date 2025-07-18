@@ -68,7 +68,7 @@ private:
 	void hide_pulsebar();
 	void Fill_Label_Device_Info( bool clear = false );
 
-	void Add_Operation( const Device & device, Operation * operation );
+	void add_operation(const Device& device, Operation* operation);
 	bool merge_two_operations( unsigned int first, unsigned int second );
 	void merge_operations();
 	static bool operations_affect_same_partition(const Operation& first_op, const Operation& second_op);
