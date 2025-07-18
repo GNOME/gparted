@@ -913,8 +913,7 @@ bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second 
 //
 // Operation type      Partition status    Merge type                      Method
 // -----------------   ----------------    -----------------------------   -----------------
-// resize/move         Real                MERGE_LAST_WITH_PREV            activate_resize()
-// resize/move         New                 MERGE_LAST_WITH_ANY             activate_resize()
+// resize/move         *                   MERGE_LAST_WITH_PREV_SAME_PTN   activate_resize()
 // paste               *                   none                            activate_paste()
 // new                 *                   none                            activate_new()
 // delete              Real                none                            activate_delete()
@@ -2139,23 +2138,6 @@ void Win_GParted::activate_resize()
 		Partition * resized_ptn = selected_partition_ptr->clone();
 		resized_ptn->resize( dialog.Get_New_Partition() );
 
-		// When resizing/moving a partition which already exists on the disk all
-		// possible operations could be pending so only try merging with the
-		// previous operation.
-		MergeType mergetype = MERGE_LAST_WITH_PREV;
-
-		// If selected partition is NEW we simply remove the NEW operation from the list and add
-		// it again with the new size and position ( unless it's an EXTENDED )
-		if ( selected_partition_ptr->status == STAT_NEW && selected_partition_ptr->type != TYPE_EXTENDED )
-		{
-			// On a partition which is pending creation only resize/move and
-			// format operations are possible.  These operations are always
-			// mergeable with the pending operation which will create the
-			// partition.  Hence merge with any earlier operations to achieve
-			// this.
-			mergetype = MERGE_LAST_WITH_ANY;
-		}
-
 		Operation * operation = new OperationResizeMove( devices[current_device],
 		                                                 *selected_partition_ptr,
 		                                                 *resized_ptn );
@@ -2193,7 +2175,7 @@ void Win_GParted::activate_resize()
 		}
 
 		Add_Operation( devices[current_device], operation );
-		merge_operations( mergetype );
+		merge_operations(MERGE_LAST_WITH_PREV_SAME_PTN);
 	}
 
 	show_operationslist() ;
