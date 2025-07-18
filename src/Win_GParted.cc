@@ -916,8 +916,7 @@ bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second 
 // resize/move         *                   MERGE_LAST_WITH_PREV_SAME_PTN   activate_resize()
 // paste               *                   none                            activate_paste()
 // new                 *                   none                            activate_new()
-// delete              Real                none                            activate_delete()
-// delete              New                 MERGE_ALL_ADJACENT              activate_delete()
+// delete              *                   none                            activate_delete()
 // format              *                   MERGE_LAST_WITH_PREV_SAME_PTN   activate_format()
 // check               Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_check()
 // label file system   Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_label_filesystem()
@@ -2565,13 +2564,6 @@ void Win_GParted::activate_delete()
 				new_count = operations[t]->get_partition_new().partition_number;
 			
 		new_count += 1 ;
-
-		// After deleting all operations for the never applied partition creation,
-		// try to merge all remaining adjacent operations to catch any which are
-		// newly adjacent and can now be merged.  (Applies to resize/move and
-		// format operations on real, already existing partitions which are only
-		// merged when adjacent).
-		merge_operations( MERGE_ALL_ADJACENT );
 
 		Refresh_Visual(); 
 				
