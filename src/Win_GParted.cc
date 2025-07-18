@@ -905,73 +905,44 @@ bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second 
 	return false;
 }
 
-// Try to merge pending operations in the operations[] vector using the specified merge
-// type.
+// Try to merge pending operations in the operations[] vector.
 //
-// Summary of all the operation merging rules for each operation type coded into the
-// ::activate_*() methods:
+// Summary of the operation merging enablement coded into the ::activate_*() methods:
 //
-// Operation type      Partition status    Merge type                      Method
-// -----------------   ----------------    -----------------------------   -----------------
-// resize/move         *                   MERGE_LAST_WITH_PREV_SAME_PTN   activate_resize()
-// paste               *                   none                            activate_paste()
-// new                 *                   none                            activate_new()
-// delete              *                   none                            activate_delete()
-// format              *                   MERGE_LAST_WITH_PREV_SAME_PTN   activate_format()
-// check               Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_check()
-// label file system   Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_label_filesystem()
-// name partition      Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_name_partition()
-// new UUID            Real [1]            MERGE_LAST_WITH_PREV_SAME_PTN   activate_change_uuid()
+// Operation type      Partition status    Mergeable   Method
+// -----------------   ----------------    ---------   -----------------
+// resize/move         *                   Yes         activate_resize()
+// paste               *                   No          activate_paste()
+// new                 *                   No          activate_new()
+// delete              *                   No          activate_delete()
+// format              *                   Yes         activate_format()
+// check               Real [1]            Yes         activate_check()
+// label file system   Real [1]            Yes         activate_label_filesystem()
+// name partition      Real [1]            Yes         activate_name_partition()
+// new UUID            Real [1]            Yes         activate_change_uuid()
 //
 // [1] The UI only allows these operations to be applied to real partitions; where as the
 //     other mergeable operations can be applied to both real partitions and new, pending
 //     create partitions.
-void Win_GParted::merge_operations( MergeType mergetype )
+void Win_GParted::merge_operations()
 {
 	unsigned int num_ops = operations.size();
 	if ( num_ops <= 1 )
 		return;  // Nothing to merge.  One or fewer operations.
 
-	switch ( mergetype )
+	// Find previous operation affecting the same partition(s).  Stop searching and
+	// attempt merge.
+	// WARNING:
+	// Index into operations[] vector counts backwards stopping at -1, hence needing
+	// to use signed int.
+	unsigned int candidate = num_ops-1;
+	for (signed int i = static_cast<signed int>(candidate)-1; i >= 0; i--)
 	{
-		case MERGE_LAST_WITH_PREV:
-			merge_two_operations( num_ops-2, num_ops-1 );
-			break;
-
-		case MERGE_LAST_WITH_ANY:
-			for ( unsigned int i = 0 ; i < num_ops-1 ; i ++ )
-			{
-				if ( merge_two_operations( i, num_ops-1 ) )
-					break;
-			}
-			break;
-
-		case MERGE_ALL_ADJACENT:
-			// Must check against operations.size() as looping continues after
-			// merging which might have reduced the number of items in the
-			// vector.
-			for ( unsigned int i = 0 ; i < operations.size()-1 ; i ++ )
-			{
-				merge_two_operations( i, i+1 );
-			}
-			break;
-
-		case MERGE_LAST_WITH_PREV_SAME_PTN:
-			// Find previous operation affecting the same partition(s).  Stop
-			// searching and attempt merge.
-			// WARNING:
-			// Index into operations[] vector counts backwards stopping at -1,
-			// hence needing to use signed int.
-			unsigned int candidate = num_ops-1;
-			for (signed int i = static_cast<signed int>(candidate)-1; i >= 0; i--)
-			{
-				if (operations_affect_same_partition(*operations[i], *operations[candidate]))
-				{
-					merge_two_operations(i, candidate);
-					return;
-				}
-			}
-			break;
+		if (operations_affect_same_partition(*operations[i], *operations[candidate]))
+		{
+			merge_two_operations(i, candidate);
+			return;
+		}
 	}
 }
 
@@ -1094,7 +1065,7 @@ void Win_GParted::Refresh_Visual()
 	//
 	//         Win_GParted::activate_label_filesystem()
 	//             Win_GParted::Add_Operation( operation )
-	//             Win_GParted::merge_operations( ... )
+	//             Win_GParted::merge_operations()
 	//             Win_GParted::show_operationslist()
 	//                 Win_GParted::Refresh_Visual()
 	//
@@ -2173,7 +2144,7 @@ void Win_GParted::activate_resize()
 		}
 
 		Add_Operation( devices[current_device], operation );
-		merge_operations(MERGE_LAST_WITH_PREV_SAME_PTN);
+		merge_operations();
 	}
 
 	show_operationslist() ;
@@ -2711,7 +2682,7 @@ void Win_GParted::activate_format( FSType new_fs )
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
 
 		Add_Operation( devices[current_device], operation );
-		merge_operations(MERGE_LAST_WITH_PREV_SAME_PTN);
+		merge_operations();
 
 		show_operationslist();
 	}
@@ -3255,7 +3226,7 @@ void Win_GParted::activate_check()
 	operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 	Add_Operation( devices[current_device], operation );
-	merge_operations(MERGE_LAST_WITH_PREV_SAME_PTN);
+	merge_operations();
 
 	show_operationslist() ;
 }
@@ -3287,7 +3258,7 @@ void Win_GParted::activate_label_filesystem()
 		part_temp = nullptr;
 
 		Add_Operation( devices[current_device], operation );
-		merge_operations(MERGE_LAST_WITH_PREV_SAME_PTN);
+		merge_operations();
 
 		show_operationslist() ;
 	}
@@ -3319,7 +3290,7 @@ void Win_GParted::activate_name_partition()
 		part_temp = nullptr;
 
 		Add_Operation( devices[current_device], operation );
-		merge_operations(MERGE_LAST_WITH_PREV_SAME_PTN);
+		merge_operations();
 
 		show_operationslist();
 	}
@@ -3375,7 +3346,7 @@ void Win_GParted::activate_change_uuid()
 	temp_ptn = nullptr;
 
 	Add_Operation( devices[current_device], operation );
-	merge_operations(MERGE_LAST_WITH_PREV_SAME_PTN);
+	merge_operations();
 
 	show_operationslist() ;
 }
