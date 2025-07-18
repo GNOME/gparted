@@ -2641,6 +2641,7 @@ void Win_GParted::activate_format( FSType new_fs )
 		// before temp_ptn pointer is deallocated.
 		Partition & temp_filesystem_ptn = temp_ptn->get_filesystem_partition();
 		temp_filesystem_ptn.Reset();
+		temp_filesystem_ptn.status = filesystem_ptn.status;
 		temp_filesystem_ptn.Set( filesystem_ptn.device_path,
 		                         filesystem_ptn.get_path(),
 		                         filesystem_ptn.partition_number,
@@ -2721,7 +2722,6 @@ void Win_GParted::activate_format( FSType new_fs )
 		// the list and add it again with the new file system
 		if ( selected_partition_ptr->status == STAT_NEW )
 		{
-			temp_ptn->status = STAT_NEW;
 			// On a partition which is pending creation only resize/move and
 			// format operations are possible.  These operations are always
 			// mergeable with the pending operation which will create the
