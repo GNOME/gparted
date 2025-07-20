@@ -879,52 +879,37 @@ void Win_GParted::add_operation(const Device& device, Operation* operation)
 	}
 
 	operation->create_description();
-	operations.push_back(operation);
-	merge_operations();
-}
 
-
-// Try to merge the second operation into the first in the operations[] vector.
-bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second )
-{
-	unsigned int num_ops = operations.size();
-	if ( first >= num_ops-1 )
-		return false;
-	if ( first >= second || second >= num_ops )
-		return false;
-
-	if ( operations[first]->merge_operations( *operations[second] ) )
+	if (merge_operation(*operation))
 	{
-		remove_operation( second );
-		return true;
+		// The operation was merged with an existing one already in the list so
+		// it's not wanted any more.
+		delete operation;
+		operation = nullptr;
+		return;
 	}
 
-	return false;
+	operations.push_back(operation);
 }
 
 
-// Try to merge the newly added operation with a previous operation affecting the same
+// Try to merge the candidate operation with a previous operation affecting the same
 // partition(s) in the operations[] vector.
-void Win_GParted::merge_operations()
+bool Win_GParted::merge_operation(const Operation& candidate)
 {
-	unsigned int num_ops = operations.size();
-	if ( num_ops <= 1 )
-		return;  // Nothing to merge.  One or fewer operations.
-
 	// Find previous operation affecting the same partition(s).  Stop searching and
 	// attempt merge.
 	// WARNING:
 	// Index into operations[] vector counts backwards stopping at -1, hence needing
 	// to use signed int.
-	unsigned int candidate = num_ops-1;
-	for (signed int i = static_cast<signed int>(candidate)-1; i >= 0; i--)
+	for (signed int i = static_cast<signed int>(operations.size())-1; i >= 0; i--)
 	{
-		if (operations_affect_same_partition(*operations[i], *operations[candidate]))
+		if (operations_affect_same_partition(*operations[i], candidate))
 		{
-			merge_two_operations(i, candidate);
-			return;
+			return operations[i]->merge_operations(candidate);
 		}
 	}
+	return false;
 }
 
 

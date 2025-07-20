@@ -69,8 +69,7 @@ private:
 	void Fill_Label_Device_Info( bool clear = false );
 
 	void add_operation(const Device& device, Operation* operation);
-	bool merge_two_operations( unsigned int first, unsigned int second );
-	void merge_operations();
+	bool merge_operation(const Operation& candidate);
 	static bool operations_affect_same_partition(const Operation& first_op, const Operation& second_op);
 	void Refresh_Visual();
 	bool valid_display_partition_ptr( const Partition * partition_ptr );
