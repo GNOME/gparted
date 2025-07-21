@@ -894,24 +894,24 @@ void Win_GParted::add_operation(const Device& device, Operation* operation)
 		return;
 	}
 
-	operations.push_back(operation);
+	m_operations.push_back(operation);
 }
 
 
 // Try to merge the candidate operation with a previous operation affecting the same
-// partition(s) in the operations[] vector.
+// partition(s) in the m_operations[] vector.
 bool Win_GParted::merge_operation(const Operation& candidate)
 {
 	// Find previous operation affecting the same partition(s).  Stop searching and
 	// attempt merge.
 	// WARNING:
-	// Index into operations[] vector counts backwards stopping at -1, hence needing
+	// Index into m_operations[] vector counts backwards stopping at -1, hence needing
 	// to use signed int.
-	for (signed int i = static_cast<signed int>(operations.size())-1; i >= 0; i--)
+	for (signed int i = static_cast<signed int>(m_operations.size())-1; i >= 0; i--)
 	{
-		if (operations_affect_same_partition(*operations[i], candidate))
+		if (operations_affect_same_partition(*m_operations[i], candidate))
 		{
-			return operations[i]->merge_operations(candidate);
+			return m_operations[i]->merge_operations(candidate);
 		}
 	}
 	return false;
@@ -1050,23 +1050,23 @@ void Win_GParted::Refresh_Visual()
 
 	//make all operations visible
 	m_display_device = m_devices[m_current_device];
-	for (unsigned int i = 0; i < operations.size(); i++)
-		if (operations[i]->device == m_display_device)
-			operations[i]->apply_to_visual(m_display_device.partitions);
+	for (unsigned int i = 0; i < m_operations.size(); i++)
+		if (m_operations[i]->device == m_display_device)
+			m_operations[i]->apply_to_visual(m_display_device.partitions);
 
-	hbox_operations .load_operations( operations ) ;
+	hbox_operations.load_operations(m_operations);
 
 	//set new statusbartext
 	statusbar .pop() ;
 	statusbar .push( Glib::ustring::compose( ngettext( "%1 operation pending"
 	                                           , "%1 operations pending"
-	                                           , operations .size()
+	                                           , m_operations.size()
 	                                           )
-	                                 , operations .size()
+	                                 , m_operations.size()
 	                                 )
 	               );
 		
-	if ( ! operations .size() ) 
+	if (! m_operations.size())
 		allow_undo_clear_apply( false ) ;
 
 	// Refresh copy partition source as necessary and select the largest unallocated
@@ -1163,7 +1163,7 @@ bool Win_GParted::valid_display_partition_ptr( const Partition * partition_ptr )
 
 bool Win_GParted::Quit_Check_Operations()
 {
-	if ( operations .size() )
+	if (m_operations.size())
 	{
 		Gtk::MessageDialog dialog( *this,
 					   _("Quit GParted?"),
@@ -1174,9 +1174,9 @@ bool Win_GParted::Quit_Check_Operations()
 
 		dialog .set_secondary_text( Glib::ustring::compose( ngettext( "%1 operation is currently pending."
 		                                                      , "%1 operations are currently pending."
-		                                                      , operations .size()
+		                                                      , m_operations.size()
 		                                                      )
-		                                            , operations .size()
+		                                            , m_operations.size()
 		                                            )
 		                          ) ;
 	
@@ -1502,15 +1502,16 @@ void Win_GParted::set_valid_operations()
 	}
 }
 
+
 void Win_GParted::show_operationslist()
 {
 	//Enable (or disable) Undo and Apply buttons
-	allow_undo_clear_apply( operations .size() ) ;
+	allow_undo_clear_apply(m_operations.size());
 
 	//Updates view of operations list and sensitivity of Undo and Apply buttons
 	Refresh_Visual();
 
-	if ( operations .size() == 1 ) //first operation, open operationslist
+	if (m_operations.size() == 1)  // first operation, open operationslist
 		open_operationslist() ;
 
 	//FIXME:  A slight flicker may be introduced by this extra display refresh.
@@ -1648,9 +1649,9 @@ void Win_GParted::menu_gparted_refresh_devices()
 	//but anyone who removes the sourcedevice before applying the operations gets what he/she deserves :-)
 	//FIXME: this actually sucks ;) see if we can use STL predicates here..
 	unsigned int i ;
-	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
+	for (unsigned int t = 0; t < m_operations.size(); t++)
 	{
-		for (i = 0; i < m_devices.size() && m_devices[i] != operations[t]->device; i++)
+		for (i = 0; i < m_devices.size() && m_devices[i] != m_operations[t]->device; i++)
 		{}
 
 		if (i >= m_devices.size())
@@ -2495,24 +2496,24 @@ void Win_GParted::activate_delete()
 	if ( selected_partition_ptr->status == STAT_NEW )
 	{
 		//remove all operations done on this new partition (this includes creation)	
-		for ( int t = 0 ; t < static_cast<int>( operations .size() ) ; t++ ) 
-			if ( operations[t]->type                           != OPERATION_DELETE                   &&
-			     operations[t]->get_partition_new().get_path() == selected_partition_ptr->get_path()    )
+		for (int t = 0; t < static_cast<int>(m_operations.size()); t++)
+			if (m_operations[t]->type                           != OPERATION_DELETE                   &&
+			    m_operations[t]->get_partition_new().get_path() == selected_partition_ptr->get_path()   )
 				remove_operation( t-- ) ;
-				
+
 		//determine lowest possible new_count
 		new_count = 0 ; 
-		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-			if ( operations[t]->type                                 != OPERATION_DELETE &&
-			     operations[t]->get_partition_new().status           == STAT_NEW         &&
-			     operations[t]->get_partition_new().partition_number >  new_count           )
-				new_count = operations[t]->get_partition_new().partition_number;
-			
+		for (unsigned int t = 0; t < m_operations.size(); t++)
+			if (m_operations[t]->type                                 != OPERATION_DELETE &&
+			    m_operations[t]->get_partition_new().status           == STAT_NEW         &&
+			    m_operations[t]->get_partition_new().partition_number >  new_count          )
+				new_count = m_operations[t]->get_partition_new().partition_number;
+
 		new_count += 1 ;
 
 		Refresh_Visual(); 
-				
-		if ( ! operations .size() )
+
+		if (! m_operations.size())
 			close_operationslist() ;
 	}
 	else //deletion of a real partition...
@@ -3109,14 +3110,14 @@ void Win_GParted::activate_disklabel()
 	//If there are pending operations then warn the user that these
 	//  operations must either be applied or cleared before creating
 	//  a new partition table.
-	if ( operations .size() )
+	if (m_operations.size())
 	{
 		Glib::ustring tmp_msg =
 		    Glib::ustring::compose( ngettext( "%1 operation is currently pending"
 		                              , "%1 operations are currently pending"
-		                              , operations .size()
+		                              , m_operations.size()
 		                              )
-		                    , operations .size()
+		                    , m_operations.size()
 		                    ) ;
 		Gtk::MessageDialog dialog( *this
 		                         , tmp_msg
@@ -3331,14 +3332,14 @@ void Win_GParted::activate_change_uuid()
 void Win_GParted::activate_undo()
 {
 	//when undoing a creation it's safe to decrease the newcount by one
-	if ( operations .back() ->type == OPERATION_CREATE )
+	if (m_operations.back()->type == OPERATION_CREATE)
 		new_count-- ;
 
 	remove_operation() ;		
-	
+
 	Refresh_Visual();
-	
-	if ( ! operations .size() )
+
+	if (! m_operations.size())
 		close_operationslist() ;
 
 	//FIXME:  A slight flicker may be introduced by this extra display refresh.
@@ -3349,34 +3350,36 @@ void Win_GParted::activate_undo()
 	drawingarea_visualdisk .queue_draw() ;
 }
 
+
 void Win_GParted::remove_operation( int index, bool remove_all ) 
 {
 	if ( remove_all )
 	{
-		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-			delete operations[ t ] ;
+		for (unsigned int t = 0; t < m_operations.size(); t++)
+			delete m_operations[t];
 
-		operations .clear() ;
+		m_operations.clear();
 	}
-	else if ( index == -1  && operations .size() > 0 )
+	else if (index == -1 && m_operations.size() > 0)
 	{
-		delete operations .back() ;
-		operations .pop_back() ;
+		delete m_operations.back();
+		m_operations.pop_back();
 	}
-	else if ( index > -1 && index < static_cast<int>( operations .size() ) )
+	else if (index > -1 && index < static_cast<int>(m_operations.size()))
 	{
-		delete operations[ index ] ;
-		operations .erase( operations .begin() + index ) ;
+		delete m_operations[index];
+		m_operations.erase(m_operations.begin() + index);
 	}
 }
+
 
 int Win_GParted::partition_in_operation_queue_count( const Partition & partition )
 {
 	int operation_count = 0 ;
 
-	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
+	for (unsigned int t = 0; t < m_operations.size(); t++)
 	{
-		if ( partition.get_path() == operations[t]->get_partition_original().get_path() )
+		if (partition.get_path() == m_operations[t]->get_partition_original().get_path())
 			operation_count++ ;
 	}
 
@@ -3437,7 +3440,7 @@ void Win_GParted::activate_apply()
 	{
 		dialog .hide() ; //hide confirmationdialog
 
-		Dialog_Progress dialog_progress(m_devices, operations);
+		Dialog_Progress dialog_progress(m_devices, m_operations);
 		dialog_progress .set_transient_for( *this ) ;
 		dialog_progress .signal_apply_operation .connect(
 			sigc::mem_fun(gparted_core, &GParted_Core::apply_operation_to_disk) ) ;
