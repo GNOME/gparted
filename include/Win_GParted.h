@@ -201,10 +201,10 @@ private:
 	void activate_apply();
 	bool remove_non_empty_lvm2_pv_dialog( const OperationType optype ) ;
 
-//private variables
-	unsigned int current_device ;
+	// private variables
+	unsigned int        m_current_device;
 	std::vector<Device> devices;
-	Device m_display_device;                    // Copy of devices[current_device] with pending operations
+	Device              m_display_device;       // Copy of devices[m_current_device] with pending operations
 	                                            // applied to partitions for displaying in the UI.
 	const Partition * selected_partition_ptr;   // Pointer to the selected partition.  (Alias to element
 	                                            // in Win_GParted::m_display_device.partitions[] vector).
