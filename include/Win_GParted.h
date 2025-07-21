@@ -298,7 +298,7 @@ private:
 
 	//usefull variables which are used by many different functions...
 	unsigned short new_count;//new_count keeps track of the new created partitions
-	bool OPERATIONSLIST_OPEN ;
+	bool m_operationslist_open;
 
 	GParted_Core gparted_core ;
 	std::vector<Gtk::Label *> device_info ;

@@ -74,14 +74,13 @@ namespace GParted
 
 
 Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
- : m_current_device(0)
+ : m_current_device(0), m_operationslist_open(true)
 {
 	copied_partition = nullptr;
 	selected_partition_ptr = nullptr;
 	new_count = 1;
-	OPERATIONSLIST_OPEN = true ;
 	gparted_core .set_user_devices( user_devices ) ;
-	
+
 	TOOLBAR_NEW =
 	TOOLBAR_DEL =
 	TOOLBAR_RESIZE_MOVE =
@@ -1525,13 +1524,14 @@ void Win_GParted::show_operationslist()
 	drawingarea_visualdisk .queue_draw() ;
 }
 
+
 void Win_GParted::open_operationslist() 
 {
-	if ( ! OPERATIONSLIST_OPEN )
+	if (! m_operationslist_open)
 	{
-		OPERATIONSLIST_OPEN = true ;
+		m_operationslist_open = true;
 		hbox_operations .show() ;
-	
+
 		for ( int t = vpaned_main .get_height() ; t > ( vpaned_main .get_height() - 100 ) ; t -= 5 )
 		{
 			vpaned_main .set_position( t );
@@ -1544,12 +1544,13 @@ void Win_GParted::open_operationslist()
 	}
 }
 
+
 void Win_GParted::close_operationslist() 
 {
-	if ( OPERATIONSLIST_OPEN )
+	if (m_operationslist_open)
 	{
-		OPERATIONSLIST_OPEN = false ;
-		
+		m_operationslist_open = false;
+
 		for ( int t = vpaned_main .get_position() ; t < vpaned_main .get_height() ; t += 5 )
 		{
 			vpaned_main .set_position( t ) ;
