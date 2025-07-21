@@ -203,8 +203,8 @@ private:
 
 	// private variables
 	unsigned int        m_current_device;
-	std::vector<Device> devices;
-	Device              m_display_device;       // Copy of devices[m_current_device] with pending operations
+	std::vector<Device> m_devices;
+	Device              m_display_device;       // Copy of m_devices[m_current_device] with pending operations
 	                                            // applied to partitions for displaying in the UI.
 	const Partition * selected_partition_ptr;   // Pointer to the selected partition.  (Alias to element
 	                                            // in Win_GParted::m_display_device.partitions[] vector).
