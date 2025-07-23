@@ -30,11 +30,11 @@
 namespace GParted
 {
 
+
 class HBoxOperations : public Gtk::Box
 {
 public:
 	HBoxOperations() ;
-	~HBoxOperations() ;
 
 	void load_operations(const std::vector<Operation *>& operations);
 	void clear() ;

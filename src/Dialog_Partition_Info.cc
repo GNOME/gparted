@@ -653,8 +653,4 @@ void Dialog_Partition_Info::Display_Info()
 }
 
 
-Dialog_Partition_Info::~Dialog_Partition_Info()
-{
-}
-
 } //GParted

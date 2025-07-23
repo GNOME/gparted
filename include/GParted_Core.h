@@ -47,7 +47,6 @@ friend class EraseFileSystemSignaturesTest;  // To allow unit testing to call pr
 public:
 	static Glib::Thread *mainthread;
 	GParted_Core() ;
-	~GParted_Core() ;
 
 	static Glib::ustring get_version_and_config_string();
 	static void find_supported_core();

@@ -4289,10 +4289,6 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 	return ctx.ret;
 }
 
-GParted_Core::~GParted_Core() 
-{
-}
-
 
 Glib::Thread *GParted_Core::mainthread;
 

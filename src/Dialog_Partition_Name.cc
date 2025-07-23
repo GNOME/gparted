@@ -66,9 +66,6 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	this->show_all_children() ;
 }
 
-Dialog_Partition_Name::~Dialog_Partition_Name()
-{
-}
 
 Glib::ustring Dialog_Partition_Name::get_new_name()
 {

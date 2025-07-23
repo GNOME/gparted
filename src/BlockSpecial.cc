@@ -71,9 +71,6 @@ BlockSpecial::BlockSpecial( const Glib::ustring & name ) : m_name( name ), m_maj
 	mm_number_cache[name] = pair;
 }
 
-BlockSpecial::~BlockSpecial()
-{
-}
 
 void BlockSpecial::clear_cache()
 {

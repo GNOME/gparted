@@ -214,8 +214,4 @@ void DialogFeatures::load_one_filesystem(const FS& fs)
 }
 
 
-DialogFeatures::~DialogFeatures() 
-{
-}
-
 } //GParted

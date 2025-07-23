@@ -27,13 +27,12 @@
 
 namespace GParted
 {
-	
+
+
 class Device
 {
-	 
 public:
 	Device() ;
-	~Device() ;
 
 	Device get_copy_without_partitions() const;
 	void set_path( const Glib::ustring & path );

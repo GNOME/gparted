@@ -35,11 +35,11 @@
 namespace GParted
 {
 
+
 class Dialog_Partition_Info : public Gtk::Dialog
 {
 public:
 	Dialog_Partition_Info( const Partition & partition );
-	~Dialog_Partition_Info();
 
 private:
 	void init_drawingarea() ;

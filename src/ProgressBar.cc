@@ -27,9 +27,6 @@ ProgressBar::ProgressBar() : m_running( false ), m_target( 1.0 ), m_progress( 0.
 {
 }
 
-ProgressBar::~ProgressBar()
-{
-}
 
 void ProgressBar::start( double target, ProgressBar_Text text_mode )
 {

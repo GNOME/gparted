@@ -27,11 +27,11 @@
 namespace GParted
 {
 
+
 class Dialog_FileSystem_Label : public Gtk::Dialog
 {
 public:
 	Dialog_FileSystem_Label( const Partition & partition );
-	~Dialog_FileSystem_Label();
 	Glib::ustring get_new_label();
 
 private:

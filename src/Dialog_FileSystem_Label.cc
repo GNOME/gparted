@@ -59,9 +59,6 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	this ->show_all_children() ;
 }
 
-Dialog_FileSystem_Label::~Dialog_FileSystem_Label()
-{
-}
 
 Glib::ustring Dialog_FileSystem_Label::get_new_label()
 {

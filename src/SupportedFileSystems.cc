@@ -96,11 +96,6 @@ SupportedFileSystems::SupportedFileSystems()
 }
 
 
-SupportedFileSystems::~SupportedFileSystems()
-{
-}
-
-
 void SupportedFileSystems::find_supported_filesystems()
 {
 	FSObjectsMap::iterator iter;

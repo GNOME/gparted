@@ -30,11 +30,11 @@ enum ProgressBar_Text
 	PROGRESSBAR_TEXT_COPY_BYTES
 };
 
+
 class ProgressBar
 {
 public:
 	ProgressBar();
-	~ProgressBar();
 
 	ProgressBar(const ProgressBar& src) = delete;             // Copy construction prohibited
 	ProgressBar& operator=(const ProgressBar& rhs) = delete;  // Copy assignment prohibited

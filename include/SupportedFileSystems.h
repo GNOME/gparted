@@ -33,7 +33,6 @@ class SupportedFileSystems
 {
 public:
 	SupportedFileSystems();
-	~SupportedFileSystems();
 
 	void find_supported_filesystems();
 	FileSystem* get_fs_object(FSType fstype) const;

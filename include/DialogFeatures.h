@@ -39,7 +39,6 @@ class DialogFeatures : public Gtk::Dialog
 {
 public:
 	DialogFeatures();
-	~DialogFeatures();
 
 	void load_filesystems(const std::vector<FS>& fss);
 

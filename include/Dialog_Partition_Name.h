@@ -27,16 +27,17 @@
 namespace GParted
 {
 
+
 class Dialog_Partition_Name: public Gtk::Dialog
 {
 public:
 	Dialog_Partition_Name( const Partition & partition, int max_length );
-	~Dialog_Partition_Name();
 	Glib::ustring get_new_name();
 
 private:
 	Gtk::Entry *entry;
 };
+
 
 } //GParted
 

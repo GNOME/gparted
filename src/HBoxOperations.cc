@@ -131,10 +131,5 @@ void HBoxOperations::on_close()
 	signal_close .emit() ;
 }
 
-HBoxOperations::~HBoxOperations() 
-{
-}
 
 } //GParted
-
-

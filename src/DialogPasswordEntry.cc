@@ -75,9 +75,6 @@ DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib:
 	this->show_all_children();
 }
 
-DialogPasswordEntry::~DialogPasswordEntry()
-{
-}
 
 const char * DialogPasswordEntry::get_password()
 {
