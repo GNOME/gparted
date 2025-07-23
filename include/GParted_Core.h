@@ -33,6 +33,7 @@
 #include <fstream>
 #include <glibmm/thread.h>
 #include <glibmm/ustring.h>
+#include <memory>
 
 
 namespace GParted
@@ -234,7 +235,7 @@ private:
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
 	Glib::ustring thread_status_message;  //Used to pass data to show_pulsebar method
-	static SupportedFileSystems* supported_filesystems;
+	static std::unique_ptr<SupportedFileSystems> supported_filesystems;
 };
 
 } //GParted

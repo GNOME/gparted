@@ -55,6 +55,7 @@
 #include <gtkmm/main.h>
 #include <sigc++/bind.h>
 #include <sigc++/signal.h>
+#include <memory>
 
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
@@ -83,7 +84,7 @@ GParted_Core::GParted_Core()
 
 	find_supported_core();
 
-	supported_filesystems = new SupportedFileSystems();
+	supported_filesystems = std::make_unique<SupportedFileSystems>();
 
 	//Determine file system support capabilities for the first time
 	supported_filesystems->find_supported_filesystems();
@@ -4290,15 +4291,13 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 
 GParted_Core::~GParted_Core() 
 {
-	delete supported_filesystems;
-	supported_filesystems = nullptr;
 }
 
 
 Glib::Thread *GParted_Core::mainthread;
 
 
-SupportedFileSystems* GParted_Core::supported_filesystems;
+std::unique_ptr<SupportedFileSystems> GParted_Core::supported_filesystems;
 
 
 } //GParted
