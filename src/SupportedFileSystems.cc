@@ -39,6 +39,7 @@
 #include "xfs.h"
 
 #include <stddef.h>
+#include <memory>
 
 
 namespace GParted
@@ -60,28 +61,28 @@ SupportedFileSystems::SupportedFileSystems()
 	//     supported_filesystem() -> false
 	m_fs_objects[FS_UNKNOWN]         = nullptr;
 	m_fs_objects[FS_OTHER]           = nullptr;
-	m_fs_objects[FS_BCACHEFS]        = new bcachefs();
-	m_fs_objects[FS_BTRFS]           = new btrfs();
-	m_fs_objects[FS_EXFAT]           = new exfat();
-	m_fs_objects[FS_EXT2]            = new ext2(FS_EXT2);
-	m_fs_objects[FS_EXT3]            = new ext2(FS_EXT3);
-	m_fs_objects[FS_EXT4]            = new ext2(FS_EXT4);
-	m_fs_objects[FS_F2FS]            = new f2fs();
-	m_fs_objects[FS_FAT16]           = new fat16(FS_FAT16);
-	m_fs_objects[FS_FAT32]           = new fat16(FS_FAT32);
-	m_fs_objects[FS_HFS]             = new hfs();
-	m_fs_objects[FS_HFSPLUS]         = new hfsplus();
-	m_fs_objects[FS_JFS]             = new jfs();
-	m_fs_objects[FS_LINUX_SWAP]      = new linux_swap();
-	m_fs_objects[FS_LVM2_PV]         = new lvm2_pv();
-	m_fs_objects[FS_LUKS]            = new luks();
-	m_fs_objects[FS_MINIX]           = new minix();
-	m_fs_objects[FS_NILFS2]          = new nilfs2();
-	m_fs_objects[FS_NTFS]            = new ntfs();
-	m_fs_objects[FS_REISER4]         = new reiser4();
-	m_fs_objects[FS_REISERFS]        = new reiserfs();
-	m_fs_objects[FS_UDF]             = new udf();
-	m_fs_objects[FS_XFS]             = new xfs();
+	m_fs_objects[FS_BCACHEFS]        = std::make_unique<bcachefs>();
+	m_fs_objects[FS_BTRFS]           = std::make_unique<btrfs>();
+	m_fs_objects[FS_EXFAT]           = std::make_unique<exfat>();
+	m_fs_objects[FS_EXT2]            = std::make_unique<ext2>(FS_EXT2);
+	m_fs_objects[FS_EXT3]            = std::make_unique<ext2>(FS_EXT3);
+	m_fs_objects[FS_EXT4]            = std::make_unique<ext2>(FS_EXT4);
+	m_fs_objects[FS_F2FS]            = std::make_unique<f2fs>();
+	m_fs_objects[FS_FAT16]           = std::make_unique<fat16>(FS_FAT16);
+	m_fs_objects[FS_FAT32]           = std::make_unique<fat16>(FS_FAT32);
+	m_fs_objects[FS_HFS]             = std::make_unique<hfs>();
+	m_fs_objects[FS_HFSPLUS]         = std::make_unique<hfsplus>();
+	m_fs_objects[FS_JFS]             = std::make_unique<jfs>();
+	m_fs_objects[FS_LINUX_SWAP]      = std::make_unique<linux_swap>();
+	m_fs_objects[FS_LVM2_PV]         = std::make_unique<lvm2_pv>();
+	m_fs_objects[FS_LUKS]            = std::make_unique<luks>();
+	m_fs_objects[FS_MINIX]           = std::make_unique<minix>();
+	m_fs_objects[FS_NILFS2]          = std::make_unique<nilfs2>();
+	m_fs_objects[FS_NTFS]            = std::make_unique<ntfs>();
+	m_fs_objects[FS_REISER4]         = std::make_unique<reiser4>();
+	m_fs_objects[FS_REISERFS]        = std::make_unique<reiserfs>();
+	m_fs_objects[FS_UDF]             = std::make_unique<udf>();
+	m_fs_objects[FS_XFS]             = std::make_unique<xfs>();
 	m_fs_objects[FS_APFS]            = nullptr;
 	m_fs_objects[FS_ATARAID]         = nullptr;
 	m_fs_objects[FS_BITLOCKER]       = nullptr;
@@ -97,12 +98,6 @@ SupportedFileSystems::SupportedFileSystems()
 
 SupportedFileSystems::~SupportedFileSystems()
 {
-	FSObjectsMap::iterator iter;
-	for (iter = m_fs_objects.begin(); iter != m_fs_objects.end(); iter++)
-	{
-		delete iter->second;
-		iter->second = nullptr;
-	}
 }
 
 
@@ -135,13 +130,15 @@ void SupportedFileSystems::find_supported_filesystems()
 }
 
 
+// Return non-owning raw pointer to the FileSystem object or nullptr when that type of
+// file system has no implementation.
 FileSystem* SupportedFileSystems::get_fs_object(FSType fstype) const
 {
 	FSObjectsMap::const_iterator iter = m_fs_objects.find(fstype);
 	if (iter == m_fs_objects.end())
 		return nullptr;
 	else
-		return iter->second;
+		return iter->second.get();
 }
 
 

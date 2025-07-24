@@ -22,6 +22,7 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 
 
 namespace GParted
@@ -41,7 +42,7 @@ public:
 	bool supported_filesystem(FSType fstype) const;
 
 private:
-	typedef std::map<FSType, FileSystem *> FSObjectsMap;
+	typedef std::map<FSType, std::unique_ptr<FileSystem>> FSObjectsMap;
 
 	std::vector<FS> m_fs_support;
 	FSObjectsMap    m_fs_objects;
