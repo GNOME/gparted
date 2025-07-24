@@ -500,8 +500,5 @@ Sector Partition::calc_significant_unallocated_sectors() const
 	return significant ;
 }
 
-Partition::~Partition()
-{
-}
 
 } //GParted

@@ -28,9 +28,6 @@ PartitionLUKS::PartitionLUKS() : header_size( 0 )
 	// initialise the encrypted member variable of type Partition.
 }
 
-PartitionLUKS::~PartitionLUKS()
-{
-}
 
 PartitionLUKS * PartitionLUKS::clone() const
 {

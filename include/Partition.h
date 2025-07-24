@@ -63,11 +63,12 @@ class PartitionVector;  // mutually recursive classes.
                         // *   recursive definition in CPP
                         //     http://stackoverflow.com/questions/4300420/recursive-definition-in-cpp
 
+
 class Partition
 {
 public:
 	Partition() ;
-	virtual ~Partition();
+	virtual ~Partition() = default;
 	virtual Partition * clone() const;
 
 	Partition& operator=(Partition& rhs) = delete;  // Copy assignment prohibited

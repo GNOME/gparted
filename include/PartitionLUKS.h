@@ -26,11 +26,11 @@
 namespace GParted
 {
 
+
 class PartitionLUKS : public Partition
 {
 public:
 	PartitionLUKS();
-	virtual ~PartitionLUKS();
 	virtual PartitionLUKS * clone() const;
 	Partition * clone_as_plain() const;
 
