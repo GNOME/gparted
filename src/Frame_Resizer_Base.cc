@@ -438,9 +438,5 @@ void Frame_Resizer_Base::redraw()
 	drawingarea.queue_draw();
 }
 
-Frame_Resizer_Base::~Frame_Resizer_Base()
-{
-}
-
 
 } //GParted

@@ -36,7 +36,7 @@ public:
 	};
 
 	Frame_Resizer_Base() ;
-	virtual ~Frame_Resizer_Base();
+	virtual ~Frame_Resizer_Base() = default;
 
 	void set_rgb_partition_color(const Gdk::RGBA& color);
 	void override_default_rgb_unused_color(const Gdk::RGBA& color);
