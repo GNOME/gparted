@@ -67,6 +67,9 @@
 #include <glibmm/main.h>
 #include <sigc++/bind.h>
 #include <sigc++/signal.h>
+#include <vector>
+#include <memory>
+#include <utility>
 
 
 namespace GParted
@@ -856,7 +859,7 @@ bool Win_GParted::on_delete_event( GdkEventAny *event )
 }	
 
 
-void Win_GParted::add_operation(const Device& device, Operation* operation)
+void Win_GParted::add_operation(const Device& device, std::unique_ptr<Operation> operation)
 {
 	if (nullptr == operation)
 		return;
@@ -885,15 +888,11 @@ void Win_GParted::add_operation(const Device& device, Operation* operation)
 	operation->create_description();
 
 	if (merge_operation(*operation))
-	{
 		// The operation was merged with an existing one already in the list so
-		// it's not wanted any more.
-		delete operation;
-		operation = nullptr;
+		// there's no need to append it to the list.
 		return;
-	}
 
-	m_operations.push_back(operation);
+	m_operations.push_back(std::move(operation));
 }
 
 
@@ -2083,9 +2082,10 @@ void Win_GParted::activate_resize()
 		Partition * resized_ptn = selected_partition_ptr->clone();
 		resized_ptn->resize( dialog.Get_New_Partition() );
 
-		Operation* operation = new OperationResizeMove(m_devices[m_current_device],
-		                                               *selected_partition_ptr,
-		                                               *resized_ptn);
+		std::unique_ptr<Operation> operation = std::make_unique<OperationResizeMove>(
+		                        m_devices[m_current_device],
+		                        *selected_partition_ptr,
+		                        *resized_ptn);
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
 
 		delete resized_ptn;
@@ -2119,7 +2119,7 @@ void Win_GParted::activate_resize()
 			dialog.run();
 		}
 
-		add_operation(m_devices[m_current_device], operation);
+		add_operation(m_devices[m_current_device], std::move(operation));
 	}
 
 	show_operationslist() ;
@@ -2251,21 +2251,22 @@ void Win_GParted::activate_paste()
 			{
 				dialog .hide() ;
 
-				Operation* operation = new OperationCopy(m_devices[m_current_device],
-				                                         *selected_partition_ptr,
-				                                         dialog.Get_New_Partition(),
-				                                         *copied_partition);
+				std::unique_ptr<Operation> operation = std::make_unique<OperationCopy>(
+				                        m_devices[m_current_device],
+				                        *selected_partition_ptr,
+				                        dialog.Get_New_Partition(),
+				                        *copied_partition);
 				operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
 
 				// When pasting into unallocated space set a temporary
 				// path of "Copy of /dev/SRC" for display purposes until
 				// the partition is created and the real path queried.
-				OperationCopy * copy_op = static_cast<OperationCopy*>( operation );
+				OperationCopy* copy_op = static_cast<OperationCopy*>(operation.get());
 				copy_op->get_partition_new().set_path(
 				        Glib::ustring::compose( _("Copy of %1"),
 				                          copy_op->get_partition_copied().get_path() ) );
 
-				add_operation(m_devices[m_current_device], operation);
+				add_operation(m_devices[m_current_device], std::move(operation));
 			}
 		}
 	}
@@ -2347,16 +2348,17 @@ void Win_GParted::activate_paste()
 			filesystem_ptn_new.clear_messages();
 		}
  
-		Operation* operation = new OperationCopy(m_devices[m_current_device],
-		                                         *selected_partition_ptr,
-		                                         *partition_new,
-		                                         *copied_partition);
+		std::unique_ptr<Operation> operation = std::make_unique<OperationCopy>(
+		                        m_devices[m_current_device],
+		                        *selected_partition_ptr,
+		                        *partition_new,
+		                        *copied_partition);
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
 
 		delete partition_new;
 		partition_new = nullptr;
 
-		add_operation(m_devices[m_current_device], operation);
+		add_operation(m_devices[m_current_device], std::move(operation));
 
 		if ( ! shown_dialog )
 		{
@@ -2409,12 +2411,13 @@ void Win_GParted::activate_new()
 			dialog .hide() ;
 			
 			new_count++ ;
-			Operation* operation = new OperationCreate(m_devices[m_current_device],
-			                                           *selected_partition_ptr,
-			                                           dialog.Get_New_Partition());
+			std::unique_ptr<Operation> operation = std::make_unique<OperationCreate>(
+			                        m_devices[m_current_device],
+			                        *selected_partition_ptr,
+			                        dialog.Get_New_Partition());
 			operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
 
-			add_operation(m_devices[m_current_device], operation);
+			add_operation(m_devices[m_current_device], std::move(operation));
 
 			show_operationslist() ;
 		}
@@ -2519,11 +2522,12 @@ void Win_GParted::activate_delete()
 	}
 	else //deletion of a real partition...
 	{
-		Operation* operation = new OperationDelete(m_devices[m_current_device],
-		                                           *selected_partition_ptr);
+		std::unique_ptr<Operation> operation = std::make_unique<OperationDelete>(
+		                        m_devices[m_current_device],
+		                        *selected_partition_ptr);
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);
 
-		add_operation(m_devices[m_current_device], operation);
+		add_operation(m_devices[m_current_device], std::move(operation));
 	}
 
 	show_operationslist() ;
@@ -2654,12 +2658,13 @@ void Win_GParted::activate_format( FSType new_fs )
 	}
 	else
 	{
-		Operation* operation = new OperationFormat(m_devices[m_current_device],
-		                                           *selected_partition_ptr,
-		                                           *temp_ptn);
+		std::unique_ptr<Operation> operation = std::make_unique<OperationFormat>(
+		                        m_devices[m_current_device],
+		                        *selected_partition_ptr,
+		                        *temp_ptn);
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
 
-		add_operation(m_devices[m_current_device], operation);
+		add_operation(m_devices[m_current_device], std::move(operation));
 
 		show_operationslist();
 	}
@@ -3198,11 +3203,12 @@ void Win_GParted::activate_check()
 	// FIXME: Consider constructing new partition object with zero unallocated and
 	// messages cleared to represent how applying a check operation also grows the
 	// file system to fill the partition.
-	Operation* operation = new OperationCheck(m_devices[m_current_device],
-	                                          *selected_partition_ptr);
+	std::unique_ptr<Operation> operation = std::make_unique<OperationCheck>(
+	                        m_devices[m_current_device],
+	                        *selected_partition_ptr);
 	operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
-	add_operation(m_devices[m_current_device], operation);
+	add_operation(m_devices[m_current_device], std::move(operation));
 
 	show_operationslist() ;
 }
@@ -3226,15 +3232,16 @@ void Win_GParted::activate_label_filesystem()
 
 		part_temp->get_filesystem_partition().set_filesystem_label( dialog.get_new_label() );
 
-		Operation* operation = new OperationLabelFileSystem(m_devices[m_current_device],
-		                                                    *selected_partition_ptr,
-		                                                    *part_temp);
+		std::unique_ptr<Operation> operation = std::make_unique<OperationLabelFileSystem>(
+		                        m_devices[m_current_device],
+		                        *selected_partition_ptr,
+		                        *part_temp);
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 		delete part_temp;
 		part_temp = nullptr;
 
-		add_operation(m_devices[m_current_device], operation);
+		add_operation(m_devices[m_current_device], std::move(operation));
 
 		show_operationslist() ;
 	}
@@ -3259,15 +3266,16 @@ void Win_GParted::activate_name_partition()
 
 		part_temp->name = dialog.get_new_name();
 
-		Operation* operation = new OperationNamePartition(m_devices[m_current_device],
-		                                                  *selected_partition_ptr,
-		                                                  *part_temp);
+		std::unique_ptr<Operation> operation = std::make_unique<OperationNamePartition>(
+		                        m_devices[m_current_device],
+		                        *selected_partition_ptr,
+		                        *part_temp);
 		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 		delete part_temp;
 		part_temp = nullptr;
 
-		add_operation(m_devices[m_current_device], operation);
+		add_operation(m_devices[m_current_device], std::move(operation));
 
 		show_operationslist();
 	}
@@ -3316,15 +3324,16 @@ void Win_GParted::activate_change_uuid()
 			temp_filesystem_ptn.uuid = UUID_RANDOM;
 	}
 
-	Operation* operation = new OperationChangeUUID(m_devices[m_current_device],
-	                                               *selected_partition_ptr,
-	                                               *temp_ptn);
+	std::unique_ptr<Operation> operation = std::make_unique<OperationChangeUUID>(
+	                        m_devices[m_current_device],
+	                        *selected_partition_ptr,
+	                        *temp_ptn);
 	operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 	delete temp_ptn;
 	temp_ptn = nullptr;
 
-	add_operation(m_devices[m_current_device], operation);
+	add_operation(m_devices[m_current_device], std::move(operation));
 
 	show_operationslist() ;
 }
@@ -3356,19 +3365,14 @@ void Win_GParted::remove_operation( int index, bool remove_all )
 {
 	if ( remove_all )
 	{
-		for (unsigned int t = 0; t < m_operations.size(); t++)
-			delete m_operations[t];
-
 		m_operations.clear();
 	}
 	else if (index == -1 && m_operations.size() > 0)
 	{
-		delete m_operations.back();
 		m_operations.pop_back();
 	}
 	else if (index > -1 && index < static_cast<int>(m_operations.size()))
 	{
-		delete m_operations[index];
 		m_operations.erase(m_operations.begin() + index);
 	}
 }

@@ -16,10 +16,13 @@
 
 #include "HBoxOperations.h"
 #include "MenuHelpers.h"
+#include "Operation.h"
 #include "Utils.h"
 
 #include <gtkmm/stock.h>
 #include <sigc++/signal.h>
+#include <vector>
+#include <memory>
 
 
 namespace GParted
@@ -73,7 +76,7 @@ HBoxOperations::HBoxOperations()
 }
 
 
-void HBoxOperations::load_operations(const std::vector<Operation *>& operations)
+void HBoxOperations::load_operations(const std::vector<std::unique_ptr<Operation>>& operations)
 {
 	liststore_operations ->clear();
 

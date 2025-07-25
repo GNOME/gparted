@@ -32,16 +32,18 @@
 #include <gtkmm/filechooserdialog.h>
 #include <sigc++/signal.h>
 #include <vector>
+#include <memory>
 
 
 namespace GParted
 {
 
-Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::vector<Operation *>& operations)
- : m_devices(devices), m_curr_op(0)
+
+Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices,
+                                 const std::vector<std::unique_ptr<Operation>>& operations)
+ : m_devices(devices), operations(operations), m_curr_op(0)
 {
 	this ->set_title( _("Applying pending operations") ) ;
-	this ->operations = operations ;
 	succes = true ;
 	cancel = false ;
 	warnings = 0 ;
@@ -237,7 +239,7 @@ void Dialog_Progress::on_signal_show()
 		//set focus...
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
 
-		succes = signal_apply_operation.emit(operations[m_curr_op]);
+		succes = signal_apply_operation.emit(operations[m_curr_op].get());
 
 		//set status (succes/error) for this operation
 		operations[m_curr_op]->operation_detail.set_success_and_capture_errors(succes);

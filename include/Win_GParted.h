@@ -38,6 +38,8 @@
 #include <gtkmm/progressbar.h>
 #include <gtkmm/window.h>
 #include <sigc++/connection.h>
+#include <vector>
+#include <memory>
 
 
 namespace GParted
@@ -68,7 +70,7 @@ private:
 	void hide_pulsebar();
 	void Fill_Label_Device_Info( bool clear = false );
 
-	void add_operation(const Device& device, Operation* operation);
+	void add_operation(const Device& device, std::unique_ptr<Operation> operation);
 	bool merge_operation(const Operation& candidate);
 	static bool operations_affect_same_partition(const Operation& first_op, const Operation& second_op);
 	void Refresh_Visual();
@@ -209,7 +211,7 @@ private:
 	const Partition * selected_partition_ptr;   // Pointer to the selected partition.  (Alias to element
 	                                            // in Win_GParted::m_display_device.partitions[] vector).
 	const Partition* copied_partition;          // nullptr or copy of source partition object.
-	std::vector<Operation*> m_operations;
+	std::vector<std::unique_ptr<Operation>> m_operations;
 
 //gui stuff
 	Gtk::Paned hpaned_main;

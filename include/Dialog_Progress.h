@@ -34,15 +34,18 @@
 #include <sigc++/signal.h>
 #include <fstream>
 #include <vector>
+#include <memory>
 
 
 namespace GParted
 {
 
+
 class Dialog_Progress : public Gtk::Dialog
 {
 public:
-	Dialog_Progress(const std::vector<Device>& devices, const std::vector<Operation *>& operations);
+	Dialog_Progress(const std::vector<Device>& devices,
+	                const std::vector<std::unique_ptr<Operation>>& operations);
 	~Dialog_Progress();
 
 	sigc::signal< bool, Operation * > signal_apply_operation ;
@@ -95,7 +98,7 @@ private:
 	TreeView_Operations_Columns m_treeview_operations_columns;
 
 	const std::vector<Device>& m_devices;
-	std::vector<Operation *> operations ;
+	const std::vector<std::unique_ptr<Operation>>& operations;
 	Glib::ustring progress_text;
 	bool succes, cancel;
 	double fraction ;
