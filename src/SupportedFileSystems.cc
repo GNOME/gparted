@@ -38,7 +38,6 @@
 #include "udf.h"
 #include "xfs.h"
 
-#include <stddef.h>
 #include <memory>
 
 
