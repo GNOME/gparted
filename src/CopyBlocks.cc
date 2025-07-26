@@ -162,33 +162,28 @@ bool CopyBlocks::copy()
 	lp_device_dst = src_device != dst_device ? ped_device_get( dst_device.c_str() ) : lp_device_src;
 	//add an empty sub which we will constantly update in the loop
 	operationdetail.get_last_child().add_child( OperationDetail( "", STATUS_NONE ) );
-	buf = static_cast<char *>( malloc( llabs( blocksize ) ) );
-	if ( buf )
+
+	buf.resize(llabs(blocksize));
+
+	Glib::Thread::create(sigc::mem_fun(*this, &CopyBlocks::copy_thread), false);
+	Gtk::Main::run();
+
+	total_done += llabs(done);
+
+	if (done == length || ! success)
 	{
-		Glib::Thread::create( sigc::mem_fun( *this, &CopyBlocks::copy_thread ),
-				      false );
-		Gtk::Main::run();
-
-		total_done += llabs( done );
-
-		if (done == length || !success)
-		{
-			//final description
-			operationdetail.get_last_child().get_last_child().set_description(
+		//final description
+		operationdetail.get_last_child().get_last_child().set_description(
 				Glib::ustring::compose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
 						  _("%1 of %2 copied"),
 						  Utils::format_size( llabs( done ), 1 ),
 						  Utils::format_size( length, 1 ) ),
 				FONT_ITALIC );
 
-			if ( !success && !error_message.empty() )
-				operationdetail.get_last_child().get_last_child().add_child(
+		if (! success && ! error_message.empty())
+			operationdetail.get_last_child().get_last_child().add_child(
 					OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) );
-		}
-		free( buf ) ;
 	}
-	else
-		error_message = Glib::strerror( errno );
 
 	if ( total_done == total_length || ! success )
 		operationdetail.stop_progressbar();
@@ -223,9 +218,9 @@ void CopyBlocks::copy_block()
 
 	if ( blocksize != 0 )
 	{
-		if ( ped_device_read( lp_device_src, buf, offset_src, num_blocks_src ) )
+		if (ped_device_read(lp_device_src, buf.data(), offset_src, num_blocks_src))
 		{
-			if ( ped_device_write( lp_device_dst, buf, offset_dst, num_blocks_dst ) )
+			if (ped_device_write(lp_device_dst, buf.data(), offset_dst, num_blocks_dst))
 				success = true;
 			else {
 				error_message = Glib::ustring::compose( _("Error while writing block at sector %1"), offset_dst );
