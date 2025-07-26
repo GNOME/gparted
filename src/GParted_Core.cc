@@ -56,6 +56,7 @@
 #include <sigc++/bind.h>
 #include <sigc++/signal.h>
 #include <memory>
+#include <vector>
 
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
@@ -4042,9 +4043,7 @@ bool GParted_Core::useable_device(const PedDevice* lp_device)
 {
 	g_assert(lp_device != nullptr);  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
 
-	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
-	if ( ! buf )
-		return false;
+	std::vector<char> buf(lp_device->sector_size);
 
 	// Must be able to read from the first sector before the disk device is considered
 	// useable in GParted.
@@ -4052,12 +4051,10 @@ bool GParted_Core::useable_device(const PedDevice* lp_device)
 	int fd = open(lp_device->path, O_RDONLY|O_NONBLOCK);
 	if (fd >= 0)
 	{
-		ssize_t bytes_read = read(fd, buf, lp_device->sector_size);
+		ssize_t bytes_read = read(fd, buf.data(), lp_device->sector_size);
 		success = (bytes_read == lp_device->sector_size);
 		close(fd);
 	}
-
-	free( buf );
 
 	return success;
 }
