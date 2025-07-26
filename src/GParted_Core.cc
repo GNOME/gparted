@@ -1085,8 +1085,6 @@ FSType GParted_Core::detect_filesystem_in_encryption_mapping(const Glib::ustring
 // (old versions of) blkid and libparted don't recognise a signature.
 FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_Value sector_size)
 {
-	char magic1[16];  // Big enough for largest signatures[].sig1 or sig2
-	char magic2[16];
 	FSType fstype = FS_UNKNOWN;
 	std::vector<char> buf(sector_size, 0);
 
@@ -1094,27 +1092,28 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 	if (fd == -1)
 		return FS_UNKNOWN;
 
-	struct {
-		Byte_Value   offset1;
-		const char * sig1;
-		Byte_Value   offset2;
-		const char * sig2;
-		FSType       fstype;
+	static const std::string apfs_sig1("\x01\x00", 2);
+	static const struct {
+		Byte_Value  offset1;
+		std::string sig1;
+		Byte_Value  offset2;
+		std::string sig2;
+		FSType      fstype;
 	} signatures[] = {
 		//offset1, sig1              , offset2, sig2   , fstype
-		{     0LL, "LUKS\xBA\xBE"    ,     0LL, nullptr, FS_LUKS           },
-		{     3LL, "-FVE-FS-"        ,     0LL, nullptr, FS_BITLOCKER      },
-		{     0LL, "\x52\x56\xBE\x1B",     0LL, nullptr, FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\x56\xBE\x6F",     0LL, nullptr, FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\xE8\x28\x01",     0LL, nullptr, FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\xBF\xF4\x81",     0LL, nullptr, FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\x56\xBE\x63",     0LL, nullptr, FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\x56\xBE\x56",     0LL, nullptr, FS_GRUB2_CORE_IMG },
-		{    24LL, "\x01\x00"        ,    32LL, "NXSB" , FS_APFS           },
-		{   512LL, "LABELONE"        ,   536LL, "LVM2" , FS_LVM2_PV        },
-		{  1030LL, "\x34\x34"        ,     0LL, nullptr, FS_NILFS2         },
-		{ 65536LL, "ReIsEr4"         ,     0LL, nullptr, FS_REISER4        },
-		{ 65600LL, "_BHRfS_M"        ,     0LL, nullptr, FS_BTRFS          }
+		{     0LL, "LUKS\xBA\xBE"    ,     0LL, ""     , FS_LUKS          },
+		{     3LL, "-FVE-FS-"        ,     0LL, ""     , FS_BITLOCKER     },
+		{     0LL, "\x52\x56\xBE\x1B",     0LL, ""     , FS_GRUB2_CORE_IMG},
+		{     0LL, "\x52\x56\xBE\x6F",     0LL, ""     , FS_GRUB2_CORE_IMG},
+		{     0LL, "\x52\xE8\x28\x01",     0LL, ""     , FS_GRUB2_CORE_IMG},
+		{     0LL, "\x52\xBF\xF4\x81",     0LL, ""     , FS_GRUB2_CORE_IMG},
+		{     0LL, "\x52\x56\xBE\x63",     0LL, ""     , FS_GRUB2_CORE_IMG},
+		{     0LL, "\x52\x56\xBE\x56",     0LL, ""     , FS_GRUB2_CORE_IMG},
+		{    24LL, apfs_sig1         ,    32LL, "NXSB" , FS_APFS          },
+		{   512LL, "LABELONE"        ,   536LL, "LVM2" , FS_LVM2_PV       },
+		{  1030LL, "\x34\x34"        ,     0LL, ""     , FS_NILFS2        },
+		{ 65536LL, "ReIsEr4"         ,     0LL, ""     , FS_REISER4       },
+		{ 65600LL, "_BHRfS_M"        ,     0LL, ""     , FS_BTRFS         }
 	};
 	// For simple BitLocker recognition consider validation of BIOS Parameter block
 	// fields unnecessary.
@@ -1131,9 +1130,6 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 	// superblock:
 	// 1)  Object type is OBJECT_TYPE_NX_SUPERBLOCK, lower 16-bits of the object type
 	//     field is 0x0001 stored as little endian bytes 0x01, 0x00.
-	//     WARNING: The magic signatures are defined as NUL terminated strings so the
-	//     below code only does a 1-byte match for 0x01, rather than a 2-byte match
-	//     for 0x01, 0x00.
 	// 2)  4 byte magic "NXSB".
 	// *   Apple File System Reference
 	//     https://developer.apple.com/support/apple-file-system/Apple-File-System-Reference.pdf
@@ -1142,15 +1138,10 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 
 	for ( unsigned int i = 0 ; i < sizeof( signatures ) / sizeof( signatures[0] ) ; i ++ )
 	{
-		const size_t len1 = std::min((signatures[i].sig1 == nullptr) ? 0U : strlen(signatures[i].sig1),
-		                             sizeof(magic1));
-		const size_t len2 = std::min((signatures[i].sig2 == nullptr) ? 0U : strlen(signatures[i].sig2),
-		                             sizeof(magic2));
-		// NOTE: From this point onwards signatures[].sig1 and .sig2 are treated
-		// as character buffers of known lengths len1 and len2, not NUL terminated
-		// strings.
-		if (len1 == 0UL || (signatures[i].sig2 != nullptr && len2 == 0UL))
-			continue;  // Don't allow 0 length signatures to match
+		if (signatures[i].sig1.length() == 0)
+			// Don't allow zero length sig1 signature to match.  Allow sig2 to
+			// be zero length for when there is no second signature to match.
+			continue;
 
 		Byte_Value read_offset = signatures[i].offset1 / sector_size * sector_size;
 
@@ -1170,14 +1161,12 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 			}
 		}
 
-		memcpy(magic1, buf.data() + signatures[i].offset1 % sector_size, len1);
+		std::string magic1(buf.data() + signatures[i].offset1 % sector_size, signatures[i].sig1.length());
 
 		// WARNING: This assumes offset2 is in the same sector as offset1
-		if (signatures[i].sig2 != nullptr)
-			memcpy(magic2, buf.data() + signatures[i].offset2 % sector_size, len2);
+		std::string magic2(buf.data() + signatures[i].offset2 % sector_size, signatures[i].sig2.length());
 
-		if (memcmp(magic1, signatures[i].sig1, len1) == 0                                    &&
-		    (signatures[i].sig2 == nullptr || memcmp(magic2, signatures[i].sig2, len2) == 0)   )
+		if (magic1 == signatures[i].sig1 && magic2 == signatures[i].sig2)
 		{
 			fstype = signatures[i].fstype;
 			break;
