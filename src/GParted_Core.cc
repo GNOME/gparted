@@ -1088,17 +1088,11 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 	char magic1[16];  // Big enough for largest signatures[].sig1 or sig2
 	char magic2[16];
 	FSType fstype = FS_UNKNOWN;
-
-	char* buf = static_cast<char *>(malloc(sector_size));
-	if ( ! buf )
-		return FS_UNKNOWN;
+	std::vector<char> buf(sector_size, 0);
 
 	int fd = open(path.c_str(), O_RDONLY|O_NONBLOCK);
 	if (fd == -1)
-	{
-		free( buf );
 		return FS_UNKNOWN;
-	}
 
 	struct {
 		Byte_Value   offset1;
@@ -1145,7 +1139,6 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 	//     https://developer.apple.com/support/apple-file-system/Apple-File-System-Reference.pdf
 
 	Byte_Value prev_read_offset = -1;
-	memset(buf, 0, sector_size);
 
 	for ( unsigned int i = 0 ; i < sizeof( signatures ) / sizeof( signatures[0] ) ; i ++ )
 	{
@@ -1165,8 +1158,8 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 		// previously read sector.
 		if (read_offset != prev_read_offset)
 		{
-			if (lseek(fd, read_offset, SEEK_SET) == read_offset &&
-			    read(fd, buf, sector_size)       == sector_size   )
+			if (lseek(fd, read_offset, SEEK_SET)  == read_offset &&
+			    read(fd, buf.data(), sector_size) == sector_size   )
 			{
 				prev_read_offset = read_offset;
 			}
@@ -1177,11 +1170,11 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 			}
 		}
 
-		memcpy(magic1, buf + signatures[i].offset1 % sector_size, len1);
+		memcpy(magic1, buf.data() + signatures[i].offset1 % sector_size, len1);
 
 		// WARNING: This assumes offset2 is in the same sector as offset1
 		if (signatures[i].sig2 != nullptr)
-			memcpy(magic2, buf + signatures[i].offset2 % sector_size, len2);
+			memcpy(magic2, buf.data() + signatures[i].offset2 % sector_size, len2);
 
 		if (memcmp(magic1, signatures[i].sig1, len1) == 0                                    &&
 		    (signatures[i].sig2 == nullptr || memcmp(magic2, signatures[i].sig2, len2) == 0)   )
@@ -1192,7 +1185,6 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 	}
 
 	close(fd);
-	free( buf );
 
 	return fstype;
 }
