@@ -3714,9 +3714,12 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	PedGeometry* lp_geom = nullptr;
 	bool device_is_open = false ;
 	Byte_Value bufsize = 4LL * KIBIBYTE ;
-	char* buf = nullptr;
+	std::vector<char> buf;  // Default construct 0 sized.
 	if ( get_device( partition.device_path, lp_device ) )
 	{
+		bufsize = std::max(bufsize, lp_device->sector_size);
+		buf.resize(bufsize, 0);  // Set size and initialise contents to 0.
+
 		if ( partition.type == TYPE_UNPARTITIONED )
 		{
 			// Whole disk device; create a matching geometry
@@ -3735,11 +3738,6 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		if (lp_geom != nullptr && ped_device_open(lp_device))
 		{
 			device_is_open = true ;
-
-			bufsize = std::max( bufsize, lp_device ->sector_size ) ;
-			buf = static_cast<char *>( malloc( bufsize ) ) ;
-			if ( buf )
-				memset( buf, 0, bufsize ) ;
 		}
 		overall_success = device_is_open;
 	}
@@ -3863,7 +3861,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		OperationDetail & od = operationdetail .get_last_child() ;
 		Byte_Value written = 0LL ;
 		bool zero_success = false ;
-		if ( device_is_open && buf )
+		if (device_is_open)
 		{
 			od .add_child( OperationDetail(
 					/*TO TRANSLATORS: looks like  write 68.00 KiB of zeros at byte offset 0 */
@@ -3877,7 +3875,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 				//  will still be a whole number of sectors.
 				Byte_Value amount = std::min( bufsize, byte_len - written ) ;
 				zero_success = ped_geometry_write(lp_geom,
-				                                  buf,
+				                                  buf.data(),
 				                                  (byte_offset + written) / lp_device->sector_size,
 				                                  amount / lp_device->sector_size);
 				if ( ! zero_success )
@@ -3893,8 +3891,6 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		}
 		overall_success = overall_success && zero_success;
 	}
-	if ( buf )
-		free( buf ) ;
 	if (lp_geom != nullptr)
 		ped_geometry_destroy(lp_geom);
 
