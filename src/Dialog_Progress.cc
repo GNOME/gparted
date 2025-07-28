@@ -39,14 +39,14 @@ namespace GParted
 
 
 Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const OperationVector& operations)
- : m_devices(devices), operations(operations), m_curr_op(0)
+ : m_devices(devices), m_operations(operations), m_curr_op(0)
 {
 	this ->set_title( _("Applying pending operations") ) ;
 	succes = true ;
 	cancel = false ;
 	warnings = 0 ;
 
-	fraction = 1.00 / operations .size() ;
+	fraction = 1.00 / m_operations.size();
 	this->property_default_width() = 700;
 
 	{
@@ -97,14 +97,14 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 			sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) );
 
 		//fill 'er up
-		for (unsigned int i = 0; i < operations.size(); ++i)
+		for (unsigned int i = 0; i < m_operations.size(); ++i)
 		{
-			this->operations[i]->m_operation_detail.set_description(operations[i]->m_description, FONT_BOLD);
-			this->operations[i]->m_operation_detail.set_treepath(Utils::num_to_str(i));
+			m_operations[i]->m_operation_detail.set_description(m_operations[i]->m_description, FONT_BOLD);
+			m_operations[i]->m_operation_detail.set_treepath(Utils::num_to_str(i));
 
 			treerow = *(treestore_operations->append());
 			treerow[m_treeview_operations_columns.operation_description] =
-				this->operations[i]->m_operation_detail.get_description();
+			                m_operations[i]->m_operation_detail.get_description();
 		}
 
 		scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
@@ -216,33 +216,34 @@ bool Dialog_Progress::pulsebar_pulse()
 	return true;
 }
 
+
 void Dialog_Progress::on_signal_show()
 {
-	for (m_curr_op = 0; m_curr_op < operations.size() && succes && ! cancel; m_curr_op++)
+	for (m_curr_op = 0; m_curr_op < m_operations.size() && succes && ! cancel; m_curr_op++)
 	{
-		operations[m_curr_op]->m_operation_detail.signal_update.connect(
+		m_operations[m_curr_op]->m_operation_detail.signal_update.connect(
 			sigc::mem_fun( this, &Dialog_Progress::on_signal_update ) ) ;
 
-		label_current.set_markup("<b>" + operations[m_curr_op]->m_description + "</b>");
+		label_current.set_markup("<b>" + m_operations[m_curr_op]->m_description + "</b>");
 
 		progressbar_all.set_text(Glib::ustring::compose(_("%1 of %2 operations completed"),
-		                                                m_curr_op, operations.size()));
+		                                                m_curr_op, m_operations.size()));
 		progressbar_all.set_fraction(fraction * m_curr_op > 1.0 ? 1.0 : fraction * m_curr_op);
 
 		treerow = treestore_operations ->children()[m_curr_op];
 
 		//set status to 'execute'
-		operations[m_curr_op]->m_operation_detail.set_status(STATUS_EXECUTE);
+		m_operations[m_curr_op]->m_operation_detail.set_status(STATUS_EXECUTE);
 
 		//set focus...
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
 
-		succes = signal_apply_operation.emit(operations[m_curr_op].get());
+		succes = signal_apply_operation.emit(m_operations[m_curr_op].get());
 
 		//set status (succes/error) for this operation
-		operations[m_curr_op]->m_operation_detail.set_success_and_capture_errors(succes);
+		m_operations[m_curr_op]->m_operation_detail.set_success_and_capture_errors(succes);
 	}
-	
+
 	//add save button
 	this ->add_button( _("_Save Details"), Gtk::RESPONSE_OK ) ; //there's no enum for SAVE
 	
@@ -359,10 +360,11 @@ void Dialog_Progress::on_cancel()
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}
 		else cancelbutton->set_label( _("Force Cancel") );
-		operations[m_curr_op]->m_operation_detail.signal_cancel.emit(cancel);
+		m_operations[m_curr_op]->m_operation_detail.signal_cancel.emit(cancel);
 		cancel = true;
 	}
 }
+
 
 void Dialog_Progress::on_save()
 {
@@ -407,10 +409,10 @@ void Dialog_Progress::on_save()
 			}
 
 			//Write out each operation
-			for (unsigned int i = 0; i < operations.size(); i++)
+			for (unsigned int i = 0; i < m_operations.size(); i++)
 			{
 				out << "<p>========================================</p>" << std::endl;
-				write_operation_details(operations[i]->m_operation_detail, out);
+				write_operation_details(m_operations[i]->m_operation_detail, out);
 			}
 
 			//Write out proper HTML finish

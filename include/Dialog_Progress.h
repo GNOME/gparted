@@ -96,7 +96,7 @@ private:
 	TreeView_Operations_Columns m_treeview_operations_columns;
 
 	const std::vector<Device>& m_devices;
-	const OperationVector& operations;
+	const OperationVector&     m_operations;
 	Glib::ustring progress_text;
 	bool succes, cancel;
 	double fraction ;
