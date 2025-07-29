@@ -21,12 +21,12 @@
 namespace GParted
 {
 
+
 OperationLabelFileSystem::OperationLabelFileSystem( const Device & device,
                                                     const Partition & partition_orig,
                                                     const Partition & partition_new )
+ : Operation(OPERATION_LABEL_FILESYSTEM)
 {
-	type = OPERATION_LABEL_FILESYSTEM;
-
 	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
@@ -57,12 +57,13 @@ void OperationLabelFileSystem::create_description()
 	}
 }
 
+
 bool OperationLabelFileSystem::merge_operations( const Operation & candidate )
 {
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( candidate.type == OPERATION_LABEL_FILESYSTEM         &&
-	     *partition_new == candidate.get_partition_original()    )
+	if (candidate.m_type == OPERATION_LABEL_FILESYSTEM         &&
+	    *partition_new   == candidate.get_partition_original()   )
 	{
 		partition_new->set_filesystem_label( candidate.get_partition_new().get_filesystem_label() );
 		create_description();

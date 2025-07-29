@@ -24,12 +24,12 @@
 namespace GParted
 {
 
+
 OperationCreate::OperationCreate( const Device & device,
 				  const Partition & partition_orig,
 				  const Partition & partition_new )
+ : Operation(OPERATION_CREATE)
 {
-	type = OPERATION_CREATE ;
-
 	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
@@ -70,13 +70,14 @@ void OperationCreate::create_description()
 	                                device.get_path() );
 }
 
+
 bool OperationCreate::merge_operations( const Operation & candidate )
 {
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( candidate.type                            == OPERATION_FORMAT                   &&
-	     candidate.get_partition_original().status == STAT_NEW                           &&
-	     *partition_new                            == candidate.get_partition_original()    )
+	if (candidate.m_type                          == OPERATION_FORMAT                   &&
+	    candidate.get_partition_original().status == STAT_NEW                           &&
+	    *partition_new                            == candidate.get_partition_original()   )
 	{
 		// Merge a format operation on a not yet created partition with the
 		// earlier operation which will create it.
@@ -84,9 +85,9 @@ bool OperationCreate::merge_operations( const Operation & candidate )
 		create_description();
 		return true;
 	}
-	else if ( candidate.type                            == OPERATION_RESIZE_MOVE              &&
-	          candidate.get_partition_original().status == STAT_NEW                           &&
-	          *partition_new                            == candidate.get_partition_original()    )
+	else if (candidate.m_type                          == OPERATION_RESIZE_MOVE              &&
+	         candidate.get_partition_original().status == STAT_NEW                           &&
+	         *partition_new                            == candidate.get_partition_original()   )
 	{
 		// Merge a resize/move operation on a not yet created partition with the
 		// earlier operation which will create it.

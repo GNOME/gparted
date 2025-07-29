@@ -348,7 +348,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 	operation->operation_detail.signal_capture_errors.connect(
 			sigc::mem_fun( *this, &GParted_Core::capture_libparted_messages ) );
 
-	switch ( operation->type )
+	switch (operation->m_type)
 	{
 		// Call calibrate_partition() first for each operation to ensure the
 		// correct partition path name and boundary is known before performing the

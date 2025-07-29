@@ -866,9 +866,9 @@ void Win_GParted::add_operation(const Device& device, std::unique_ptr<Operation>
 
 	// For operations which create new or modify existing partition boundaries ensure
 	// those boundaries are valid before allowing the operation to be added.
-	if (operation->type == OPERATION_CREATE      ||
-	    operation->type == OPERATION_COPY        ||
-	    operation->type == OPERATION_RESIZE_MOVE   )
+	if (operation->m_type == OPERATION_CREATE      ||
+	    operation->m_type == OPERATION_COPY        ||
+	    operation->m_type == OPERATION_RESIZE_MOVE   )
 	{
 		Glib::ustring error;
 		if (! gparted_core.valid_partition(device, operation->get_partition_new(), error))
@@ -920,7 +920,7 @@ bool Win_GParted::merge_operation(const Operation& candidate)
 // first target operation.
 bool Win_GParted::operations_affect_same_partition(const Operation& first_op, const Operation& second_op)
 {
-	if (first_op.type == OPERATION_DELETE)
+	if (first_op.m_type == OPERATION_DELETE)
 		// First target operation is deleting the partition so there is no
 		// partition to merge the second candidate operation into.
 		return false;
@@ -933,7 +933,7 @@ bool Win_GParted::operations_affect_same_partition(const Operation& first_op, co
 	// operations have four partition combinations to check.  The one above covering
 	// all operations and three more below.
 	Glib::ustring first_copied_path;
-	if (first_op.type == OPERATION_COPY)
+	if (first_op.m_type == OPERATION_COPY)
 	{
 		const OperationCopy& first_copy_op = static_cast<const OperationCopy&>(first_op);
 		first_copied_path = first_copy_op.get_partition_copied().get_path();
@@ -943,7 +943,7 @@ bool Win_GParted::operations_affect_same_partition(const Operation& first_op, co
 	}
 
 	Glib::ustring second_copied_path;
-	if (second_op.type == OPERATION_COPY)
+	if (second_op.m_type == OPERATION_COPY)
 	{
 		const OperationCopy& second_copy_op = static_cast<const OperationCopy&>(second_op);
 		second_copied_path = second_copy_op.get_partition_copied().get_path();
@@ -952,7 +952,7 @@ bool Win_GParted::operations_affect_same_partition(const Operation& first_op, co
 			return true;
 	}
 
-	if (first_op.type == OPERATION_COPY && second_op.type == OPERATION_COPY)
+	if (first_op.m_type == OPERATION_COPY && second_op.m_type == OPERATION_COPY)
 	{
 		if (first_copied_path == second_copied_path)
 			return true;
@@ -2501,14 +2501,14 @@ void Win_GParted::activate_delete()
 	{
 		//remove all operations done on this new partition (this includes creation)	
 		for (int t = 0; t < static_cast<int>(m_operations.size()); t++)
-			if (m_operations[t]->type                           != OPERATION_DELETE                   &&
+			if (m_operations[t]->m_type                         != OPERATION_DELETE                   &&
 			    m_operations[t]->get_partition_new().get_path() == selected_partition_ptr->get_path()   )
 				remove_operation( t-- ) ;
 
 		//determine lowest possible new_count
 		new_count = 0 ; 
 		for (unsigned int t = 0; t < m_operations.size(); t++)
-			if (m_operations[t]->type                                 != OPERATION_DELETE &&
+			if (m_operations[t]->m_type                               != OPERATION_DELETE &&
 			    m_operations[t]->get_partition_new().status           == STAT_NEW         &&
 			    m_operations[t]->get_partition_new().partition_number >  new_count          )
 				new_count = m_operations[t]->get_partition_new().partition_number;
@@ -3342,7 +3342,7 @@ void Win_GParted::activate_change_uuid()
 void Win_GParted::activate_undo()
 {
 	//when undoing a creation it's safe to decrease the newcount by one
-	if (m_operations.back()->type == OPERATION_CREATE)
+	if (m_operations.back()->m_type == OPERATION_CREATE)
 		new_count-- ;
 
 	remove_operation() ;		

@@ -23,9 +23,12 @@
 namespace GParted
 {
 
-Operation::Operation()
+
+Operation::Operation(OperationType type)
+ : m_type(type)
 {
 }
+
 
 Partition & Operation::get_partition_original()
 {

@@ -22,13 +22,13 @@
 namespace GParted
 {
 
+
 OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_orig,
 			      const Partition & partition_new,
 			      const Partition & partition_copied )
+ : Operation(OPERATION_COPY)
 {
-	type = OPERATION_COPY ;
-
 	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());

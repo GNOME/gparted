@@ -21,13 +21,13 @@
 namespace GParted
 {
 
+
 OperationChangeUUID::OperationChangeUUID( const Device & device
                                         , const Partition & partition_orig
                                         , const Partition & partition_new
                                         )
+ : Operation(OPERATION_CHANGE_UUID)
 {
-	type = OPERATION_CHANGE_UUID ;
-
 	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
@@ -59,12 +59,13 @@ void OperationChangeUUID::create_description()
 	}
 }
 
+
 bool OperationChangeUUID::merge_operations( const Operation & candidate )
 {
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( candidate.type == OPERATION_CHANGE_UUID              &&
-	     *partition_new == candidate.get_partition_original()    )
+	if (candidate.m_type == OPERATION_CHANGE_UUID              &&
+	    *partition_new   == candidate.get_partition_original()   )
 	{
 		// Changing half the UUID must not override changing all of it
 		if ( candidate.get_partition_new().uuid != UUID_RANDOM_NTFS_HALF )

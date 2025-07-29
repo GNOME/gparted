@@ -21,10 +21,10 @@
 namespace GParted
 {
 
-OperationCheck::OperationCheck( const Device & device, const Partition & partition )
-{
-	type = OPERATION_CHECK ;
 
+OperationCheck::OperationCheck( const Device & device, const Partition & partition )
+ : Operation(OPERATION_CHECK)
+{
 	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition.clone());
 	this->partition_new.reset(partition.clone());
@@ -45,12 +45,13 @@ void OperationCheck::create_description()
 	                                partition_original->get_path() );
 }
 
+
 bool OperationCheck::merge_operations( const Operation & candidate )
 {
 	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( candidate.type      == OPERATION_CHECK                    &&
-	     *partition_original == candidate.get_partition_original()    )
+	if (candidate.m_type    == OPERATION_CHECK                    &&
+	    *partition_original == candidate.get_partition_original()   )
 		// No steps required to merge this operation
 		return true;
 

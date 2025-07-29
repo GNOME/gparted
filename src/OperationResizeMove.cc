@@ -22,12 +22,12 @@
 namespace GParted
 {
 
+
 OperationResizeMove::OperationResizeMove( const Device & device,
 				  	  const Partition & partition_orig,
 				  	  const Partition & partition_new )
+ : Operation(OPERATION_RESIZE_MOVE)
 {
-	type = OPERATION_RESIZE_MOVE ;
-
 	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
@@ -230,12 +230,13 @@ void OperationResizeMove::remove_adjacent_unallocated( PartitionVector & partiti
 		partitions .erase( partitions .begin() + ( index_orig -1 ) ) ;
 }
 
+
 bool OperationResizeMove::merge_operations( const Operation & candidate )
 {
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( candidate.type == OPERATION_RESIZE_MOVE              &&
-	     *partition_new == candidate.get_partition_original()    )
+	if (candidate.m_type == OPERATION_RESIZE_MOVE              &&
+	    *partition_new   == candidate.get_partition_original()   )
 	{
 		partition_new.reset(candidate.get_partition_new().clone());
 		create_description();

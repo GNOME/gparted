@@ -21,12 +21,12 @@
 namespace GParted
 {
 
+
 OperationNamePartition::OperationNamePartition( const Device & device,
                                                 const Partition & partition_orig,
                                                 const Partition & partition_new )
+ : Operation(OPERATION_NAME_PARTITION)
 {
-	type = OPERATION_NAME_PARTITION;
-
 	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
@@ -57,12 +57,13 @@ void OperationNamePartition::create_description()
 	}
 }
 
+
 bool OperationNamePartition::merge_operations( const Operation & candidate )
 {
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( candidate.type == OPERATION_NAME_PARTITION           &&
-	     *partition_new == candidate.get_partition_original()    )
+	if (candidate.m_type == OPERATION_NAME_PARTITION           &&
+	    *partition_new   == candidate.get_partition_original()   )
 	{
 		partition_new->name = candidate.get_partition_new().name;
 		create_description();

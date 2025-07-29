@@ -22,10 +22,10 @@
 namespace GParted
 {
 
-OperationDelete::OperationDelete( const Device & device, const Partition & partition_orig )
-{
-	type = OPERATION_DELETE ;
 
+OperationDelete::OperationDelete( const Device & device, const Partition & partition_orig )
+ : Operation(OPERATION_DELETE)
+{
 	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 }
