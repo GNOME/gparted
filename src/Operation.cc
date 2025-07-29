@@ -15,7 +15,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "Operation.h"
+#include "Device.h"
 #include "GParted_Core.h"
 #include "Partition.h"
 #include "PartitionVector.h"
@@ -24,8 +26,8 @@ namespace GParted
 {
 
 
-Operation::Operation(OperationType type)
- : m_type(type)
+Operation::Operation(OperationType type, const Device& device)
+ : m_type(type), m_device(device.get_copy_without_partitions())
 {
 }
 
@@ -84,12 +86,14 @@ int Operation::find_index_new( const PartitionVector & partitions )
 	return -1;
 }
 
+
 void Operation::insert_unallocated( PartitionVector & partitions,
                                     Sector start, Sector end, Byte_Value sector_size, bool inside_extended )
 {
-	GParted_Core::insert_unallocated( device.get_path(), partitions,
-	                                  start, end, sector_size, inside_extended );
+	GParted_Core::insert_unallocated(m_device.get_path(), partitions,
+	                                 start, end, sector_size, inside_extended);
 }
+
 
 // Visual re-apply this operation, for operations which don't change the partition
 // boundaries.  Matches this operation's original partition in the vector and substitutes
@@ -149,11 +153,11 @@ void Operation::insert_new( PartitionVector & partitions )
 			{
 				partitions[index_extended].logicals.replace_at(index, partition_new.get());
 
-				insert_unallocated( partitions[index_extended].logicals,
-				                    partitions[index_extended].sector_start,
-				                    partitions[index_extended].sector_end,
-				                    device.sector_size,
-				                    true );
+				insert_unallocated(partitions[index_extended].logicals,
+				                   partitions[index_extended].sector_start,
+				                   partitions[index_extended].sector_end,
+				                   m_device.sector_size,
+				                   true);
 			}
 		}
 	}
@@ -164,9 +168,10 @@ void Operation::insert_new( PartitionVector & partitions )
 		{
 			partitions.replace_at(index, partition_new.get());
 
-			insert_unallocated( partitions, 0, device.length-1, device.sector_size, false );
+			insert_unallocated(partitions, 0, m_device.length-1, m_device.sector_size, false);
 		}
 	}
 }
+
 
 } //GParted

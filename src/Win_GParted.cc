@@ -1049,7 +1049,7 @@ void Win_GParted::Refresh_Visual()
 	//make all operations visible
 	m_display_device = m_devices[m_current_device];
 	for (unsigned int i = 0; i < m_operations.size(); i++)
-		if (m_operations[i]->device == m_display_device)
+		if (m_operations[i]->m_device == m_display_device)
 			m_operations[i]->apply_to_visual(m_display_device.partitions);
 
 	hbox_operations.load_operations(m_operations);
@@ -1651,7 +1651,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 	unsigned int i ;
 	for (unsigned int t = 0; t < m_operations.size(); t++)
 	{
-		for (i = 0; i < m_devices.size() && m_devices[i] != m_operations[t]->device; i++)
+		for (i = 0; i < m_devices.size() && m_devices[i] != m_operations[t]->m_device; i++)
 		{}
 
 		if (i >= m_devices.size())

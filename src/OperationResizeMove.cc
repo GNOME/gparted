@@ -26,9 +26,8 @@ namespace GParted
 OperationResizeMove::OperationResizeMove( const Device & device,
 				  	  const Partition & partition_orig,
 				  	  const Partition & partition_new )
- : Operation(OPERATION_RESIZE_MOVE)
+ : Operation(OPERATION_RESIZE_MOVE, device)
 {
-	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
 }
@@ -154,11 +153,11 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 				partitions[index_extended].logicals.replace_at(index, partition_new.get());
 				remove_adjacent_unallocated( partitions[index_extended].logicals, index );
 
-				insert_unallocated( partitions[index_extended].logicals,
-				                    partitions[index_extended].sector_start,
-				                    partitions[index_extended].sector_end,
-				                    device.sector_size,
-				                    true );
+				insert_unallocated(partitions[index_extended].logicals,
+				                   partitions[index_extended].sector_start,
+				                   partitions[index_extended].sector_end,
+				                   m_device.sector_size,
+				                   true);
 			}
 		}
 	}
@@ -171,10 +170,11 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 			partitions.replace_at(index, partition_new.get());
 			remove_adjacent_unallocated( partitions, index ) ;
 
-			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
+			insert_unallocated(partitions, 0, m_device.length -1, m_device.sector_size, false);
 		}
 	}
 }
+
 
 void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions )
 {
@@ -194,10 +194,10 @@ void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions
 			partitions[index_extended].sector_start = partition_new->sector_start;
 			partitions[index_extended].sector_end   = partition_new->sector_end;
 		}
-	
-		insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
+
+		insert_unallocated(partitions, 0, m_device.length -1, m_device.sector_size, false);
 	}
-	
+
 	//stuff INSIDE extended partition
 	index_extended = find_extended_partition( partitions );
 	if ( index_extended >= 0 )
@@ -210,13 +210,14 @@ void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions
 		     partitions[index_extended].logicals.back().type == TYPE_UNALLOCATED )
 			partitions[ index_extended ] .logicals .pop_back() ;
 	
-		insert_unallocated( partitions[ index_extended ] .logicals,
-				    partitions[ index_extended ] .sector_start,
-				    partitions[ index_extended ] .sector_end,
-				    device .sector_size,
-				    true ) ;
+		insert_unallocated(partitions[index_extended].logicals,
+				   partitions[index_extended].sector_start,
+				   partitions[index_extended].sector_end,
+				   m_device.sector_size,
+				   true);
 	}
 }
+
 
 void OperationResizeMove::remove_adjacent_unallocated( PartitionVector & partitions, int index_orig )
 {

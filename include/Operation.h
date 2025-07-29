@@ -47,7 +47,7 @@ enum OperationType {
 class Operation
 {
 public:
-	Operation(OperationType type);
+	Operation(OperationType type, const Device& device);
 	virtual ~Operation() = default;
 
 	Operation(const Operation& src) = delete;             // Copy construction prohibited
@@ -64,7 +64,7 @@ public:
 
 	//public variables
 	OperationType m_type;
-	Device device ;
+	Device        m_device;
 
 	Glib::RefPtr<Gdk::Pixbuf> icon ;
 	Glib::ustring description ;

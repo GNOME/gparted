@@ -24,9 +24,8 @@ namespace GParted
 
 
 OperationDelete::OperationDelete( const Device & device, const Partition & partition_orig )
- : Operation(OPERATION_DELETE)
+ : Operation(OPERATION_DELETE, device)
 {
-	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 }
 
@@ -65,11 +64,11 @@ void OperationDelete::apply_to_visual( PartitionVector & partitions )
 			{
 				remove_original_and_adjacent_unallocated( partitions[index_extended].logicals, index );
 
-				insert_unallocated( partitions[index_extended].logicals,
-				                    partitions[index_extended].sector_start,
-				                    partitions[index_extended].sector_end,
-				                    device.sector_size,
-				                    true );
+				insert_unallocated(partitions[index_extended].logicals,
+				                   partitions[index_extended].sector_start,
+				                   partitions[index_extended].sector_end,
+				                   m_device.sector_size,
+				                   true);
 
 				// If deleted partition was logical we have to decrease
 				// the partition numbers of the logicals with higher
@@ -91,10 +90,11 @@ void OperationDelete::apply_to_visual( PartitionVector & partitions )
 		{
 			remove_original_and_adjacent_unallocated( partitions, index ) ;
 			
-			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
+			insert_unallocated(partitions, 0, m_device.length -1, m_device.sector_size, false);
 		}
 	}
 }
+
 
 void OperationDelete::create_description() 
 {

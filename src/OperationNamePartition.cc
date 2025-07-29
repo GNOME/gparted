@@ -25,9 +25,8 @@ namespace GParted
 OperationNamePartition::OperationNamePartition( const Device & device,
                                                 const Partition & partition_orig,
                                                 const Partition & partition_new )
- : Operation(OPERATION_NAME_PARTITION)
+ : Operation(OPERATION_NAME_PARTITION, device)
 {
-	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
 }

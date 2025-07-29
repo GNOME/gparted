@@ -28,9 +28,8 @@ namespace GParted
 OperationCreate::OperationCreate( const Device & device,
 				  const Partition & partition_orig,
 				  const Partition & partition_new )
- : Operation(OPERATION_CREATE)
+ : Operation(OPERATION_CREATE, device)
 {
-	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
 }
@@ -67,7 +66,7 @@ void OperationCreate::create_description()
 	                                partition_new->get_filesystem_string(),
 	                                Utils::format_size( partition_new->get_sector_length(),
 	                                                    partition_new->sector_size ),
-	                                device.get_path() );
+	                                m_device.get_path());
 }
 
 

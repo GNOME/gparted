@@ -27,9 +27,8 @@ OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_orig,
 			      const Partition & partition_new,
 			      const Partition & partition_copied )
- : Operation(OPERATION_COPY)
+ : Operation(OPERATION_COPY, device)
 {
-	this->device = device.get_copy_without_partitions();
 	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
 	this->partition_copied.reset(partition_copied.clone());
@@ -73,7 +72,7 @@ void OperationCopy::create_description()
 		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
 		description = Glib::ustring::compose( _("Copy %1 to %2 (start at %3)"),
 		                                partition_copied->get_path(),
-		                                device.get_path(),
+		                                m_device.get_path(),
 		                                Utils::format_size( partition_new->sector_start,
 		                                                    partition_new->sector_size ) );
 	}
