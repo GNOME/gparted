@@ -160,7 +160,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 
 		//update the gui elements..
 		if ( operationdetail .get_status() == STATUS_EXECUTE )
-			label_current_sub_text = operationdetail .get_description() ;
+			m_label_current_sub_text = operationdetail.get_description();
 
 		const ProgressBar& progressbar_src = operationdetail.get_progressbar();
 		if ( progressbar_src.running() )
@@ -168,7 +168,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 			if ( pulsetimer.connected() )
 				pulsetimer.disconnect();
 			progressbar_current.set_fraction( progressbar_src.get_fraction() );
-			progress_text = progressbar_src.get_text();
+			m_progress_text = progressbar_src.get_text();
 		}
 		else
 		{
@@ -176,7 +176,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 			{
 				pulsetimer = Glib::signal_timeout().connect(
 				                sigc::mem_fun( *this, &Dialog_Progress::pulsebar_pulse ), 100 );
-				progress_text.clear();
+				m_progress_text.clear();
 			}
 		}
 		update_gui_elements();
@@ -198,13 +198,15 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 	}
 }
 
+
 void Dialog_Progress::update_gui_elements()
 {
-	label_current_sub .set_markup( "<i>" + label_current_sub_text + "</i>\n" ) ;
-	
+	label_current_sub.set_markup("<i>" + m_label_current_sub_text + "</i>\n");
+
 	//To ensure progress bar height remains the same, add a space in case message is empty
-	progressbar_current.set_text( progress_text + " " );
+	progressbar_current.set_text(m_progress_text + " ");
 }
+
 
 bool Dialog_Progress::pulsebar_pulse()
 {

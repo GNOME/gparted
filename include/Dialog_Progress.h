@@ -102,9 +102,9 @@ private:
 	double                     m_fraction;
 	unsigned int               m_curr_op;
 	unsigned int               m_warnings;
-	Glib::ustring progress_text;
+	Glib::ustring              m_progress_text;
+	Glib::ustring              m_label_current_sub_text;
 	sigc::connection pulsetimer;
-	Glib::ustring label_current_sub_text ;
 	unsigned int cancel_countdown;
 	sigc::connection canceltimer;
 	bool cancel_timeout();
