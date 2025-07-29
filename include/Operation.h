@@ -79,8 +79,8 @@ protected:
 	void substitute_new( PartitionVector & partitions );
 	void insert_new( PartitionVector & partitions );
 
-	Partition * partition_original;
-	Partition * partition_new;
+	std::unique_ptr<Partition> partition_original;
+	std::unique_ptr<Partition> partition_new;
 };
 
 

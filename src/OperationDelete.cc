@@ -27,14 +27,14 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 	type = OPERATION_DELETE ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = partition_orig.clone();
+	this->partition_original.reset(partition_orig.clone());
 }
+
 
 OperationDelete::~OperationDelete()
 {
-	delete partition_original;
-	partition_original = nullptr;
 }
+
 
 Partition & OperationDelete::get_partition_new()
 {

@@ -28,17 +28,15 @@ OperationFormat::OperationFormat( const Device & device,
 	type = OPERATION_FORMAT ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = partition_orig.clone();
-	this->partition_new      = partition_new.clone();
+	this->partition_original.reset(partition_orig.clone());
+	this->partition_new.reset(partition_new.clone());
 }
+
 
 OperationFormat::~OperationFormat()
 {
-	delete partition_original;
-	delete partition_new;
-	partition_original = nullptr;
-	partition_new = nullptr;
 }
+
 
 void OperationFormat::apply_to_visual( PartitionVector & partitions )
 {
@@ -84,8 +82,7 @@ bool OperationFormat::merge_operations( const Operation & candidate )
 	if ( candidate.type == OPERATION_FORMAT                   &&
 	     *partition_new == candidate.get_partition_original()    )
 	{
-		delete partition_new;
-		partition_new = candidate.get_partition_new().clone();
+		partition_new.reset(candidate.get_partition_new().clone());
 		create_description();
 		return true;
 	}

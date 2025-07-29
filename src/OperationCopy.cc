@@ -30,20 +30,16 @@ OperationCopy::OperationCopy( const Device & device,
 	type = OPERATION_COPY ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = partition_orig.clone();
-	this->partition_new      = partition_new.clone();
-	this->partition_copied   = partition_copied.clone();
+	this->partition_original.reset(partition_orig.clone());
+	this->partition_new.reset(partition_new.clone());
+	this->partition_copied.reset(partition_copied.clone());
 }
+
 
 OperationCopy::~OperationCopy()
 {
-	delete partition_original;
-	delete partition_new;
-	delete partition_copied;
-	partition_original = nullptr;
-	partition_new = nullptr;
-	partition_copied = nullptr;
 }
+
 
 Partition & OperationCopy::get_partition_copied()
 {

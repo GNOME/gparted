@@ -106,16 +106,17 @@ void Operation::substitute_new( PartitionVector & partitions )
 		{
 			index = find_index_original( partitions[index_extended].logicals );
 			if ( index >= 0 )
-				partitions[index_extended].logicals.replace_at( index, partition_new );
+				partitions[index_extended].logicals.replace_at(index, partition_new.get());
 		}
 	}
 	else
 	{
 		index = find_index_original( partitions );
 		if ( index >= 0 )
-			partitions.replace_at( index, partition_new );
+			partitions.replace_at(index, partition_new.get());
 	}
 }
+
 
 // Visually re-apply this operation, for operations which create new partitions.
 void Operation::insert_new( PartitionVector & partitions )
@@ -143,7 +144,7 @@ void Operation::insert_new( PartitionVector & partitions )
 			index = find_index_new( partitions[index_extended].logicals );
 			if ( index >= 0 )
 			{
-				partitions[index_extended].logicals.replace_at( index, partition_new );
+				partitions[index_extended].logicals.replace_at(index, partition_new.get());
 
 				insert_unallocated( partitions[index_extended].logicals,
 				                    partitions[index_extended].sector_start,
@@ -158,7 +159,7 @@ void Operation::insert_new( PartitionVector & partitions )
 		index = find_index_new( partitions );
 		if ( index >= 0 )
 		{
-			partitions.replace_at( index, partition_new );
+			partitions.replace_at(index, partition_new.get());
 
 			insert_unallocated( partitions, 0, device.length-1, device.sector_size, false );
 		}

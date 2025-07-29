@@ -28,17 +28,15 @@ OperationNamePartition::OperationNamePartition( const Device & device,
 	type = OPERATION_NAME_PARTITION;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = partition_orig.clone();
-	this->partition_new      = partition_new.clone();
+	this->partition_original.reset(partition_orig.clone());
+	this->partition_new.reset(partition_new.clone());
 }
+
 
 OperationNamePartition::~OperationNamePartition()
 {
-	delete partition_original;
-	delete partition_new;
-	partition_original = nullptr;
-	partition_new = nullptr;
 }
+
 
 void OperationNamePartition::apply_to_visual( PartitionVector & partitions )
 {

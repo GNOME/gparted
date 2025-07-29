@@ -26,17 +26,15 @@ OperationCheck::OperationCheck( const Device & device, const Partition & partiti
 	type = OPERATION_CHECK ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = partition.clone();
-	this->partition_new      = partition.clone();
+	this->partition_original.reset(partition.clone());
+	this->partition_new.reset(partition.clone());
 }
+
 
 OperationCheck::~OperationCheck()
 {
-	delete partition_original;
-	delete partition_new;
-	partition_original = nullptr;
-	partition_new = nullptr;
 }
+
 
 void OperationCheck::apply_to_visual( PartitionVector & partitions )
 {

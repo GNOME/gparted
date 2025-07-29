@@ -29,17 +29,15 @@ OperationResizeMove::OperationResizeMove( const Device & device,
 	type = OPERATION_RESIZE_MOVE ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = partition_orig.clone();
-	this->partition_new      = partition_new.clone();
+	this->partition_original.reset(partition_orig.clone());
+	this->partition_new.reset(partition_new.clone());
 }
+
 
 OperationResizeMove::~OperationResizeMove()
 {
-	delete partition_original;
-	delete partition_new;
-	partition_original = nullptr;
-	partition_new = nullptr;
 }
+
 
 void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 {
@@ -158,7 +156,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 			if ( index >= 0 )
 			{
-				partitions[index_extended].logicals.replace_at( index, partition_new );
+				partitions[index_extended].logicals.replace_at(index, partition_new.get());
 				remove_adjacent_unallocated( partitions[index_extended].logicals, index );
 
 				insert_unallocated( partitions[index_extended].logicals,
@@ -175,7 +173,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 		if ( index >= 0 )
 		{
-			partitions.replace_at( index, partition_new );
+			partitions.replace_at(index, partition_new.get());
 			remove_adjacent_unallocated( partitions, index ) ;
 
 			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
@@ -244,8 +242,7 @@ bool OperationResizeMove::merge_operations( const Operation & candidate )
 	if ( candidate.type == OPERATION_RESIZE_MOVE              &&
 	     *partition_new == candidate.get_partition_original()    )
 	{
-		delete partition_new;
-		partition_new = candidate.get_partition_new().clone();
+		partition_new.reset(candidate.get_partition_new().clone());
 		create_description();
 		return true;
 	}

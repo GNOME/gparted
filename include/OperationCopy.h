@@ -21,6 +21,9 @@
 #include "Partition.h"
 #include "PartitionVector.h"
 
+#include <memory>
+
+
 namespace GParted
 {
 
@@ -45,7 +48,7 @@ private:
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 
-	Partition * partition_copied;
+	std::unique_ptr<Partition> partition_copied;
 };
 
 
