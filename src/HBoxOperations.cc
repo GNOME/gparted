@@ -21,8 +21,6 @@
 
 #include <gtkmm/stock.h>
 #include <sigc++/signal.h>
-#include <vector>
-#include <memory>
 
 
 namespace GParted
@@ -76,7 +74,7 @@ HBoxOperations::HBoxOperations()
 }
 
 
-void HBoxOperations::load_operations(const std::vector<std::unique_ptr<Operation>>& operations)
+void HBoxOperations::load_operations(const OperationVector& operations)
 {
 	liststore_operations ->clear();
 

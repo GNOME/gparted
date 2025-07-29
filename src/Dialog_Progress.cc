@@ -32,15 +32,13 @@
 #include <gtkmm/filechooserdialog.h>
 #include <sigc++/signal.h>
 #include <vector>
-#include <memory>
 
 
 namespace GParted
 {
 
 
-Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices,
-                                 const std::vector<std::unique_ptr<Operation>>& operations)
+Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const OperationVector& operations)
  : m_devices(devices), operations(operations), m_curr_op(0)
 {
 	this ->set_title( _("Applying pending operations") ) ;

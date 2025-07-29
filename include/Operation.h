@@ -23,8 +23,13 @@
 #include "Partition.h"
 #include "PartitionVector.h"
 
+#include <vector>
+#include <memory>
+
+
 namespace GParted
 {
+
 
 enum OperationType {
 	OPERATION_DELETE           = 0,
@@ -77,6 +82,9 @@ protected:
 	Partition * partition_original;
 	Partition * partition_new;
 };
+
+
+typedef std::vector<std::unique_ptr<Operation>> OperationVector;
 
 
 } //GParted

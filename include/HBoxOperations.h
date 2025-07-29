@@ -25,8 +25,6 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/treeview.h>
 #include <sigc++/signal.h>
-#include <vector>
-#include <memory>
 
 
 namespace GParted
@@ -38,7 +36,7 @@ class HBoxOperations : public Gtk::Box
 public:
 	HBoxOperations() ;
 
-	void load_operations(const std::vector<std::unique_ptr<Operation>>& operations);
+	void load_operations(const OperationVector& operations);
 	void clear() ;
 
 	sigc::signal< void > signal_undo ;
