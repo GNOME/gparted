@@ -39,14 +39,10 @@ namespace GParted
 
 
 Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const OperationVector& operations)
- : m_devices(devices), m_operations(operations), m_curr_op(0)
+ : m_devices(devices), m_operations(operations), m_success(true), m_cancel(false),
+   m_fraction(1.0 / operations.size()), m_curr_op(0), m_warnings(0)
 {
 	this ->set_title( _("Applying pending operations") ) ;
-	succes = true ;
-	cancel = false ;
-	warnings = 0 ;
-
-	fraction = 1.00 / m_operations.size();
 	this->property_default_width() = 700;
 
 	{
@@ -154,7 +150,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 				break ;
 			case STATUS_WARNING:
 				treerow[m_treeview_operations_columns.status_icon] = icon_warning;
-				warnings++ ;
+				m_warnings++;
 				break ;
 			case STATUS_NONE:
 				static_cast< Glib::RefPtr<Gdk::Pixbuf> >(
@@ -219,7 +215,7 @@ bool Dialog_Progress::pulsebar_pulse()
 
 void Dialog_Progress::on_signal_show()
 {
-	for (m_curr_op = 0; m_curr_op < m_operations.size() && succes && ! cancel; m_curr_op++)
+	for (m_curr_op = 0; m_curr_op < m_operations.size() && m_success && ! m_cancel; m_curr_op++)
 	{
 		m_operations[m_curr_op]->m_operation_detail.signal_update.connect(
 			sigc::mem_fun( this, &Dialog_Progress::on_signal_update ) ) ;
@@ -228,7 +224,7 @@ void Dialog_Progress::on_signal_show()
 
 		progressbar_all.set_text(Glib::ustring::compose(_("%1 of %2 operations completed"),
 		                                                m_curr_op, m_operations.size()));
-		progressbar_all.set_fraction(fraction * m_curr_op > 1.0 ? 1.0 : fraction * m_curr_op);
+		progressbar_all.set_fraction(m_fraction * m_curr_op > 1.0 ? 1.0 : m_fraction * m_curr_op);
 
 		treerow = treestore_operations ->children()[m_curr_op];
 
@@ -238,10 +234,10 @@ void Dialog_Progress::on_signal_show()
 		//set focus...
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
 
-		succes = signal_apply_operation.emit(m_operations[m_curr_op].get());
+		m_success = signal_apply_operation.emit(m_operations[m_curr_op].get());
 
 		//set status (succes/error) for this operation
-		m_operations[m_curr_op]->m_operation_detail.set_success_and_capture_errors(succes);
+		m_operations[m_curr_op]->m_operation_detail.set_success_and_capture_errors(m_success);
 	}
 
 	//add save button
@@ -255,7 +251,7 @@ void Dialog_Progress::on_signal_show()
 
 	pulsetimer.disconnect();
 
-	if ( cancel )
+	if (m_cancel)
 	{
 		progressbar_current .set_text( _("Operation cancelled") ) ;
 		progressbar_current .set_fraction( 0.0 ) ;
@@ -269,14 +265,17 @@ void Dialog_Progress::on_signal_show()
 	}
 
 	//deal with succes/error...
-	if ( succes )
+	if (m_success)
 	{
 		Glib::ustring str_temp(_("All operations successfully completed"));
 
-		if ( warnings > 0 )
+		if (m_warnings > 0)
+		{
 			str_temp += " ("
-			         +  Glib::ustring::compose( ngettext("%1 warning", "%1 warnings", warnings), warnings )
+			         +  Glib::ustring::compose(ngettext("%1 warning", "%1 warnings", m_warnings),
+			                                   m_warnings)
 			         +  ")" ;
+		}
 
 		progressbar_all .set_text( str_temp ) ;
 		progressbar_all .set_fraction( 1.0 ) ;
@@ -285,7 +284,7 @@ void Dialog_Progress::on_signal_show()
 	{
 		expander_details .set_expanded( true ) ;
 
-		if ( ! cancel )
+		if (! m_cancel)
 		{
 			Gtk::MessageDialog dialog( *this,
 						   _("An error occurred while applying the operations"),
@@ -348,10 +347,11 @@ void Dialog_Progress::on_cancel()
 	dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
 	dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;
 	
-	if ( !cancel || dialog .run() == Gtk::RESPONSE_CANCEL )
+	if (! m_cancel || dialog.run() == Gtk::RESPONSE_CANCEL)
 	{
 		cancelbutton->set_sensitive( false );
-		if (!cancel) {
+		if (! m_cancel)
+		{
 			cancel_countdown = 5;
 			/*TO TRANSLATORS: looks like  Force Cancel (5)
 			 *  where the number represents a count down in seconds until the button is enabled */
@@ -359,9 +359,12 @@ void Dialog_Progress::on_cancel()
 			canceltimer = Glib::signal_timeout().connect(
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}
-		else cancelbutton->set_label( _("Force Cancel") );
-		m_operations[m_curr_op]->m_operation_detail.signal_cancel.emit(cancel);
-		cancel = true;
+		else
+		{
+			cancelbutton->set_label(_("Force Cancel"));
+		}
+		m_operations[m_curr_op]->m_operation_detail.signal_cancel.emit(m_cancel);
+		m_cancel = true;
 	}
 }
 

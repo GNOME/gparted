@@ -97,11 +97,12 @@ private:
 
 	const std::vector<Device>& m_devices;
 	const OperationVector&     m_operations;
+	bool                       m_success;
+	bool                       m_cancel;
+	double                     m_fraction;
+	unsigned int               m_curr_op;
+	unsigned int               m_warnings;
 	Glib::ustring progress_text;
-	bool succes, cancel;
-	double fraction ;
-	unsigned int m_curr_op;
-	unsigned int warnings;
 	sigc::connection pulsetimer;
 	Glib::ustring label_current_sub_text ;
 	unsigned int cancel_countdown;
