@@ -24,13 +24,13 @@
 namespace GParted
 {
 
+
 class OperationLabelFileSystem : public Operation
 {
 public:
 	OperationLabelFileSystem( const Device & device,
 	                          const Partition & partition_orig,
 	                          const Partition & partition_new );
-	virtual ~OperationLabelFileSystem();
 
 	OperationLabelFileSystem(const OperationLabelFileSystem& src) = delete;             // Copy construction prohibited
 	OperationLabelFileSystem& operator=(const OperationLabelFileSystem& rhs) = delete;  // Copy assignment prohibited

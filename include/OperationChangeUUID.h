@@ -31,7 +31,6 @@ public:
 	                   , const Partition & partition_orig
 	                   , const Partition & partition_new
 	                   ) ;
-	virtual ~OperationChangeUUID();
 
 	OperationChangeUUID(const OperationChangeUUID& src) = delete;             // Copy construction prohibited
 	OperationChangeUUID& operator=(const OperationChangeUUID& rhs) = delete;  // Copy assignment prohibited

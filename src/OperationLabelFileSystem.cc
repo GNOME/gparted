@@ -33,11 +33,6 @@ OperationLabelFileSystem::OperationLabelFileSystem( const Device & device,
 }
 
 
-OperationLabelFileSystem::~OperationLabelFileSystem()
-{
-}
-
-
 void OperationLabelFileSystem::apply_to_visual( PartitionVector & partitions )
 {
 	substitute_new( partitions );

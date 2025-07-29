@@ -24,13 +24,13 @@
 namespace GParted
 {
 
+
 class OperationResizeMove : public Operation
 {
 public:
 	OperationResizeMove( const Device & device,
 			     const Partition & partition_orig,
 			     const Partition & partition_new ) ;
-	virtual ~OperationResizeMove();
 
 	OperationResizeMove(const OperationResizeMove& src) = delete;             // Copy construction prohibited
 	OperationResizeMove& operator=(const OperationResizeMove& rhs) = delete;  // Copy assignment prohibited

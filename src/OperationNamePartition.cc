@@ -33,11 +33,6 @@ OperationNamePartition::OperationNamePartition( const Device & device,
 }
 
 
-OperationNamePartition::~OperationNamePartition()
-{
-}
-
-
 void OperationNamePartition::apply_to_visual( PartitionVector & partitions )
 {
 	substitute_new( partitions );

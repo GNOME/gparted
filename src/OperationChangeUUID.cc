@@ -34,11 +34,6 @@ OperationChangeUUID::OperationChangeUUID( const Device & device
 }
 
 
-OperationChangeUUID::~OperationChangeUUID()
-{
-}
-
-
 void OperationChangeUUID::apply_to_visual( PartitionVector & partitions )
 {
 	substitute_new( partitions );

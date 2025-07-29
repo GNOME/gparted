@@ -43,12 +43,12 @@ enum OperationType {
 	OPERATION_NAME_PARTITION   = 8
 };
 
+
 class Operation
 {
-	
 public:
 	Operation() ;
-	virtual ~Operation() {}
+	virtual ~Operation() = default;
 
 	Operation(const Operation& src) = delete;             // Copy construction prohibited
 	Operation& operator=(const Operation& rhs) = delete;  // Copy assignment prohibited

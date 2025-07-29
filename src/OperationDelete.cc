@@ -31,11 +31,6 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 }
 
 
-OperationDelete::~OperationDelete()
-{
-}
-
-
 Partition & OperationDelete::get_partition_new()
 {
 	g_assert( false );  // Bug: OperationDelete class doesn't use partition_new

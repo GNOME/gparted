@@ -31,11 +31,6 @@ OperationCheck::OperationCheck( const Device & device, const Partition & partiti
 }
 
 
-OperationCheck::~OperationCheck()
-{
-}
-
-
 void OperationCheck::apply_to_visual( PartitionVector & partitions )
 {
 }

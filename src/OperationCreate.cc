@@ -36,11 +36,6 @@ OperationCreate::OperationCreate( const Device & device,
 }
 
 
-OperationCreate::~OperationCreate()
-{
-}
-
-
 void OperationCreate::apply_to_visual( PartitionVector & partitions )
 {
 	insert_new( partitions );

@@ -34,7 +34,6 @@ public:
 		       const Partition & partition_orig,
 		       const Partition & partition_new,
 		       const Partition & partition_copied ) ;
-	virtual ~OperationCopy();
 
 	OperationCopy(const OperationCopy& src) = delete;             // Copy construction prohibited
 	OperationCopy& operator=(const OperationCopy& rhs) = delete;  // Copy assignment prohibited

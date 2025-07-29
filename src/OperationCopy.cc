@@ -36,11 +36,6 @@ OperationCopy::OperationCopy( const Device & device,
 }
 
 
-OperationCopy::~OperationCopy()
-{
-}
-
-
 Partition & OperationCopy::get_partition_copied()
 {
 	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later

@@ -34,11 +34,6 @@ OperationResizeMove::OperationResizeMove( const Device & device,
 }
 
 
-OperationResizeMove::~OperationResizeMove()
-{
-}
-
-
 void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 {
 	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later

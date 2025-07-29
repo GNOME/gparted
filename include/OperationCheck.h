@@ -24,11 +24,11 @@
 namespace GParted
 {
 
+
 class OperationCheck : public Operation
 {
 public:
 	OperationCheck( const Device & device, const Partition & partition ) ;
-	virtual ~OperationCheck();
 
 	OperationCheck(const OperationCheck& src) = delete;             // Copy construction prohibited
 	OperationCheck& operator=(const OperationCheck& rhs) = delete;  // Copy assignment prohibited

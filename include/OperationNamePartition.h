@@ -24,13 +24,13 @@
 namespace GParted
 {
 
+
 class OperationNamePartition: public Operation
 {
 public:
 	OperationNamePartition( const Device & device,
 	                        const Partition & partition_orig,
 	                        const Partition & partition_new );
-	virtual ~OperationNamePartition();
 
 	OperationNamePartition(const OperationNamePartition& src) = delete;             // Copy construction prohibited
 	OperationNamePartition& operator=(const OperationNamePartition& rhs) = delete;  // Copy assignment prohibited

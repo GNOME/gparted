@@ -33,11 +33,6 @@ OperationFormat::OperationFormat( const Device & device,
 }
 
 
-OperationFormat::~OperationFormat()
-{
-}
-
-
 void OperationFormat::apply_to_visual( PartitionVector & partitions )
 {
 	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
