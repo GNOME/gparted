@@ -40,7 +40,7 @@ namespace GParted
 
 Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const OperationVector& operations)
  : m_devices(devices), m_operations(operations), m_success(true), m_cancel(false),
-   m_fraction(1.0 / operations.size()), m_curr_op(0), m_warnings(0)
+   m_fraction(1.0 / operations.size()), m_curr_op(0), m_warnings(0), m_cancel_countdown(0)
 {
 	this ->set_title( _("Applying pending operations") ) ;
 	this->property_default_width() = 700;
@@ -322,11 +322,14 @@ void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, co
 
 bool Dialog_Progress::cancel_timeout()
 {
-	if (--cancel_countdown) {
+	if (--m_cancel_countdown)
+	{
 		/*TO TRANSLATORS: looks like  Force Cancel (5)
 		 *  where the number represents a count down in seconds until the button is enabled */
-		cancelbutton->set_label( Glib::ustring::compose( _("Force Cancel (%1)"), cancel_countdown ) );
-	} else {
+		cancelbutton->set_label(Glib::ustring::compose(_("Force Cancel (%1)"), m_cancel_countdown));
+	}
+	else
+	{
 		cancelbutton->set_label( _("Force Cancel") );
 		canceltimer.disconnect();
 		cancelbutton->set_sensitive();
@@ -354,10 +357,10 @@ void Dialog_Progress::on_cancel()
 		cancelbutton->set_sensitive( false );
 		if (! m_cancel)
 		{
-			cancel_countdown = 5;
+			m_cancel_countdown = 5;
 			/*TO TRANSLATORS: looks like  Force Cancel (5)
 			 *  where the number represents a count down in seconds until the button is enabled */
-			cancelbutton->set_label( Glib::ustring::compose( _("Force Cancel (%1)"), cancel_countdown ) );
+			cancelbutton->set_label(Glib::ustring::compose(_("Force Cancel (%1)"), m_cancel_countdown));
 			canceltimer = Glib::signal_timeout().connect(
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}

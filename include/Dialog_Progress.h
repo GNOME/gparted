@@ -53,6 +53,7 @@ private:
 	void update_gui_elements() ;
 	void on_signal_show() ;
 	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
+	bool cancel_timeout();
 	void on_cancel() ;
 	void on_save() ;
 	void write_device_details(const Device& device, std::ofstream& out);
@@ -104,11 +105,12 @@ private:
 	unsigned int               m_warnings;
 	Glib::ustring              m_progress_text;
 	Glib::ustring              m_label_current_sub_text;
+	unsigned int               m_cancel_countdown;
+
 	sigc::connection pulsetimer;
-	unsigned int cancel_countdown;
 	sigc::connection canceltimer;
-	bool cancel_timeout();
 };
+
 
 }//GParted
 
