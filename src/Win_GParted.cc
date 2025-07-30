@@ -2086,7 +2086,7 @@ void Win_GParted::activate_resize()
 		                        m_devices[m_current_device],
 		                        *selected_partition_ptr,
 		                        *resized_ptn);
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
+		operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
 
 		delete resized_ptn;
 		resized_ptn = nullptr;
@@ -2256,7 +2256,7 @@ void Win_GParted::activate_paste()
 				                        *selected_partition_ptr,
 				                        dialog.Get_New_Partition(),
 				                        *copied_partition);
-				operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+				operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
 
 				// When pasting into unallocated space set a temporary
 				// path of "Copy of /dev/SRC" for display purposes until
@@ -2353,7 +2353,7 @@ void Win_GParted::activate_paste()
 		                        *selected_partition_ptr,
 		                        *partition_new,
 		                        *copied_partition);
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+		operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
 
 		delete partition_new;
 		partition_new = nullptr;
@@ -2415,7 +2415,7 @@ void Win_GParted::activate_new()
 			                        m_devices[m_current_device],
 			                        *selected_partition_ptr,
 			                        dialog.Get_New_Partition());
-			operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
+			operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
 
 			add_operation(m_devices[m_current_device], std::move(operation));
 
@@ -2525,7 +2525,7 @@ void Win_GParted::activate_delete()
 		std::unique_ptr<Operation> operation = std::make_unique<OperationDelete>(
 		                        m_devices[m_current_device],
 		                        *selected_partition_ptr);
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);
+		operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);
 
 		add_operation(m_devices[m_current_device], std::move(operation));
 	}
@@ -2662,7 +2662,7 @@ void Win_GParted::activate_format( FSType new_fs )
 		                        m_devices[m_current_device],
 		                        *selected_partition_ptr,
 		                        *temp_ptn);
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
+		operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
 
 		add_operation(m_devices[m_current_device], std::move(operation));
 
@@ -3206,7 +3206,7 @@ void Win_GParted::activate_check()
 	std::unique_ptr<Operation> operation = std::make_unique<OperationCheck>(
 	                        m_devices[m_current_device],
 	                        *selected_partition_ptr);
-	operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
+	operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 	add_operation(m_devices[m_current_device], std::move(operation));
 
@@ -3236,7 +3236,7 @@ void Win_GParted::activate_label_filesystem()
 		                        m_devices[m_current_device],
 		                        *selected_partition_ptr,
 		                        *part_temp);
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
+		operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 		delete part_temp;
 		part_temp = nullptr;
@@ -3270,7 +3270,7 @@ void Win_GParted::activate_name_partition()
 		                        m_devices[m_current_device],
 		                        *selected_partition_ptr,
 		                        *part_temp);
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
+		operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 		delete part_temp;
 		part_temp = nullptr;
@@ -3328,7 +3328,7 @@ void Win_GParted::activate_change_uuid()
 	                        m_devices[m_current_device],
 	                        *selected_partition_ptr,
 	                        *temp_ptn);
-	operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
+	operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
 
 	delete temp_ptn;
 	temp_ptn = nullptr;

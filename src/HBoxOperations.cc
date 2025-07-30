@@ -83,7 +83,7 @@ void HBoxOperations::load_operations(const OperationVector& operations)
 	{	
 		treerow = *( liststore_operations ->append() );
 		treerow[m_treeview_operations_columns.operation_description] = operations[t]->description;
-		treerow[m_treeview_operations_columns.operation_icon]        = operations[t]->icon;
+		treerow[m_treeview_operations_columns.operation_icon]        = operations[t]->m_icon;
 	}
 
 	//make scrollwindow focus on the last operation in the list	
