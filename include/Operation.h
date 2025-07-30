@@ -47,7 +47,7 @@ enum OperationType {
 class Operation
 {
 public:
-	Operation(OperationType type, const Device& device);
+	Operation(OperationType type, const Device& device, const Partition& partition_orig);
 	virtual ~Operation() = default;
 
 	Operation(const Operation& src) = delete;             // Copy construction prohibited
@@ -78,7 +78,7 @@ protected:
 	void substitute_new( PartitionVector & partitions );
 	void insert_new( PartitionVector & partitions );
 
-	std::unique_ptr<Partition> partition_original;
+	std::unique_ptr<Partition> m_partition_original;
 	std::unique_ptr<Partition> partition_new;
 };
 

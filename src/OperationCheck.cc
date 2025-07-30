@@ -23,9 +23,8 @@ namespace GParted
 
 
 OperationCheck::OperationCheck( const Device & device, const Partition & partition )
- : Operation(OPERATION_CHECK, device)
+ : Operation(OPERATION_CHECK, device, partition)
 {
-	this->partition_original.reset(partition.clone());
 	this->partition_new.reset(partition.clone());
 }
 
@@ -34,23 +33,24 @@ void OperationCheck::apply_to_visual( PartitionVector & partitions )
 {
 }
 
+
 void OperationCheck::create_description() 
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	/*TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4 */
 	m_description = Glib::ustring::compose(_("Check and repair file system (%1) on %2"),
-	                                partition_original->get_filesystem_string(),
-	                                partition_original->get_path() );
+	                                m_partition_original->get_filesystem_string(),
+	                                m_partition_original->get_path());
 }
 
 
 bool OperationCheck::merge_operations( const Operation & candidate )
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if (candidate.m_type    == OPERATION_CHECK                    &&
-	    *partition_original == candidate.get_partition_original()   )
+	if (candidate.m_type      == OPERATION_CHECK                    &&
+	    *m_partition_original == candidate.get_partition_original()   )
 		// No steps required to merge this operation
 		return true;
 

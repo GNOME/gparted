@@ -25,9 +25,8 @@ namespace GParted
 OperationLabelFileSystem::OperationLabelFileSystem( const Device & device,
                                                     const Partition & partition_orig,
                                                     const Partition & partition_new )
- : Operation(OPERATION_LABEL_FILESYSTEM, device)
+ : Operation(OPERATION_LABEL_FILESYSTEM, device, partition_orig)
 {
-	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
 }
 

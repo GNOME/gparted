@@ -26,26 +26,26 @@ namespace GParted
 OperationResizeMove::OperationResizeMove( const Device & device,
 				  	  const Partition & partition_orig,
 				  	  const Partition & partition_new )
- : Operation(OPERATION_RESIZE_MOVE, device)
+ : Operation(OPERATION_RESIZE_MOVE, device, partition_orig)
 {
-	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
 }
 
 
 void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( partition_original->type == TYPE_EXTENDED )
+	if (m_partition_original->type == TYPE_EXTENDED)
 		apply_extended_to_visual( partitions ) ;
 	else 
 		apply_normal_to_visual( partitions ) ;
 }
 
+
 void OperationResizeMove::create_description() 
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	//i'm not too happy with this, but i think it is the correct way from a i18n POV
@@ -63,46 +63,46 @@ void OperationResizeMove::create_description()
 	} ;
 	Action action = NONE ;
 
-	if ( partition_new->get_sector_length() > partition_original->get_sector_length() )
+	if (partition_new->get_sector_length() > m_partition_original->get_sector_length())
 	{
 		//Grow partition
 		action = GROW ;
-		if ( partition_new->sector_start > partition_original->sector_start )
+		if (partition_new->sector_start > m_partition_original->sector_start)
 			action = MOVE_RIGHT_GROW ;
-		if ( partition_new->sector_start < partition_original->sector_start )
+		if (partition_new->sector_start < m_partition_original->sector_start)
 			action = MOVE_LEFT_GROW ;
 	}
-	else if ( partition_new->get_sector_length() < partition_original->get_sector_length() )
+	else if (partition_new->get_sector_length() < m_partition_original->get_sector_length())
 	{
 		//Shrink partition
 		action = SHRINK ;
-		if ( partition_new->sector_start > partition_original->sector_start )
+		if (partition_new->sector_start > m_partition_original->sector_start)
 			action = MOVE_RIGHT_SHRINK ;
-		if ( partition_new->sector_start < partition_original->sector_start )
+		if (partition_new->sector_start < m_partition_original->sector_start)
 			action = MOVE_LEFT_SHRINK ;
 	}
 	else
 	{
 		//No change in partition size
-		if ( partition_new->sector_start > partition_original->sector_start )
+		if (partition_new->sector_start > m_partition_original->sector_start)
 			action = MOVE_RIGHT ;
-		if ( partition_new->sector_start < partition_original->sector_start )
+		if (partition_new->sector_start < m_partition_original->sector_start)
 			action = MOVE_LEFT ;
 	}
 
 	switch ( action )
 	{
 		case NONE		:
-			m_description = Glib::ustring::compose(_("resize/move %1"), partition_original->get_path());
+			m_description = Glib::ustring::compose(_("resize/move %1"), m_partition_original->get_path());
 			m_description += " (";
 			m_description += _("new and old partition have the same size and position.  Hence continuing anyway");
 			m_description += ")";
 			break ;
 		case MOVE_RIGHT		:
-			m_description = Glib::ustring::compose(_("Move %1 to the right"), partition_original->get_path());
+			m_description = Glib::ustring::compose(_("Move %1 to the right"), m_partition_original->get_path());
 			break ;
 		case MOVE_LEFT		:
-			m_description = Glib::ustring::compose(_("Move %1 to the left"), partition_original->get_path());
+			m_description = Glib::ustring::compose(_("Move %1 to the left"), m_partition_original->get_path());
 			break ;
 		case GROW 		:
 			m_description = _("Grow %1 from %2 to %3");
@@ -127,9 +127,9 @@ void OperationResizeMove::create_description()
 	if (! m_description.empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT)
 	{
 		m_description = Glib::ustring::compose(m_description,
-		                                partition_original->get_path(),
-		                                Utils::format_size( partition_original->get_sector_length(),
-		                                                    partition_original->sector_size ),
+		                                m_partition_original->get_path(),
+		                                Utils::format_size(m_partition_original->get_sector_length(),
+		                                                   m_partition_original->sector_size),
 		                                Utils::format_size( partition_new->get_sector_length(),
 		                                                    partition_new->sector_size ) );
 	}
@@ -138,13 +138,13 @@ void OperationResizeMove::create_description()
 
 void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;
 
-	if ( partition_original->inside_extended )
+	if (m_partition_original->inside_extended)
 	{
 		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )

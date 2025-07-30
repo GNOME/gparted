@@ -26,25 +26,27 @@ namespace GParted
 {
 
 
-Operation::Operation(OperationType type, const Device& device)
- : m_type(type), m_device(device.get_copy_without_partitions())
+Operation::Operation(OperationType type, const Device& device, const Partition& partition_orig)
+ : m_type(type), m_device(device.get_copy_without_partitions()), m_partition_original(partition_orig.clone())
 {
 }
 
 
 Partition & Operation::get_partition_original()
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
-	return *partition_original;
+	return *m_partition_original;
 }
+
 
 const Partition & Operation::get_partition_original() const
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
-	return *partition_original;
+	return *m_partition_original;
 }
+
 
 Partition & Operation::get_partition_new()
 {
@@ -62,11 +64,11 @@ const Partition & Operation::get_partition_new() const
 
 int Operation::find_index_original( const PartitionVector & partitions )
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
-		if ( partition_original->sector_start >= partitions[t].sector_start &&
-		     partition_original->sector_end   <= partitions[t].sector_end      )
+		if (m_partition_original->sector_start >= partitions[t].sector_start &&
+		    m_partition_original->sector_end   <= partitions[t].sector_end     )
 			return t ;
 
 	return -1 ;
@@ -100,13 +102,13 @@ void Operation::insert_unallocated( PartitionVector & partitions,
 // it with this operation's new partition.
 void Operation::substitute_new( PartitionVector & partitions )
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;
 
-	if ( partition_original->inside_extended )
+	if (m_partition_original->inside_extended)
 	{
 		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )

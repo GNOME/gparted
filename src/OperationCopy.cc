@@ -27,9 +27,8 @@ OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_orig,
 			      const Partition & partition_new,
 			      const Partition & partition_copied )
- : Operation(OPERATION_COPY, device)
+ : Operation(OPERATION_COPY, device, partition_orig)
 {
-	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
 	this->partition_copied.reset(partition_copied.clone());
 }
@@ -49,11 +48,12 @@ const Partition & OperationCopy::get_partition_copied() const
 	return *partition_copied;
 }
 
+
 void OperationCopy::apply_to_visual( PartitionVector & partitions )
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( partition_original->type == TYPE_UNALLOCATED )
+	if (m_partition_original->type == TYPE_UNALLOCATED)
 		// Paste into unallocated space creating new partition
 		insert_new( partitions );
 	else
@@ -61,13 +61,14 @@ void OperationCopy::apply_to_visual( PartitionVector & partitions )
 		substitute_new( partitions );
 }
 
+
 void OperationCopy::create_description() 
 {
-	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if ( partition_original->type == TYPE_UNALLOCATED )
+	if (m_partition_original->type == TYPE_UNALLOCATED)
 	{
 		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
 		m_description = Glib::ustring::compose(_("Copy %1 to %2 (start at %3)"),
@@ -81,9 +82,10 @@ void OperationCopy::create_description()
 		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1 */
 		m_description = Glib::ustring::compose(_("Copy %1 to %2"),
 		                                partition_copied->get_path(),
-		                                partition_original->get_path() );
+		                                m_partition_original->get_path());
 	}
 }
+
 
 bool OperationCopy::merge_operations( const Operation & candidate )
 {

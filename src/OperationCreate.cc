@@ -28,9 +28,8 @@ namespace GParted
 OperationCreate::OperationCreate( const Device & device,
 				  const Partition & partition_orig,
 				  const Partition & partition_new )
- : Operation(OPERATION_CREATE, device)
+ : Operation(OPERATION_CREATE, device, partition_orig)
 {
-	this->partition_original.reset(partition_orig.clone());
 	this->partition_new.reset(partition_new.clone());
 }
 
