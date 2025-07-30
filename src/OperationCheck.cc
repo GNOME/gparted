@@ -46,10 +46,10 @@ void OperationCheck::create_description()
 
 bool OperationCheck::merge_operations( const Operation & candidate )
 {
-	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if (candidate.m_type      == OPERATION_CHECK                    &&
-	    *m_partition_original == candidate.get_partition_original()   )
+	if (candidate.m_type == OPERATION_CHECK                    &&
+	    *m_partition_new == candidate.get_partition_original()   )
 		// No steps required to merge this operation
 		return true;
 
