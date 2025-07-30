@@ -345,7 +345,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
 	bool success = false;
 	libparted_messages .clear() ;
-	operation->operation_detail.signal_capture_errors.connect(
+	operation->m_operation_detail.signal_capture_errors.connect(
 			sigc::mem_fun( *this, &GParted_Core::capture_libparted_messages ) );
 
 	switch (operation->m_type)
@@ -367,31 +367,31 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 		// operation.
 
 		case OPERATION_DELETE:
-			success =    calibrate_partition( operation->get_partition_original(),
-			                                  operation->operation_detail )
-			          && remove_filesystem( operation->get_partition_original(),
-			                                operation->operation_detail )
-			          && delete_partition( operation->get_partition_original(),
-			                               operation->operation_detail );
+			success =    calibrate_partition(operation->get_partition_original(),
+			                                 operation->m_operation_detail)
+			          && remove_filesystem(operation->get_partition_original(),
+			                               operation->m_operation_detail)
+			          && delete_partition(operation->get_partition_original(),
+			                              operation->m_operation_detail);
 			break;
 
 		case OPERATION_CHECK:
-			success =    calibrate_partition( operation->get_partition_original(),
-			                                  operation->operation_detail )
-			          && check_repair_filesystem( operation->get_partition_original().get_filesystem_partition(),
-			                                      operation->operation_detail )
-			          && check_repair_maximize( operation->get_partition_original(),
-			                                    operation->operation_detail );
+			success =    calibrate_partition(operation->get_partition_original(),
+			                                 operation->m_operation_detail)
+			          && check_repair_filesystem(operation->get_partition_original().get_filesystem_partition(),
+			                                     operation->m_operation_detail)
+			          && check_repair_maximize(operation->get_partition_original(),
+			                                   operation->m_operation_detail);
 			break;
 
 		case OPERATION_CREATE:
 			// The partition doesn't exist yet so there's nothing to calibrate.
-			success = create( operation->get_partition_new(), operation->operation_detail );
+			success = create(operation->get_partition_new(), operation->m_operation_detail);
 			break;
 
 		case OPERATION_RESIZE_MOVE:
-			success = calibrate_partition( operation->get_partition_original(),
-			                               operation->operation_detail );
+			success = calibrate_partition(operation->get_partition_original(),
+			                              operation->m_operation_detail);
 			if ( ! success )
 				break;
 
@@ -401,13 +401,13 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			// sequence of operations now being applied.
 			operation->get_partition_new().set_path( operation->get_partition_original().get_path() );
 
-			success = resize_move( operation->get_partition_original(),
-			                       operation->get_partition_new(),
-			                       operation->operation_detail );
+			success = resize_move(operation->get_partition_original(),
+			                      operation->get_partition_new(),
+			                      operation->m_operation_detail);
 			break;
 
 		case OPERATION_FORMAT:
-			success = calibrate_partition( operation->get_partition_new(), operation->operation_detail );
+			success = calibrate_partition(operation->get_partition_new(), operation->m_operation_detail);
 			if ( ! success )
 				break;
 
@@ -417,10 +417,10 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			// space earlier in the sequence of operations now being applied.
 			operation->get_partition_original().set_path( operation->get_partition_new().get_path() );
 
-			success =    remove_filesystem( operation->get_partition_original().get_filesystem_partition(),
-			                                operation->operation_detail )
-			          && format( operation->get_partition_new().get_filesystem_partition(),
-			                     operation->operation_detail );
+			success =    remove_filesystem(operation->get_partition_original().get_filesystem_partition(),
+			                               operation->m_operation_detail)
+			          && format(operation->get_partition_new().get_filesystem_partition(),
+			                    operation->m_operation_detail);
 			break;
 
 		case OPERATION_COPY:
@@ -429,38 +429,38 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			//i think it's best to do this in the dialog_paste
 
 			OperationCopy * copy_op = static_cast<OperationCopy*>( operation );
-			success =    calibrate_partition( copy_op->get_partition_copied(),
-			                                  copy_op->operation_detail )
+			success =    calibrate_partition(copy_op->get_partition_copied(),
+			                                 copy_op->m_operation_detail)
 			             // Only calibrate the destination when pasting into an existing
 			             // partition, rather than when creating a new partition.
-                                  && ( copy_op->get_partition_original().type == TYPE_UNALLOCATED                     ||
-			               calibrate_partition( copy_op->get_partition_new(), copy_op->operation_detail )    );
+                                  && (copy_op->get_partition_original().type == TYPE_UNALLOCATED                     ||
+			              calibrate_partition(copy_op->get_partition_new(), copy_op->m_operation_detail)   );
 			if ( ! success )
 				break;
 
-			success =    remove_filesystem( copy_op->get_partition_original().get_filesystem_partition(),
-			                                copy_op->operation_detail )
-			          && copy( copy_op->get_partition_copied(),
-			                   copy_op->get_partition_new(),
-			                   copy_op->operation_detail );
+			success =    remove_filesystem(copy_op->get_partition_original().get_filesystem_partition(),
+			                               copy_op->m_operation_detail)
+			          && copy(copy_op->get_partition_copied(),
+			                  copy_op->get_partition_new(),
+			                  copy_op->m_operation_detail);
 			break;
 		}
 
 		case OPERATION_LABEL_FILESYSTEM:
-			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
-			          && label_filesystem( operation->get_partition_new().get_filesystem_partition(),
-			                               operation->operation_detail );
+			success =    calibrate_partition(operation->get_partition_new(), operation->m_operation_detail)
+			          && label_filesystem(operation->get_partition_new().get_filesystem_partition(),
+			                              operation->m_operation_detail);
 			break;
 
 		case OPERATION_NAME_PARTITION:
-			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
-			          && name_partition( operation->get_partition_new(), operation->operation_detail );
+			success =    calibrate_partition(operation->get_partition_new(), operation->m_operation_detail)
+			          && name_partition(operation->get_partition_new(), operation->m_operation_detail);
 			break;
 
 		case OPERATION_CHANGE_UUID:
-			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
-			          && change_filesystem_uuid( operation->get_partition_new().get_filesystem_partition(),
-			                                     operation->operation_detail );
+			success =    calibrate_partition(operation->get_partition_new(), operation->m_operation_detail)
+			          && change_filesystem_uuid(operation->get_partition_new().get_filesystem_partition(),
+			                                    operation->m_operation_detail);
 			break;
 	}
 

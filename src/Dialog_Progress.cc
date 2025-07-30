@@ -99,12 +99,12 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 		//fill 'er up
 		for (unsigned int i = 0; i < operations.size(); ++i)
 		{
-			this->operations[i]->operation_detail.set_description(operations[i]->m_description, FONT_BOLD);
-			this->operations[i]->operation_detail.set_treepath(Utils::num_to_str(i));
+			this->operations[i]->m_operation_detail.set_description(operations[i]->m_description, FONT_BOLD);
+			this->operations[i]->m_operation_detail.set_treepath(Utils::num_to_str(i));
 
 			treerow = *(treestore_operations->append());
 			treerow[m_treeview_operations_columns.operation_description] =
-				this->operations[i]->operation_detail.get_description();
+				this->operations[i]->m_operation_detail.get_description();
 		}
 
 		scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
@@ -220,7 +220,7 @@ void Dialog_Progress::on_signal_show()
 {
 	for (m_curr_op = 0; m_curr_op < operations.size() && succes && ! cancel; m_curr_op++)
 	{
-		operations[m_curr_op]->operation_detail.signal_update.connect(
+		operations[m_curr_op]->m_operation_detail.signal_update.connect(
 			sigc::mem_fun( this, &Dialog_Progress::on_signal_update ) ) ;
 
 		label_current.set_markup("<b>" + operations[m_curr_op]->m_description + "</b>");
@@ -232,7 +232,7 @@ void Dialog_Progress::on_signal_show()
 		treerow = treestore_operations ->children()[m_curr_op];
 
 		//set status to 'execute'
-		operations[m_curr_op]->operation_detail.set_status(STATUS_EXECUTE);
+		operations[m_curr_op]->m_operation_detail.set_status(STATUS_EXECUTE);
 
 		//set focus...
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
@@ -240,7 +240,7 @@ void Dialog_Progress::on_signal_show()
 		succes = signal_apply_operation.emit(operations[m_curr_op].get());
 
 		//set status (succes/error) for this operation
-		operations[m_curr_op]->operation_detail.set_success_and_capture_errors(succes);
+		operations[m_curr_op]->m_operation_detail.set_success_and_capture_errors(succes);
 	}
 	
 	//add save button
@@ -359,7 +359,7 @@ void Dialog_Progress::on_cancel()
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}
 		else cancelbutton->set_label( _("Force Cancel") );
-		operations[m_curr_op]->operation_detail.signal_cancel.emit(cancel);
+		operations[m_curr_op]->m_operation_detail.signal_cancel.emit(cancel);
 		cancel = true;
 	}
 }
@@ -410,7 +410,7 @@ void Dialog_Progress::on_save()
 			for (unsigned int i = 0; i < operations.size(); i++)
 			{
 				out << "<p>========================================</p>" << std::endl;
-				write_operation_details(operations[i]->operation_detail, out);
+				write_operation_details(operations[i]->m_operation_detail, out);
 			}
 
 			//Write out proper HTML finish

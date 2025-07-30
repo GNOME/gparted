@@ -68,8 +68,7 @@ public:
 
 	Glib::RefPtr<Gdk::Pixbuf> m_icon;
 	Glib::ustring             m_description;
-
-	OperationDetail operation_detail ;
+	OperationDetail           m_operation_detail;
 
 protected:
 	int find_index_original( const PartitionVector & partitions );
