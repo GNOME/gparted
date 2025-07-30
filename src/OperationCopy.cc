@@ -27,24 +27,25 @@ OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_orig,
 			      const Partition & partition_new,
 			      const Partition & partition_copied )
- : Operation(OPERATION_COPY, device, partition_orig, partition_new)
+ : Operation(OPERATION_COPY, device, partition_orig, partition_new),
+   m_partition_copied(std::move(partition_copied.clone()))
 {
-	this->partition_copied.reset(partition_copied.clone());
 }
 
 
 Partition & OperationCopy::get_partition_copied()
 {
-	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	return *partition_copied;
+	return *m_partition_copied;
 }
+
 
 const Partition & OperationCopy::get_partition_copied() const
 {
-	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	return *partition_copied;
+	return *m_partition_copied;
 }
 
 
@@ -65,13 +66,13 @@ void OperationCopy::create_description()
 {
 	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
-	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if (m_partition_original->type == TYPE_UNALLOCATED)
 	{
 		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
 		m_description = Glib::ustring::compose(_("Copy %1 to %2 (start at %3)"),
-		                                partition_copied->get_path(),
+		                                m_partition_copied->get_path(),
 		                                m_device.get_path(),
 		                                Utils::format_size(m_partition_new->sector_start,
 		                                                   m_partition_new->sector_size));
@@ -80,7 +81,7 @@ void OperationCopy::create_description()
 	{
 		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1 */
 		m_description = Glib::ustring::compose(_("Copy %1 to %2"),
-		                                partition_copied->get_path(),
+		                                m_partition_copied->get_path(),
 		                                m_partition_original->get_path());
 	}
 }

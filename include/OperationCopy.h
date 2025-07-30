@@ -47,7 +47,7 @@ private:
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 
-	std::unique_ptr<Partition> partition_copied;
+	std::unique_ptr<Partition> m_partition_copied;
 };
 
 
