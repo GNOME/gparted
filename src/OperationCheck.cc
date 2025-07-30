@@ -23,9 +23,8 @@ namespace GParted
 
 
 OperationCheck::OperationCheck( const Device & device, const Partition & partition )
- : Operation(OPERATION_CHECK, device, partition)
+ : Operation(OPERATION_CHECK, device, partition, partition)
 {
-	this->partition_new.reset(partition.clone());
 }
 
 

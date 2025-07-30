@@ -25,18 +25,17 @@ namespace GParted
 OperationFormat::OperationFormat( const Device & device,
 				  const Partition & partition_orig,
 				  const Partition & partition_new )
- : Operation(OPERATION_FORMAT, device, partition_orig)
+ : Operation(OPERATION_FORMAT, device, partition_orig, partition_new)
 {
-	this->partition_new.reset(partition_new.clone());
 }
 
 
 void OperationFormat::apply_to_visual( PartitionVector & partitions )
 {
 	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
-	if (m_partition_original->type == TYPE_UNPARTITIONED && partition_new->fstype == FS_CLEARED)
+	if (m_partition_original->type == TYPE_UNPARTITIONED && m_partition_new->fstype == FS_CLEARED)
 	{
 		// Make format to cleared whole disk device file system preview as
 		// unallocated device, matching what happens when implemented.
@@ -61,23 +60,23 @@ void OperationFormat::apply_to_visual( PartitionVector & partitions )
 void OperationFormat::create_description() 
 {
 	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	/*TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap */
 	m_description = Glib::ustring::compose(_("Format %1 as %2"),
 	                                m_partition_original->get_path(),
-	                                partition_new->get_filesystem_string() );
+	                                m_partition_new->get_filesystem_string());
 }
 
 
 bool OperationFormat::merge_operations( const Operation & candidate )
 {
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if (candidate.m_type == OPERATION_FORMAT                   &&
-	    *partition_new   == candidate.get_partition_original()   )
+	    *m_partition_new == candidate.get_partition_original()   )
 	{
-		partition_new.reset(candidate.get_partition_new().clone());
+		m_partition_new.reset(candidate.get_partition_new().clone());
 		create_description();
 		return true;
 	}

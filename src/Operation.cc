@@ -32,6 +32,14 @@ Operation::Operation(OperationType type, const Device& device, const Partition& 
 }
 
 
+Operation::Operation(OperationType type, const Device& device, const Partition& partition_orig,
+                                                               const Partition& partition_new)
+ : m_type(type), m_device(device.get_copy_without_partitions()), m_partition_original(partition_orig.clone()),
+                                                                 m_partition_new(partition_new.clone())
+{
+}
+
+
 Partition & Operation::get_partition_original()
 {
 	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
@@ -50,17 +58,19 @@ const Partition & Operation::get_partition_original() const
 
 Partition & Operation::get_partition_new()
 {
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
-	return *partition_new;
+	return *m_partition_new;
 }
+
 
 const Partition & Operation::get_partition_new() const
 {
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by derived Operation*() constructor or reset later
 
-	return *partition_new;
+	return *m_partition_new;
 }
+
 
 int Operation::find_index_original( const PartitionVector & partitions )
 {
@@ -74,15 +84,16 @@ int Operation::find_index_original( const PartitionVector & partitions )
 	return -1 ;
 }
 
+
 // Find the partition in the vector that exactly matches or fully encloses
-// this->partition_new.  Return vector index or -1 when no match found.
+// this->m_partition_new.  Return vector index or -1 when no match found.
 int Operation::find_index_new( const PartitionVector & partitions )
 {
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	for ( unsigned int i = 0 ; i < partitions.size() ; i ++ )
-		if ( partition_new->sector_start >= partitions[i].sector_start &&
-		     partition_new->sector_end   <= partitions[i].sector_end      )
+		if (m_partition_new->sector_start >= partitions[i].sector_start &&
+		    m_partition_new->sector_end   <= partitions[i].sector_end     )
 			return i;
 
 	return -1;
@@ -103,7 +114,7 @@ void Operation::insert_unallocated( PartitionVector & partitions,
 void Operation::substitute_new( PartitionVector & partitions )
 {
 	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;
@@ -115,14 +126,14 @@ void Operation::substitute_new( PartitionVector & partitions )
 		{
 			index = find_index_original( partitions[index_extended].logicals );
 			if ( index >= 0 )
-				partitions[index_extended].logicals.replace_at(index, partition_new.get());
+				partitions[index_extended].logicals.replace_at(index, m_partition_new.get());
 		}
 	}
 	else
 	{
 		index = find_index_original( partitions );
 		if ( index >= 0 )
-			partitions.replace_at(index, partition_new.get());
+			partitions.replace_at(index, m_partition_new.get());
 	}
 }
 
@@ -140,12 +151,12 @@ void Operation::insert_new( PartitionVector & partitions )
 	// their operations to the disk graphic.  Hence their use of,
 	// find_index_original().
 
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;
 
-	if ( partition_new->inside_extended )
+	if (m_partition_new->inside_extended)
 	{
 		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )
@@ -153,7 +164,7 @@ void Operation::insert_new( PartitionVector & partitions )
 			index = find_index_new( partitions[index_extended].logicals );
 			if ( index >= 0 )
 			{
-				partitions[index_extended].logicals.replace_at(index, partition_new.get());
+				partitions[index_extended].logicals.replace_at(index, m_partition_new.get());
 
 				insert_unallocated(partitions[index_extended].logicals,
 				                   partitions[index_extended].sector_start,
@@ -168,7 +179,7 @@ void Operation::insert_new( PartitionVector & partitions )
 		index = find_index_new( partitions );
 		if ( index >= 0 )
 		{
-			partitions.replace_at(index, partition_new.get());
+			partitions.replace_at(index, m_partition_new.get());
 
 			insert_unallocated(partitions, 0, m_device.length-1, m_device.sector_size, false);
 		}

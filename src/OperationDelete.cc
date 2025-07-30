@@ -31,18 +31,19 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 
 Partition & OperationDelete::get_partition_new()
 {
-	g_assert( false );  // Bug: OperationDelete class doesn't use partition_new
+	g_assert(false);  // Bug: OperationDelete class doesn't use m_partition_new
 
 	// Not reached.  Return value to keep compiler quiet.
-	return *partition_new;
+	return *m_partition_new;
 }
+
 
 const Partition & OperationDelete::get_partition_new() const
 {
-	g_assert( false );  // Bug: OperationDelete class doesn't use partition_new
+	g_assert(false);  // Bug: OperationDelete class doesn't use m_partition_new
 
 	// Not reached.  Return value to keep compiler quiet.
-	return *partition_new;
+	return *m_partition_new;
 }
 
 

@@ -48,6 +48,8 @@ class Operation
 {
 public:
 	Operation(OperationType type, const Device& device, const Partition& partition_orig);
+	Operation(OperationType type, const Device& device, const Partition& partition_orig,
+	                                                    const Partition& partition_new);
 	virtual ~Operation() = default;
 
 	Operation(const Operation& src) = delete;             // Copy construction prohibited
@@ -79,7 +81,7 @@ protected:
 	void insert_new( PartitionVector & partitions );
 
 	std::unique_ptr<Partition> m_partition_original;
-	std::unique_ptr<Partition> partition_new;
+	std::unique_ptr<Partition> m_partition_new;
 };
 
 

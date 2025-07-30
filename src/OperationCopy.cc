@@ -27,9 +27,8 @@ OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_orig,
 			      const Partition & partition_new,
 			      const Partition & partition_copied )
- : Operation(OPERATION_COPY, device, partition_orig)
+ : Operation(OPERATION_COPY, device, partition_orig, partition_new)
 {
-	this->partition_new.reset(partition_new.clone());
 	this->partition_copied.reset(partition_copied.clone());
 }
 
@@ -65,7 +64,7 @@ void OperationCopy::apply_to_visual( PartitionVector & partitions )
 void OperationCopy::create_description() 
 {
 	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 	g_assert(partition_copied != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if (m_partition_original->type == TYPE_UNALLOCATED)
@@ -74,8 +73,8 @@ void OperationCopy::create_description()
 		m_description = Glib::ustring::compose(_("Copy %1 to %2 (start at %3)"),
 		                                partition_copied->get_path(),
 		                                m_device.get_path(),
-		                                Utils::format_size( partition_new->sector_start,
-		                                                    partition_new->sector_size ) );
+		                                Utils::format_size(m_partition_new->sector_start,
+		                                                   m_partition_new->sector_size));
 	}
 	else
 	{

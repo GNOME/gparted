@@ -26,9 +26,8 @@ namespace GParted
 OperationResizeMove::OperationResizeMove( const Device & device,
 				  	  const Partition & partition_orig,
 				  	  const Partition & partition_new )
- : Operation(OPERATION_RESIZE_MOVE, device, partition_orig)
+ : Operation(OPERATION_RESIZE_MOVE, device, partition_orig, partition_new)
 {
-	this->partition_new.reset(partition_new.clone());
 }
 
 
@@ -46,7 +45,7 @@ void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 void OperationResizeMove::create_description() 
 {
 	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	//i'm not too happy with this, but i think it is the correct way from a i18n POV
 	enum Action
@@ -63,30 +62,30 @@ void OperationResizeMove::create_description()
 	} ;
 	Action action = NONE ;
 
-	if (partition_new->get_sector_length() > m_partition_original->get_sector_length())
+	if (m_partition_new->get_sector_length() > m_partition_original->get_sector_length())
 	{
 		//Grow partition
 		action = GROW ;
-		if (partition_new->sector_start > m_partition_original->sector_start)
+		if (m_partition_new->sector_start > m_partition_original->sector_start)
 			action = MOVE_RIGHT_GROW ;
-		if (partition_new->sector_start < m_partition_original->sector_start)
+		if (m_partition_new->sector_start < m_partition_original->sector_start)
 			action = MOVE_LEFT_GROW ;
 	}
-	else if (partition_new->get_sector_length() < m_partition_original->get_sector_length())
+	else if (m_partition_new->get_sector_length() < m_partition_original->get_sector_length())
 	{
 		//Shrink partition
 		action = SHRINK ;
-		if (partition_new->sector_start > m_partition_original->sector_start)
+		if (m_partition_new->sector_start > m_partition_original->sector_start)
 			action = MOVE_RIGHT_SHRINK ;
-		if (partition_new->sector_start < m_partition_original->sector_start)
+		if (m_partition_new->sector_start < m_partition_original->sector_start)
 			action = MOVE_LEFT_SHRINK ;
 	}
 	else
 	{
 		//No change in partition size
-		if (partition_new->sector_start > m_partition_original->sector_start)
+		if (m_partition_new->sector_start > m_partition_original->sector_start)
 			action = MOVE_RIGHT ;
-		if (partition_new->sector_start < m_partition_original->sector_start)
+		if (m_partition_new->sector_start < m_partition_original->sector_start)
 			action = MOVE_LEFT ;
 	}
 
@@ -130,8 +129,8 @@ void OperationResizeMove::create_description()
 		                                m_partition_original->get_path(),
 		                                Utils::format_size(m_partition_original->get_sector_length(),
 		                                                   m_partition_original->sector_size),
-		                                Utils::format_size( partition_new->get_sector_length(),
-		                                                    partition_new->sector_size ) );
+		                                Utils::format_size(m_partition_new->get_sector_length(),
+		                                                   m_partition_new->sector_size));
 	}
 }
 
@@ -139,7 +138,7 @@ void OperationResizeMove::create_description()
 void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 {
 	g_assert(m_partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 	int index;
@@ -153,7 +152,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 			if ( index >= 0 )
 			{
-				partitions[index_extended].logicals.replace_at(index, partition_new.get());
+				partitions[index_extended].logicals.replace_at(index, m_partition_new.get());
 				remove_adjacent_unallocated( partitions[index_extended].logicals, index );
 
 				insert_unallocated(partitions[index_extended].logicals,
@@ -170,7 +169,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 		if ( index >= 0 )
 		{
-			partitions.replace_at(index, partition_new.get());
+			partitions.replace_at(index, m_partition_new.get());
 			remove_adjacent_unallocated( partitions, index ) ;
 
 			insert_unallocated(partitions, 0, m_device.length -1, m_device.sector_size, false);
@@ -181,7 +180,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions )
 {
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	int index_extended;
 
@@ -194,8 +193,8 @@ void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions
 		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )
 		{
-			partitions[index_extended].sector_start = partition_new->sector_start;
-			partitions[index_extended].sector_end   = partition_new->sector_end;
+			partitions[index_extended].sector_start = m_partition_new->sector_start;
+			partitions[index_extended].sector_end   = m_partition_new->sector_end;
 		}
 
 		insert_unallocated(partitions, 0, m_device.length -1, m_device.sector_size, false);
@@ -237,12 +236,12 @@ void OperationResizeMove::remove_adjacent_unallocated( PartitionVector & partiti
 
 bool OperationResizeMove::merge_operations( const Operation & candidate )
 {
-	g_assert(partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
+	g_assert(m_partition_new != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if (candidate.m_type == OPERATION_RESIZE_MOVE              &&
-	    *partition_new   == candidate.get_partition_original()   )
+	    *m_partition_new == candidate.get_partition_original()   )
 	{
-		partition_new.reset(candidate.get_partition_new().clone());
+		m_partition_new.reset(candidate.get_partition_new().clone());
 		create_description();
 		return true;
 	}
