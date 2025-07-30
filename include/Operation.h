@@ -63,8 +63,8 @@ public:
 	virtual bool merge_operations( const Operation & candidate ) = 0;
 
 	//public variables
-	OperationType m_type;
-	Device        m_device;
+	const OperationType m_type;
+	const Device        m_device;
 
 	Glib::RefPtr<Gdk::Pixbuf> icon ;
 	Glib::ustring description ;
