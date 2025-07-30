@@ -67,7 +67,7 @@ public:
 	const Device        m_device;
 
 	Glib::RefPtr<Gdk::Pixbuf> m_icon;
-	Glib::ustring description ;
+	Glib::ustring             m_description;
 
 	OperationDetail operation_detail ;
 

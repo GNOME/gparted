@@ -47,21 +47,21 @@ void OperationCreate::create_description()
 	switch( partition_new->type )
 	{
 		case TYPE_PRIMARY:
-			description = _("Primary Partition");
+			m_description = _("Primary Partition");
 			break;
 		case TYPE_LOGICAL:
-			description = _("Logical Partition") ;
+			m_description = _("Logical Partition") ;
 			break;	
 		case TYPE_EXTENDED:
-			description = _("Extended Partition");
+			m_description = _("Extended Partition");
 			break;
 	
 		default	:
 			break;
 	}
 	/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda */
-	description = Glib::ustring::compose( _("Create %1 #%2 (%3, %4) on %5"),
-	                                description,
+	m_description = Glib::ustring::compose(_("Create %1 #%2 (%3, %4) on %5"),
+	                                m_description,
 	                                partition_new->partition_number,
 	                                partition_new->get_filesystem_string(),
 	                                Utils::format_size( partition_new->get_sector_length(),

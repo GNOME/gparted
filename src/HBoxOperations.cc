@@ -82,7 +82,7 @@ void HBoxOperations::load_operations(const OperationVector& operations)
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
 	{	
 		treerow = *( liststore_operations ->append() );
-		treerow[m_treeview_operations_columns.operation_description] = operations[t]->description;
+		treerow[m_treeview_operations_columns.operation_description] = operations[t]->m_description;
 		treerow[m_treeview_operations_columns.operation_icon]        = operations[t]->m_icon;
 	}
 

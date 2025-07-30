@@ -93,45 +93,48 @@ void OperationResizeMove::create_description()
 	switch ( action )
 	{
 		case NONE		:
-			description = Glib::ustring::compose( _("resize/move %1"), partition_original->get_path() );
-			description += " (" ;
-			description += _("new and old partition have the same size and position.  Hence continuing anyway") ;
-			description += ")" ;
+			m_description = Glib::ustring::compose(_("resize/move %1"), partition_original->get_path());
+			m_description += " (";
+			m_description += _("new and old partition have the same size and position.  Hence continuing anyway");
+			m_description += ")";
 			break ;
 		case MOVE_RIGHT		:
-			description = Glib::ustring::compose( _("Move %1 to the right"), partition_original->get_path() );
+			m_description = Glib::ustring::compose(_("Move %1 to the right"), partition_original->get_path());
 			break ;
 		case MOVE_LEFT		:
-			description = Glib::ustring::compose( _("Move %1 to the left"), partition_original->get_path() );
+			m_description = Glib::ustring::compose(_("Move %1 to the left"), partition_original->get_path());
 			break ;
 		case GROW 		:
-			description = _("Grow %1 from %2 to %3") ;
+			m_description = _("Grow %1 from %2 to %3");
 			break ;
 		case SHRINK		:
-			description = _("Shrink %1 from %2 to %3") ;
+			m_description = _("Shrink %1 from %2 to %3");
 			break ;
 		case MOVE_RIGHT_GROW	:
-			description = _("Move %1 to the right and grow it from %2 to %3") ;
+			m_description = _("Move %1 to the right and grow it from %2 to %3");
 			break ;
 		case MOVE_RIGHT_SHRINK	:
-			description = _("Move %1 to the right and shrink it from %2 to %3") ;
+			m_description = _("Move %1 to the right and shrink it from %2 to %3");
 			break ;
 		case MOVE_LEFT_GROW	:
-			description = _("Move %1 to the left and grow it from %2 to %3") ;
+			m_description = _("Move %1 to the left and grow it from %2 to %3");
 			break ;
 		case MOVE_LEFT_SHRINK	:
-			description = _("Move %1 to the left and shrink it from %2 to %3") ;
+			m_description = _("Move %1 to the left and shrink it from %2 to %3");
 			break ;
 	}
 
-	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
-		description = Glib::ustring::compose( description,
+	if (! m_description.empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT)
+	{
+		m_description = Glib::ustring::compose(m_description,
 		                                partition_original->get_path(),
 		                                Utils::format_size( partition_original->get_sector_length(),
 		                                                    partition_original->sector_size ),
 		                                Utils::format_size( partition_new->get_sector_length(),
 		                                                    partition_new->sector_size ) );
+	}
 }
+
 
 void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 {

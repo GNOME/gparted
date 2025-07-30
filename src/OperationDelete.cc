@@ -101,13 +101,13 @@ void OperationDelete::create_description()
 	g_assert(partition_original != nullptr);  // Bug: Not initialised by constructor or reset later
 
 	if ( partition_original->type == TYPE_LOGICAL )
-		description = _("Logical Partition") ;
+		m_description = _("Logical Partition");
 	else
-		description = partition_original->get_path();
+		m_description = partition_original->get_path();
 
 	/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda */
-	description = Glib::ustring::compose( _("Delete %1 (%2, %3) from %4"),
-	                                description,
+	m_description = Glib::ustring::compose(_("Delete %1 (%2, %3) from %4"),
+	                                m_description,
 	                                partition_original->get_filesystem_string(),
 	                                Utils::format_size( partition_original->get_sector_length(),
 	                                                    partition_original->sector_size ),

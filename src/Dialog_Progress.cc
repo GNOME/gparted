@@ -99,7 +99,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 		//fill 'er up
 		for (unsigned int i = 0; i < operations.size(); ++i)
 		{
-			this->operations[i]->operation_detail.set_description(operations[i]->description, FONT_BOLD);
+			this->operations[i]->operation_detail.set_description(operations[i]->m_description, FONT_BOLD);
 			this->operations[i]->operation_detail.set_treepath(Utils::num_to_str(i));
 
 			treerow = *(treestore_operations->append());
@@ -223,7 +223,7 @@ void Dialog_Progress::on_signal_show()
 		operations[m_curr_op]->operation_detail.signal_update.connect(
 			sigc::mem_fun( this, &Dialog_Progress::on_signal_update ) ) ;
 
-		label_current.set_markup("<b>" + operations[m_curr_op]->description + "</b>");
+		label_current.set_markup("<b>" + operations[m_curr_op]->m_description + "</b>");
 
 		progressbar_all.set_text(Glib::ustring::compose(_("%1 of %2 operations completed"),
 		                                                m_curr_op, operations.size()));
