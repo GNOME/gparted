@@ -80,8 +80,8 @@ protected:
 	void substitute_new( PartitionVector & partitions );
 	void insert_new( PartitionVector & partitions );
 
-	std::unique_ptr<Partition> m_partition_original;
-	std::unique_ptr<Partition> m_partition_new;
+	const std::unique_ptr<Partition> m_partition_original;
+	std::unique_ptr<Partition>       m_partition_new;
 };
 
 
