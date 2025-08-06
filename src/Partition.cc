@@ -289,6 +289,16 @@ void Partition::set_filesystem_label( const Glib::ustring & filesystem_label )
 	have_filesystem_label = true;
 }
 
+
+bool Partition::is_flag_set(const Glib::ustring& flag) const
+{
+	for (unsigned int i = 0; i < flags.size(); i++)
+		if (flags[i] == flag)
+			return true;
+	return false;
+}
+
+
 bool Partition::operator==( const Partition & partition ) const
 {
 	return device_path == partition .device_path &&

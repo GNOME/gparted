@@ -3373,7 +3373,17 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 	// Set the on-disk partition type appropriately.  Libparted uses the file system
 	// type, overridden by flags.
 	bool success = false;
-	if (partition.fstype == FS_LVM2_PV && ped_partition_is_flag_available(lp_partition, PED_PARTITION_LVM))
+	if ((partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   &&
+	    partition.is_flag_set("esp")                                     &&
+	    ped_partition_is_flag_available(lp_partition, PED_PARTITION_ESP)   )
+	{
+		// The UEFI specification only supports FAT file systems in EFI System
+		// Partitions (ESP)s.  Set the libparted ESP flag to set the on-disk
+		// partition type to ESP.
+		success = set_partition_type_using_flag(lp_partition, PED_PARTITION_ESP, child_od);
+	}
+	else if (partition.fstype == FS_LVM2_PV                                   &&
+	         ped_partition_is_flag_available(lp_partition, PED_PARTITION_LVM)   )
 	{
 		// Set the libparted LVM flag to set the on-disk partition type to Linux
 		// LVM.
