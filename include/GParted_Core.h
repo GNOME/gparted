@@ -206,6 +206,12 @@ private:
 	                            OperationDetail & operationdetail );
 
 	static bool set_partition_type(const Partition& partition, OperationDetail& operationdetail);
+	static bool set_partition_type_using_flag(PedPartition* lp_partition,
+					          PedPartitionFlag lp_flag,
+					          OperationDetail& operationdetail);
+	static bool set_partition_type_using_fstype(PedPartition* lp_partition,
+					            FSType fstype,
+					            OperationDetail& operationdetail);
 
 	bool calibrate_partition( Partition & partition, OperationDetail & operationdetail ) ;
 	bool calculate_exact_geom( const Partition & partition_old,
