@@ -205,7 +205,7 @@ private:
 	bool check_repair_maximize( const Partition & partition,
 	                            OperationDetail & operationdetail );
 
-	bool set_partition_type( const Partition & partition, OperationDetail & operationdetail ) ;
+	static bool set_partition_type(const Partition& partition, OperationDetail& operationdetail);
 
 	bool calibrate_partition( Partition & partition, OperationDetail & operationdetail ) ;
 	bool calculate_exact_geom( const Partition & partition_old,

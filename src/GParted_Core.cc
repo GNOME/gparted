@@ -3353,96 +3353,99 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 
 	operationdetail .add_child( OperationDetail(
 				Glib::ustring::compose( _("set partition type on %1"), partition .get_path() ) ) ) ;
+	OperationDetail& child_od = operationdetail.get_last_child();
+
 	//Set partition type appropriately for the type of file system stored in the partition.
 	//  Libparted treats every type as a file system, except LVM which it treats as a flag.
-
-	bool return_value = false ;
 	
 	PedDevice* lp_device = nullptr;
 	PedDisk* lp_disk = nullptr;
-	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
+	if (! get_device_and_disk(partition.device_path, lp_device, lp_disk))
 	{
-		PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
-		if ( lp_partition )
-		{
-			Glib::ustring fs_type = Utils::get_filesystem_string(partition.fstype);
-
-			// Lookup libparted file system type using GParted's name, as most
-			// match.  Exclude cleared as the name won't be recognised by
-			// libparted and get_filesystem_string() has also translated it.
-			PedFileSystemType* lp_fs_type = nullptr;
-			if (partition.fstype != FS_CLEARED)
-				lp_fs_type = ped_file_system_type_get(fs_type.c_str());
-
-			// Ensure that UDF and exFAT get the required partition type even
-			// when libparted doesn't know, or is to old to know, about them.
-			// Required partition types:
-			// * [on MBR] 07 IFS (Installable File System)
-			// * [on GPT] BDP (Basic Data Partition)
-			// Use NTFS to achieve this.
-			// References:
-			// * What is the partition id / filesystem type for UDF?
-			//   https://serverfault.com/a/829172
-			// * exFAT file system specification
-			//   https://docs.microsoft.com/en-us/windows/win32/fileio/exfat-specification
-			//   10.2 Partition Tables
-			if (! lp_fs_type && (partition.fstype == FS_UDF || partition.fstype == FS_EXFAT))
-				lp_fs_type = ped_file_system_type_get( "ntfs" );
-
-			// default is Linux (83)
-			if ( ! lp_fs_type )
-				lp_fs_type = ped_file_system_type_get( "ext2" );
-
-			bool supports_lvm_flag = ped_partition_is_flag_available( lp_partition, PED_PARTITION_LVM );
-
-			if (lp_fs_type && partition.fstype != FS_LVM2_PV)
-			{
-				// Also clear any libparted LVM flag so that it doesn't
-				// override the file system type
-				if ( ( ! supports_lvm_flag                                          ||
-				       ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 0 )    ) &&
-				     ped_partition_set_system( lp_partition, lp_fs_type )                &&
-				     commit( lp_disk )                                                      )
-				{
-					operationdetail.get_last_child().add_child(
-						/* TO TRANSLATORS: looks like   new partition type: ext4 */
-						OperationDetail( Glib::ustring::compose( _("new partition type: %1"),
-						                                   lp_partition->fs_type->name ),
-						                 STATUS_NONE,
-						                 FONT_ITALIC ) );
-					return_value = true;
-				}
-			}
-			else if (partition.fstype == FS_LVM2_PV)
-			{
-				if ( supports_lvm_flag                                            &&
-				     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 1 ) &&
-				     commit( lp_disk )                                               )
-				{
-					operationdetail.get_last_child().add_child(
-						/* TO TRANSLATORS: looks like   new partition flag: lvm */
-						OperationDetail( Glib::ustring::compose( _("new partition flag: %1"),
-						                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
-						                 STATUS_NONE,
-						                 FONT_ITALIC ) );
-					return_value = true;
-				}
-				else if ( ! supports_lvm_flag )
-				{
-					// Skip setting the lvm flag because the partition
-					// table type doesn't support it.  Applies to dvh
-					// and pc98 disk labels.
-					return_value = true;
-				}
-			}
-		}
-
-		destroy_device_and_disk( lp_device, lp_disk ) ;
+		child_od.set_success_and_capture_errors(false);
+		return false;
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( return_value );
+	PedPartition* lp_partition = ped_disk_get_partition_by_sector(lp_disk, partition.get_sector());
+	if (! lp_partition)
+	{
+		child_od.set_success_and_capture_errors(false);
+		return false;
+	}
+
+	bool return_value = false;
+
+	// Lookup libparted file system type using GParted's name, as most match.  Exclude
+	// cleared as the name won't be recognised by libparted and
+	// get_filesystem_string() has also translated it.
+	PedFileSystemType* lp_fs_type = nullptr;
+	if (partition.fstype != FS_CLEARED)
+		lp_fs_type = ped_file_system_type_get(Utils::get_filesystem_string(partition.fstype).c_str());
+
+	// Ensure that UDF and exFAT get the required partition type even when libparted
+	// doesn't know, or is to old to know, about them.  Required partition types:
+	// * [on MBR] 07 IFS (Installable File System)
+	// * [on GPT] BDP (Basic Data Partition)
+	// Use NTFS to achieve this.
+	// References:
+	// * What is the partition id / filesystem type for UDF?
+	//   https://serverfault.com/a/829172
+	// * exFAT file system specification
+	//   https://docs.microsoft.com/en-us/windows/win32/fileio/exfat-specification
+	//   10.2 Partition Tables
+	if (! lp_fs_type && (partition.fstype == FS_UDF || partition.fstype == FS_EXFAT))
+		lp_fs_type = ped_file_system_type_get("ntfs");
+
+	// Default is Linux (83)
+	if (! lp_fs_type)
+		lp_fs_type = ped_file_system_type_get("ext2");
+
+	bool supports_lvm_flag = ped_partition_is_flag_available(lp_partition, PED_PARTITION_LVM);
+
+	if (lp_fs_type && partition.fstype != FS_LVM2_PV)
+	{
+		// Also clear any libparted LVM flag so that it doesn't override the file
+		// system type
+		if ((! supports_lvm_flag || ped_partition_set_flag(lp_partition, PED_PARTITION_LVM, 0)) &&
+		    ped_partition_set_system(lp_partition, lp_fs_type)                                  &&
+		    commit(lp_disk)                                                                       )
+		{
+			child_od.add_child(
+				/* TO TRANSLATORS: looks like   new partition type: ext4 */
+				OperationDetail(Glib::ustring::compose(_("new partition type: %1"),
+				                                       lp_partition->fs_type->name),
+				                STATUS_NONE,
+				                FONT_ITALIC));
+			return_value = true;
+		}
+	}
+	else if (partition.fstype == FS_LVM2_PV)
+	{
+		if (supports_lvm_flag                                          &&
+		    ped_partition_set_flag(lp_partition, PED_PARTITION_LVM, 1) &&
+		    commit(lp_disk)                                              )
+		{
+			child_od.add_child(
+				/* TO TRANSLATORS: looks like   new partition flag: lvm */
+				OperationDetail(Glib::ustring::compose(_("new partition flag: %1"),
+				                                       ped_partition_flag_get_name(PED_PARTITION_LVM)),
+				                STATUS_NONE,
+				                FONT_ITALIC));
+			return_value = true;
+		}
+		else if (! supports_lvm_flag)
+		{
+			// Skip setting the lvm flag because the partition table type
+			// doesn't support it.  Applies to dvh and pc98 disk labels.
+			return_value = true;
+		}
+	}
+
+	destroy_device_and_disk(lp_device, lp_disk);
+	child_od.set_success_and_capture_errors(return_value);
 	return return_value ;
 }
+
 
 bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail & operationdetail ) 
 {
