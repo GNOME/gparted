@@ -17,6 +17,8 @@
 
 #include "Device.h"
 #include "Dialog_Base_Partition.h"
+#include "Frame_Resizer_Base.h"
+#include "Frame_Resizer_Extended.h"
 #include "Partition.h"
 #include "Utils.h"
 

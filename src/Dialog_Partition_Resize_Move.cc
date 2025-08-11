@@ -18,6 +18,7 @@
 #include "Device.h"
 #include "Dialog_Partition_Resize_Move.h"
 #include "FileSystem.h"
+#include "Frame_Resizer_Extended.h"
 #include "GParted_Core.h"
 #include "Partition.h"
 #include "PartitionVector.h"

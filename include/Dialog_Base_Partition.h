@@ -20,7 +20,7 @@
 
 
 #include "Device.h"
-#include "Frame_Resizer_Extended.h"
+#include "Frame_Resizer_Base.h"
 #include "FileSystem.h"
 #include "OptionComboBox.h"
 #include "Partition.h"
