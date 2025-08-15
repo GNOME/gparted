@@ -2360,6 +2360,12 @@ void Win_GParted::activate_paste()
 		{
 			partition_new->set_flag("esp");
 		}
+		// Pasting a non-FAT file system into an existing partition.  Always clear
+		// the ESP flag on the target partition.
+		if (copied_partition->fstype != FS_FAT16 && copied_partition->fstype != FS_FAT32)
+		{
+			partition_new->clear_flag("esp");
+		}
  
 		std::unique_ptr<Operation> operation = std::make_unique<OperationCopy>(
 		                        m_devices[m_current_device],

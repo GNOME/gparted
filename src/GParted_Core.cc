@@ -3458,14 +3458,18 @@ bool GParted_Core::set_partition_type_using_fstype(PedPartition* lp_partition,
 	operationdetail.add_child(OperationDetail(Glib::ustring::compose(_("new partition type: %1"),
 	                                                                 lp_fs_type->name)));
 
-	// Also clear any libparted LVM flag so that it doesn't override the file system
-	// type
-	if (ped_partition_is_flag_available(lp_partition, PED_PARTITION_LVM))
+	// Clear these libparted flags so they don't override the on-disk partition type
+	// being set using the file system type.
+	static const PedPartitionFlag flags_to_clear[] = {PED_PARTITION_ESP, PED_PARTITION_LVM};
+	for (unsigned int i = 0 ; i < sizeof(flags_to_clear) / sizeof(flags_to_clear[i]); i++)
 	{
-		if (! ped_partition_set_flag(lp_partition, PED_PARTITION_LVM, 0))
+		if (ped_partition_is_flag_available(lp_partition, flags_to_clear[i]))
 		{
-			operationdetail.get_last_child().set_success_and_capture_errors(false);
-			return false;
+			if (! ped_partition_set_flag(lp_partition, flags_to_clear[i], 0))
+			{
+				operationdetail.get_last_child().set_success_and_capture_errors(false);
+				return false;
+			}
 		}
 	}
 

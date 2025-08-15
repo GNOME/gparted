@@ -306,6 +306,19 @@ void Partition::set_flag(const Glib::ustring& flag)
 }
 
 
+void Partition::clear_flag(const Glib::ustring& flag)
+{
+	for (unsigned int i = 0; i < flags.size(); i++)
+	{
+		if (flags[i] == flag)
+		{
+			flags.erase(flags.begin() + i);
+			return;
+		}
+	}
+}
+
+
 bool Partition::operator==( const Partition & partition ) const
 {
 	return device_path == partition .device_path &&
