@@ -299,6 +299,11 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 			break;
 	}
 
+	// Set partition flag so preview matches what is applied by
+	// GParted_Core::set_partition_type() for LVM2 PV file systems.
+	if (new_partition->fstype == FS_LVM2_PV)
+		new_partition->set_flag("lvm");
+
 	new_partition->free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
 
 	// Create unallocated space within this new extended partition
