@@ -1565,9 +1565,10 @@ void Win_GParted::close_operationslist()
 	}
 }
 
+
 void Win_GParted::clear_operationslist() 
 {
-	remove_operation( -1, true ) ;
+	remove_operation(REMOVE_ALL);
 	close_operationslist() ;
 
 	Refresh_Visual() ;
@@ -1655,7 +1656,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 		{}
 
 		if (i >= m_devices.size())
-			remove_operation( t-- ) ;
+			remove_operation(REMOVE_AT, t--);
 	}
 
 	//if no devices were detected we disable some stuff and show a message in the statusbar
@@ -1681,8 +1682,8 @@ void Win_GParted::menu_gparted_refresh_devices()
 		//hmzz, this is really paranoid, but i think it's the right thing to do ;)
 		hbox_operations .clear() ;
 		close_operationslist() ;
-		remove_operation( -1, true ) ;
-		
+		remove_operation(REMOVE_ALL);
+
 		statusbar .pop() ;
 		statusbar .push( _( "No devices detected" ) );
 	}
@@ -2526,7 +2527,9 @@ void Win_GParted::activate_delete()
 		for (int t = 0; t < static_cast<int>(m_operations.size()); t++)
 			if (m_operations[t]->m_type                         != OPERATION_DELETE                   &&
 			    m_operations[t]->get_partition_new().get_path() == selected_partition_ptr->get_path()   )
-				remove_operation( t-- ) ;
+			{
+				remove_operation(REMOVE_AT, t--);
+			}
 
 		//determine lowest possible new_count
 		new_count = 0 ; 
@@ -3382,7 +3385,7 @@ void Win_GParted::activate_undo()
 	if (m_operations.back()->m_type == OPERATION_CREATE)
 		new_count-- ;
 
-	remove_operation() ;		
+	remove_operation(REMOVE_LAST);
 
 	Refresh_Visual();
 
@@ -3398,19 +3401,21 @@ void Win_GParted::activate_undo()
 }
 
 
-void Win_GParted::remove_operation( int index, bool remove_all ) 
+void Win_GParted::remove_operation(OperationRemoveType rmtype, int index)
 {
-	if ( remove_all )
+	switch (rmtype)
 	{
-		m_operations.clear();
-	}
-	else if (index == -1 && m_operations.size() > 0)
-	{
-		m_operations.pop_back();
-	}
-	else if (index > -1 && index < static_cast<int>(m_operations.size()))
-	{
-		m_operations.erase(m_operations.begin() + index);
+		case REMOVE_ALL:
+			m_operations.clear();
+			break;
+		case REMOVE_LAST:
+			if (m_operations.size() > 0)
+				m_operations.pop_back();
+			break;
+		case REMOVE_AT:
+			if (0 <= index && index < static_cast<int>(m_operations.size()))
+				m_operations.erase(m_operations.begin() + index);
+			break;
 	}
 }
 
@@ -3495,12 +3500,12 @@ void Win_GParted::activate_apply()
 		while ( response == Gtk::RESPONSE_CANCEL || response == Gtk::RESPONSE_OK ) ;
 		
 		dialog_progress .hide() ;
-		
+
 		//wipe operations...
-		remove_operation( -1, true ) ;
+		remove_operation(REMOVE_ALL);
 		hbox_operations .clear() ;
 		close_operationslist() ;
-							
+
 		//reset new_count to 1
 		new_count = 1 ;
 		

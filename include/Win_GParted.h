@@ -197,7 +197,14 @@ private:
 	void activate_name_partition();
 
 	void activate_undo();
-	void remove_operation( int index = -1, bool remove_all = false ) ;
+
+	enum OperationRemoveType
+	{
+		REMOVE_ALL,
+		REMOVE_LAST,
+		REMOVE_AT
+	};
+	void remove_operation(OperationRemoveType rmtype, int index = -1);
 	int  partition_in_operation_queue_count( const Partition & partition ) ;
 	int  active_partitions_on_device_count( const Device & device ) ;
 	void activate_apply();
