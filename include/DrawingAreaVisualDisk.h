@@ -61,8 +61,10 @@ private:
 	void draw_partitions(const Cairo::RefPtr<Cairo::Context>& cr,
 	                     const std::vector<VisualPartition>& visual_partitions);
 
-	void set_selected(const std::vector<VisualPartition>& visual_partitions, int x, int y);
-	void set_selected(const std::vector<VisualPartition>& visual_partitions, const Partition* partition_ptr);
+	bool set_selected_by_coord(const std::vector<VisualPartition>& visual_partitions,
+	                           int x, int y);
+	bool set_selected_by_ptn(const std::vector<VisualPartition>& visual_partitions,
+	                         const Partition* partition_ptr);
 
 	int spreadout_leftover_px(std::vector<VisualPartition>& visual_partitions, int pixels);
 
@@ -114,7 +116,7 @@ private:
 	};
 
 	std::vector<VisualPartition> m_visual_partitions;
-	const VisualPartition* m_selected_vp;
+	const VisualPartition*       m_selected_vp;
 	int TOT_SEP, MIN_SIZE ;
 
 	Gdk::RGBA color_used;

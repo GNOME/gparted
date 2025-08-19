@@ -58,8 +58,7 @@ void DrawingAreaVisualDisk::load_partitions( const PartitionVector & partitions,
 
 void DrawingAreaVisualDisk::set_selected( const Partition * partition_ptr )
 {
-	m_selected_vp = nullptr;
-	set_selected(m_visual_partitions, partition_ptr);
+	set_selected_by_ptn(m_visual_partitions, partition_ptr);
 
 	queue_draw() ;
 }
@@ -291,36 +290,54 @@ void DrawingAreaVisualDisk::draw_partitions(const Cairo::RefPtr<Cairo::Context>&
 }
 
 
-void DrawingAreaVisualDisk::set_selected(const std::vector<VisualPartition>& visual_partitions, int x, int y)
+bool DrawingAreaVisualDisk::set_selected_by_coord(const std::vector<VisualPartition>& visual_partitions,
+                                                  int x, int y)
 {
-	for (unsigned int t = 0; t < visual_partitions.size() && ! m_selected_vp; t++)
+	m_selected_vp = nullptr;
+
+	for (unsigned int i = 0; i < visual_partitions.size(); i++)
 	{
-		if ( visual_partitions[ t ] .logicals .size() > 0  ) 
-			set_selected( visual_partitions[ t ] .logicals, x, y ) ;
-		
-		if (! m_selected_vp &&
-		     visual_partitions[ t ] .x_start <= x && 
-		     x < visual_partitions[ t ] .x_start + visual_partitions[ t ] .length &&
-		     visual_partitions[ t ] .y_start <= y &&
-		     y < visual_partitions[ t ] .y_start + visual_partitions[ t ] .height )
+		if (visual_partitions[i].logicals.size() > 0)
 		{
-			m_selected_vp = &visual_partitions[t];
+			if (set_selected_by_coord(visual_partitions[i].logicals, x, y))
+				return true;  // Was selected in recursive call
+		}
+
+		if (visual_partitions[i].x_start <= x &&
+		                    x < visual_partitions[i].x_start + visual_partitions[i].length &&
+		    visual_partitions[i].y_start <= y &&
+		                    y < visual_partitions[i].y_start + visual_partitions[i].height   )
+		{
+			m_selected_vp = &visual_partitions[i];
+			return true;  // Selected
 		}
 	}
+
+	return false;  // Not selected
 }
 
 
-void DrawingAreaVisualDisk::set_selected(const std::vector<VisualPartition>& visual_partitions,
-                                         const Partition* partition_ptr)
+bool DrawingAreaVisualDisk::set_selected_by_ptn(const std::vector<VisualPartition>& visual_partitions,
+                                                const Partition* partition_ptr)
 {
-	for (unsigned int t = 0; t < visual_partitions.size() && ! m_selected_vp; t++)
-	{
-		if ( visual_partitions[ t ] .logicals .size() > 0 )
-			set_selected( visual_partitions[t].logicals, partition_ptr );
+	m_selected_vp = nullptr;
 
-		if (! m_selected_vp && *visual_partitions[t].partition_ptr == *partition_ptr)
-			m_selected_vp = &visual_partitions[t];
+	for (unsigned int i = 0; i < visual_partitions.size(); i++)
+	{
+		if (visual_partitions[i].logicals.size() > 0)
+		{
+			if (set_selected_by_ptn(visual_partitions[i].logicals, partition_ptr))
+				return true;  // Was selected in recursive call
+		}
+
+		if (*visual_partitions[i].partition_ptr == *partition_ptr)
+		{
+			m_selected_vp = &visual_partitions[i];
+			return true;  // Selected
+		}
 	}
+
+	return false;  // Not selected
 }
 
 
@@ -353,8 +370,7 @@ bool DrawingAreaVisualDisk::on_button_press_event( GdkEventButton * event )
 {
 	bool ret_val = Gtk::DrawingArea::on_button_press_event( event ) ;
 
-	m_selected_vp = nullptr;
-	set_selected(m_visual_partitions, static_cast<int>(event->x), static_cast<int>(event->y));
+	set_selected_by_coord(m_visual_partitions, static_cast<int>(event->x), static_cast<int>(event->y));
 	queue_draw() ;
 
 	if (m_selected_vp)
