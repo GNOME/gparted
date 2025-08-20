@@ -82,7 +82,7 @@ int DrawingAreaVisualDisk::get_total_separator_px( const PartitionVector & parti
 
 void DrawingAreaVisualDisk::set_static_data(const PartitionVector& partitions,
                                             std::vector<VisualPartition>& visual_partitions,
-                                            Sector length)
+                                            Sector device_length)
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
@@ -90,7 +90,7 @@ void DrawingAreaVisualDisk::set_static_data(const PartitionVector& partitions,
 
 		visual_partitions.back().partition_ptr = & partitions[t];
 		Sector partition_length = partitions[ t ] .get_sector_length() ;
-		visual_partitions .back() .fraction = partition_length / static_cast<double>( length ) ;
+		visual_partitions.back().fraction = partition_length / static_cast<double>(device_length);
 
 		Glib::ustring color_str = Utils::get_color(partitions[t].get_filesystem_partition().fstype);
 		visual_partitions.back().color.set( color_str );

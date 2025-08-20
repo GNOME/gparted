@@ -50,7 +50,7 @@ private:
 
 	void set_static_data(const PartitionVector & partitions,
 	                     std::vector<VisualPartition>& visual_partitions,
-	                     Sector length);
+	                     Sector device_length);
 	int calc_length(std::vector<VisualPartition>& visual_partitions, int length_px);
 	void calc_position_and_height(std::vector<VisualPartition>& visual_partitions, int start, int border);
 	void calc_usage(std::vector<VisualPartition>& visual_partitions);
