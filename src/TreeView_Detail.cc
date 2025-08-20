@@ -108,7 +108,7 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions )
 void TreeView_Detail::set_selected( const Partition * partition_ptr )
 {
 	m_block = true;
-	set_selected(m_treestore_detail->children(), partition_ptr);
+	set_selected_by_ptn(m_treestore_detail->children(), partition_ptr);
 	m_block = false;
 }
 
@@ -137,8 +137,9 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions,
 	}
 }
 
-bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows,
-                                    const Partition * partition_ptr, bool inside_extended )
+
+bool TreeView_Detail::set_selected_by_ptn(Gtk::TreeModel::Children rows,
+                                          const Partition* partition_ptr, bool inside_extended)
 {
 	for ( unsigned int t = 0 ; t < rows .size() ; t++ )
 	{
@@ -151,12 +152,13 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows,
 			return true ;
 		}
 
-		if ( set_selected( rows[t].children(), partition_ptr, true ) )
+		if (set_selected_by_ptn(rows[t].children(), partition_ptr, true))
 			return true ;
 	}
-	
+
 	return false ;
 }
+
 
 void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
                                   const Partition & partition,
