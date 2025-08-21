@@ -2628,6 +2628,20 @@ void Win_GParted::activate_format( FSType new_fs )
 	}
 	temp_ptn->name = selected_partition_ptr->name;
 
+	// Formatting an EFI System Partition (ESP) to a FAT file system.  Copy across the
+	// ESP flag to maintain the on-disk partition type.  (It's not necessary to clear
+	// any flags when formatting to other file system types because the above
+	// temp_filesystem_ptn.Reset() clears all flags).
+	if ((new_fs == FS_FAT16 || new_fs == FS_FAT32) && selected_partition_ptr->is_flag_set("esp"))
+	{
+		temp_ptn->set_flag("esp");
+	}
+	// Formatting to LVM2 PV.  Always set the libparted LVM flag.
+	if (new_fs == FS_LVM2_PV)
+	{
+		temp_ptn->set_flag("lvm");
+	}
+
 	// Generate minimum and maximum partition size limits for the new file system.
 	FS_Limits fs_limits = gparted_core.get_filesystem_limits( new_fs, temp_ptn->get_filesystem_partition() );
 	bool encrypted = false;
