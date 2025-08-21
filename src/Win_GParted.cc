@@ -2225,6 +2225,8 @@ void Win_GParted::activate_paste()
 
 	if ( selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
+		// Pasting into empty space composing new partition.
+
 		if ( ! max_amount_prim_reached() )
 		{
 			FS_Limits fs_limits = gparted_core.get_filesystem_limits(
@@ -2272,6 +2274,8 @@ void Win_GParted::activate_paste()
 	}
 	else
 	{
+		// Pasting into existing partition.
+
 		const Partition & selected_filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
 
 		bool shown_dialog = false ;
@@ -2346,6 +2350,15 @@ void Win_GParted::activate_paste()
 				filesystem_ptn_new.set_sector_usage( -1, -1 );
 			}
 			filesystem_ptn_new.clear_messages();
+		}
+
+		// Pasting an EFI System Partition (ESP) containing a FAT file system into
+		// an existing partition.  Copy across the ESP flag to maintain the
+		// on-disk partition type.
+		if ((copied_partition->fstype == FS_FAT16 || copied_partition->fstype == FS_FAT32) &&
+		    copied_partition->is_flag_set("esp")                                             )
+		{
+			partition_new->set_flag("esp");
 		}
  
 		std::unique_ptr<Operation> operation = std::make_unique<OperationCopy>(

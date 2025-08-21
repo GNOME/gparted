@@ -299,6 +299,13 @@ bool Partition::is_flag_set(const Glib::ustring& flag) const
 }
 
 
+void Partition::set_flag(const Glib::ustring& flag)
+{
+	if (! is_flag_set(flag))
+		flags.push_back(flag);
+}
+
+
 bool Partition::operator==( const Partition & partition ) const
 {
 	return device_path == partition .device_path &&
