@@ -2366,6 +2366,10 @@ void Win_GParted::activate_paste()
 		{
 			partition_new->clear_flag("esp");
 		}
+		// Pasting a non-LVM2 PV file system into an existing partition.  (Always
+		// true as copying an LVM2 PV is not supported).  Always clear the LVM
+		// flag on the target partition.
+		partition_new->clear_flag("lvm");
  
 		std::unique_ptr<Operation> operation = std::make_unique<OperationCopy>(
 		                        m_devices[m_current_device],
