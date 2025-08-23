@@ -106,6 +106,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 		scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 		scrolledwindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 		scrolledwindow.set_size_request (700, 250);
+		scrolledwindow.set_vexpand(true);
 		scrolledwindow.add(treeview_operations);
 
 		expander_details.set_label("<b>" + Glib::ustring(_("Details")) + "</b>");
