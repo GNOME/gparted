@@ -45,83 +45,90 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	this ->set_title( _("Applying pending operations") ) ;
 	this->property_default_width() = 700;
 
-	{
-		Gtk::Box *vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+	// WH (Widget Hierarchy): this->get_content_area() / vbox
+	Gtk::Box* vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+	vbox->set_border_width(10);
+	vbox->set_spacing(5);
+	this->get_content_area()->pack_start(*vbox, Gtk::PACK_EXPAND_WIDGET);
 
-		vbox->set_border_width(10);
-		this->get_content_area()->pack_start(*vbox, Gtk::PACK_EXPAND_WIDGET);
+	// WH: this->get_content_area() / vbox / "Depending on the number..."
+	Glib::ustring str_temp(_("Depending on the number and type of operations this might take a long time."));
+	str_temp += "\n";
+	vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
-		Glib::ustring str_temp(_("Depending on the number and type of operations this might take a long time."));
-		str_temp += "\n";
-		vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / label_current
+	label_current.set_alignment(Gtk::ALIGN_START);
+	vbox->pack_start(label_current, Gtk::PACK_SHRINK);
 
-		label_current.set_alignment(Gtk::ALIGN_START);
-		vbox->pack_start(label_current, Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / progressbar_current
+	progressbar_current.set_pulse_step(0.01);
+	progressbar_current.set_show_text();
+	vbox->pack_start(progressbar_current, Gtk::PACK_SHRINK);
 
-		progressbar_current.set_pulse_step(0.01);
-		progressbar_current.set_show_text();
-		vbox->pack_start(progressbar_current, Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / label_current_sub
+	label_current_sub.set_alignment(Gtk::ALIGN_START);
+	vbox->pack_start(label_current_sub, Gtk::PACK_SHRINK);
 
-		label_current_sub.set_alignment(Gtk::ALIGN_START);
-		vbox->pack_start(label_current_sub, Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / "Completed Operations:"
+	vbox->pack_start(*Utils::mk_label("<b>" + Glib::ustring(_("Completed Operations:")) + "</b>"),
+	                 Gtk::PACK_SHRINK);
 
-		vbox->pack_start(*Utils::mk_label("<b>" + Glib::ustring(_("Completed Operations:")) + "</b>"),
-					Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / progressbar_all
+	progressbar_all.set_show_text();
+	vbox->pack_start(progressbar_all, Gtk::PACK_SHRINK);
 
-		progressbar_all.set_show_text();
-		vbox->pack_start(progressbar_all, Gtk::PACK_SHRINK);
+	// WH: ..._area() / vbox / expander_details / scrolledwindow / treeview_operations
+	treestore_operations = Gtk::TreeStore::create(m_treeview_operations_columns);
+	treeview_operations.set_model(treestore_operations);
+	treeview_operations.set_headers_visible(false);
+	treeview_operations.set_rules_hint(true);
+	treeview_operations.set_size_request(700, 250);
+	treeview_operations.append_column("", m_treeview_operations_columns.operation_description);
+	treeview_operations.append_column("", m_treeview_operations_columns.elapsed_time);
+	treeview_operations.append_column("", m_treeview_operations_columns.status_icon);
 
-		//create some icons here, instead of recreating them every time
-		icon_execute = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_success = Utils::mk_pixbuf(*this, Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_error = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_info = Utils::mk_pixbuf(*this, Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_warning = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-
-		treestore_operations = Gtk::TreeStore::create(m_treeview_operations_columns);
-		treeview_operations.set_model(treestore_operations);
-		treeview_operations.set_headers_visible(false);
-		treeview_operations.set_rules_hint(true);
-		treeview_operations.set_size_request(700, 250);
-		treeview_operations.append_column("", m_treeview_operations_columns.operation_description);
-		treeview_operations.append_column("", m_treeview_operations_columns.elapsed_time);
-		treeview_operations.append_column("", m_treeview_operations_columns.status_icon);
-
-		treeview_operations.get_column(0)->set_expand(true);
-		treeview_operations.get_column(0)->set_cell_data_func(
+	treeview_operations.get_column(0)->set_expand(true);
+	treeview_operations.get_column(0)->set_cell_data_func(
 			*(treeview_operations.get_column(0)->get_first_cell()),
 			sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) );
 
-		//fill 'er up
-		for (unsigned int i = 0; i < m_operations.size(); ++i)
-		{
-			m_operations[i]->m_operation_detail.set_description(m_operations[i]->m_description, FONT_BOLD);
-			m_operations[i]->m_operation_detail.set_treepath(Utils::num_to_str(i));
+	// Fill 'er up
+	for (unsigned int i = 0; i < m_operations.size(); ++i)
+	{
+		m_operations[i]->m_operation_detail.set_description(m_operations[i]->m_description, FONT_BOLD);
+		m_operations[i]->m_operation_detail.set_treepath(Utils::num_to_str(i));
 
-			treerow = *(treestore_operations->append());
-			treerow[m_treeview_operations_columns.operation_description] =
-			                m_operations[i]->m_operation_detail.get_description();
-		}
-
-		scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
-		scrolledwindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-		scrolledwindow.set_size_request (700, 250);
-		scrolledwindow.set_vexpand(true);
-		scrolledwindow.add(treeview_operations);
-
-		expander_details.set_label("<b>" + Glib::ustring(_("Details")) + "</b>");
-		expander_details.set_use_markup(true);
-		expander_details.add(scrolledwindow);
-
-		vbox ->pack_start(expander_details, Gtk::PACK_EXPAND_WIDGET);
-		vbox ->set_spacing(5);
+		treerow = *(treestore_operations->append());
+		treerow[m_treeview_operations_columns.operation_description] =
+		                m_operations[i]->m_operation_detail.get_description();
 	}
 
+	// WH: this->get_content_area() / vbox / expander_details / scrolledwindow
+	scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+	scrolledwindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	scrolledwindow.set_size_request (700, 250);
+	scrolledwindow.set_vexpand(true);
+	scrolledwindow.add(treeview_operations);
+
+	// WH: this->get_content_area() / vbox / expander_details
+	expander_details.set_label("<b>" + Glib::ustring(_("Details")) + "</b>");
+	expander_details.set_use_markup(true);
+	expander_details.add(scrolledwindow);
+	vbox->pack_start(expander_details, Gtk::PACK_EXPAND_WIDGET);
+
 	cancelbutton = this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	
+
+	// Create some icons here, instead of recreating them every time
+	icon_execute = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE,        Gtk::ICON_SIZE_LARGE_TOOLBAR);
+	icon_success = Utils::mk_pixbuf(*this, Gtk::Stock::APPLY,          Gtk::ICON_SIZE_LARGE_TOOLBAR);
+	icon_error   = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_ERROR,   Gtk::ICON_SIZE_LARGE_TOOLBAR);
+	icon_info    = Utils::mk_pixbuf(*this, Gtk::Stock::INFO,           Gtk::ICON_SIZE_LARGE_TOOLBAR);
+	icon_warning = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+
 	this ->signal_show() .connect( sigc::mem_fun(*this, &Dialog_Progress::on_signal_show) );
 	this ->show_all_children() ;
 }
+
 
 void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail ) 
 {
