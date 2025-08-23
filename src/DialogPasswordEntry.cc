@@ -42,7 +42,7 @@ DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib:
 	Gtk::Box *vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 	vbox->set_border_width( 5 );
 	vbox->set_spacing( 5 );
-	get_vbox()->pack_start( *vbox, Gtk::PACK_SHRINK );
+	this->get_content_area()->pack_start(*vbox, Gtk::PACK_SHRINK);
 
 	// Line 1: Reason message, e.g. "Enter LUKS passphrase to open /dev/sda1"
 	vbox->pack_start(*Utils::mk_label(reason), Gtk::PACK_SHRINK);
