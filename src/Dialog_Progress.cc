@@ -40,7 +40,13 @@ namespace GParted
 
 
 Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const OperationVector& operations)
- : m_devices(devices), m_operations(operations),
+   // Create some icons here, instead of recreating them every time
+ : m_icon_execute(Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE,        Gtk::ICON_SIZE_LARGE_TOOLBAR)),
+   m_icon_success(Utils::mk_pixbuf(*this, Gtk::Stock::APPLY,          Gtk::ICON_SIZE_LARGE_TOOLBAR)),
+   m_icon_error  (Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_ERROR,   Gtk::ICON_SIZE_LARGE_TOOLBAR)),
+   m_icon_info   (Utils::mk_pixbuf(*this, Gtk::Stock::INFO,           Gtk::ICON_SIZE_LARGE_TOOLBAR)),
+   m_icon_warning(Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR)),
+   m_devices(devices), m_operations(operations),
    m_fraction(1.0 / operations.size()),
    m_success(true), m_cancel(false),
    m_curr_op(0), m_warnings(0), m_cancel_countdown(0)
@@ -121,13 +127,6 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 		                m_operations[i]->m_operation_detail.get_description();
 	}
 
-	// Create some icons here, instead of recreating them every time
-	icon_execute = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE,        Gtk::ICON_SIZE_LARGE_TOOLBAR);
-	icon_success = Utils::mk_pixbuf(*this, Gtk::Stock::APPLY,          Gtk::ICON_SIZE_LARGE_TOOLBAR);
-	icon_error   = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_ERROR,   Gtk::ICON_SIZE_LARGE_TOOLBAR);
-	icon_info    = Utils::mk_pixbuf(*this, Gtk::Stock::INFO,           Gtk::ICON_SIZE_LARGE_TOOLBAR);
-	icon_warning = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-
 	this ->signal_show() .connect( sigc::mem_fun(*this, &Dialog_Progress::on_signal_show) );
 	this ->show_all_children() ;
 }
@@ -148,19 +147,19 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 		switch ( operationdetail .get_status() )
 		{
 			case STATUS_EXECUTE:
-				treerow[m_treeview_operations_columns.status_icon] = icon_execute;
+				treerow[m_treeview_operations_columns.status_icon] = m_icon_execute;
 				break ;
 			case STATUS_SUCCESS:
-				treerow[m_treeview_operations_columns.status_icon] = icon_success;
+				treerow[m_treeview_operations_columns.status_icon] = m_icon_success;
 				break ;
 			case STATUS_ERROR:
-				treerow[m_treeview_operations_columns.status_icon] = icon_error;
+				treerow[m_treeview_operations_columns.status_icon] = m_icon_error;
 				break ;
 			case STATUS_INFO:
-				treerow[m_treeview_operations_columns.status_icon] = icon_info;
+				treerow[m_treeview_operations_columns.status_icon] = m_icon_info;
 				break ;
 			case STATUS_WARNING:
-				treerow[m_treeview_operations_columns.status_icon] = icon_warning;
+				treerow[m_treeview_operations_columns.status_icon] = m_icon_warning;
 				m_warnings++;
 				break ;
 			case STATUS_NONE:

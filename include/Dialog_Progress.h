@@ -74,12 +74,6 @@ private:
 	Gtk::TreeView       m_treeview_operations;
 	Gtk::Button*        m_cancelbutton;
 
-	Glib::RefPtr<Gdk::Pixbuf> icon_execute ;
-	Glib::RefPtr<Gdk::Pixbuf> icon_success;
-	Glib::RefPtr<Gdk::Pixbuf> icon_error ;
-	Glib::RefPtr<Gdk::Pixbuf> icon_info ;
-	Glib::RefPtr<Gdk::Pixbuf> icon_warning;
-
 	// Model for displaying the operation details
 	Glib::RefPtr<Gtk::TreeStore> m_treestore_operations;
 	struct TreeView_Operations_Columns : public Gtk::TreeModelColumnRecord
@@ -96,6 +90,12 @@ private:
 		} 
 	};
 	TreeView_Operations_Columns m_treeview_operations_columns;
+
+	Glib::RefPtr<Gdk::Pixbuf> m_icon_execute;
+	Glib::RefPtr<Gdk::Pixbuf> m_icon_success;
+	Glib::RefPtr<Gdk::Pixbuf> m_icon_error;
+	Glib::RefPtr<Gdk::Pixbuf> m_icon_info;
+	Glib::RefPtr<Gdk::Pixbuf> m_icon_warning;
 
 	const std::vector<Device>& m_devices;
 	const OperationVector&     m_operations;
