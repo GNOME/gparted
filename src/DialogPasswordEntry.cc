@@ -40,19 +40,24 @@ DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib:
 	this->set_title( Glib::ustring::compose( _("LUKS Passphrase %1"), partition.get_path() ) );
 
 	// Separate vertical box to hold lines in the dialog.
+	// WH (Widget Hierarchy): DialogPasswordEntry->get_content_area() / vbox
 	Gtk::Box* vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 	vbox->set_border_width( 5 );
 	vbox->set_spacing( 5 );
 	this->get_content_area()->pack_start(*vbox, Gtk::PACK_SHRINK);
 
 	// Line 1: Reason message, e.g. "Enter LUKS passphrase to open /dev/sda1"
+	// WH: DialogPasswordEntry->get_content_area() / vbox / reason
 	vbox->pack_start(*Utils::mk_label(reason), Gtk::PACK_SHRINK);
 
 	// Line 2: "Passphrase: [              ]"
 	// (Horizontal box holding prompt and entry box)
+	// WH: DialogPasswordEntry->get_content_area() / vbox / entry_hbox
 	Gtk::Box* entry_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+	// WH: DialogPasswordEntry->get_content_area() / vbox / entry_hbox / "Passphrase:"
 	Gtk::Label *label_passphrase = Utils::mk_label("<b>" + Glib::ustring(_("Passphrase:")) + "</b>");
 	entry_hbox->pack_start(*label_passphrase);
+	// WH: DialogPasswordEntry->get_content_area() / vbox / entry_hbox / m_entry
 	m_entry = Gtk::manage(new Gtk::Entry());
 	m_entry->set_width_chars(30);
 	m_entry->set_visibility(false);
@@ -63,9 +68,11 @@ DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib:
 	vbox->pack_start( *entry_hbox );
 
 	// Line 3: blank
+	// WH: DialogPasswordEntry->get_content_area() / vbox / ""
 	vbox->pack_start( *Utils::mk_label( "" ) );
 
 	// Line 4: error message
+	// WH: DialogPasswordEntry->get_content_area() / vbox / m_error_message
 	m_error_message = Utils::mk_label("");
 	vbox->pack_start(*m_error_message);
 
