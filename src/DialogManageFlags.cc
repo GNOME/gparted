@@ -17,10 +17,13 @@
 #include "DialogManageFlags.h"
 #include "Partition.h"
 
+#include <glibmm/ustring.h>
+#include <gtkmm/box.h>
 #include <gtkmm/main.h>
 #include <gtkmm/stock.h>
 #include <gdkmm/cursor.h>
 #include <sigc++/signal.h>
+#include <map>
 
 
 namespace GParted
@@ -33,7 +36,12 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	set_title( Glib::ustring::compose( _("Manage flags on %1"), partition .get_path() ) );
 	set_resizable( false ) ;
 
-	//setup treeview
+	// WH (Widget Hierarchy): this->get_content_area() / vbox
+	Gtk::Box* vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+	vbox->set_border_width(5);
+	this->get_content_area()->pack_start(*vbox, Gtk::PACK_SHRINK);
+
+	// WH: this->get_content_area() / vbox / m_treeview_flags
 	m_liststore_flags = Gtk::ListStore::create(m_treeview_flags_columns);
 	m_treeview_flags.set_model(m_liststore_flags);
 	m_treeview_flags.set_headers_visible(false);
@@ -46,12 +54,13 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 		->signal_toggled() .connect( sigc::mem_fun( *this, &DialogManageFlags::on_flag_toggled ) ) ;
 
 	m_treeview_flags.set_size_request(300, -1);
-	get_content_area()->pack_start(m_treeview_flags, Gtk::PACK_SHRINK);
+	vbox->pack_start(m_treeview_flags, Gtk::PACK_SHRINK);
 
-	load_treeview() ;
 	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ->grab_focus() ;
 		
 	show_all_children() ;
+
+	load_treeview();
 }
 
 

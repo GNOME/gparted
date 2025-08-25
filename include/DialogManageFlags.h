@@ -18,17 +18,21 @@
 #ifndef GPARTED_DIALOGMANAGEFLAGS_H
 #define GPARTED_DIALOGMANAGEFLAGS_H
 
+
 #include "Partition.h"
 
+#include <glibmm/ustring.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include <sigc++/signal.h>
+#include <map>
 
 
 namespace GParted
 {
-	
+
+
 class DialogManageFlags : public Gtk::Dialog
 {
 public:
