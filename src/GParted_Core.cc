@@ -1407,6 +1407,20 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 }
 
 
+Glib::ustring GParted_Core::check_logical_esp_warning(const Partition& partition)
+{
+	Glib::ustring warning;
+	if (partition.type == TYPE_LOGICAL && partition.is_flag_set("esp"))
+	{
+		/*TO TRANSLATORS: "logical" refers to a logical partition within an
+		 * extended partition on an MSDOS / MBR partition table.
+		 */
+		warning = _("UEFI firmware does not support booting from a logical EFI System Partition (ESP)");
+	}
+	return warning;
+}
+
+
 void GParted_Core::set_mountpoints( Partition & partition )
 {
 	if (partition.fstype == FS_LVM2_PV)
@@ -1722,7 +1736,12 @@ void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition 
 		if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) &&
 		     ped_partition_get_flag( lp_partition, flags[ t ] ) )
 			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
+
+	Glib::ustring warning = check_logical_esp_warning(partition);
+	if (warning.size() > 0)
+		partition.push_back_message(warning);
 }
+
 
 bool GParted_Core::create( Partition & new_partition, OperationDetail & operationdetail )
 {
