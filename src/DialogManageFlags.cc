@@ -19,11 +19,13 @@
 
 #include <glibmm/ustring.h>
 #include <gtkmm/box.h>
+#include <gtkmm/image.h>
 #include <gtkmm/main.h>
 #include <gtkmm/stock.h>
 #include <gdkmm/cursor.h>
 #include <sigc++/signal.h>
 #include <map>
+#include <utility>
 
 
 namespace GParted
@@ -31,7 +33,9 @@ namespace GParted
 
 
 DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::ustring, bool> flag_info)
- : m_changed(false), m_partition(partition), m_flag_info(flag_info)
+ : m_changed(false),
+   m_warning_message(std::move(*Utils::mk_label("", false, true, true, Gtk::ALIGN_START))),
+   m_partition(partition), m_flag_info(flag_info)
 {
 	set_title( Glib::ustring::compose( _("Manage flags on %1"), partition .get_path() ) );
 	set_resizable( false ) ;
@@ -39,6 +43,7 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	// WH (Widget Hierarchy): this->get_content_area() / vbox
 	Gtk::Box* vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 	vbox->set_border_width(5);
+	vbox->set_spacing(5);
 	this->get_content_area()->pack_start(*vbox, Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / vbox / m_treeview_flags
@@ -56,11 +61,42 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	m_treeview_flags.set_size_request(300, -1);
 	vbox->pack_start(m_treeview_flags, Gtk::PACK_SHRINK);
 
+	// Reserve space in the dialog so that it doesn't change size when the warning
+	// frame is shown or hidden.
+	// WH: this->get_content_area() / vbox / reserve_vbox
+	Gtk::Box* reserve_vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+	reserve_vbox->set_size_request(-1, 75);
+	vbox->pack_start(*reserve_vbox, Gtk::PACK_EXPAND_WIDGET);
+
+	// WH: this->get_content_area() / vbox / reserve_vbox / m_warning_frame
+	reserve_vbox->pack_start(m_warning_frame, Gtk::PACK_EXPAND_WIDGET);
+
+	// WH: ... / vbox / reserve_vbox / m_warning_frame / label_hbox
+	Gtk::Box* label_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+	m_warning_frame.set_label_widget(*label_hbox);
+
+	// WH: ... / vbox / reserve_vbox / m_warning_frame / label_hbox / warning_icon
+	Gtk::Image* warning_icon = Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
+	label_hbox->pack_start(*warning_icon, Gtk::PACK_SHRINK);
+
+	// WH: ... / vbox / reserve_vbox / m_warning_frame / label_hbox / "Warning:"
+	label_hbox->pack_start(*Utils::mk_label("<b> " + Glib::ustring(_("Warning:")) + "</b>"),
+	                       Gtk::PACK_SHRINK);
+
+	// WH: ... / vbox / reserve_vbox / m_warning_frame / warning_vbox
+	Gtk::Box* warning_vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+	warning_vbox->set_border_width(5);  // Padding inside the frame
+	m_warning_frame.add(*warning_vbox);
+
+	// WH: ... / vbox / reserve_vbox / m_warning_frame / warning_vbox / m_warning_message
+	warning_vbox->pack_start(m_warning_message, Gtk::PACK_EXPAND_WIDGET);
+
 	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ->grab_focus() ;
 		
 	show_all_children() ;
 
 	load_treeview();
+	m_warning_message.set_label("FIXME: Implement fetching and displaying the real warning message and hiding if none");
 }
 
 

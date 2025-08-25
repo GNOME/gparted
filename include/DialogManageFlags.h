@@ -23,6 +23,8 @@
 
 #include <glibmm/ustring.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/label.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include <sigc++/signal.h>
@@ -48,6 +50,9 @@ private:
 	void on_flag_toggled( const Glib::ustring & path ) ;
 
 	Gtk::TreeView m_treeview_flags;
+	Gtk::Frame    m_warning_frame;
+	Gtk::Label    m_warning_message;
+
 	Gtk::TreeRow  m_row;
 
 	Glib::RefPtr<Gtk::ListStore> m_liststore_flags;
