@@ -116,7 +116,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		info_msg_vbox .pack_start( *frame, Gtk::PACK_EXPAND_WIDGET ) ;
 	}
 
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ;
+	this->add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE);
 	this ->show_all_children() ;
 }
 

@@ -93,8 +93,8 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	// WH: ... / vbox / reserve_vbox / m_warning_frame / warning_vbox / m_warning_message
 	warning_vbox->pack_start(m_warning_message, Gtk::PACK_EXPAND_WIDGET);
 
-	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ->grab_focus() ;
-		
+	add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE)->grab_focus();
+
 	show_all_children() ;
 
 	load_treeview();
