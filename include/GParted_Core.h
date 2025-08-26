@@ -80,7 +80,7 @@ public:
 	                                Sector end,
 	                                Byte_Value sector_size,
 	                                bool inside_extended );
-	static Glib::ustring check_logical_esp_warning(const Partition& partition);
+	static Glib::ustring check_logical_esp_warning(PartitionType ptntype, bool esp_flag);
 
 private:
 	//detectionstuff..

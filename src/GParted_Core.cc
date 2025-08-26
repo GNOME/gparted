@@ -1407,10 +1407,10 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 }
 
 
-Glib::ustring GParted_Core::check_logical_esp_warning(const Partition& partition)
+Glib::ustring GParted_Core::check_logical_esp_warning(PartitionType ptntype, bool esp_flag)
 {
 	Glib::ustring warning;
-	if (partition.type == TYPE_LOGICAL && partition.is_flag_set("esp"))
+	if (ptntype == TYPE_LOGICAL && esp_flag)
 	{
 		/*TO TRANSLATORS: "logical" refers to a logical partition within an
 		 * extended partition on an MSDOS / MBR partition table.
@@ -1737,7 +1737,7 @@ void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition 
 		     ped_partition_get_flag( lp_partition, flags[ t ] ) )
 			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
 
-	Glib::ustring warning = check_logical_esp_warning(partition);
+	Glib::ustring warning = check_logical_esp_warning(partition.type, partition.is_flag_set("esp"));
 	if (warning.size() > 0)
 		partition.push_back_message(warning);
 }

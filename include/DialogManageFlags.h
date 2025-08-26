@@ -48,6 +48,7 @@ public:
 private:
 	void load_treeview() ;
 	void on_flag_toggled( const Glib::ustring & path ) ;
+	void update_warning();
 
 	Gtk::TreeView m_treeview_flags;
 	Gtk::Frame    m_warning_frame;

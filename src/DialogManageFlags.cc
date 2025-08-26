@@ -14,7 +14,10 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "DialogManageFlags.h"
+
+#include "GParted_Core.h"
 #include "Partition.h"
 
 #include <glibmm/ustring.h>
@@ -96,7 +99,7 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	show_all_children() ;
 
 	load_treeview();
-	m_warning_message.set_label("FIXME: Implement fetching and displaying the real warning message and hiding if none");
+	update_warning();
 }
 
 
@@ -129,9 +132,24 @@ void DialogManageFlags::on_flag_toggled( const Glib::ustring & path )
 
 	m_flag_info = signal_get_flags.emit(m_partition);
 	load_treeview() ;
-	
+	update_warning();
+
 	set_sensitive( true ) ;
 	get_window() ->set_cursor() ;
+}
+
+
+void DialogManageFlags::update_warning()
+{
+	bool esp_flag = false;
+	const std::map<Glib::ustring, bool>::const_iterator it = m_flag_info.find("esp");
+	if (it != m_flag_info.end())
+		esp_flag = it->second;
+
+	Glib::ustring warning = GParted_Core::check_logical_esp_warning(m_partition.type, esp_flag);
+
+	m_warning_message.set_label(warning);
+	m_warning_frame.set_visible(warning.size() > 0);
 }
 
 
