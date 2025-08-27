@@ -47,29 +47,29 @@ HBoxOperations::HBoxOperations()
 
 	//create popupmenu
 	Gtk::MenuItem *item;
-	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
+	item = Gtk::manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Undo Last Operation"), 
 		*Utils::mk_image(Gtk::Stock::UNDO, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &HBoxOperations::on_undo)));
 	menu_popup.append(*item);
 	menu_popup_items[0] = item;
 
-	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
+	item = Gtk::manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Clear All Operations"), 
 		*Utils::mk_image(Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &HBoxOperations::on_clear)));
 	menu_popup.append(*item);
 	menu_popup_items[1] = item;
 
-	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
+	item = Gtk::manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Apply All Operations"), 
 		*Utils::mk_image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &HBoxOperations::on_apply)));
 	menu_popup.append(*item);
 	menu_popup_items[2] = item;
 
-	menu_popup.append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	menu_popup.append(*manage(new GParted::Menu_Helpers::StockMenuElem(
+	menu_popup.append(*Gtk::manage(new GParted::Menu_Helpers::SeparatorElem()));
+	menu_popup.append(*Gtk::manage(new GParted::Menu_Helpers::StockMenuElem(
 		Gtk::Stock::CLOSE, sigc::mem_fun(*this, &HBoxOperations::on_close))));
 }
 

@@ -474,7 +474,7 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 		case RESIZE_MOVE:
 			{
 				Gtk::Image* image_temp = Utils::mk_image(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON);
-				Gtk::Box* hbox_resize_move(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+				Gtk::Box* hbox_resize_move(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 
 				hbox_resize_move->pack_start(*image_temp, Gtk::PACK_EXPAND_PADDING);
 				hbox_resize_move->pack_start(*Utils::mk_label(fixed_start ? _("Resize") : _("Resize/Move")),

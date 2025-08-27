@@ -37,7 +37,7 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	this->set_title( Glib::ustring::compose( _("Set partition name on %1"), partition.get_path() ) );
 
 	// Horizontal box to hold the label and entry box line
-	Gtk::Box *hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+	Gtk::Box* hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	hbox->set_border_width( 5 );
 	hbox->set_spacing( 10 );
 	get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
@@ -46,7 +46,7 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	Gtk::Label *label_name = Utils::mk_label("<b>" + Glib::ustring(_("Name:")) + "</b>");
 	hbox->pack_start(*label_name, Gtk::PACK_SHRINK);
 
-	entry = manage( new Gtk::Entry() );
+	entry = Gtk::manage(new Gtk::Entry());
 	// NOTE: This limits the Gtk::Entry size in UTF-8 characters but partition names
 	// are defined in terms of ASCII characters, or for GPT, UTF-16LE code points.
 	// See Utils::get_max_partition_name_length().  So for certain extended characters

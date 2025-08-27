@@ -68,7 +68,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	if (child_viewport)
 		child_viewport->set_shadow_type(Gtk::SHADOW_NONE);
 	//horizontally center the information scrolled window to match partition graphic
-	Gtk::Alignment * center_widget = manage( new Gtk::Alignment(0.5, 0.5, 0.0, 1.0) ) ;
+	Gtk::Alignment* center_widget = Gtk::manage(new Gtk::Alignment(0.5, 0.5, 0.0, 1.0));
 	center_widget ->add( info_scrolled ) ;
 	this->get_content_area()->pack_start(*center_widget);
 
@@ -78,12 +78,12 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	//display messages (if any)
 	if ( partition.have_messages() )
 	{
-		frame = manage( new Gtk::Frame() );
+		frame = Gtk::manage(new Gtk::Frame());
 
 		{
 			Gtk::Image* image = Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 
-			hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+			hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 			hbox->pack_start(*image, Gtk::PACK_SHRINK);
 		}
 
@@ -108,7 +108,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 
 			concatenated_messages += "<i>" + Utils::trim_trailing_new_line(messages[i]) + "</i>";
 		}
-		Gtk::Box *vbox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
+		Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 		vbox ->set_border_width( 5 ) ;
 		vbox->pack_start( *Utils::mk_label( concatenated_messages, true, true, true ), Gtk::PACK_SHRINK );
 		frame ->add( *vbox ) ;
@@ -167,12 +167,12 @@ void Dialog_Partition_Info::init_drawingarea()
 	drawingarea .set_size_request( 400, 60 ) ;
 	drawingarea.signal_draw().connect(sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_draw));
 
-	frame = manage( new Gtk::Frame() ) ;
+	frame = Gtk::manage(new Gtk::Frame());
 	frame ->add( drawingarea ) ;
-	
+
 	frame ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT ) ;
 	frame ->set_border_width( 10 ) ;
-	hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 	hbox ->pack_start( *frame, Gtk::PACK_EXPAND_PADDING ) ;
 
 	this->get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
@@ -239,7 +239,7 @@ void Dialog_Partition_Info::Display_Info()
 		// file system is accessible.
 		filesystem_accessible = true;
 
-	Gtk::Grid *grid(Gtk::manage(new Gtk::Grid()));
+	Gtk::Grid* grid(Gtk::manage(new Gtk::Grid()));
 
 	grid->set_border_width(5);
 	grid->set_column_spacing(10);

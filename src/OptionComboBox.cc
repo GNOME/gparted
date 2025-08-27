@@ -315,7 +315,7 @@ void OptionComboBox::pack_cell_renderers()
 {
 	Gtk::CellLayout::clear();
 
-	Gtk::CellRendererText *cell = manage(new Gtk::CellRendererText());
+	Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText());
 	pack_start(*cell);
 	add_attribute(*cell, "text", OptionStore::m_slots->m_text);
 	add_attribute(*cell, "sensitive", OptionStore::m_slots->m_sensitive);

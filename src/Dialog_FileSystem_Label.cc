@@ -36,7 +36,7 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	this->set_title( Glib::ustring::compose( _("Set file system label on %1"), partition.get_path() ) );
 
 	// Horizontal box to hold the label and entry box line
-	Gtk::Box *hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+	Gtk::Box* hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	hbox->set_border_width( 5 );
 	hbox->set_spacing( 10 );
 	get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
@@ -44,7 +44,7 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	// Only line: "Label: [EXISTINGLABEL ]"
 	Gtk::Label *label_label = Utils::mk_label("<b>" + Glib::ustring(_("Label:")) + "</b>");
 	hbox->pack_start(*label_label, Gtk::PACK_SHRINK);
-	entry = manage( new Gtk::Entry() );
+	entry = Gtk::manage(new Gtk::Entry());
 	entry->set_max_length(Utils::get_filesystem_label_maxlength(partition.fstype));
 	entry->set_width_chars( 30 );
 	entry->set_activates_default( true );

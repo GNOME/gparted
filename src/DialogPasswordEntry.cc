@@ -39,7 +39,7 @@ DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib:
 	this->set_title( Glib::ustring::compose( _("LUKS Passphrase %1"), partition.get_path() ) );
 
 	// Separate vertical box to hold lines in the dialog.
-	Gtk::Box *vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+	Gtk::Box* vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 	vbox->set_border_width( 5 );
 	vbox->set_spacing( 5 );
 	this->get_content_area()->pack_start(*vbox, Gtk::PACK_SHRINK);
@@ -49,10 +49,10 @@ DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib:
 
 	// Line 2: "Passphrase: [              ]"
 	// (Horizontal box holding prompt and entry box)
-	Gtk::Box *entry_hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+	Gtk::Box* entry_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	Gtk::Label *label_passphrase = Utils::mk_label("<b>" + Glib::ustring(_("Passphrase:")) + "</b>");
 	entry_hbox->pack_start(*label_passphrase);
-	m_entry = manage(new Gtk::Entry());
+	m_entry = Gtk::manage(new Gtk::Entry());
 	m_entry->set_width_chars(30);
 	m_entry->set_visibility(false);
 	m_entry->set_activates_default(true);

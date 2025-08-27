@@ -58,18 +58,18 @@ DialogFeatures::DialogFeatures()
 	m_treeview_filesystems.set_model(m_liststore_filesystems);
 	m_treeview_filesystems.append_column(_("File System"), m_treeview_filesystems_columns.fsname);
 	m_treeview_filesystems.append_column(_("Create"), m_treeview_filesystems_columns .create);
-	col = manage( new Gtk::TreeView::Column( _("Grow") ) );
+	col = Gtk::manage(new Gtk::TreeView::Column(_("Grow")));
 	col->pack_start(m_treeview_filesystems_columns.grow, false);
 	col->pack_start(m_treeview_filesystems_columns.online_grow, false);
 	m_treeview_filesystems.append_column(*col);
-	col = manage( new Gtk::TreeView::Column( _("Shrink") ) );
+	col = Gtk::manage(new Gtk::TreeView::Column(_("Shrink")));
 	col->pack_start(m_treeview_filesystems_columns.shrink, false);
 	col->pack_start(m_treeview_filesystems_columns.online_shrink, false);
 	m_treeview_filesystems.append_column(*col);
 	m_treeview_filesystems.append_column(_("Move"), m_treeview_filesystems_columns.move);
 	m_treeview_filesystems.append_column(_("Copy"), m_treeview_filesystems_columns.copy);
 	m_treeview_filesystems.append_column(_("Check"), m_treeview_filesystems_columns.check);
-	col = manage(new Gtk::TreeView::Column(_("Label")));
+	col = Gtk::manage(new Gtk::TreeView::Column(_("Label")));
 	col->pack_start(m_treeview_filesystems_columns.label, false);
 	col->pack_start(m_treeview_filesystems_columns.online_label, false);
 	m_treeview_filesystems.append_column(*col);
@@ -82,16 +82,16 @@ DialogFeatures::DialogFeatures()
 	m_filesystems_scrolled.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
 	m_filesystems_scrolled.add(m_treeview_filesystems);
 
-	Gtk::Box *filesystems_hbox(manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+	Gtk::Box* filesystems_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	filesystems_hbox ->set_border_width( 6 ) ;
 	filesystems_hbox->pack_start(m_filesystems_scrolled);
 	this->get_content_area()->pack_start(*filesystems_hbox);
 
 	// File system support legend
-	Gtk::Box *legend_hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 6)));
+	Gtk::Box* legend_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 6)));
 	legend_hbox ->set_border_width( 6 ) ;
 
-	Gtk::Box *legend_narrative_hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+	Gtk::Box* legend_narrative_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	Glib::ustring str_temp( _("This chart shows the actions supported on file systems.") ) ;
 	str_temp += "\n" ;
 	str_temp += _("Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software.") ;
@@ -101,12 +101,12 @@ DialogFeatures::DialogFeatures()
 	legend_hbox ->pack_start( *legend_narrative_hbox, Gtk::PACK_EXPAND_WIDGET, 6 ) ;
 
 	// Icon legend
-	Gtk::Box *icon_legend_vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+	Gtk::Box* icon_legend_vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 
-	Gtk::Box *available_both_hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
-	Gtk::Image* image_yes(manage(new Gtk::Image(m_icon_yes)));
+	Gtk::Box* available_both_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+	Gtk::Image* image_yes(Gtk::manage(new Gtk::Image(m_icon_yes)));
 	available_both_hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK ) ;
-	image_yes = manage(new Gtk::Image(m_icon_yes));
+	image_yes = Gtk::manage(new Gtk::Image(m_icon_yes));
 	available_both_hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK ) ;
 	available_both_hbox ->pack_start( *Utils::mk_label(
 			/* TO TRANSLATORS:  Available offline and online
@@ -116,10 +116,10 @@ DialogFeatures::DialogFeatures()
 			_("Available offline and online")), Gtk::PACK_EXPAND_WIDGET ) ;
 	icon_legend_vbox ->pack_start( *available_both_hbox ) ;
 
-	Gtk::Box *available_online_hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	Gtk::Image* image_no(manage(new Gtk::Image(m_icon_no)));
+	Gtk::Box* available_online_hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	Gtk::Image* image_no(Gtk::manage(new Gtk::Image(m_icon_no)));
 	available_online_hbox->pack_start( *image_no, Gtk::PACK_SHRINK );
-	image_yes = manage(new Gtk::Image(m_icon_yes));
+	image_yes = Gtk::manage(new Gtk::Image(m_icon_yes));
 	available_online_hbox->pack_start( *image_yes, Gtk::PACK_SHRINK );
 	available_online_hbox->pack_start( *Utils::mk_label(
 			/* TO TRANSLATORS:  Available online only
@@ -129,10 +129,10 @@ DialogFeatures::DialogFeatures()
 			_("Available online only")), Gtk::PACK_EXPAND_WIDGET );
 	icon_legend_vbox->pack_start( *available_online_hbox );
 
-	Gtk::Box *available_offline_hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	image_yes = manage(new Gtk::Image(m_icon_yes));
+	Gtk::Box* available_offline_hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	image_yes = Gtk::manage(new Gtk::Image(m_icon_yes));
 	available_offline_hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK ) ;
-	Gtk::Image* image_blank(manage(new Gtk::Image(m_icon_blank)));
+	Gtk::Image* image_blank(Gtk::manage(new Gtk::Image(m_icon_blank)));
 	available_offline_hbox ->pack_start( *image_blank, Gtk::PACK_SHRINK ) ;
 	available_offline_hbox ->pack_start( *Utils::mk_label(
 			/* TO TRANSLATORS:  Available offline only
@@ -142,10 +142,10 @@ DialogFeatures::DialogFeatures()
 			_("Available offline only")), Gtk::PACK_EXPAND_WIDGET ) ;
 	icon_legend_vbox ->pack_start( *available_offline_hbox ) ;
 
-	Gtk::Box *not_available_hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	image_no = manage(new Gtk::Image(m_icon_no));
+	Gtk::Box* not_available_hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	image_no = Gtk::manage(new Gtk::Image(m_icon_no));
 	not_available_hbox ->pack_start( *image_no, Gtk::PACK_SHRINK ) ;
-	image_blank = manage(new Gtk::Image(m_icon_blank));
+	image_blank = Gtk::manage(new Gtk::Image(m_icon_blank));
 	not_available_hbox ->pack_start( *image_blank, Gtk::PACK_SHRINK ) ;
 	not_available_hbox->pack_start(*Utils::mk_label(
 			/* TO TRANSLATORS:  Not Available

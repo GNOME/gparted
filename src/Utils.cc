@@ -139,7 +139,7 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
                             , Gtk::Align valign
                             )
 {
-	Gtk::Label *label = manage(new Gtk::Label(text));
+	Gtk::Label* label = Gtk::manage(new Gtk::Label(text));
 
 	label->set_xalign(0.0);
 	label->set_valign(valign);
@@ -157,7 +157,7 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
 
 Gtk::Image* Utils::mk_image(const Gtk::StockID& stock_id, Gtk::IconSize icon_size)
 {
-	Gtk::Image *image = Gtk::manage(new Gtk::Image(stock_id, icon_size));
+	Gtk::Image* image = Gtk::manage(new Gtk::Image(stock_id, icon_size));
 
 	// Ensure icon size
 	int width = 0;

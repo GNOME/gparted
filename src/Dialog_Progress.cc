@@ -46,7 +46,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	this->property_default_width() = 700;
 
 	// WH (Widget Hierarchy): this->get_content_area() / vbox
-	Gtk::Box* vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+	Gtk::Box* vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 	vbox->set_border_width(10);
 	vbox->set_spacing(5);
 	this->get_content_area()->pack_start(*vbox, Gtk::PACK_EXPAND_WIDGET);

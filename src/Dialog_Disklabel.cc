@@ -32,11 +32,11 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 	this ->set_resizable( false );
 
 	{
-		Gtk::Box *hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
+		Gtk::Box* hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 
 		get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
 
-		Gtk::Box *vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
+		Gtk::Box* vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 
 		vbox->set_border_width(10);
 		hbox->pack_start(*vbox, Gtk::PACK_SHRINK);
@@ -44,7 +44,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 		Gtk::Image* image(Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_DIALOG));
 		vbox->pack_start(*image, Gtk::PACK_SHRINK);
 
-		vbox = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
+		vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 		vbox->set_border_width(10);
 		hbox->pack_start(*vbox, Gtk::PACK_SHRINK);
 
@@ -56,7 +56,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 			str_temp += "</span>\n";
 			vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
-			hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 5));
+			hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 5));
 			hbox->set_border_width(5);
 			str_temp = _("Select new partition table type:");
 			str_temp += "\t";
