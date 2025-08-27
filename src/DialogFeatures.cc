@@ -83,13 +83,13 @@ DialogFeatures::DialogFeatures()
 	m_filesystems_scrolled.add(m_treeview_filesystems);
 
 	Gtk::Box* filesystems_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
-	filesystems_hbox ->set_border_width( 6 ) ;
+	filesystems_hbox->set_border_width(5);
 	filesystems_hbox->pack_start(m_filesystems_scrolled);
 	this->get_content_area()->pack_start(*filesystems_hbox);
 
 	// File system support legend
 	Gtk::Box* legend_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 6)));
-	legend_hbox ->set_border_width( 6 ) ;
+	legend_hbox->set_border_width(5);
 
 	Gtk::Box* legend_narrative_hbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	Glib::ustring str_temp( _("This chart shows the actions supported on file systems.") ) ;
