@@ -61,14 +61,13 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 	static_cast<Gtk::CellRendererToggle*>(m_treeview_flags.get_column_cell_renderer(0))
 		->signal_toggled() .connect( sigc::mem_fun( *this, &DialogManageFlags::on_flag_toggled ) ) ;
 
-	m_treeview_flags.set_size_request(300, -1);
 	vbox->pack_start(m_treeview_flags, Gtk::PACK_SHRINK);
 
 	// Reserve space in the dialog so that it doesn't change size when the warning
 	// frame is shown or hidden.
 	// WH: this->get_content_area() / vbox / reserve_vbox
 	Gtk::Box* reserve_vbox(Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
-	reserve_vbox->set_size_request(-1, 75);
+	reserve_vbox->set_size_request(360, 90);
 	vbox->pack_start(*reserve_vbox, Gtk::PACK_EXPAND_WIDGET);
 
 	// WH: this->get_content_area() / vbox / reserve_vbox / m_warning_frame
