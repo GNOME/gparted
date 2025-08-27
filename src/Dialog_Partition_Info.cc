@@ -54,7 +54,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 
 	// Place info and optional messages in scrollable window
 	info_msg_vbox.set_orientation(Gtk::ORIENTATION_VERTICAL);
-	info_msg_vbox .set_border_width( 6 ) ;
+	info_msg_vbox.set_border_width(5);
 	info_scrolled .set_policy( Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC ) ;
 #if HAVE_SET_PROPAGATE_NATURAL_WIDTH
 	info_scrolled.set_propagate_natural_width(true);
