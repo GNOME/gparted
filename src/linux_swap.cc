@@ -76,48 +76,48 @@ FS linux_swap::get_filesystem_support()
 	return fs ;
 }
 
-void linux_swap::set_used_sectors( Partition & partition )
+
+void linux_swap::set_used_sectors(Partition& partition)
 {
-	if ( partition .busy )
-	{
-		long long used_kib = -1;
-		std::string line ;
-		std::ifstream input( "/proc/swaps" ) ;
-		if ( input )
-		{
-			BlockSpecial bs_path = BlockSpecial( partition.get_path() );
-			while ( getline( input, line ) )
-			{
-				Glib::ustring filename = Utils::regexp_label( line, "^([[:graph:]]+)" );
-				if ( bs_path == BlockSpecial( filename ) )
-				{
-					sscanf(line.c_str(), "%*s %*s %*d %lld", &used_kib);
-					break ;
-				}
-			}
-			input .close() ;
-		}
-		else
-		{
-			partition.push_back_message( "open(\"/proc/swaps\", O_RDONLY): " + Glib::strerror( errno ) );
-		}
-		if (used_kib > -1)
-		{
-			// Ignore swap space reported size to ignore 1 page format
-			// overhead.  Instead use partition size as sectors_fs_size so
-			// reported used figure for active swap space starts from 0
-			// upwards, matching what 'swapon -s' reports.
-			Sector fs_size = partition.get_sector_length();
-			Sector fs_used = used_kib * KIBIBYTE / partition.sector_size;
-			Sector fs_free = fs_size - fs_used;
-			partition.set_sector_usage(fs_size, fs_free);
-		}
-	}
-	else
+	if (! partition.busy)
 	{
 		// By definition inactive swap space is 100% free.
 		Sector fs_size = partition.get_sector_length();
 		partition.set_sector_usage(fs_size, fs_size);
+		return;
+	}
+
+	std::ifstream input("/proc/swaps");
+	if (! input)
+	{
+		partition.push_back_message("open(\"/proc/swaps\", O_RDONLY): " + Glib::strerror(errno));
+		return;
+	}
+
+	std::string line;
+	BlockSpecial bs_path = BlockSpecial(partition.get_path());
+	long long used_kib = -1;
+	while (getline(input, line))
+	{
+		Glib::ustring filename = Utils::regexp_label(line, "^([[:graph:]]+)");
+		if (bs_path == BlockSpecial(filename))
+		{
+			sscanf(line.c_str(), "%*s %*s %*d %lld", &used_kib);
+			break;
+		}
+	}
+	input.close();
+
+	if (used_kib > -1)
+	{
+		// Ignore swap space reported size to ignore 1 page format overhead.
+		// Instead use partition size as sectors_fs_size so reported used figure
+		// for active swap space starts from 0 upwards, matching what 'swapon -s'
+		// reports.
+		Sector fs_size = partition.get_sector_length();
+		Sector fs_used = used_kib * KIBIBYTE / partition.sector_size;
+		Sector fs_free = fs_size - fs_used;
+		partition.set_sector_usage(fs_size, fs_free);
 	}
 }
 
