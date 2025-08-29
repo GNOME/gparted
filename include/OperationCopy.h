@@ -17,6 +17,8 @@
 #ifndef GPARTED_OPERATIONCOPY_H
 #define GPARTED_OPERATIONCOPY_H
 
+
+#include "Device.h"
 #include "Operation.h"
 #include "Partition.h"
 #include "PartitionVector.h"

@@ -15,9 +15,18 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "OperationCopy.h"
+
+#include "Device.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+#include "Operation.h"
+#include "Utils.h"
+
+#include <glib.h>
+#include <glibmm/ustring.h>
+
 
 namespace GParted
 {
@@ -28,7 +37,7 @@ OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_new,
 			      const Partition & partition_copied )
  : Operation(OPERATION_COPY, device, partition_orig, partition_new),
-   m_partition_copied(std::move(partition_copied.clone()))
+   m_partition_copied(partition_copied.clone())
 {
 }
 
