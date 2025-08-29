@@ -17,10 +17,15 @@
 
 
 #include "Operation.h"
+
 #include "Device.h"
 #include "GParted_Core.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+#include "Utils.h"
+
+#include <glib.h>
+
 
 namespace GParted
 {
