@@ -14,9 +14,17 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "OperationLabelFileSystem.h"
+
+#include "Device.h"
+#include "Operation.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+
+#include <glib.h>
+#include <glibmm/ustring.h>
+
 
 namespace GParted
 {
