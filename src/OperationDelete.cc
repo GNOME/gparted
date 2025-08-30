@@ -15,9 +15,18 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "OperationDelete.h"
+
+#include "Device.h"
+#include "Operation.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+#include "Utils.h"
+
+#include <glib.h>
+#include <glibmm/ustring.h>
+
 
 namespace GParted
 {

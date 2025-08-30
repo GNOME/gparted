@@ -17,9 +17,12 @@
 #ifndef GPARTED_OPERATIONDELETE_H
 #define GPARTED_OPERATIONDELETE_H
 
+
+#include "Device.h"
 #include "Operation.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+
 
 namespace GParted
 {
