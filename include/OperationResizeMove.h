@@ -17,9 +17,12 @@
 #ifndef GPARTED_OPERATIONRESIZEMOVE_H
 #define GPARTED_OPERATIONRESIZEMOVE_H
 
+
+#include "Device.h"
 #include "Operation.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+
 
 namespace GParted
 {
