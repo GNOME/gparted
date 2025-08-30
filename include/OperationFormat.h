@@ -17,9 +17,12 @@
 #ifndef GPARTED_OPERATIONFORMAT_H
 #define GPARTED_OPERATIONFORMAT_H
 
+
+#include "Device.h"
 #include "Operation.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+
 
 namespace GParted
 {
