@@ -85,7 +85,7 @@ static void store_exit_status(GPid pid, int status)
 
 static void update_command_output(OperationDetail* operationdetail, Glib::ustring* str)
 {
-	operationdetail->set_description(*str, FONT_ITALIC);
+	operationdetail->set_description(*str, FONT_MONOSPACE);
 }
 
 
@@ -139,6 +139,9 @@ void OperationDetail::set_description( const Glib::ustring & description, Font f
 			case FONT_BOLD_ITALIC:
 		 		this ->description = "<b><i>" + Glib::Markup::escape_text( description ) + "</i></b>" ;
 			 	break ;
+			case FONT_MONOSPACE:
+				this->description = "<tt>" + Glib::Markup::escape_text(description) + "</tt>";
+				break;
 		}
 	}
 	catch ( Glib::Exception & e )

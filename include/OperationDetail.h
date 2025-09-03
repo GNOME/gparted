@@ -46,7 +46,8 @@ enum Font {
 	FONT_NORMAL	 = 0,
 	FONT_BOLD	 = 1,
 	FONT_ITALIC	 = 2,
-	FONT_BOLD_ITALIC = 3
+	FONT_BOLD_ITALIC = 3,
+	FONT_MONOSPACE   = 4
 } ;
 
 
