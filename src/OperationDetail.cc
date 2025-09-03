@@ -121,35 +121,36 @@ OperationDetail::~OperationDetail()
 	}
 }
 
-void OperationDetail::set_description( const Glib::ustring & description, Font font )
+
+void OperationDetail::set_description(const Glib::ustring& description, Font font)
 {
 	try
 	{
-		switch ( font )
+		switch (font)
 		{
 			case FONT_NORMAL:
-		 		this ->description = Glib::Markup::escape_text( description ) ;
-			 	break ;
+				this->description = Glib::Markup::escape_text(description);
+				break;
 			case FONT_BOLD:
-		 		this ->description = "<b>" + Glib::Markup::escape_text( description ) + "</b>" ;
-			 	break ;
+				this->description = "<b>" + Glib::Markup::escape_text(description) + "</b>";
+				break;
 			case FONT_ITALIC:
-		 		this ->description = "<i>" + Glib::Markup::escape_text( description ) + "</i>" ;
-			 	break ;
+				this->description = "<i>" + Glib::Markup::escape_text(description) + "</i>";
+				break;
 			case FONT_BOLD_ITALIC:
-		 		this ->description = "<b><i>" + Glib::Markup::escape_text( description ) + "</i></b>" ;
-			 	break ;
+				this->description = "<b><i>" + Glib::Markup::escape_text(description) + "</i></b>";
+				break;
 			case FONT_MONOSPACE:
 				this->description = "<tt>" + Glib::Markup::escape_text(description) + "</tt>";
 				break;
 		}
 	}
-	catch ( Glib::Exception & e )
+	catch (Glib::Exception& e)
 	{
-		this ->description = e .what() ;
+		this->description = e.what();
 	}
 
-	on_update( *this ) ;
+	on_update(*this);
 }
 
 
