@@ -87,7 +87,8 @@ UniqueTempWorkingDirPtr mk_temp_working_dir(OperationDetail& operationdetail)
 		int e = errno;
 		child_od.add_child(OperationDetail(
 		                        Glib::ustring::compose("mkdtemp(\"%1\"): %2", dir_buf, Glib::strerror(e)),
-		                        STATUS_NONE));
+		                        STATUS_NONE,
+		                        FONT_MONOSPACE));
 		child_od.set_success_and_capture_errors(false);
 		return UniqueTempWorkingDirPtr(nullptr);
 	}
@@ -96,7 +97,9 @@ UniqueTempWorkingDirPtr mk_temp_working_dir(OperationDetail& operationdetail)
 	child_od.set_description(Glib::ustring("mkdir -v ") + dir_name, FONT_BOLD_ITALIC);
 	child_od.add_child(OperationDetail(
 	                        /* TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp */
-	                        Glib::ustring::compose(_("Created directory %1"), dir_name), STATUS_NONE));
+	                        Glib::ustring::compose(_("Created directory %1"), dir_name),
+	                        STATUS_NONE,
+	                        FONT_MONOSPACE));
 	child_od.set_success_and_capture_errors(true);
 
 	return UniqueTempWorkingDirPtr(new Glib::ustring(dir_name));
@@ -168,14 +171,16 @@ Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDet
 		int e = errno ;
 		child_od.add_child(OperationDetail(
 		                        Glib::ustring::compose("mkdir(\"%1\", 0700): %2", dir_buf, Glib::strerror(e)),
-		                        STATUS_NONE));
+		                        STATUS_NONE,
+		                        FONT_MONOSPACE));
 		child_od.set_success_and_capture_errors(false);
 		return "";
 	}
 
 	child_od.add_child(OperationDetail(
 	                        Glib::ustring::compose(_("Created directory %1"), dir_buf),
-	                        STATUS_NONE));
+	                        STATUS_NONE,
+	                        FONT_MONOSPACE));
 	child_od.set_success_and_capture_errors(true);
 	return Glib::ustring(dir_buf);
 }
@@ -195,14 +200,17 @@ void FileSystem::rm_temp_dir(const Glib::ustring& dir_name, OperationDetail& ope
 		int e = errno ;
 		child_od.add_child(OperationDetail(
 		                        Glib::ustring::compose("rmdir(\"%1\"): ", dir_name) + Glib::strerror(e),
-		                        STATUS_NONE));
+		                        STATUS_NONE,
+		                        FONT_MONOSPACE));
 		child_od.set_status(STATUS_WARNING);
 		return;
 	}
 
 	child_od.add_child(OperationDetail(
-				/*TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp */
-				Glib::ustring::compose( _("Removed directory %1"), dir_name ), STATUS_NONE ) ) ;
+				/* TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp */
+				Glib::ustring::compose(_("Removed directory %1"), dir_name),
+	                        STATUS_NONE,
+	                        FONT_MONOSPACE));
 	child_od.set_success_and_capture_errors(true);
 }
 
