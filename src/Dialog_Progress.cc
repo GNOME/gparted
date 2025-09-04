@@ -65,9 +65,9 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	m_progressbar_current.set_show_text();
 	vbox->pack_start(m_progressbar_current, Gtk::PACK_SHRINK);
 
-	// WH: this->get_content_area() / vbox / label_current_sub
-	label_current_sub.set_alignment(Gtk::ALIGN_START);
-	vbox->pack_start(label_current_sub, Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / m_label_current_sub
+	m_label_current_sub.set_alignment(Gtk::ALIGN_START);
+	vbox->pack_start(m_label_current_sub, Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / vbox / "Completed Operations:"
 	vbox->pack_start(*Utils::mk_label("<b>" + Glib::ustring(_("Completed Operations:")) + "</b>"),
@@ -209,7 +209,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 
 void Dialog_Progress::update_gui_elements()
 {
-	label_current_sub.set_markup("<i>" + m_label_current_sub_text + "</i>\n");
+	m_label_current_sub.set_markup("<i>" + m_label_current_sub_text + "</i>\n");
 
 	//To ensure progress bar height remains the same, add a space in case message is empty
 	m_progressbar_current.set_text(m_progress_text + " ");
@@ -271,7 +271,7 @@ void Dialog_Progress::on_signal_show()
 		//hide 'current operation' stuff
 		m_label_current.hide();
 		m_progressbar_current.hide();
-		label_current_sub .hide() ;
+		m_label_current_sub.hide();
 	}
 
 	//deal with succes/error...
