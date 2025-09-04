@@ -81,8 +81,8 @@ private:
 	Glib::RefPtr<Gdk::Pixbuf> icon_info ;
 	Glib::RefPtr<Gdk::Pixbuf> icon_warning;
 
-	Glib::RefPtr<Gtk::TreeStore> treestore_operations;
-
+	// Model for displaying the operation details
+	Glib::RefPtr<Gtk::TreeStore> m_treestore_operations;
 	struct TreeView_Operations_Columns : public Gtk::TreeModelColumnRecord
 	{
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;

@@ -93,8 +93,8 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	m_expander_details.add(m_scrolledwindow);
 
 	// WH: ... / vbox / m_expander_details / m_scrolledwindow / m_treeview_operations
-	treestore_operations = Gtk::TreeStore::create(m_treeview_operations_columns);
-	m_treeview_operations.set_model(treestore_operations);
+	m_treestore_operations = Gtk::TreeStore::create(m_treeview_operations_columns);
+	m_treeview_operations.set_model(m_treestore_operations);
 	m_treeview_operations.set_headers_visible(false);
 	m_treeview_operations.set_rules_hint(true);
 	m_treeview_operations.set_size_request(700, 250);
@@ -116,7 +116,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 		m_operations[i]->m_operation_detail.set_description(m_operations[i]->m_description, FONT_BOLD);
 		m_operations[i]->m_operation_detail.set_treepath(Utils::num_to_str(i));
 
-		treerow = *(treestore_operations->append());
+		treerow = *(m_treestore_operations->append());
 		treerow[m_treeview_operations_columns.operation_description] =
 		                m_operations[i]->m_operation_detail.get_description();
 	}
@@ -135,10 +135,10 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 
 void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail ) 
 {
-	Gtk::TreeModel::iterator iter = treestore_operations ->get_iter( operationdetail .get_treepath() ) ;
+	Gtk::TreeModel::iterator iter = m_treestore_operations->get_iter(operationdetail.get_treepath());
 
 	//i added the second check after get_iter() in gtk+-2.10 seems to behave differently from gtk+-2.8 
-	if ( iter && treestore_operations ->get_string( iter ) == operationdetail .get_treepath() )
+	if (iter && m_treestore_operations->get_string(iter) == operationdetail.get_treepath())
 	{
 		Gtk::TreeRow treerow = *iter ;
 
@@ -196,14 +196,14 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 	{
 		unsigned int pos = operationdetail .get_treepath() .rfind( ":" ) ;
 		if ( pos < operationdetail .get_treepath() .length() )
-			iter = treestore_operations ->get_iter( operationdetail .get_treepath() 
-							.substr( 0, operationdetail .get_treepath() .rfind( ":" ) ) ) ;
+			iter = m_treestore_operations->get_iter(operationdetail.get_treepath().substr(
+			                        0, operationdetail.get_treepath().rfind(":")));
 		else
-			iter = treestore_operations ->get_iter( operationdetail .get_treepath() ) ;
+			iter = m_treestore_operations->get_iter(operationdetail.get_treepath());
 
 		if ( iter)
 		{
-			treestore_operations ->append( static_cast<Gtk::TreeRow>( *iter) .children() ) ;
+			m_treestore_operations->append(static_cast<Gtk::TreeRow>(*iter).children());
 			on_signal_update( operationdetail ) ;
 		}
 	}
@@ -239,7 +239,7 @@ void Dialog_Progress::on_signal_show()
 		                                                  m_curr_op, m_operations.size()));
 		m_progressbar_all.set_fraction(std::min(m_fraction * m_curr_op, 1.0));
 
-		treerow = treestore_operations ->children()[m_curr_op];
+		treerow = m_treestore_operations->children()[m_curr_op];
 
 		//set status to 'execute'
 		m_operations[m_curr_op]->m_operation_detail.set_status(STATUS_EXECUTE);
