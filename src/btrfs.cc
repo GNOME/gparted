@@ -124,16 +124,10 @@ FS btrfs::get_filesystem_support()
 	return fs ;
 }
 
+
 bool btrfs::is_busy( const Glib::ustring & path )
 {
-	//A btrfs file system is busy if any of the member devices are mounted.
-	//  WARNING:
-	//  Removal of the mounting device from a btrfs file system makes it impossible to
-	//  determine whether the file system is mounted or not for linux <= 3.4.  This is
-	//  because /proc/mounts continues to show the old device which is no longer a
-	//  member of the file system.  Fixed in linux 3.5 by commit:
-	//      Btrfs: implement ->show_devname
-	//      https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=9c5085c147989d48dfe74194b48affc23f376650
+	// A btrfs file system is busy if any of the member devices are mounted.
 	return ! get_mount_device( path ) .empty() ;
 }
 
