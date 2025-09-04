@@ -73,8 +73,7 @@ private:
 	Gtk::ScrolledWindow m_scrolledwindow;
 	Gtk::TreeView       m_treeview_operations;
 	Gtk::Button*        m_cancelbutton;
-	Gtk::TreeRow treerow ;
-	
+
 	Glib::RefPtr<Gdk::Pixbuf> icon_execute ;
 	Glib::RefPtr<Gdk::Pixbuf> icon_success;
 	Glib::RefPtr<Gdk::Pixbuf> icon_error ;

@@ -116,7 +116,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 		m_operations[i]->m_operation_detail.set_description(m_operations[i]->m_description, FONT_BOLD);
 		m_operations[i]->m_operation_detail.set_treepath(Utils::num_to_str(i));
 
-		treerow = *(m_treestore_operations->append());
+		Gtk::TreeRow treerow = *(m_treestore_operations->append());
 		treerow[m_treeview_operations_columns.operation_description] =
 		                m_operations[i]->m_operation_detail.get_description();
 	}
@@ -239,12 +239,11 @@ void Dialog_Progress::on_signal_show()
 		                                                  m_curr_op, m_operations.size()));
 		m_progressbar_all.set_fraction(std::min(m_fraction * m_curr_op, 1.0));
 
-		treerow = m_treestore_operations->children()[m_curr_op];
-
 		//set status to 'execute'
 		m_operations[m_curr_op]->m_operation_detail.set_status(STATUS_EXECUTE);
 
 		//set focus...
+		Gtk::TreeRow treerow = m_treestore_operations->children()[m_curr_op];
 		m_treeview_operations.set_cursor(static_cast<Gtk::TreePath>(treerow));
 
 		m_success = signal_apply_operation.emit(m_operations[m_curr_op].get());
