@@ -71,7 +71,7 @@ private:
 	Gtk::ProgressBar    m_progressbar_all;
 	Gtk::Expander       m_expander_details;
 	Gtk::ScrolledWindow m_scrolledwindow;
-	Gtk::TreeView treeview_operations ;
+	Gtk::TreeView       m_treeview_operations;
 	Gtk::TreeRow treerow ;
 	Gtk::Button *cancelbutton;
 	

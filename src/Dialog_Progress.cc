@@ -92,21 +92,21 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	m_scrolledwindow.set_vexpand(true);
 	m_expander_details.add(m_scrolledwindow);
 
-	// WH: ... / vbox / m_expander_details / m_scrolledwindow / treeview_operations
+	// WH: ... / vbox / m_expander_details / m_scrolledwindow / m_treeview_operations
 	treestore_operations = Gtk::TreeStore::create(m_treeview_operations_columns);
-	treeview_operations.set_model(treestore_operations);
-	treeview_operations.set_headers_visible(false);
-	treeview_operations.set_rules_hint(true);
-	treeview_operations.set_size_request(700, 250);
-	treeview_operations.append_column("", m_treeview_operations_columns.operation_description);
-	treeview_operations.append_column("", m_treeview_operations_columns.elapsed_time);
-	treeview_operations.append_column("", m_treeview_operations_columns.status_icon);
+	m_treeview_operations.set_model(treestore_operations);
+	m_treeview_operations.set_headers_visible(false);
+	m_treeview_operations.set_rules_hint(true);
+	m_treeview_operations.set_size_request(700, 250);
+	m_treeview_operations.append_column("", m_treeview_operations_columns.operation_description);
+	m_treeview_operations.append_column("", m_treeview_operations_columns.elapsed_time);
+	m_treeview_operations.append_column("", m_treeview_operations_columns.status_icon);
 
-	treeview_operations.get_column(0)->set_expand(true);
-	treeview_operations.get_column(0)->set_cell_data_func(
-			*(treeview_operations.get_column(0)->get_first_cell()),
+	m_treeview_operations.get_column(0)->set_expand(true);
+	m_treeview_operations.get_column(0)->set_cell_data_func(
+			*(m_treeview_operations.get_column(0)->get_first_cell()),
 			sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) );
-	m_scrolledwindow.add(treeview_operations);
+	m_scrolledwindow.add(m_treeview_operations);
 
 	// Fill 'er up
 	for (unsigned int i = 0; i < m_operations.size(); ++i)
@@ -245,7 +245,7 @@ void Dialog_Progress::on_signal_show()
 		m_operations[m_curr_op]->m_operation_detail.set_status(STATUS_EXECUTE);
 
 		//set focus...
-		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
+		m_treeview_operations.set_cursor(static_cast<Gtk::TreePath>(treerow));
 
 		m_success = signal_apply_operation.emit(m_operations[m_curr_op].get());
 
