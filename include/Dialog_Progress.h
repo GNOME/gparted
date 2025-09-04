@@ -72,8 +72,8 @@ private:
 	Gtk::Expander       m_expander_details;
 	Gtk::ScrolledWindow m_scrolledwindow;
 	Gtk::TreeView       m_treeview_operations;
+	Gtk::Button*        m_cancelbutton;
 	Gtk::TreeRow treerow ;
-	Gtk::Button *cancelbutton;
 	
 	Glib::RefPtr<Gdk::Pixbuf> icon_execute ;
 	Glib::RefPtr<Gdk::Pixbuf> icon_success;

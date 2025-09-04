@@ -108,6 +108,8 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 			sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) );
 	m_scrolledwindow.add(m_treeview_operations);
 
+	m_cancelbutton = this->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+
 	// Fill 'er up
 	for (unsigned int i = 0; i < m_operations.size(); ++i)
 	{
@@ -118,8 +120,6 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 		treerow[m_treeview_operations_columns.operation_description] =
 		                m_operations[i]->m_operation_detail.get_description();
 	}
-
-	cancelbutton = this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 
 	// Create some icons here, instead of recreating them every time
 	icon_execute = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE,        Gtk::ICON_SIZE_LARGE_TOOLBAR);
@@ -258,8 +258,8 @@ void Dialog_Progress::on_signal_show()
 	
 	//replace 'cancel' with 'close'
 	canceltimer.disconnect();
-	delete cancelbutton;
-	cancelbutton = nullptr;
+	delete m_cancelbutton;
+	m_cancelbutton = nullptr;
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
 
 	pulsetimer.disconnect();
@@ -337,13 +337,13 @@ bool Dialog_Progress::cancel_timeout()
 	{
 		/*TO TRANSLATORS: looks like  Force Cancel (5)
 		 *  where the number represents a count down in seconds until the button is enabled */
-		cancelbutton->set_label(Glib::ustring::compose(_("Force Cancel (%1)"), m_cancel_countdown));
+		m_cancelbutton->set_label(Glib::ustring::compose(_("Force Cancel (%1)"), m_cancel_countdown));
 	}
 	else
 	{
-		cancelbutton->set_label( _("Force Cancel") );
+		m_cancelbutton->set_label(_("Force Cancel"));
 		canceltimer.disconnect();
-		cancelbutton->set_sensitive();
+		m_cancelbutton->set_sensitive();
 		return false;
 	}
 	return true;
@@ -365,19 +365,19 @@ void Dialog_Progress::on_cancel()
 	
 	if (! m_cancel || dialog.run() == Gtk::RESPONSE_CANCEL)
 	{
-		cancelbutton->set_sensitive( false );
+		m_cancelbutton->set_sensitive(false);
 		if (! m_cancel)
 		{
 			m_cancel_countdown = 5;
 			/*TO TRANSLATORS: looks like  Force Cancel (5)
 			 *  where the number represents a count down in seconds until the button is enabled */
-			cancelbutton->set_label(Glib::ustring::compose(_("Force Cancel (%1)"), m_cancel_countdown));
+			m_cancelbutton->set_label(Glib::ustring::compose(_("Force Cancel (%1)"), m_cancel_countdown));
 			canceltimer = Glib::signal_timeout().connect(
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}
 		else
 		{
-			cancelbutton->set_label(_("Force Cancel"));
+			m_cancelbutton->set_label(_("Force Cancel"));
 		}
 		m_operations[m_curr_op]->m_operation_detail.signal_cancel.emit(m_cancel);
 		m_cancel = true;
@@ -629,7 +629,7 @@ bool Dialog_Progress::on_delete_event( GdkEventAny * event )
 
 Dialog_Progress::~Dialog_Progress()
 {
-	delete cancelbutton;
+	delete m_cancelbutton;
 }
 
 
