@@ -85,7 +85,14 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	m_expander_details.set_use_markup(true);
 	vbox->pack_start(m_expander_details, Gtk::PACK_EXPAND_WIDGET);
 
-	// WH: ... / vbox / m_expander_details / scrolledwindow / treeview_operations
+	// WH: this->get_content_area() / vbox / m_expander_details / m_scrolledwindow
+	m_scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+	m_scrolledwindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	m_scrolledwindow.set_size_request (700, 250);
+	m_scrolledwindow.set_vexpand(true);
+	m_expander_details.add(m_scrolledwindow);
+
+	// WH: ... / vbox / m_expander_details / m_scrolledwindow / treeview_operations
 	treestore_operations = Gtk::TreeStore::create(m_treeview_operations_columns);
 	treeview_operations.set_model(treestore_operations);
 	treeview_operations.set_headers_visible(false);
@@ -99,6 +106,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	treeview_operations.get_column(0)->set_cell_data_func(
 			*(treeview_operations.get_column(0)->get_first_cell()),
 			sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) );
+	m_scrolledwindow.add(treeview_operations);
 
 	// Fill 'er up
 	for (unsigned int i = 0; i < m_operations.size(); ++i)
@@ -110,14 +118,6 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 		treerow[m_treeview_operations_columns.operation_description] =
 		                m_operations[i]->m_operation_detail.get_description();
 	}
-
-	// WH: this->get_content_area() / vbox / m_expander_details / scrolledwindow
-	scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
-	scrolledwindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-	scrolledwindow.set_size_request (700, 250);
-	scrolledwindow.set_vexpand(true);
-	scrolledwindow.add(treeview_operations);
-	m_expander_details.add(scrolledwindow);
 
 	cancelbutton = this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 

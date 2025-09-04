@@ -70,9 +70,9 @@ private:
 	Gtk::Label          m_label_current_sub;
 	Gtk::ProgressBar    m_progressbar_all;
 	Gtk::Expander       m_expander_details;
+	Gtk::ScrolledWindow m_scrolledwindow;
 	Gtk::TreeView treeview_operations ;
 	Gtk::TreeRow treerow ;
-	Gtk::ScrolledWindow scrolledwindow ;
 	Gtk::Button *cancelbutton;
 	
 	Glib::RefPtr<Gdk::Pixbuf> icon_execute ;
