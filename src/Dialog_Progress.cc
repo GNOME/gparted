@@ -56,9 +56,9 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	str_temp += "\n";
 	vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
-	// WH: this->get_content_area() / vbox / label_current
-	label_current.set_alignment(Gtk::ALIGN_START);
-	vbox->pack_start(label_current, Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / m_label_current
+	m_label_current.set_alignment(Gtk::ALIGN_START);
+	vbox->pack_start(m_label_current, Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / vbox / progressbar_current
 	progressbar_current.set_pulse_step(0.01);
@@ -230,7 +230,7 @@ void Dialog_Progress::on_signal_show()
 		m_operations[m_curr_op]->m_operation_detail.signal_update.connect(
 			sigc::mem_fun( this, &Dialog_Progress::on_signal_update ) ) ;
 
-		label_current.set_markup("<b>" + m_operations[m_curr_op]->m_description + "</b>");
+		m_label_current.set_markup("<b>" + m_operations[m_curr_op]->m_description + "</b>");
 
 		progressbar_all.set_text(Glib::ustring::compose(_("%1 of %2 operations completed"),
 		                                                m_curr_op, m_operations.size()));
@@ -269,7 +269,7 @@ void Dialog_Progress::on_signal_show()
 	else
 	{
 		//hide 'current operation' stuff
-		label_current .hide() ;
+		m_label_current.hide();
 		progressbar_current .hide() ;
 		label_current_sub .hide() ;
 	}

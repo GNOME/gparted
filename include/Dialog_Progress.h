@@ -64,7 +64,8 @@ private:
 	bool on_delete_event( GdkEventAny * event ) ;
 	bool pulsebar_pulse();
 
-	Gtk::Label label_current ;
+	// Child widgets
+	Gtk::Label          m_label_current;
 	Gtk::Label label_current_sub ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;
 	Gtk::TreeView treeview_operations ;
