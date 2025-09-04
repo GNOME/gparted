@@ -60,10 +60,10 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	m_label_current.set_alignment(Gtk::ALIGN_START);
 	vbox->pack_start(m_label_current, Gtk::PACK_SHRINK);
 
-	// WH: this->get_content_area() / vbox / progressbar_current
-	progressbar_current.set_pulse_step(0.01);
-	progressbar_current.set_show_text();
-	vbox->pack_start(progressbar_current, Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / m_progressbar_current
+	m_progressbar_current.set_pulse_step(0.01);
+	m_progressbar_current.set_show_text();
+	vbox->pack_start(m_progressbar_current, Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / vbox / label_current_sub
 	label_current_sub.set_alignment(Gtk::ALIGN_START);
@@ -175,7 +175,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 		{
 			if ( pulsetimer.connected() )
 				pulsetimer.disconnect();
-			progressbar_current.set_fraction( progressbar_src.get_fraction() );
+			m_progressbar_current.set_fraction(progressbar_src.get_fraction());
 			m_progress_text = progressbar_src.get_text();
 		}
 		else
@@ -212,13 +212,13 @@ void Dialog_Progress::update_gui_elements()
 	label_current_sub.set_markup("<i>" + m_label_current_sub_text + "</i>\n");
 
 	//To ensure progress bar height remains the same, add a space in case message is empty
-	progressbar_current.set_text(m_progress_text + " ");
+	m_progressbar_current.set_text(m_progress_text + " ");
 }
 
 
 bool Dialog_Progress::pulsebar_pulse()
 {
-	progressbar_current.pulse();
+	m_progressbar_current.pulse();
 	return true;
 }
 
@@ -263,14 +263,14 @@ void Dialog_Progress::on_signal_show()
 
 	if (m_cancel)
 	{
-		progressbar_current .set_text( _("Operation cancelled") ) ;
-		progressbar_current .set_fraction( 0.0 ) ;
+		m_progressbar_current.set_text(_("Operation cancelled"));
+		m_progressbar_current.set_fraction(0.0);
 	}
 	else
 	{
 		//hide 'current operation' stuff
 		m_label_current.hide();
-		progressbar_current .hide() ;
+		m_progressbar_current.hide();
 		label_current_sub .hide() ;
 	}
 
