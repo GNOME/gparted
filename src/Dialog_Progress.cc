@@ -73,9 +73,9 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
 	vbox->pack_start(*Utils::mk_label("<b>" + Glib::ustring(_("Completed Operations:")) + "</b>"),
 	                 Gtk::PACK_SHRINK);
 
-	// WH: this->get_content_area() / vbox / progressbar_all
-	progressbar_all.set_show_text();
-	vbox->pack_start(progressbar_all, Gtk::PACK_SHRINK);
+	// WH: this->get_content_area() / vbox / m_progressbar_all
+	m_progressbar_all.set_show_text();
+	vbox->pack_start(m_progressbar_all, Gtk::PACK_SHRINK);
 
 	// WH: ..._area() / vbox / expander_details / scrolledwindow / treeview_operations
 	treestore_operations = Gtk::TreeStore::create(m_treeview_operations_columns);
@@ -232,9 +232,9 @@ void Dialog_Progress::on_signal_show()
 
 		m_label_current.set_markup("<b>" + m_operations[m_curr_op]->m_description + "</b>");
 
-		progressbar_all.set_text(Glib::ustring::compose(_("%1 of %2 operations completed"),
-		                                                m_curr_op, m_operations.size()));
-		progressbar_all.set_fraction(m_fraction * m_curr_op > 1.0 ? 1.0 : m_fraction * m_curr_op);
+		m_progressbar_all.set_text(Glib::ustring::compose(_("%1 of %2 operations completed"),
+		                                                  m_curr_op, m_operations.size()));
+		m_progressbar_all.set_fraction(m_fraction * m_curr_op > 1.0 ? 1.0 : m_fraction * m_curr_op);
 
 		treerow = treestore_operations ->children()[m_curr_op];
 
@@ -287,8 +287,8 @@ void Dialog_Progress::on_signal_show()
 			         +  ")" ;
 		}
 
-		progressbar_all .set_text( str_temp ) ;
-		progressbar_all .set_fraction( 1.0 ) ;
+		m_progressbar_all.set_text(str_temp);
+		m_progressbar_all.set_fraction(1.0);
 	}
 	else 
 	{

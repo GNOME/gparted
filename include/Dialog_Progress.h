@@ -68,7 +68,7 @@ private:
 	Gtk::Label          m_label_current;
 	Gtk::ProgressBar    m_progressbar_current;
 	Gtk::Label          m_label_current_sub;
-	Gtk::ProgressBar progressbar_all;
+	Gtk::ProgressBar    m_progressbar_all;
 	Gtk::TreeView treeview_operations ;
 	Gtk::TreeRow treerow ;
 	Gtk::ScrolledWindow scrolledwindow ;
