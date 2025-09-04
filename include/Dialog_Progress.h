@@ -100,9 +100,9 @@ private:
 
 	const std::vector<Device>& m_devices;
 	const OperationVector&     m_operations;
+	const double               m_fraction;
 	bool                       m_success;
 	bool                       m_cancel;
-	double                     m_fraction;
 	unsigned int               m_curr_op;
 	unsigned int               m_warnings;
 	Glib::ustring              m_progress_text;

@@ -32,6 +32,7 @@
 #include <gtkmm/filechooserdialog.h>
 #include <sigc++/signal.h>
 #include <vector>
+#include <algorithm>
 
 
 namespace GParted
@@ -39,8 +40,10 @@ namespace GParted
 
 
 Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const OperationVector& operations)
- : m_devices(devices), m_operations(operations), m_success(true), m_cancel(false),
-   m_fraction(1.0 / operations.size()), m_curr_op(0), m_warnings(0), m_cancel_countdown(0)
+ : m_devices(devices), m_operations(operations),
+   m_fraction(1.0 / operations.size()),
+   m_success(true), m_cancel(false),
+   m_curr_op(0), m_warnings(0), m_cancel_countdown(0)
 {
 	this ->set_title( _("Applying pending operations") ) ;
 	this->property_default_width() = 700;
@@ -234,7 +237,7 @@ void Dialog_Progress::on_signal_show()
 
 		m_progressbar_all.set_text(Glib::ustring::compose(_("%1 of %2 operations completed"),
 		                                                  m_curr_op, m_operations.size()));
-		m_progressbar_all.set_fraction(m_fraction * m_curr_op > 1.0 ? 1.0 : m_fraction * m_curr_op);
+		m_progressbar_all.set_fraction(std::min(m_fraction * m_curr_op, 1.0));
 
 		treerow = treestore_operations ->children()[m_curr_op];
 
