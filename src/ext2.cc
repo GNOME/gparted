@@ -66,16 +66,6 @@ FS ext2::get_filesystem_support()
 				                     || (mke2fs_major_ver == 1 && mke2fs_minor_ver > 42)
 				                     || (mke2fs_major_ver == 1 && mke2fs_minor_ver == 42 && mke2fs_patch_ver >= 9);
 
-				// (#766910) E2fsprogs 1.43 creates 64bit ext4 file
-				// systems by default.  RHEL/CentOS 7 configured e2fsprogs
-				// 1.42.9 to create 64bit ext4 file systems by default.
-				// Theoretically this can be done when 64bit feature was
-				// added in e2fsprogs 1.42.  GParted will re-implement the
-				// removed mke2fs.conf(5) auto_64-bit_support option to
-				// avoid the issues with multiple boot loaders not working
-				// with 64bit ext4 file systems.
-				m_force_auto_64bit =    (mke2fs_major_ver > 1)
-				                     || (mke2fs_major_ver == 1 && mke2fs_minor_ver >= 42);
 			}
 		}
 	}
@@ -293,19 +283,8 @@ bool ext2::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	Glib::ustring features;
-	if (m_force_auto_64bit)
-	{
-		// (#766910) Manually implement mke2fs.conf(5) auto_64-bit_support option
-		// by setting or clearing the 64bit feature on the command line depending
-		// of the partition size.
-		if ( new_partition.get_byte_length() >= 16 * TEBIBYTE )
-			features = " -O 64bit";
-		else
-			features = " -O ^64bit";
-	}
-	return ! operationdetail.execute_command(m_mkfs_cmd + " -F" + features +
-	                        " -L " + Glib::shell_quote(new_partition.get_filesystem_label()) +
+	return ! operationdetail.execute_command(m_mkfs_cmd + " -F -L " +
+	                        Glib::shell_quote(new_partition.get_filesystem_label()) +
 	                        " " + Glib::shell_quote(new_partition.get_path()),
 	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
 	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::create_progress)));
