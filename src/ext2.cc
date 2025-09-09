@@ -311,11 +311,15 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 
 bool ext2::resize(const Partition& partition_new, OperationDetail& operationdetail, bool fill_partition)
 {
+	Glib::ustring convert_to_64bit;
+	if (partition_new.fstype == FS_EXT4 && partition_new.get_byte_length() >= 16 * TEBIBYTE)
+		convert_to_64bit = "-b ";
 	Glib::ustring size;
 	if ( ! fill_partition )
 		size = " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
 
-	return ! operationdetail.execute_command("resize2fs -p " + Glib::shell_quote(partition_new.get_path()) + size,
+	return ! operationdetail.execute_command("resize2fs -p " + convert_to_64bit +
+	                        Glib::shell_quote(partition_new.get_path()) + size,
 	                        EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
 	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ext2::resize_progress)));
 }
