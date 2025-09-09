@@ -517,7 +517,7 @@ const Glib::ustring Utils::get_filesystem_software(FSType fstype)
 		case FS_EXFAT:      return "exfatprogs";
 		case FS_EXT2:       return "e2fsprogs";
 		case FS_EXT3:       return "e2fsprogs";
-		case FS_EXT4:       return "e2fsprogs v1.41+";
+		case FS_EXT4:       return "e2fsprogs";
 		case FS_F2FS:       return "f2fs-tools";
 		case FS_FAT16:      return "dosfstools, mtools";
 		case FS_FAT32:      return "dosfstools, mtools";
