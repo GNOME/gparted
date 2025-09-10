@@ -90,8 +90,10 @@ FS ext2::get_filesystem_support()
 		fs.online_read = FS::EXTERNAL;
 	}
 
+	bool tune2fs_found = false;
 	if ( ! Glib::find_program_in_path( "tune2fs" ).empty() )
 	{
+		tune2fs_found = true;
 		fs.read_uuid = FS::EXTERNAL;
 		fs.write_uuid = FS::EXTERNAL;
 	}
@@ -108,7 +110,8 @@ FS ext2::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "resize2fs" ).empty() )
 	{
-		fs.grow = FS::EXTERNAL;
+		if (tune2fs_found)  // Needed to determine if the ext4 must be converted to 64-bit
+			fs.grow = FS::EXTERNAL;
 
 		if ( fs.read )  // Needed to determine a min file system size..
 			fs.shrink = FS::EXTERNAL;
@@ -313,7 +316,31 @@ bool ext2::resize(const Partition& partition_new, OperationDetail& operationdeta
 {
 	Glib::ustring convert_to_64bit;
 	if (partition_new.fstype == FS_EXT4 && partition_new.get_byte_length() >= 16 * TEBIBYTE)
-		convert_to_64bit = "-b ";
+	{
+		Glib::ustring output;
+		Glib::ustring error;
+		Utils::execute_command("tune2fs -l " + Glib::shell_quote(partition_new.get_path()),
+		                       output, error, true);
+
+		Glib::ustring::size_type index = output.find("\nFilesystem features:");
+		if (index == output.npos)
+		{
+			operationdetail.add_child(OperationDetail(
+			                _("Failed to determine whether the ext4 file system has the 64bit feature enabled"),
+			                STATUS_ERROR));
+			return false;
+		}
+
+		Glib::ustring features = Utils::regexp_label(output.substr(index),
+		                                             "^Filesystem features:[[:blank:]]*([^\n]*)");
+		if (features.find("64bit") == features.npos)
+		{
+			// Ext4 file system doesn't have 64bit feature but it's being
+			// resized >= 16 TiB.  Resize2fs must also convert it to 64-bit.
+			convert_to_64bit = "-b ";
+		}
+	}
+
 	Glib::ustring size;
 	if ( ! fill_partition )
 		size = " " + Utils::num_to_str(partition_new.get_byte_length() / KIBIBYTE) + "K";
