@@ -37,37 +37,10 @@ FS ext2::get_filesystem_support()
 	fs .busy = FS::GPARTED ;
 
 	m_mkfs_cmd = "mkfs." + Utils::get_filesystem_string(m_specific_fstype);
-	bool have_64bit_feature = false;
-	Glib::ustring output;
-	Glib::ustring error;
 	if (! Glib::find_program_in_path(m_mkfs_cmd).empty())
 	{
 		fs .create = FS::EXTERNAL ;
 		fs .create_with_label = FS::EXTERNAL ;
-
-		// Determine mkfs.ext4 version specific capabilities.
-		if (m_specific_fstype == FS_EXT4)
-		{
-			Utils::execute_command(m_mkfs_cmd + " -V", output, error, true);
-			int mke2fs_major_ver = 0;
-			int mke2fs_minor_ver = 0;
-			int mke2fs_patch_ver = 0;
-			if (sscanf(error.c_str(), "mke2fs %d.%d.%d",
-			           &mke2fs_major_ver, &mke2fs_minor_ver, &mke2fs_patch_ver) >= 2)
-			{
-				// Ext4 64bit feature was added in e2fsprogs 1.42.  Only
-				// enable large volumes with 1.42.9 and later when a large
-				// number of 64bit related bugs were fixed.
-				// *   Release notes, E2fsprogs 1.42 (November 29, 2011)
-				//     http://e2fsprogs.sourceforge.net/e2fsprogs-release.html#1.42
-				// *   Release notes, E2fsprogs 1.42.9 (December 28, 2013)
-				//     http://e2fsprogs.sourceforge.net/e2fsprogs-release.html#1.42.9
-				have_64bit_feature =    (mke2fs_major_ver > 1)
-				                     || (mke2fs_major_ver == 1 && mke2fs_minor_ver > 42)
-				                     || (mke2fs_major_ver == 1 && mke2fs_minor_ver == 42 && mke2fs_patch_ver >= 9);
-
-			}
-		}
 	}
 
 	if ( ! Glib::find_program_in_path( "dumpe2fs").empty() )
@@ -116,6 +89,8 @@ FS ext2::get_filesystem_support()
 		// than copying all blocks used by GParted's internal method.
 		if ( ! Glib::find_program_in_path( "e2image" ).empty() )
 		{
+			Glib::ustring output;
+			Glib::ustring error;
 			Utils::execute_command( "e2image", output, error, true );
 			if ( Utils::regexp_label( error, "(-o src_offset)" ) == "-o src_offset" )
 				fs.copy = fs.move = FS::EXTERNAL;
@@ -125,17 +100,16 @@ FS ext2::get_filesystem_support()
 	if (m_specific_fstype != FS_EXT2 && Utils::kernel_version_at_least(3, 6, 0))
 		fs.online_grow = fs.grow;
 
-	// Maximum size of an ext2/3/4 volume is 2^32 - 1 blocks, except for ext4 with
-	// 64bit feature.  That is just under 16 TiB with a 4K block size.
-	// *   Ext4 Disk Layout, Blocks
-	//     https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout#Blocks
+	// Maximum size of an ext2/3 volume is 2^32 - 1 blocks.  Just under 16 TiB with a
+	// 4K block size.  Maximum size of an ext4 volume in 64-bit mode is 2^64 - 1
+	// blocks.  Unlimited as far as GParted is concerned.
+	// *   ext4 Data Structures and Algorithms, 2.1. Blocks
+	//     https://docs.kernel.org/filesystems/ext4/blocks.html
 	// FIXME: Rounding down to whole MiB here should not be necessary.  The Copy, New
 	// and Resize/Move dialogs should limit FS correctly without this.  See bug
 	// #766910 comment #12 onwards for further discussion.
 	//     https://bugzilla.gnome.org/show_bug.cgi?id=766910#c12
-	if (m_specific_fstype == FS_EXT2                           ||
-	    m_specific_fstype == FS_EXT3                           ||
-	    (m_specific_fstype == FS_EXT4 && ! have_64bit_feature)   )
+	if (m_specific_fstype == FS_EXT2 || m_specific_fstype == FS_EXT3)
 		m_fs_limits.max_size = Utils::floor_size(16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE);
 
 	return fs ;
