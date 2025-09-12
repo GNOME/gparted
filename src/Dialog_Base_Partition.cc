@@ -28,6 +28,7 @@
 #include <sigc++/bind.h>
 #include <sigc++/connection.h>
 #include <sigc++/signal.h>
+#include <memory>
 
 
 namespace GParted
@@ -36,7 +37,6 @@ namespace GParted
 Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
  : m_device(device)
 {
-	frame_resizer_base = nullptr;
 	GRIP = false ;
 	this ->fixed_start = false ;
 	this ->set_resizable( false );
@@ -150,10 +150,10 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 void Dialog_Base_Partition::Set_Resizer( bool extended )
 {
 	if ( extended )
-		frame_resizer_base = new Frame_Resizer_Extended() ;
+		frame_resizer_base = std::make_unique<Frame_Resizer_Extended>();
 	else
 	{
-		frame_resizer_base = new Frame_Resizer_Base() ;
+		frame_resizer_base = std::make_unique<Frame_Resizer_Base>();
 		frame_resizer_base ->signal_move .connect( sigc::mem_fun( this, &Dialog_Base_Partition::on_signal_move ) );
 	}
 	
@@ -613,16 +613,17 @@ void Dialog_Base_Partition::update_button_resize_move_sensitivity()
 		ORIG_AFTER  != spinbutton_after .get_value_as_int() ) ; 
 }
 
+
 Dialog_Base_Partition::~Dialog_Base_Partition() 
 {
 	before_change_connection .disconnect() ;
 	size_change_connection .disconnect() ;
 	after_change_connection .disconnect() ;
-	delete frame_resizer_base;
 
 	// Work around a Gtk issue fixed in 3.24.0.
 	// https://gitlab.gnome.org/GNOME/gtk/issues/125
 	hide();
 }
+
 
 } //GParted

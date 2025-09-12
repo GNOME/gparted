@@ -32,6 +32,7 @@
 #include <gtkmm/grid.h>
 #include <gtkmm/box.h>
 #include <sigc++/connection.h>
+#include <memory>
 
 
 namespace GParted
@@ -73,7 +74,7 @@ protected:
 
 	double MB_PER_PIXEL ;
 	Sector TOTAL_MB ;
-	Frame_Resizer_Base *frame_resizer_base;
+	std::unique_ptr<Frame_Resizer_Base> frame_resizer_base;
 	Partition * new_partition;
 
 	Sector START; //the first sector of the first relevant partition ( this is either current or current -1 )  needed in Get_Resized_Partition()

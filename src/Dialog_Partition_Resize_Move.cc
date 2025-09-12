@@ -312,10 +312,10 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	//set MAX
 	fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
 
-	dynamic_cast<Frame_Resizer_Extended *>( frame_resizer_base ) ->
+	dynamic_cast<Frame_Resizer_Extended*>(frame_resizer_base.get())->
 		set_used_start( Utils::round( (first - START) / ( total_length / 500.00 ) ) ) ;
 	frame_resizer_base ->set_used( Utils::round( used / ( total_length / 500.00 ) ) ) ;
-	
+
 	//set values of spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
 		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
