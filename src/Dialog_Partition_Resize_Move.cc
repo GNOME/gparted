@@ -38,18 +38,18 @@ Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move(const Device& device,
 	set_data( selected_partition, partitions );
 }
 
+
 Dialog_Partition_Resize_Move::~Dialog_Partition_Resize_Move()
 {
-	delete new_partition;
-	new_partition = nullptr;
 }
+
 
 void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partition,
                                              const PartitionVector & partitions )
 {
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 
-	new_partition = selected_partition.clone();
+	new_partition.reset(selected_partition.clone());
 
 	if (selected_partition.type == TYPE_EXTENDED)
 	{

@@ -52,9 +52,6 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
 
 Dialog_Partition_New::~Dialog_Partition_New()
 {
-	delete new_partition;
-	new_partition = nullptr;
-
 	// Work around a Gtk issue fixed in 3.24.0.
 	// https://gitlab.gnome.org/GNOME/gtk/issues/125
 	hide();
@@ -67,7 +64,7 @@ void Dialog_Partition_New::set_data( const Device & device,
                                      const std::vector<FS> & FILESYSTEMS )
 {
 	this ->new_count = new_count;
-	new_partition = selected_partition.clone();
+	new_partition.reset(selected_partition.clone());
 
 	// Copy only supported file systems, excluding LUKS, from GParted_Core FILESYSTEMS
 	// vector.  Add FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This
