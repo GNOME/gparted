@@ -147,26 +147,28 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 	this ->show_all_children() ;
 }
 
+
 void Dialog_Base_Partition::Set_Resizer( bool extended )
 {
 	if ( extended )
-		frame_resizer_base = std::make_unique<Frame_Resizer_Extended>();
+		m_frame_resizer_base = std::make_unique<Frame_Resizer_Extended>();
 	else
 	{
-		frame_resizer_base = std::make_unique<Frame_Resizer_Base>();
-		frame_resizer_base ->signal_move .connect( sigc::mem_fun( this, &Dialog_Base_Partition::on_signal_move ) );
+		m_frame_resizer_base = std::make_unique<Frame_Resizer_Base>();
+		m_frame_resizer_base->signal_move.connect(sigc::mem_fun(this, &Dialog_Base_Partition::on_signal_move));
 	}
-	
-	frame_resizer_base ->set_border_width( 5 ) ;
-	frame_resizer_base ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
-		
+
+	m_frame_resizer_base->set_border_width(5);
+	m_frame_resizer_base->set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+
 	//connect signals
-	frame_resizer_base ->signal_resize .connect( sigc::mem_fun( this, &Dialog_Base_Partition::on_signal_resize ) );
-		
-	hbox_resizer .pack_start( *frame_resizer_base, Gtk::PACK_EXPAND_PADDING );
-	
+	m_frame_resizer_base->signal_resize.connect(sigc::mem_fun(this, &Dialog_Base_Partition::on_signal_resize));
+
+	hbox_resizer.pack_start(*m_frame_resizer_base, Gtk::PACK_EXPAND_PADDING);
+
 	this ->show_all_children() ;
 }
+
 
 const Partition & Dialog_Base_Partition::Get_New_Partition()
 {
@@ -594,11 +596,11 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 		
 		//And apply the changes to the visual view...
 		if ( ! fixed_start )
-			frame_resizer_base ->set_x_start( Utils::round( spinbutton_before .get_value() / MB_PER_PIXEL ) ) ;
-		
-		frame_resizer_base ->set_x_end( 500 - Utils::round( spinbutton_after .get_value() / MB_PER_PIXEL ) ) ;
+			m_frame_resizer_base->set_x_start(Utils::round(spinbutton_before.get_value() / MB_PER_PIXEL));
 
-		frame_resizer_base->redraw();
+		m_frame_resizer_base->set_x_end(500 - Utils::round(spinbutton_after.get_value() / MB_PER_PIXEL));
+
+		m_frame_resizer_base->redraw();
 
 		update_button_resize_move_sensitivity();
 	}

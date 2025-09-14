@@ -43,9 +43,9 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
 	this ->set_title( _("Create new Partition") ) ;
 	Set_Resizer( false ) ;
 	Set_Confirm_Button( NEW ) ;
-	
+
 	//set used (in pixels)...
-	frame_resizer_base ->set_used( 0 ) ;
+	m_frame_resizer_base->set_used(0);
 
 	set_data(device, selected_partition, any_extended, new_count, FILESYSTEMS );
 }
@@ -197,10 +197,10 @@ void Dialog_Partition_New::set_data( const Device & device,
 	spinbutton_after .set_value( 0 ) ;
 	spinbutton_size.set_value( ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 	spinbutton_before .set_value( MIN_SPACE_BEFORE_MB ) ;
-	
+
 	//Disable resizing when the total area is less than two mebibytes
 	if ( TOTAL_MB < 2 )
-		frame_resizer_base ->set_sensitive( false ) ;
+		m_frame_resizer_base->set_sensitive(false);
 
 	// Connect signal handler for Dialog_Base_Partiton combo_alignment.
 	combo_alignment.signal_changed().connect(
@@ -379,9 +379,9 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 		if ( ! fs_limits.max_size || ( fs_limits.max_size > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ) )
 			fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
 
-		frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
-		frame_resizer_base->set_size_limits( Utils::round( fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE) ),
-		                                     Utils::round( fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE) ) );
+		m_frame_resizer_base->set_x_min_space_before(Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL));
+		m_frame_resizer_base->set_size_limits(Utils::round(fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE)),
+		                                      Utils::round(fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE)));
 
 		//set new spinbutton ranges
 		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
@@ -402,17 +402,17 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 		Gdk::RGBA color_temp;
 		//Background color
 		color_temp.set((combo_type.get_active_row_number() == 2) ? "darkgrey" : "white");
-		frame_resizer_base->override_default_rgb_unused_color(color_temp);
+		m_frame_resizer_base->override_default_rgb_unused_color(color_temp);
 
 		//Partition color
 		color_temp.set(Utils::get_color(fs.fstype));
-		frame_resizer_base->set_rgb_partition_color(color_temp);
+		m_frame_resizer_base->set_rgb_partition_color(color_temp);
 	}
 
 	// Maximum length of the file system label varies according to the selected file system type.
 	filesystem_label_entry.set_max_length(Utils::get_filesystem_label_maxlength(fs.fstype));
 
-	frame_resizer_base->redraw();
+	m_frame_resizer_base->redraw();
 }
 
 

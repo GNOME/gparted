@@ -47,7 +47,7 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 
 	// Set partition color
 	Gdk::RGBA partition_color(Utils::get_color(copied_partition.fstype));
-	frame_resizer_base->set_rgb_partition_color( partition_color );
+	m_frame_resizer_base->set_rgb_partition_color(partition_color);
 
 	//set some widely used values...
 	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
@@ -63,12 +63,12 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	long COPIED_LENGTH_MB = ceil( Utils::sector_to_unit( copied_min_sectors, selected_partition .sector_size, UNIT_MIB ) ) ;
 
 	//now calculate proportional length of partition 
-	frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
-	frame_resizer_base ->set_x_start( Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL) ) ;
+	m_frame_resizer_base->set_x_min_space_before(Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL));
+	m_frame_resizer_base->set_x_start(Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL));
 	int x_end = Utils::round( (MIN_SPACE_BEFORE_MB + COPIED_LENGTH_MB) / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
-	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
+	m_frame_resizer_base->set_x_end(x_end > 500 ? 500 : x_end);
 	Sector min_resize = copied_partition .estimated_min_size() ;
-	frame_resizer_base ->set_used( 
+	m_frame_resizer_base->set_used(
 		Utils::round( Utils::sector_to_unit( min_resize, copied_partition .sector_size, UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 
 	//Only allow pasting into a new larger partition if growing the file
@@ -102,9 +102,9 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	spinbutton_after.set_range( 0, TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
 	spinbutton_after .set_value( TOTAL_MB - MIN_SPACE_BEFORE_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
-	
-	frame_resizer_base->set_size_limits( Utils::round( fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE) ),
-	                                     Utils::round( fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE) ) );
+
+	m_frame_resizer_base->set_size_limits(Utils::round(fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE)),
+	                                      Utils::round(fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE)));
 
 	//set contents of label_minmax
 	Set_MinMax_Text( ceil( fs_limits.min_size / double(MEBIBYTE) ),

@@ -59,7 +59,7 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 
 	// Set partition color
 	Gdk::RGBA partition_color(Utils::get_color(selected_partition.fstype));
-	frame_resizer_base->set_rgb_partition_color( partition_color );
+	m_frame_resizer_base->set_rgb_partition_color(partition_color);
 
 	//store the original values
 	ORIG_BEFORE 	= spinbutton_before .get_value_as_int() ;
@@ -95,16 +95,16 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	if ( fs.move && ! new_partition->busy && new_partition->type != TYPE_UNPARTITIONED )
 	{
 		set_title( Glib::ustring::compose( _("Resize/Move %1"), new_partition->get_path() ) );
-		frame_resizer_base ->set_fixed_start( false ) ;
+		m_frame_resizer_base->set_fixed_start(false);
 	}
 	else
 	{
 		set_title( Glib::ustring::compose( _("Resize %1"), new_partition->get_path() ) );
 		this ->fixed_start = true;
-		frame_resizer_base ->set_fixed_start( true ) ;
+		m_frame_resizer_base->set_fixed_start(true);
 		spinbutton_before .set_sensitive( false ) ;
 	}
-	
+
 	//calculate total size in MiB's of previous, current and next partition
 	//first find index of partition
 	unsigned int t;
@@ -162,14 +162,15 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, new_partition->sector_size, UNIT_MIB ) );
 	
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
-		
+
 	//now calculate proportional length of partition 
-	frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
-	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_x_end( 
-			Utils::round( new_partition->get_sector_length() / ( total_length / 500.00 ) ) + frame_resizer_base->get_x_start() );
+	m_frame_resizer_base->set_x_min_space_before(Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL));
+	m_frame_resizer_base->set_x_start(Utils::round(previous / (total_length / 500.00)));
+	m_frame_resizer_base->set_x_end(
+	                Utils::round(new_partition->get_sector_length() / (total_length / 500.00)) +
+	                m_frame_resizer_base->get_x_start());
 	Sector min_resize = new_partition->estimated_min_size();
-	frame_resizer_base ->set_used( Utils::round( min_resize / ( total_length / 500.00 ) ) ) ;
+	m_frame_resizer_base->set_used(Utils::round(min_resize / (total_length / 500.00)));
 
 	//set MIN
 	if ( ( fs.shrink        && ! new_partition->busy ) ||
@@ -217,13 +218,14 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	spinbutton_after .set_value( 
 		Utils::round( Utils::sector_to_unit( next, new_partition->sector_size, UNIT_MIB ) ) );
 
-	frame_resizer_base->set_size_limits( Utils::round( fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE) ),
-	                                     Utils::round( fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE) ) );
+	m_frame_resizer_base->set_size_limits(Utils::round(fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE)),
+	                                      Utils::round(fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE)));
 
 	//set contents of label_minmax
 	Set_MinMax_Text( ceil( fs_limits.min_size / double(MEBIBYTE) ),
 	                 ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 }
+
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector & partitions )
 {
@@ -267,11 +269,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	total_length = previous + new_partition->get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, new_partition->sector_size, UNIT_MIB ) );
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
-	
+
 	//calculate proportional length of partition ( in pixels )
-	frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
-	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_x_end( Utils::round( new_partition->get_sector_length() / ( total_length / 500.00 ) ) + frame_resizer_base->get_x_start() );
+	m_frame_resizer_base->set_x_min_space_before(Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL));
+	m_frame_resizer_base->set_x_start(Utils::round(previous / (total_length / 500.00)));
+	m_frame_resizer_base->set_x_end(
+	                Utils::round(new_partition->get_sector_length() / (total_length / 500.00)) +
+	                m_frame_resizer_base->get_x_start());
 	
 	//used is a bit different here... we consider start of first logical to end last logical as used space
 	Sector first = 0;
@@ -307,9 +311,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	//set MAX
 	fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
 
-	dynamic_cast<Frame_Resizer_Extended*>(frame_resizer_base.get())->
+	dynamic_cast<Frame_Resizer_Extended*>(m_frame_resizer_base.get())->
 		set_used_start( Utils::round( (first - START) / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_used( Utils::round( used / ( total_length / 500.00 ) ) ) ;
+	m_frame_resizer_base->set_used(Utils::round(used / (total_length / 500.00)));
 
 	//set values of spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
