@@ -41,11 +41,6 @@ Dialog_Partition_Copy::Dialog_Partition_Copy(const Device& device, const FS& fs,
 }
 
 
-Dialog_Partition_Copy::~Dialog_Partition_Copy()
-{
-}
-
-
 void Dialog_Partition_Copy::set_data( const Partition & selected_partition, const Partition & copied_partition )
 {
 	this ->set_title( Glib::ustring::compose( _("Paste %1"), copied_partition .get_path() ) ) ;

@@ -34,7 +34,6 @@ public:
 	                      const FS_Limits& fs_limits,
 	                      const Partition& selected_partition,
 	                      const Partition& copied_partition);
-	~Dialog_Partition_Copy();
 
 	Dialog_Partition_Copy(const Dialog_Partition_Copy& src) = delete;             // Copy construction prohibited
 	Dialog_Partition_Copy& operator=(const Dialog_Partition_Copy& rhs) = delete;  // Copy assignment prohibited

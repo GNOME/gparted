@@ -34,7 +34,6 @@ public:
 	                             const FS_Limits& fs_limits,
 	                             const Partition& selected_partition,
 	                             const PartitionVector& partitions);
-	~Dialog_Partition_Resize_Move();
 
 	Dialog_Partition_Resize_Move(const Dialog_Partition_Resize_Move& src) = delete;             // Copy construction prohibited
 	Dialog_Partition_Resize_Move& operator=(const Dialog_Partition_Resize_Move& rhs) = delete;  // Copy assignment prohibited

@@ -39,11 +39,6 @@ Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move(const Device& device,
 }
 
 
-Dialog_Partition_Resize_Move::~Dialog_Partition_Resize_Move()
-{
-}
-
-
 void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partition,
                                              const PartitionVector & partitions )
 {
