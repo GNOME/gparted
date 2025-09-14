@@ -111,11 +111,11 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	                 ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 
 	// Set member variable used in Dialog_Base_Partition::prepare_new_partition()
-	new_partition.reset(copied_partition.clone());
-	new_partition->device_path     = selected_partition.device_path;
-	new_partition->inside_extended = selected_partition.inside_extended;
-	new_partition->type            = selected_partition.inside_extended ? TYPE_LOGICAL : TYPE_PRIMARY;
-	new_partition->sector_size     = selected_partition.sector_size;
+	m_new_partition.reset(copied_partition.clone());
+	m_new_partition->device_path     = selected_partition.device_path;
+	m_new_partition->inside_extended = selected_partition.inside_extended;
+	m_new_partition->type            = selected_partition.inside_extended ? TYPE_LOGICAL : TYPE_PRIMARY;
+	m_new_partition->sector_size     = selected_partition.sector_size;
 	if ( copied_partition.sector_usage_known() )
 	{
 		// Handle situation where src sector size is smaller than dst sector size
@@ -127,28 +127,30 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 		                              selected_partition.sector_size;
 		Sector dst_unused_sectors   = ( src_unused_bytes + selected_partition.sector_size - 1 ) /
 		                              selected_partition.sector_size;
-		new_partition->set_sector_usage( dst_fs_sectors, dst_unused_sectors );
+		m_new_partition->set_sector_usage(dst_fs_sectors, dst_unused_sectors);
 	}
 	else
 	{
 		// FS usage of src is unknown so set dst usage unknown too.
-		new_partition->set_sector_usage( -1, -1 );
+		m_new_partition->set_sector_usage(-1, -1);
 	}
 
 	this ->show_all_children() ;
 }
 
+
 const Partition & Dialog_Partition_Copy::Get_New_Partition()
 {
-	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
+	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
 	//first call baseclass to get the correct new partition
 	Dialog_Base_Partition::prepare_new_partition();
 
 	//set proper name and status for partition
-	new_partition->status = STAT_COPY;
+	m_new_partition->status = STAT_COPY;
 
-	return *new_partition;
+	return *m_new_partition;
 }
+
 
 } //GParted

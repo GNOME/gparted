@@ -172,100 +172,104 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 
 const Partition & Dialog_Base_Partition::Get_New_Partition()
 {
-	g_assert(new_partition != nullptr);  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
+	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
 
 	prepare_new_partition();
-	return *new_partition;
+	return *m_new_partition;
 }
+
 
 void Dialog_Base_Partition::prepare_new_partition()
 {
-	g_assert(new_partition != nullptr);  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
+	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
 
-	Sector old_size = new_partition->get_sector_length();
+	Sector old_size = m_new_partition->get_sector_length();
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
 	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
-		new_partition->sector_start = START + Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
+		m_new_partition->sector_start = START + Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / m_new_partition->sector_size);
 
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
-		new_partition->sector_end =
-			new_partition->sector_start
-			+ Sector(spinbutton_size.get_value_as_int()) * (MEBIBYTE / new_partition->sector_size)
+		m_new_partition->sector_end =
+			m_new_partition->sector_start
+			+ Sector(spinbutton_size.get_value_as_int()) * (MEBIBYTE / m_new_partition->sector_size)
 			- 1 /* one sector short of exact mebibyte multiple */;
 
 	//due to loss of precision during calcs from Sector -> MiB and back, it is possible
 	//the new partition thinks it's bigger then it can be. Here we solve this.
-	if ( new_partition->sector_start < START )
-		new_partition->sector_start = START;
-	if ( new_partition->sector_end > ( START + total_length - 1 ) )
-		new_partition->sector_end = START + total_length - 1;
+	if (m_new_partition->sector_start < START)
+		m_new_partition->sector_start = START;
+	if (m_new_partition->sector_end > (START + total_length - 1))
+		m_new_partition->sector_end = START + total_length - 1;
 
 	//grow a bit into small freespace ( < 1MiB ) 
-	if ( (new_partition->sector_start - START) < (MEBIBYTE / new_partition->sector_size) )
-		new_partition->sector_start = START;
-	if ( ( START + total_length - 1 - new_partition->sector_end ) < (MEBIBYTE / new_partition->sector_size) )
-		new_partition->sector_end = START + total_length - 1;
+	if ((m_new_partition->sector_start - START) < (MEBIBYTE / m_new_partition->sector_size))
+		m_new_partition->sector_start = START;
+	if ((START + total_length - 1 - m_new_partition->sector_end) < (MEBIBYTE / m_new_partition->sector_size))
+		m_new_partition->sector_end = START + total_length - 1;
 
 	//set alignment
 	switch (combo_alignment.get_active_row_number())
 	{
 		case 0:
-			new_partition->alignment = ALIGN_CYLINDER;
+			m_new_partition->alignment = ALIGN_CYLINDER;
 			break;
 		case 1:
-			new_partition->alignment = ALIGN_MEBIBYTE;
+			m_new_partition->alignment = ALIGN_MEBIBYTE;
 			{
 				// If partition start or end sectors are not MiB aligned,
 				// and space is available, then add 1 MiB to partition so
 				// requesting size is kept after snap_to_mebibyte() method
 				// rounding.
-				Sector partition_size = new_partition->sector_end - new_partition->sector_start + 1;
-				Sector sectors_in_mib = MEBIBYTE / new_partition->sector_size;
-				if (    (    ( new_partition->sector_start % sectors_in_mib       > 0 )
-				          || ( ( new_partition->sector_end + 1 ) % sectors_in_mib > 0 )
+				Sector partition_size = m_new_partition->sector_end - m_new_partition->sector_start + 1;
+				Sector sectors_in_mib = MEBIBYTE / m_new_partition->sector_size;
+				if (    (    (m_new_partition->sector_start % sectors_in_mib     > 0)
+				          || ((m_new_partition->sector_end + 1) % sectors_in_mib > 0)
 				        )
 				     && ( partition_size + sectors_in_mib < total_length )
 				   )
-					new_partition->sector_end += sectors_in_mib;
+				{
+					m_new_partition->sector_end += sectors_in_mib;
+				}
 			}
 			break;
 		case 2:
-			new_partition->alignment = ALIGN_STRICT;
+			m_new_partition->alignment = ALIGN_STRICT;
 			break;
 
 		default:
-			new_partition->alignment = ALIGN_MEBIBYTE;
+			m_new_partition->alignment = ALIGN_MEBIBYTE;
 			break;
 	}
 
-	new_partition->free_space_before = Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
+	m_new_partition->free_space_before =   Sector(spinbutton_before.get_value_as_int())
+	                                     * (MEBIBYTE / m_new_partition->sector_size);
 
 	// If the original before value has not changed, then set indicator to keep start sector unchanged.
 	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
-		new_partition->strict_start = true;
+		m_new_partition->strict_start = true;
 
-	snap_to_alignment(m_device, *new_partition);
+	snap_to_alignment(m_device, *m_new_partition);
 
 	//update partition usage
-	if ( new_partition->sector_usage_known() )
+	if (m_new_partition->sector_usage_known())
 	{
-		Sector new_size = new_partition->get_sector_length();
+		Sector new_size = m_new_partition->get_sector_length();
 		if ( old_size == new_size )
 		{
 			//Pasting into new same sized partition or moving partition keeping the same size,
 			//  therefore only block copy operation will be performed maintaining file system size.
-			new_partition->set_sector_usage(
-					new_partition->sectors_used + new_partition->sectors_unused,
-					new_partition->sectors_unused );
+			m_new_partition->set_sector_usage(
+					m_new_partition->sectors_used + m_new_partition->sectors_unused,
+					m_new_partition->sectors_unused);
 		}
 		else
 		{
 			//Pasting into new larger partition or (moving and) resizing partition larger or smaller,
 			//  therefore block copy followed by file system grow or shrink operations will be
 			//  performed making the file system fill the partition.
-			new_partition->set_sector_usage( new_size, new_size - new_partition->sectors_used );
+			m_new_partition->set_sector_usage(new_size, new_size - m_new_partition->sectors_used);
 		}
 	}
 }

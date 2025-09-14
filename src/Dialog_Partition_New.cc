@@ -64,7 +64,7 @@ void Dialog_Partition_New::set_data( const Device & device,
                                      const std::vector<FS> & FILESYSTEMS )
 {
 	this ->new_count = new_count;
-	new_partition.reset(selected_partition.clone());
+	m_new_partition.reset(selected_partition.clone());
 
 	// Copy only supported file systems, excluding LUKS, from GParted_Core FILESYSTEMS
 	// vector.  Add FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This
@@ -209,9 +209,10 @@ void Dialog_Partition_New::set_data( const Device & device,
 	this ->show_all_children() ;
 }
 
+
 const Partition & Dialog_Partition_New::Get_New_Partition()
 {
-	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
+	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
 	PartitionType part_type ;
 	Sector new_start, new_end;
@@ -228,80 +229,84 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
 	new_start = START + Sector(spinbutton_before.get_value_as_int()) *
-	                    (MEBIBYTE / new_partition->sector_size);
+	                    (MEBIBYTE / m_new_partition->sector_size);
 	new_end  = new_start + Sector(spinbutton_size.get_value_as_int()) *
-	                       (MEBIBYTE / new_partition->sector_size)
+	                       (MEBIBYTE / m_new_partition->sector_size)
 	                     - 1;
 	
 	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
-	if ( new_start < new_partition->sector_start )
-		new_start = new_partition->sector_start;
-	if  ( new_end > new_partition->sector_end )
-		new_end = new_partition->sector_end;
+	if (new_start < m_new_partition->sector_start)
+		new_start = m_new_partition->sector_start;
+	if  (new_end > m_new_partition->sector_end)
+		new_end = m_new_partition->sector_end;
 
 	// Grow new partition a bit if freespaces are < 1 MiB
-	if ( new_start - new_partition->sector_start < MEBIBYTE / new_partition->sector_size )
-		new_start = new_partition->sector_start;
-	if ( new_partition->sector_end - new_end < MEBIBYTE / new_partition->sector_size )
-		new_end = new_partition->sector_end;
+	if (new_start - m_new_partition->sector_start < MEBIBYTE / m_new_partition->sector_size)
+		new_start = m_new_partition->sector_start;
+	if (m_new_partition->sector_end - new_end < MEBIBYTE / m_new_partition->sector_size)
+		new_end = m_new_partition->sector_end;
 
 	// Copy a final few values needed from the original unallocated partition before
 	// resetting the Partition object and populating it as the new partition.
-	Glib::ustring device_path = new_partition->device_path;
-	Sector sector_size = new_partition->sector_size;
-	bool inside_extended = new_partition->inside_extended;
-	new_partition->Reset();
-	new_partition->Set( device_path,
-	                    Glib::ustring::compose( _("New Partition #%1"), new_count ),
-	                    new_count, part_type,
-	                    FILESYSTEMS[combo_filesystem.get_active_row_number()].fstype,
-	                    new_start, new_end,
-	                    sector_size,
-	                    inside_extended, false );
-	new_partition->status = STAT_NEW;
+	Glib::ustring device_path = m_new_partition->device_path;
+	Sector sector_size = m_new_partition->sector_size;
+	bool inside_extended = m_new_partition->inside_extended;
+	m_new_partition->Reset();
+	m_new_partition->Set(device_path,
+	                     Glib::ustring::compose(_("New Partition #%1"), new_count),
+	                     new_count,
+	                     part_type,
+	                     FILESYSTEMS[combo_filesystem.get_active_row_number()].fstype,
+	                     new_start,
+	                     new_end,
+	                     sector_size,
+	                     inside_extended,
+	                     false);
+	m_new_partition->status = STAT_NEW;
 
 	// Retrieve partition name
-	new_partition->name = Utils::trim( partition_name_entry.get_text() );
+	m_new_partition->name = Utils::trim(partition_name_entry.get_text());
 
 	//Retrieve Label info
-	new_partition->set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
+	m_new_partition->set_filesystem_label(Utils::trim(filesystem_label_entry.get_text()));
 
 	//set alignment
 	switch (combo_alignment.get_active_row_number())
 	{
 		case 0:
-			new_partition->alignment = ALIGN_CYLINDER;
+			m_new_partition->alignment = ALIGN_CYLINDER;
 			break;
 		case 1:
-			new_partition->alignment = ALIGN_MEBIBYTE;
+			m_new_partition->alignment = ALIGN_MEBIBYTE;
 			{
 				// If start sector not MiB aligned and free space available
 				// then add ~1 MiB to partition so requested size is kept
-				Sector diff = (MEBIBYTE / new_partition->sector_size) -
-				              (new_partition->sector_end + 1) % (MEBIBYTE / new_partition->sector_size);
+				Sector diff = (MEBIBYTE / m_new_partition->sector_size) -
+				              (m_new_partition->sector_end + 1) % (MEBIBYTE / m_new_partition->sector_size);
 				if (    diff
-				     && new_partition->sector_start % (MEBIBYTE / new_partition->sector_size ) > 0
-				     && new_partition->sector_end - START + 1 + diff < total_length
+				     && m_new_partition->sector_start % (MEBIBYTE / m_new_partition->sector_size) > 0
+				     && m_new_partition->sector_end - START + 1 + diff < total_length
 				   )
-					new_partition->sector_end += diff;
+					m_new_partition->sector_end += diff;
 			}
 			break;
 		case 2:
-			new_partition->alignment = ALIGN_STRICT;
+			m_new_partition->alignment = ALIGN_STRICT;
 			break;
 
 		default:
-			new_partition->alignment = ALIGN_MEBIBYTE;
+			m_new_partition->alignment = ALIGN_MEBIBYTE;
 			break;
 	}
 
 	// Set partition flag so preview matches what is applied by
 	// GParted_Core::set_partition_type() for LVM2 PV file systems.
-	if (new_partition->fstype == FS_LVM2_PV)
-		new_partition->set_flag("lvm");
+	if (m_new_partition->fstype == FS_LVM2_PV)
+		m_new_partition->set_flag("lvm");
 
-	new_partition->free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
+	m_new_partition->free_space_before =   Sector(spinbutton_before.get_value_as_int())
+	                                     * (MEBIBYTE / m_new_partition->sector_size);
 
 	// Create unallocated space within this new extended partition
 	//
@@ -324,26 +329,26 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	// snap_to_alignment() needs including in it.  It will need abstracting into a set
 	// of methods so that it can be used in each dialog which creates and modified
 	// partition boundaries.
-	if ( new_partition->type == TYPE_EXTENDED )
+	if (m_new_partition->type == TYPE_EXTENDED)
 	{
 		Partition * unallocated = new Partition();
-		unallocated->Set_Unallocated( new_partition->device_path,
-		                              new_partition->sector_start,
-		                              new_partition->sector_end,
-		                              new_partition->sector_size,
-		                              true );
-		new_partition->logicals.push_back_adopt( unallocated );
+		unallocated->Set_Unallocated(m_new_partition->device_path,
+		                             m_new_partition->sector_start,
+		                             m_new_partition->sector_end,
+		                             m_new_partition->sector_size,
+		                             true);
+		m_new_partition->logicals.push_back_adopt(unallocated);
 	}
 
-	Dialog_Base_Partition::snap_to_alignment(m_device, *new_partition);
+	Dialog_Base_Partition::snap_to_alignment(m_device, *m_new_partition);
 
-	return *new_partition;
+	return *m_new_partition;
 }
 
 
 void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 {
-	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
+	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
 	// combo_type
 	if (combo_type_changed)
@@ -368,13 +373,13 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 	if (! combo_type_changed)
 	{
 		fs = FILESYSTEMS[combo_filesystem.get_active_row_number()];
-		fs_limits = GParted_Core::get_filesystem_limits(fs.fstype, *new_partition);
+		fs_limits = GParted_Core::get_filesystem_limits(fs.fstype, *m_new_partition);
 
 		if ( fs_limits.min_size < MEBIBYTE )
 			fs_limits.min_size = MEBIBYTE;
 
-		if ( new_partition->get_byte_length() < fs_limits.min_size )
-			fs_limits.min_size = new_partition->get_byte_length();
+		if (m_new_partition->get_byte_length() < fs_limits.min_size)
+			fs_limits.min_size = m_new_partition->get_byte_length();
 
 		if ( ! fs_limits.max_size || ( fs_limits.max_size > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ) )
 			fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
@@ -418,7 +423,7 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 
 void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 {
-	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
+	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
 	combo_filesystem.items().clear();
 
@@ -440,9 +445,9 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 		else
 		{
 			combo_filesystem.items().back().set_sensitive(
-				! only_unformatted                                                                  &&
-				FILESYSTEMS[t].create                                                               &&
-				new_partition->get_byte_length() >= get_filesystem_min_limit(FILESYSTEMS[t].fstype)   );
+				! only_unformatted                                                                    &&
+				FILESYSTEMS[t].create                                                                 &&
+				m_new_partition->get_byte_length() >= get_filesystem_min_limit(FILESYSTEMS[t].fstype)   );
 		}
 
 		//use ext4/3/2 as first/second/third choice default file system
@@ -469,9 +474,11 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 	}
 }
 
+
 Byte_Value Dialog_Partition_New::get_filesystem_min_limit( FSType fstype )
 {
-	return GParted_Core::get_filesystem_limits( fstype, *new_partition ).min_size;
+	return GParted_Core::get_filesystem_limits(fstype, *m_new_partition).min_size;
 }
+
 
 } //GParted

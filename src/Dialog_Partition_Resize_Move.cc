@@ -44,7 +44,7 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 {
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 
-	new_partition.reset(selected_partition.clone());
+	m_new_partition.reset(selected_partition.clone());
 
 	if (selected_partition.type == TYPE_EXTENDED)
 	{
@@ -72,34 +72,35 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 	this ->show_all_children() ;
 }
 
+
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & partitions )
 {
-	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
+	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
 	// Don't permit shrinking an existing file system (other than linux-swap) when the
 	// usage is unknown as that sets the minimum resize.
-	if (! new_partition->sector_usage_known()  &&
-	    new_partition->status != STAT_NEW      &&
-	    new_partition->fstype != FS_LINUX_SWAP   )
+	if (! m_new_partition->sector_usage_known()  &&
+	    m_new_partition->status != STAT_NEW      &&
+	    m_new_partition->fstype != FS_LINUX_SWAP   )
 		fs.shrink = FS::NONE;
 
 	//Disable resizing as it's currently disallowed for the file system in this partition.
 	//  (Updates this class's copy of file system support information).
-	if ( GParted_Core::filesystem_resize_disallowed( *new_partition ) )
+	if (GParted_Core::filesystem_resize_disallowed(*m_new_partition))
 	{
 		fs .shrink = FS::NONE ;
 		fs .grow   = FS::NONE ;
 	}
 
 	// See if we can allow the start of the file system to move
-	if ( fs.move && ! new_partition->busy && new_partition->type != TYPE_UNPARTITIONED )
+	if (fs.move && ! m_new_partition->busy && m_new_partition->type != TYPE_UNPARTITIONED)
 	{
-		set_title( Glib::ustring::compose( _("Resize/Move %1"), new_partition->get_path() ) );
+		set_title(Glib::ustring::compose(_("Resize/Move %1"), m_new_partition->get_path()));
 		m_frame_resizer_base->set_fixed_start(false);
 	}
 	else
 	{
-		set_title( Glib::ustring::compose( _("Resize %1"), new_partition->get_path() ) );
+		set_title(Glib::ustring::compose(_("Resize %1"), m_new_partition->get_path()));
 		this ->fixed_start = true;
 		m_frame_resizer_base->set_fixed_start(true);
 		spinbutton_before .set_sensitive( false ) ;
@@ -109,7 +110,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	//first find index of partition
 	unsigned int t;
 	for ( t = 0 ; t < partitions .size() ; t++ )
-		if ( partitions[t] == *new_partition )
+		if (partitions[t] == *m_new_partition)
 			break;
 
 	Sector previous = 0;
@@ -123,7 +124,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 		prev_unalloc_partition = &partitions[t-1];
 	} 
 	else
-		START = new_partition->sector_start;
+		START = m_new_partition->sector_start;
 
 	if (t+1 < partitions.size() && partitions[t+1].type == TYPE_UNALLOCATED)
 	{
@@ -132,8 +133,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 		//If this is a logical partition and there is extra free space
 		//  then check if we need to reserve 1 MiB of space after for
 		//  the next logical partition Extended Boot Record.
-		if ( new_partition->type == TYPE_LOGICAL                          &&
-		     next                >= MEBIBYTE / new_partition->sector_size    )
+		if (m_new_partition->type == TYPE_LOGICAL                            &&
+		    next                  >= MEBIBYTE / m_new_partition->sector_size   )
 		{
 			//Find maximum sector_end (allocated or unallocated) within list of
 			//  partitions inside the extended partition
@@ -145,8 +146,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 			}
 
 			//If not within 1 MiB of the end of the extended partition, then reserve 1 MiB
-			if ( max_sector_end - partitions[t+1].sector_end > MEBIBYTE / new_partition->sector_size )
-				next -= MEBIBYTE / new_partition->sector_size;
+			if (max_sector_end - partitions[t+1].sector_end > MEBIBYTE / m_new_partition->sector_size)
+				next -= MEBIBYTE / m_new_partition->sector_size;
 		}
 	}
 
@@ -158,27 +159,27 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	else
 		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record(*prev_unalloc_partition);
 
-	total_length = previous + new_partition->get_sector_length() + next;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, new_partition->sector_size, UNIT_MIB ) );
-	
+	total_length = previous + m_new_partition->get_sector_length() + next;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit(total_length, m_new_partition->sector_size, UNIT_MIB));
+
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 
 	//now calculate proportional length of partition 
 	m_frame_resizer_base->set_x_min_space_before(Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL));
 	m_frame_resizer_base->set_x_start(Utils::round(previous / (total_length / 500.00)));
 	m_frame_resizer_base->set_x_end(
-	                Utils::round(new_partition->get_sector_length() / (total_length / 500.00)) +
+	                Utils::round(m_new_partition->get_sector_length() / (total_length / 500.00)) +
 	                m_frame_resizer_base->get_x_start());
-	Sector min_resize = new_partition->estimated_min_size();
+	Sector min_resize = m_new_partition->estimated_min_size();
 	m_frame_resizer_base->set_used(Utils::round(min_resize / (total_length / 500.00)));
 
 	//set MIN
-	if ( ( fs.shrink        && ! new_partition->busy ) ||
-	     ( fs.online_shrink && new_partition->busy   )    )
+	if ((fs.shrink        && ! m_new_partition->busy) ||
+	    (fs.online_shrink && m_new_partition->busy  )   )
 	{
 		//since some file systems have lower limits we need to check for this
-		if ( min_resize > fs_limits.min_size / new_partition->sector_size )
-			fs_limits.min_size = min_resize * new_partition->sector_size;
+		if (min_resize > fs_limits.min_size / m_new_partition->sector_size)
+			fs_limits.min_size = min_resize * m_new_partition->sector_size;
 
 		//ensure that minimum size is at least one mebibyte
 		if ( ! fs_limits.min_size || fs_limits.min_size < MEBIBYTE )
@@ -186,14 +187,14 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	}
 	else
 	{
-		fs_limits.min_size = new_partition->get_byte_length();
+		fs_limits.min_size = m_new_partition->get_byte_length();
 	}
 
 	//set MAX
 	if ( fs .grow )
 		fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
 	else
-		fs_limits.max_size = new_partition->get_byte_length();
+		fs_limits.max_size = m_new_partition->get_byte_length();
 
 	//set values of spinbutton_before
 	if ( ! fixed_start )
@@ -201,22 +202,24 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
 		                             TOTAL_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
 		spinbutton_before .set_value(
-			Utils::round( Utils::sector_to_unit( previous, new_partition->sector_size, UNIT_MIB ) ) );
+			Utils::round(Utils::sector_to_unit(previous, m_new_partition->sector_size, UNIT_MIB)));
 	}
 
 	//set values of spinbutton_size 
 	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
 	                           ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 	spinbutton_size .set_value( 
-		Utils::round( Utils::sector_to_unit( new_partition->get_sector_length(), new_partition->sector_size, UNIT_MIB ) ) );
+	                Utils::round(Utils::sector_to_unit(m_new_partition->get_sector_length(),
+	                                                   m_new_partition->sector_size,
+	                                                   UNIT_MIB)));
 
 	//set values of spinbutton_after
 	Sector after_min = ( ! fs .grow && ! fs .move ) ? next : 0 ;
 	spinbutton_after .set_range( 
-		Utils::round( Utils::sector_to_unit( after_min, new_partition->sector_size, UNIT_MIB ) ),
-		TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
+	                Utils::round(Utils::sector_to_unit(after_min, m_new_partition->sector_size, UNIT_MIB)),
+	                TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil(fs_limits.min_size / double(MEBIBYTE)));
 	spinbutton_after .set_value( 
-		Utils::round( Utils::sector_to_unit( next, new_partition->sector_size, UNIT_MIB ) ) );
+	                Utils::round(Utils::sector_to_unit(next, m_new_partition->sector_size, UNIT_MIB)));
 
 	m_frame_resizer_base->set_size_limits(Utils::round(fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE)),
 	                                      Utils::round(fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE)));
@@ -229,9 +232,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector & partitions )
 {
-	g_assert(new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
+	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
-	set_title(Glib::ustring::compose(_("Resize/Move %1"), new_partition->get_path()));
+	set_title(Glib::ustring::compose(_("Resize/Move %1"), m_new_partition->get_path()));
 
 	//calculate total size in MiB's of previous, current and next partition
 	//first find index of partition
@@ -250,7 +253,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 		prev_unalloc_partition = &partitions[t-1];
 	} 
 	else
-		START = new_partition->sector_start;
+		START = m_new_partition->sector_start;
 
 	//calculate length of next
 	if (t+1 < partitions.size() && partitions[t+1].type == TYPE_UNALLOCATED)
@@ -266,33 +269,34 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	else
 		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record(*prev_unalloc_partition);
 
-	total_length = previous + new_partition->get_sector_length() + next;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, new_partition->sector_size, UNIT_MIB ) );
+	total_length = previous + m_new_partition->get_sector_length() + next;
+	TOTAL_MB = Utils::round(Utils::sector_to_unit(total_length, m_new_partition->sector_size, UNIT_MIB));
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 
 	//calculate proportional length of partition ( in pixels )
 	m_frame_resizer_base->set_x_min_space_before(Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL));
 	m_frame_resizer_base->set_x_start(Utils::round(previous / (total_length / 500.00)));
 	m_frame_resizer_base->set_x_end(
-	                Utils::round(new_partition->get_sector_length() / (total_length / 500.00)) +
+	                Utils::round(m_new_partition->get_sector_length() / (total_length / 500.00)) +
 	                m_frame_resizer_base->get_x_start());
 	
 	//used is a bit different here... we consider start of first logical to end last logical as used space
 	Sector first = 0;
 	Sector last = 0;
 	Sector used = 0;
-	if ( ! ( new_partition->logicals.size()      == 1                &&
-	         new_partition->logicals.back().type == TYPE_UNALLOCATED    ) )
+	if ( ! (m_new_partition->logicals.size()      == 1                &&
+	        m_new_partition->logicals.back().type == TYPE_UNALLOCATED   ))
 	{
 		//logical partitions other than unallocated exist
-		first = new_partition->sector_end;
-		last = new_partition->sector_start;
+		first = m_new_partition->sector_end;
+		last = m_new_partition->sector_start;
 		for ( unsigned int i = 0 ; i < partitions[ t ] .logicals .size() ; i++ )
 		{
 			if (partitions[t].logicals[i].type == TYPE_LOGICAL)
 			{
 				if ( partitions[ t ] .logicals[ i ] .sector_start < first )
-					first = partitions[t].logicals[i].sector_start - (MEBIBYTE / new_partition->sector_size);
+					first =   partitions[t].logicals[i].sector_start
+					        - (MEBIBYTE / m_new_partition->sector_size);
 				if ( first < 0 )
 					first = 0 ;
 				if ( partitions[ t ] .logicals[ i ] .sector_end > last )
@@ -306,7 +310,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 		//Reasonable minimum of 1 MiB for EBR plus 1 MiB for small partition
 		fs_limits.min_size = MEBIBYTE;
 	else 
-		fs_limits.min_size = used * new_partition->sector_size;
+		fs_limits.min_size = used * m_new_partition->sector_size;
 
 	//set MAX
 	fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
@@ -321,20 +325,20 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 		                             TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs_limits.min_size /
 		                                                                    double(MEBIBYTE) ) );
 	else
-		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
-		                             Utils::round( Utils::sector_to_unit( first - START,
-		                                                                  new_partition->sector_size,
-		                                                                  UNIT_MIB ) ) );
+		spinbutton_before.set_range(MIN_SPACE_BEFORE_MB,
+		                            Utils::round(Utils::sector_to_unit(first - START,
+		                                                               m_new_partition->sector_size,
+		                                                               UNIT_MIB)));
 
-	spinbutton_before.set_value( Utils::round( Utils::sector_to_unit( previous,
-	                                                                  new_partition->sector_size, UNIT_MIB ) ) );
+	spinbutton_before.set_value(Utils::round(Utils::sector_to_unit(previous,
+	                                                               m_new_partition->sector_size, UNIT_MIB)));
 
 	//set values of spinbutton_size
 	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
 	                           TOTAL_MB - MIN_SPACE_BEFORE_MB );
 
-	spinbutton_size.set_value( Utils::round( Utils::sector_to_unit( new_partition->get_sector_length(),
-	                                                                new_partition->sector_size, UNIT_MIB ) ) );
+	spinbutton_size.set_value(Utils::round(Utils::sector_to_unit(m_new_partition->get_sector_length(),
+	                                                             m_new_partition->sector_size, UNIT_MIB)));
 
 	//set values of spinbutton_after
 	if ( first == 0 ) //no logicals
@@ -342,17 +346,19 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 		                               ceil( fs_limits.min_size / double(MEBIBYTE) ) -
 		                               MIN_SPACE_BEFORE_MB );
 	else
-		spinbutton_after.set_range( 0, Utils::round( Utils::sector_to_unit( total_length + START - first - used,
-		                                                                    new_partition->sector_size,
-		                                                                    UNIT_MIB ) ) );
+		spinbutton_after.set_range(0, Utils::round(Utils::sector_to_unit(total_length + START - first - used,
+		                                                                 m_new_partition->sector_size,
+		                                                                 UNIT_MIB)));
 
-	spinbutton_after.set_value( Utils::round( Utils::sector_to_unit( next,
-	                                                                 new_partition->sector_size, UNIT_MIB ) ) );
+	spinbutton_after.set_value(Utils::round(Utils::sector_to_unit(next,
+	                                                              m_new_partition->sector_size, UNIT_MIB)));
 
 	//set contents of label_minmax
-	Set_MinMax_Text( ceil( fs_limits.min_size / double(MEBIBYTE) ),
-	                 Utils::round( Utils::sector_to_unit( total_length - MIN_SPACE_BEFORE_MB * (MEBIBYTE / new_partition->sector_size),
-	                                                      new_partition->sector_size, UNIT_MIB ) ) );
+	Set_MinMax_Text(ceil(fs_limits.min_size / double(MEBIBYTE)),
+	                Utils::round(Utils::sector_to_unit(total_length - MIN_SPACE_BEFORE_MB * (MEBIBYTE / m_new_partition->sector_size),
+	                                                   m_new_partition->sector_size,
+	                                                   UNIT_MIB)));
 }
+
 
 } //GParted
