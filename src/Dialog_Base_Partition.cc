@@ -577,7 +577,9 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 
 
 void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
-{  
+{
+	g_assert(m_frame_resizer_base != nullptr);  // Bug: Not initialised by call to Set_Resizer()
+
 	if ( ! GRIP )
 	{
 		before_value = fixed_start ? MIN_SPACE_BEFORE_MB : spinbutton_before .get_value() ;
