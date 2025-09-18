@@ -24,13 +24,14 @@
 #include "FileSystem.h"
 #include "OptionComboBox.h"
 #include "Partition.h"
+#include "Utils.h"
 
 #include <gtkmm/dialog.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/label.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/grid.h>
 #include <gtkmm/box.h>
+#include <gtkmm/button.h>
 #include <sigc++/connection.h>
 #include <memory>
 

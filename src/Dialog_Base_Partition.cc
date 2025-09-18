@@ -15,19 +15,28 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Device.h"
+
 #include "Dialog_Base_Partition.h"
+
+#include "Device.h"
 #include "Frame_Resizer_Base.h"
 #include "Frame_Resizer_Extended.h"
 #include "Partition.h"
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
+#include <gtkmm/box.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/enums.h>
+#include <gtkmm/image.h>
 #include <gtkmm/label.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/widget.h>
 #include <atkmm/relation.h>
 #include <sigc++/bind.h>
 #include <sigc++/connection.h>
 #include <sigc++/signal.h>
+#include <glib.h>
 #include <memory>
 
 
