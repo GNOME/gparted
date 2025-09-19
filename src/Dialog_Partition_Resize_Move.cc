@@ -15,8 +15,10 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Device.h"
+
 #include "Dialog_Partition_Resize_Move.h"
+
+#include "Device.h"
 #include "FileSystem.h"
 #include "Frame_Resizer_Extended.h"
 #include "GParted_Core.h"
@@ -24,8 +26,14 @@
 #include "PartitionVector.h"
 #include "Utils.h"
 
+#include <gdkmm/rgba.h>
+#include <glibmm/ustring.h>
+#include <glib.h>
+
+
 namespace GParted
 {
+
 
 Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move(const Device& device, const FS & fs,
                                                            const FS_Limits & fs_limits,
