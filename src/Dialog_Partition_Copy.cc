@@ -15,15 +15,23 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Device.h"
+
 #include "Dialog_Partition_Copy.h"
+
+#include "Device.h"
 #include "FileSystem.h"
 #include "GParted_Core.h"
 #include "Partition.h"
 #include "Utils.h"
 
+#include <glibmm/ustring.h>
+#include <gdkmm/rgba.h>
+#include <glib.h>
+
+
 namespace GParted
 {
+
 
 Dialog_Partition_Copy::Dialog_Partition_Copy(const Device& device, const FS& fs,
                                              const FS_Limits& fs_limits,
