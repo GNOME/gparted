@@ -18,17 +18,22 @@
 #ifndef GPARTED_DIALOG_PARTITION_NEW_H
 #define GPARTED_DIALOG_PARTITION_NEW_H
 
-#include "Dialog_Base_Partition.h"
+
 #include "Device.h"
+#include "Dialog_Base_Partition.h"
+#include "FileSystem.h"
 #include "OptionComboBox.h"
 #include "Partition.h"
 #include "Utils.h"
 
+#include <gtkmm/entry.h>
 #include <gtkmm/grid.h>
+#include <vector>
 
 
 namespace GParted
 {
+
 
 class Dialog_Partition_New : public Dialog_Base_Partition
 {

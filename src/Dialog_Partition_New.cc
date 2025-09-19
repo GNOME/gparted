@@ -15,18 +15,24 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Device.h"
+
 #include "Dialog_Partition_New.h"
+
+#include "Device.h"
 #include "FileSystem.h"
 #include "GParted_Core.h"
 #include "Partition.h"
 #include "Utils.h"
 
+#include <gdkmm/rgba.h>
 #include <glibmm/ustring.h>
 #include <gtkmm/label.h>
+#include <gtkmm/widget.h>
 #include <atkmm/relation.h>
 #include <sigc++/bind.h>
 #include <sigc++/signal.h>
+#include <glib.h>
+#include <vector>
 
 
 namespace GParted
