@@ -5,7 +5,7 @@
 HELP_ID = gparted
 
 # List of help files to install.
-# NOTE: Top-level DocBook file NUST be named index.docbook.
+# NOTE: Top-level DocBook file MUST be named index.docbook.
 # https://wiki.gnome.org/Initiatives/GnomeGoals/NewDocumentationInfrastructure
 HELP_FILES = index.docbook
 
