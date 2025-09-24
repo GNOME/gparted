@@ -208,7 +208,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	if ( TOTAL_MB < 2 )
 		m_frame_resizer_base->set_sensitive(false);
 
-	// Connect signal handler for Dialog_Base_Partiton combo_alignment.
+	// Connect signal handler for Dialog_Base_Partition combo_alignment.
 	combo_alignment.signal_changed().connect(
 		sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::combobox_changed), false));
 
