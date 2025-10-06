@@ -3040,6 +3040,16 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 		return false;
 	}
 
+	switch (get_fs(partition_dst.fstype).copy)
+	{
+		case FS::EXTERNAL:
+			if (! erase_filesystem_signatures(partition_dst, operationdetail))
+				return false;
+			break;
+		default:
+			break;
+	}
+
 	operationdetail.add_child( OperationDetail(
 			Glib::ustring::compose( _("copy file system from %1 to %2"),
 			                  partition_src.get_path(),
