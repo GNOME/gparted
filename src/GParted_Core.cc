@@ -2997,7 +2997,8 @@ bool GParted_Core::copy( const Partition & partition_src,
 	// partition.  When copying into an existing open LUKS encryption mapping this
 	// will avoid changing partition type, where as when copying into a plain
 	// partition the type will be set.
-	bool success =    set_partition_type( filesystem_ptn_dst, operationdetail )
+	bool success =    erase_filesystem_signatures(filesystem_ptn_dst, operationdetail)
+	               && set_partition_type(filesystem_ptn_dst, operationdetail)
 	               && copy_filesystem( filesystem_ptn_src, filesystem_ptn_dst, operationdetail )
 	               && update_bootsector( partition_dst, operationdetail );
 	if ( ! success )
@@ -3038,16 +3039,6 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			GPARTED_BUG + ": " + _("destination partition contains open LUKS encryption for a file system copy only step"),
 			STATUS_ERROR, FONT_ITALIC ) );
 		return false;
-	}
-
-	switch (get_fs(partition_dst.fstype).copy)
-	{
-		case FS::EXTERNAL:
-			if (! erase_filesystem_signatures(partition_dst, operationdetail))
-				return false;
-			break;
-		default:
-			break;
 	}
 
 	operationdetail.add_child( OperationDetail(
