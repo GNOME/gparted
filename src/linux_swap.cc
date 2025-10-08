@@ -149,22 +149,22 @@ bool linux_swap::write_label( const Partition & partition, OperationDetail & ope
 }
 
 
-void linux_swap::read_uuid( Partition & partition )
+void linux_swap::read_uuid(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	if ( ! Utils::execute_command( "swaplabel " + Glib::shell_quote( partition.get_path() ), output, error, true ) )
+	int exit_status = Utils::execute_command("swaplabel " + Glib::shell_quote(partition.get_path()),
+	                                         output, error, true);
+	if (exit_status != 0)
 	{
-		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
 
-		if ( ! error .empty() )
-			partition.push_back_message( error );
-	}
+	partition.uuid = Utils::regexp_label(output, "^UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")");
 }
 
 
