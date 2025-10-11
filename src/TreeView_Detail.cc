@@ -28,6 +28,7 @@
 #include <glibmm/miscutils.h>
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 { 
 
@@ -261,4 +262,4 @@ void TreeView_Detail::on_selection_changed()
 }
 
 	
-} //GParted
+}  // namespace GParted

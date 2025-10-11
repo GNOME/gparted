@@ -26,8 +26,10 @@
 
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 {
+
 
 class xfs : public FileSystem
 {
@@ -55,6 +57,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_XFS_H */

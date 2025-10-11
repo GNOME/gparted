@@ -23,6 +23,7 @@
 
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 {
 
@@ -66,6 +67,8 @@ private:
 	Sector header_size;  // Size of the LUKS header (everything up to the start of the mapping)
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_PARTITIONLUKS_H */

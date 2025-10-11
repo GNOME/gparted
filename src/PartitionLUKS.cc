@@ -18,8 +18,10 @@
 #include "PartitionLUKS.h"
 #include "Utils.h"
 
+
 namespace GParted
 {
+
 
 PartitionLUKS::PartitionLUKS() : header_size( 0 )
 {
@@ -248,4 +250,5 @@ const Glib::ustring PartitionLUKS::get_filesystem_string() const
 	return Utils::get_encrypted_string();
 }
 
-} //GParted
+
+}  // namespace GParted

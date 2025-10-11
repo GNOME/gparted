@@ -31,6 +31,7 @@
 namespace GParted
 {
 
+
 // Data model:
 // dmraid_cache_initialized - Has the cache been loaded?
 // dmraid_found             - Is the "dmraid" command available?
@@ -577,4 +578,4 @@ const DMRaid_Member& DMRaid::get_cache_entry_by_member(const Glib::ustring& memb
 }
 
 
-}//GParted
+}  // namespace GParted

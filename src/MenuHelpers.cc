@@ -22,8 +22,11 @@
 #include <gtkmm/separatormenuitem.h>
 #include <gtkmm/stock.h>
 
+
 namespace GParted
 {
+
+
 namespace Menu_Helpers
 {
 
@@ -240,5 +243,7 @@ CheckMenuElem::CheckMenuElem(const Glib::ustring& label,
 }
 
 
-} //Menu_Helpers
-} //GParted
+}  // namespace Menu_Helpers
+
+
+}  // namespace GParted

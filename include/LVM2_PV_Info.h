@@ -31,8 +31,10 @@
 #include <glibmm/ustring.h>
 #include <vector>
 
+
 namespace GParted
 {
+
 
 struct LVM2_PV
 {
@@ -78,6 +80,8 @@ private:
 	static std::vector<Glib::ustring> error_messages ;
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_LVM2_PV_INFO_H */

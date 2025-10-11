@@ -65,7 +65,9 @@ private:
 	Glib::ustring path;
 	int max_partition_name_length;  // > 0 => naming of partitions is supported on this device
 };
- 
-} //GParted
+
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_DEVICE_H */

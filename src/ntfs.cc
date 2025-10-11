@@ -30,6 +30,7 @@
 namespace GParted
 {
 
+
 const Glib::ustring & ntfs::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	static const Glib::ustring change_uuid_warning[] =
@@ -294,4 +295,5 @@ void ntfs::clone_progress( OperationDetail *operationdetail )
 	// progress bar when the command finishes.
 }
 
-} //GParted
+
+}  // namespace GParted

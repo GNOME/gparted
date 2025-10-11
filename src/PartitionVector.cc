@@ -19,8 +19,10 @@
 
 #include <algorithm>
 
+
 namespace GParted
 {
+
 
 PartitionVector::PartitionVector( const PartitionVector & src )
 {
@@ -99,4 +101,5 @@ int find_extended_partition( const PartitionVector & partitions )
 	return -1;
 }
 
-} //GParted
+
+}  // namespace GParted

@@ -23,6 +23,7 @@
 namespace GParted
 {
 
+
 Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 {
 	const Glib::ustring& device_path = device.get_path();
@@ -111,4 +112,5 @@ Dialog_Disklabel::~Dialog_Disklabel()
 	hide();
 }
 
-}//GParted
+
+}  // namespace GParted

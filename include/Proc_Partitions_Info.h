@@ -34,6 +34,7 @@
 namespace GParted
 {
 
+
 class Proc_Partitions_Info
 {
 public:
@@ -54,6 +55,8 @@ private:
 	static std::vector<Glib::ustring> device_paths_cache ;
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_PROC_PARTITIONS_INFO_H */

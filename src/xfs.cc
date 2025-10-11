@@ -30,6 +30,7 @@
 namespace GParted
 {
 
+
 FS xfs::get_filesystem_support()
 {
 	FS fs( FS_XFS );
@@ -387,4 +388,5 @@ bool xfs::copy_progress( OperationDetail * operationdetail )
 	return true;
 }
 
-} //GParted
+
+}  // namespace GParted

@@ -161,4 +161,4 @@ const Partition & Dialog_Partition_Copy::Get_New_Partition()
 }
 
 
-} //GParted
+}  // namespace GParted

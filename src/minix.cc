@@ -22,8 +22,10 @@
 
 #include <glibmm.h>
 
+
 namespace GParted
 {
+
 
 FS minix::get_filesystem_support()
 {
@@ -58,4 +60,4 @@ bool minix::check_repair( const Partition & partition, OperationDetail & operati
 }
 
 
-} //GParted
+}  // namespace GParted

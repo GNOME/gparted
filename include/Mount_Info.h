@@ -30,8 +30,10 @@
 #include <map>
 #include <vector>
 
+
 namespace GParted
 {
+
 
 struct MountEntry
 {
@@ -71,6 +73,8 @@ private:
 	static Glib::ustring lookup_uuid_or_label(const Glib::ustring& ref);
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_MOUNT_INFO_H */

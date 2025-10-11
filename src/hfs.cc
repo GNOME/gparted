@@ -26,6 +26,7 @@
 namespace GParted
 {
 
+
 FS hfs::get_filesystem_support()
 {
 	FS fs( FS_HFS );
@@ -72,4 +73,4 @@ bool hfs::check_repair( const Partition & partition, OperationDetail & operation
 }
 
 
-} //GParted
+}  // namespace GParted

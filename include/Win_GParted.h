@@ -317,6 +317,8 @@ private:
 	sigc::connection pulsetimer;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_WIN_GPARTED_H */

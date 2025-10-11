@@ -93,6 +93,7 @@ protected:
 typedef std::vector<std::unique_ptr<Operation>> OperationVector;
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_OPERATION_H */

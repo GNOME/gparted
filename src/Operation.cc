@@ -192,4 +192,4 @@ void Operation::insert_new( PartitionVector & partitions )
 }
 
 
-} //GParted
+}  // namespace GParted

@@ -45,6 +45,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_EXFAT_H */

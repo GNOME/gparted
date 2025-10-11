@@ -93,6 +93,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOGFEATURES_H */

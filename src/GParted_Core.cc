@@ -61,8 +61,10 @@
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 
+
 namespace GParted
 {
+
 
 const std::time_t SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS = 1;
 const std::time_t SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS = 10;
@@ -4326,4 +4328,4 @@ Glib::Thread *GParted_Core::mainthread;
 std::unique_ptr<SupportedFileSystems> GParted_Core::supported_filesystems;
 
 
-} //GParted
+}  // namespace GParted

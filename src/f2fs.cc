@@ -25,6 +25,7 @@
 namespace GParted
 {
 
+
 FS f2fs::get_filesystem_support()
 {
 	FS fs( FS_F2FS );
@@ -149,4 +150,4 @@ bool f2fs::check_repair(const Partition & partition, OperationDetail & operation
 }
 
 
-} //GParted
+}  // namespace GParted

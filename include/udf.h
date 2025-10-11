@@ -24,8 +24,10 @@
 #include <stddef.h>
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 {
+
 
 class udf : public FileSystem
 {
@@ -49,6 +51,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_UDF_H */

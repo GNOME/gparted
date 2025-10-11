@@ -24,8 +24,10 @@
 #include "FileSystem.h"
 #include "Partition.h"
 
+
 namespace GParted
 {
+
 
 class Dialog_Partition_Copy : public Dialog_Base_Partition
 {
@@ -45,6 +47,7 @@ private:
 };
 
 
-}//GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_PARTITION_COPY_H */

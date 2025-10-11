@@ -41,6 +41,7 @@ public:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_BCACHEFS_H */

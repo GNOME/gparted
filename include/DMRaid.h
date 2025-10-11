@@ -84,6 +84,8 @@ private:
 	static std::vector<DMRaid_Member> dmraid_member_cache;
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_DMRAID_H */

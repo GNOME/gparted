@@ -74,6 +74,8 @@ private:
 	int default_fs;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_PARTITION_NEW_H */

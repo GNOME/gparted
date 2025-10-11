@@ -31,6 +31,7 @@
 namespace GParted
 {
 
+
 class TreeView_Detail : public Gtk::TreeView
 {
 public:
@@ -97,7 +98,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
 
 
 #endif /* GPARTED_TREEVIEW_DETAIL_H */

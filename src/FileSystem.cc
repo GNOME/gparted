@@ -215,4 +215,4 @@ void FileSystem::rm_temp_dir(const Glib::ustring& dir_name, OperationDetail& ope
 }
 
 
-} //GParted
+}  // namespace GParted

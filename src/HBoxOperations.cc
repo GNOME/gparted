@@ -26,6 +26,7 @@
 namespace GParted
 {
 
+
 HBoxOperations::HBoxOperations()
  : Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)
 {
@@ -133,4 +134,4 @@ void HBoxOperations::on_close()
 }
 
 
-} //GParted
+}  // namespace GParted

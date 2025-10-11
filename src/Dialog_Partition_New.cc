@@ -38,6 +38,7 @@
 namespace GParted
 {
 
+
 Dialog_Partition_New::Dialog_Partition_New( const Device & device,
                                             const Partition & selected_partition,
                                             bool any_extended,
@@ -487,4 +488,4 @@ Byte_Value Dialog_Partition_New::get_filesystem_min_limit( FSType fstype )
 }
 
 
-} //GParted
+}  // namespace GParted

@@ -30,6 +30,7 @@
 namespace GParted
 {
 
+
 enum CUSTOM_TEXT
 {
 	CTEXT_NONE,
@@ -131,6 +132,7 @@ protected:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_FILESYSTEM_H */

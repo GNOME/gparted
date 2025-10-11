@@ -16,7 +16,6 @@
  */
  
  
- 
 /* UTILS
  * Some stuff i need in a lot of places so i dropped in all together in one file.
  */
@@ -41,8 +40,10 @@
 //  zero from the version field nibble.
 #define RFC4122_NONE_NIL_UUID_REGEXP "[[:xdigit:]]{8}-[[:xdigit:]]{4}-[1-9a-fA-F][[:xdigit:]]{3}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"
 
+
 namespace GParted
 {
+
 
 typedef long long Sector;
 typedef long long Byte_Value;
@@ -195,6 +196,8 @@ private:
 	static bool get_kernel_version( int & major_ver, int & minor_ver, int & patch_ver ) ;
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_UTILS_H */

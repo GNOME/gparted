@@ -22,8 +22,10 @@
 #include "FileSystem.h"
 #include "Partition.h"
 
+
 namespace GParted
 {
+
 
 class ntfs : public FileSystem
 {
@@ -47,6 +49,8 @@ private:
 	void clone_progress( OperationDetail *operationdetail );
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_NTFS_H */

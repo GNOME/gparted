@@ -27,6 +27,7 @@
 namespace GParted
 {
 
+
 const Glib::ustring & luks::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	/* TO TRANSLATORS: these labels will be used in the partition menu */
@@ -166,4 +167,4 @@ bool luks::resize( const Partition & partition_new, OperationDetail & operationd
 }
 
 
-} //GParted
+}  // namespace GParted

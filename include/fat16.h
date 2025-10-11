@@ -22,8 +22,10 @@
 #include "FileSystem.h"
 #include "Partition.h"
 
+
 namespace GParted
 {
+
 
 class fat16 : public FileSystem
 {
@@ -49,6 +51,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_FAT16_H */

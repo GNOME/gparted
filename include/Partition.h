@@ -28,9 +28,10 @@
 
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 {
-	
+
 
 enum PartitionType {
 	TYPE_PRIMARY       = 0,  // Primary partition on a partitioned drive
@@ -197,6 +198,8 @@ private:
 	std::vector<Glib::ustring> messages;
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_PARTITION_H */

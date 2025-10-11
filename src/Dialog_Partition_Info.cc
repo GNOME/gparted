@@ -35,6 +35,7 @@
 namespace GParted
 {
 
+
 Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : partition( partition )
 {
 	// Set minimum dialog height so it fits on an 800x600 screen without too much
@@ -653,4 +654,4 @@ void Dialog_Partition_Info::Display_Info()
 }
 
 
-} //GParted
+}  // namespace GParted

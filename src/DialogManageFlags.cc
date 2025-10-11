@@ -152,4 +152,4 @@ void DialogManageFlags::update_warning()
 }
 
 
-}//GParted
+}  // namespace GParted

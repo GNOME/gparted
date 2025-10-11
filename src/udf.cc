@@ -29,6 +29,7 @@
 namespace GParted
 {
 
+
 const Byte_Value MIN_UDF_BLOCKS = 300;
 const Byte_Value MAX_UDF_BLOCKS = (1LL << 32) - 1;
 
@@ -291,4 +292,5 @@ size_t udf::find_first_non_latin1( const Glib::ustring & str )
 	return Glib::ustring::npos;
 }
 
-} //GParted
+
+}  // namespace GParted

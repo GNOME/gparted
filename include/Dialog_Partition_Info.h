@@ -32,6 +32,7 @@
 
 #define BORDER 8
 
+
 namespace GParted
 {
 
@@ -67,6 +68,8 @@ private:
 	int used, unused, unallocated ;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_PARTITION_INFO_H */

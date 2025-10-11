@@ -26,6 +26,7 @@
 namespace GParted
 {
 
+
 FS reiserfs::get_filesystem_support()
 {
 	FS fs( FS_REISERFS );
@@ -220,4 +221,4 @@ bool reiserfs::check_repair( const Partition & partition, OperationDetail & oper
 }
 
 
-} //GParted
+}  // namespace GParted

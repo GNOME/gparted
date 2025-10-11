@@ -29,6 +29,7 @@
 namespace GParted
 {
 
+
 //initialize static data elements
 bool FS_Info::fs_info_cache_initialized = false ;
 bool FS_Info::blkid_found  = false ;
@@ -298,4 +299,5 @@ bool FS_Info::run_blkid_update_cache_one_label( FS_Entry & fs_entry )
 	return true;
 }
 
-}//GParted
+
+}  // namespace GParted

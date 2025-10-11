@@ -28,6 +28,7 @@
 namespace GParted
 {
 
+
 Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int max_length )
 {
 	this->set_resizable( false );
@@ -72,4 +73,5 @@ Glib::ustring Dialog_Partition_Name::get_new_name()
 	return Utils::trim( Glib::ustring( entry->get_text() ) );
 }
 
-} //GParted
+
+}  // namespace GParted

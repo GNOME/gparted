@@ -164,4 +164,4 @@ bool SupportedFileSystems::supported_filesystem(FSType fstype) const
 }
 
 
-} //GParted
+}  // namespace GParted

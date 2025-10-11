@@ -28,6 +28,7 @@
 
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 {
 
@@ -54,6 +55,8 @@ public:
 bool operator==( const BlockSpecial & lhs, const BlockSpecial & rhs );
 bool operator<( const BlockSpecial & lhs, const BlockSpecial & rhs );
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_BLOCKSPECIAL_H */

@@ -35,6 +35,7 @@
 namespace GParted
 {
 
+
 DialogFeatures::DialogFeatures() 
 {
 	set_title( _("File System Support") ) ;
@@ -214,4 +215,4 @@ void DialogFeatures::load_one_filesystem(const FS& fs)
 }
 
 
-} //GParted
+}  // namespace GParted

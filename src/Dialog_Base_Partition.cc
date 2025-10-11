@@ -43,6 +43,7 @@
 namespace GParted
 {
 
+
 Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
  : m_device(device)
 {
@@ -643,4 +644,4 @@ Dialog_Base_Partition::~Dialog_Base_Partition()
 }
 
 
-} //GParted
+}  // namespace GParted

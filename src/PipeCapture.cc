@@ -26,7 +26,10 @@
 #include <glibmm/ustring.h>
 #include <glibmm/iochannel.h>
 
-namespace GParted {
+
+namespace GParted
+{
+
 
 const size_t READBUF_SIZE = 64*KIBIBYTE;
 
@@ -306,4 +309,5 @@ PipeCapture::~PipeCapture()
 	delete[] readbuf;
 }
 
-} // namespace GParted
+
+}  // namespace GParted

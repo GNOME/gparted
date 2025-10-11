@@ -23,8 +23,10 @@
 #include <unistd.h>
 #include <map>
 
+
 namespace GParted
 {
+
 
 struct MM_Number
 {
@@ -107,4 +109,5 @@ bool operator<( const BlockSpecial & lhs, const BlockSpecial & rhs )
 		return lhs.m_major < rhs.m_major || ( lhs.m_major == rhs.m_major && lhs.m_minor < rhs.m_minor );
 }
 
-} //GParted
+
+}  // namespace GParted

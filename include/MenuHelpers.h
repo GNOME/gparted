@@ -29,8 +29,12 @@
 
 namespace GParted
 {
+
+
 namespace Menu_Helpers
 {
+
+
 typedef sigc::slot<void> CallSlot;
 
 
@@ -99,7 +103,10 @@ public:
 };
 
 
-}//Menu_Helpers
-}//GParted
+}  // namespace Menu_Helpers
+
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_MENUHELPERS_H */

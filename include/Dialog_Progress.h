@@ -113,6 +113,7 @@ private:
 };
 
 
-}//GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_PROGRESS_H */

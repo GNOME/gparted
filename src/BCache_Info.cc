@@ -73,4 +73,4 @@ Glib::ustring BCache_Info::get_sysfs_bcache_path(const Glib::ustring& device_pat
 }
 
 
-} //GParted
+}  // namespace GParted

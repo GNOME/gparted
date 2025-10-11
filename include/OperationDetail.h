@@ -33,6 +33,7 @@
 namespace GParted
 {
 
+
 enum OperationDetailStatus {
 	STATUS_NONE    = 0,
 	STATUS_EXECUTE = 1,
@@ -142,6 +143,8 @@ private:
 	sigc::connection cancelconnection;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_OPERATIONDETAIL_H */

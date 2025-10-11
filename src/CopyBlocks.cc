@@ -28,7 +28,9 @@
 #include <errno.h>
 
 
-namespace GParted {
+namespace GParted
+{
+
 
 void CopyBlocks::set_cancel( bool force )
 {
@@ -239,4 +241,5 @@ void CopyBlocks::copy_block()
 		done += blocksize;
 }
 
-} // namespace GParted
+
+}  // namespace GParted

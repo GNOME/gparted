@@ -30,6 +30,7 @@
 namespace GParted
 {
 
+
 const Glib::ustring & linux_swap::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	/*TO TRANSLATORS: these labels will be used in the partition menu */
@@ -235,4 +236,5 @@ bool linux_swap::copy( const Partition & src_part,
 	return true ;
 }
 
-} //GParted
+
+}  // namespace GParted

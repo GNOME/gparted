@@ -31,6 +31,7 @@
 namespace GParted
 {
 
+
 // Cache of required btrfs file system device information by device
 // E.g. For a single device btrfs on /dev/sda2 and a three device btrfs
 //      on /dev/sd[bcd]1 the cache would be as follows.  (Note that
@@ -485,4 +486,4 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 }
 
 
-} //GParted
+}  // namespace GParted

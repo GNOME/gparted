@@ -23,8 +23,10 @@
 #include "BlockSpecial.h"
 #include "Partition.h"
 
+
 namespace GParted
 {
+
 
 struct BTRFS_Device
 {
@@ -55,6 +57,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_BTRFS_H */

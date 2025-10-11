@@ -27,9 +27,11 @@
 #include <gtkmm/expander.h>
 #include <gtkmm/comboboxtext.h>
 
+
 namespace GParted
 {
-	
+
+
 class Dialog_Disklabel : public Gtk::Dialog
 {
 public:
@@ -43,6 +45,8 @@ private:
 	std::vector<Glib::ustring> labeltypes ;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_DISKLABEL_H */

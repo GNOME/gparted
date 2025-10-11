@@ -21,8 +21,10 @@
 #include "FileSystem.h"
 #include "Partition.h"
 
+
 namespace GParted
 {
+
 
 class lvm2_pv : public FileSystem
 {
@@ -37,6 +39,8 @@ public:
 	bool remove( const Partition & partition, OperationDetail & operationdetail ) ;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_LVM2_PV_H */

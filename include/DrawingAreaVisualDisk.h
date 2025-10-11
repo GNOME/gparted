@@ -27,6 +27,7 @@
 namespace GParted
 {
 
+
 class DrawingAreaVisualDisk : public Gtk::DrawingArea
 {
 public:
@@ -126,6 +127,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_DRAWINGAREAVISUALDISK_H */

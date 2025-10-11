@@ -24,6 +24,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 
+
 namespace GParted
 {
 
@@ -39,6 +40,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_PARTITION_NAME_H */

@@ -30,8 +30,10 @@
 #include <cstddef>
 #include <vector>
 
+
 namespace GParted
 {
+
 
 class Partition;        // Forward declarations as Partition and PartitionVector are
 class PartitionVector;  // mutually recursive classes.
@@ -79,6 +81,8 @@ private:
 
 int find_extended_partition( const PartitionVector & partitions );
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_PARTITIONVECTOR_H */

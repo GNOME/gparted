@@ -42,6 +42,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_FRAME_RESIZER_EXTENDED_H */

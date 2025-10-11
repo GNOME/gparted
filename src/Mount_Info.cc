@@ -35,6 +35,7 @@
 namespace GParted
 {
 
+
 // Associative array mapping currently mounted devices to one or more mount points.
 // E.g.
 //     //                                        readonly, mountpoints
@@ -317,4 +318,4 @@ Glib::ustring Mount_Info::lookup_uuid_or_label(const Glib::ustring& ref)
 }
 
 
-} //GParted
+}  // namespace GParted

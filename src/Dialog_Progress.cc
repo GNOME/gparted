@@ -631,4 +631,4 @@ Dialog_Progress::~Dialog_Progress()
 }
 
 
-}//GParted
+}  // namespace GParted

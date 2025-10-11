@@ -22,8 +22,10 @@
 #include <glibmm/ustring.h>
 #include <vector>
 
+
 namespace GParted
 {
+
 
 struct FS_Entry
 {
@@ -60,6 +62,8 @@ private:
 	static std::vector<FS_Entry> fs_info_cache;
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_FS_INFO_H */

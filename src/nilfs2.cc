@@ -25,6 +25,7 @@
 namespace GParted
 {
 
+
 FS nilfs2::get_filesystem_support()
 {
 	FS fs( FS_NILFS2 );
@@ -232,4 +233,5 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 	return success ;
 }
 
-} //GParted
+
+}  // namespace GParted

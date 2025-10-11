@@ -29,6 +29,7 @@
 namespace GParted
 {
 
+
 class OperationCopy : public Operation
 {
 public:
@@ -53,6 +54,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_OPERATIONCOPY_H */

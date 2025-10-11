@@ -17,8 +17,10 @@
 
 #include "Partition.h"
 
+
 namespace GParted
 {
+
 
 Partition::Partition()
 {
@@ -531,4 +533,4 @@ Sector Partition::calc_significant_unallocated_sectors() const
 }
 
 
-} //GParted
+}  // namespace GParted

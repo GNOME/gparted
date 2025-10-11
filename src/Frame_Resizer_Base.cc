@@ -439,4 +439,4 @@ void Frame_Resizer_Base::redraw()
 }
 
 
-} //GParted
+}  // namespace GParted

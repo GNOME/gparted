@@ -24,8 +24,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+
 namespace GParted
 {
+
 
 // Cache of active dm-crypt mappings.
 // Example entry:
@@ -163,4 +165,5 @@ const LUKS_Mapping & LUKS_Info::get_cache_entry_internal( const Glib::ustring & 
 	return not_found;
 }
 
-}//GParted
+
+}  // namespace GParted

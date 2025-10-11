@@ -24,6 +24,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 
+
 namespace GParted
 {
 
@@ -38,6 +39,8 @@ private:
 	Gtk::Entry *entry;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_FILESYSTEM_LABEL_H */

@@ -46,6 +46,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_OPERATIONFORMAT_H */

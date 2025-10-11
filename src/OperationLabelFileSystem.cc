@@ -79,4 +79,5 @@ bool OperationLabelFileSystem::merge_operations( const Operation & candidate )
 	return false;
 }
 
-} //GParted
+
+}  // namespace GParted

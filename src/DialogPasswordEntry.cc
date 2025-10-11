@@ -30,6 +30,7 @@
 namespace GParted
 {
 
+
 DialogPasswordEntry::DialogPasswordEntry(const Partition& partition, const Glib::ustring& reason)
 {
 	this->set_resizable( false );
@@ -104,4 +105,4 @@ void DialogPasswordEntry::on_button_unlock()
 }
 
 
-} //GParted
+}  // namespace GParted

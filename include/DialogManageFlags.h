@@ -76,6 +76,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOGMANAGEFLAGS_H */

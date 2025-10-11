@@ -23,6 +23,7 @@
 namespace GParted
 {
 
+
 enum VG_BIT
 {
 	VGBIT_EXPORTED = 2,	//  "x" VG exported,                    "-" VG not exported
@@ -391,4 +392,5 @@ bool LVM2_PV_Info::bit_set( const Glib::ustring & attr, unsigned int bit )
 	return false ;
 }
 
-}//GParted
+
+}  // namespace GParted

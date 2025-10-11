@@ -3592,4 +3592,4 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	return false ;
 }
 
-} // GParted
+}  // namespace GParted

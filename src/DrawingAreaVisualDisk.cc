@@ -28,6 +28,7 @@
 #define SEP 4
 #define HEIGHT 70 + 2 * MAIN_BORDER
 
+
 namespace GParted
 {
 
@@ -454,4 +455,5 @@ DrawingAreaVisualDisk::~DrawingAreaVisualDisk()
 	clear() ;
 }
 
-} //GParted
+
+}  // namespace GParted

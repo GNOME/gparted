@@ -47,6 +47,8 @@ private:
 	void remove_original_and_adjacent_unallocated( PartitionVector & partitions, int index_orig );
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_OPERATIONDELETE_H */

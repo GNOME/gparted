@@ -27,6 +27,7 @@
 namespace GParted
 {
 
+
 class OperationChangeUUID : public Operation
 {
 public:
@@ -46,6 +47,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_OPERATIONCHANGEUUID_H */

@@ -24,8 +24,10 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
 
+
 namespace GParted
 {
+
 
 Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 {
@@ -65,4 +67,5 @@ Glib::ustring Dialog_FileSystem_Label::get_new_label()
 	return Utils::trim( Glib::ustring( entry ->get_text() ) );
 }
 
-} //GParted
+
+}  // namespace GParted

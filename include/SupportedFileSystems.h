@@ -49,6 +49,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_SUPPORTEDFILESYSTEMS_H */

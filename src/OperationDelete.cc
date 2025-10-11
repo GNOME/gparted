@@ -145,4 +145,5 @@ void OperationDelete::remove_original_and_adjacent_unallocated( PartitionVector 
 	partitions .erase( partitions .begin() + index_orig ) ;
 }
 
-} //GParted
+
+}  // namespace GParted

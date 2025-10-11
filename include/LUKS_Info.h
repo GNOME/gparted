@@ -31,8 +31,10 @@
 #include <glibmm/ustring.h>
 #include <vector>
 
+
 namespace GParted
 {
+
 
 enum KeyLocation
 {
@@ -64,6 +66,8 @@ private:
 	static bool cache_initialised;
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_LUKS_INFO_H */

@@ -26,8 +26,10 @@
 
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 {
+
 
 class ext2 : public FileSystem
 {
@@ -63,6 +65,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_EXT2_H */

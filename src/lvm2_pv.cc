@@ -25,6 +25,7 @@
 namespace GParted
 {
 
+
 const Glib::ustring & lvm2_pv::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	/*TO TRANSLATORS: these labels will be used in the partition menu */
@@ -135,4 +136,4 @@ bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationde
 }
 
 
-} //GParted
+}  // namespace GParted

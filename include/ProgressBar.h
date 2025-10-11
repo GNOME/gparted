@@ -21,8 +21,10 @@
 #include <glibmm/ustring.h>
 #include <glibmm/timer.h>
 
+
 namespace GParted
 {
+
 
 enum ProgressBar_Text
 {
@@ -58,6 +60,8 @@ private:
 	Glib::Timer       m_timer;      // Measures elapsed time to the microsecond for accurate estimation
 };
 
-}//GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_PROGRESS_H */

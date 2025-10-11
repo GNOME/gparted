@@ -27,6 +27,7 @@
 namespace GParted
 {
 
+
 class OptionStore_Item;
 class OptionStore_Item_Collection;
 typedef const OptionStore_Item            OptionStore_Item_Const;
@@ -195,6 +196,7 @@ protected:
 };
 
 
-}//GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_OPTIONCOMBOBOX_H */

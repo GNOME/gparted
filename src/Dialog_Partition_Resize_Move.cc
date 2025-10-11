@@ -369,4 +369,4 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 }
 
 
-} //GParted
+}  // namespace GParted

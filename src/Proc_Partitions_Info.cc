@@ -28,6 +28,7 @@
 namespace GParted
 {
 
+
 //Initialize static data elements
 bool Proc_Partitions_Info::proc_partitions_info_cache_initialized = false ;
 
@@ -240,4 +241,4 @@ bool Proc_Partitions_Info::is_partition_of_device(const Glib::ustring& partname,
 }
 
 
-} //GParted
+}  // namespace GParted

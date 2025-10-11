@@ -30,6 +30,7 @@
 namespace GParted
 {
 
+
 FS jfs::get_filesystem_support()
 {
 	FS fs( FS_JFS );
@@ -301,4 +302,4 @@ bool jfs::check_repair( const Partition & partition, OperationDetail & operation
 }
 
 
-} //GParted
+}  // namespace GParted

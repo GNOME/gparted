@@ -72,7 +72,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
 
 
 #endif /* GPARTED_HBOXOPERATIONS_H */

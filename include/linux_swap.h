@@ -22,8 +22,10 @@
 #include "FileSystem.h"
 #include "Partition.h"
 
+
 namespace GParted
 {
+
 
 class linux_swap : public FileSystem
 {
@@ -47,6 +49,8 @@ public:
 		   OperationDetail & operationdetail ) ;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_LINUX_SWAP_H */

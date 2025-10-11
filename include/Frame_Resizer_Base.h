@@ -98,6 +98,7 @@ private:
 };
 
 
-} //GParted
+}  // namespace GParted
+
 
 #endif /* GPARTED_FRAME_RESIZER_BASE_H */

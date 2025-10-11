@@ -39,6 +39,7 @@
 namespace GParted
 {
 
+
 class Dialog_Base_Partition : public Gtk::Dialog
 {
 public:
@@ -117,6 +118,8 @@ private:
 	Gtk::Button button_resize_move;  // Displayed only in the derived Resize/Move dialog
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_BASE_PARTITION_H */

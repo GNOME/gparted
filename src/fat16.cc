@@ -26,6 +26,7 @@
 namespace GParted
 {
 
+
 const Glib::ustring & fat16::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	static const Glib::ustring change_uuid_warning[] =
@@ -360,4 +361,4 @@ Glib::ustring fat16::remove_spaces(const Glib::ustring& str)
 }
 
 
-} //GParted
+}  // namespace GParted

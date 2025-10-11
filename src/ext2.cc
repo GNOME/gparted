@@ -30,6 +30,7 @@
 namespace GParted
 {
 
+
 FS ext2::get_filesystem_support()
 {
 	FS fs(m_specific_fstype);
@@ -452,4 +453,5 @@ void ext2::copy_progress( OperationDetail *operationdetail )
 	}
 }
 
-} //GParted
+
+}  // namespace GParted

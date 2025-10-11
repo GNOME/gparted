@@ -273,4 +273,4 @@ Glib::ustring exfat::random_serial()
 }
 
 
-} //GParted
+}  // namespace GParted

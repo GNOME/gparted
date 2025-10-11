@@ -24,6 +24,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 
+
 namespace GParted
 {
 
@@ -42,6 +43,8 @@ private:
 	Gtk::Label *m_error_message;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTEDPASSWORDENTRY_H */

@@ -24,8 +24,10 @@
 #include "Partition.h"
 #include "PartitionVector.h"
 
+
 namespace GParted
 {
+
 
 class Dialog_Partition_Resize_Move : public Dialog_Base_Partition
 {
@@ -44,6 +46,8 @@ private:
 	void Resize_Move_Extended( const PartitionVector & partitions );
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_DIALOG_PARTITION_RESIZE_MOVE_H */

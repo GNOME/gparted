@@ -26,6 +26,7 @@
 namespace GParted
 {
 
+
 FS reiser4::get_filesystem_support()
 {
 	FS fs( FS_REISER4 );
@@ -174,4 +175,4 @@ bool reiser4::check_repair( const Partition & partition, OperationDetail & opera
 }
 
 
-} //GParted
+}  // namespace GParted

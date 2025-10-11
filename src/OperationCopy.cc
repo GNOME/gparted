@@ -101,4 +101,5 @@ bool OperationCopy::merge_operations( const Operation & candidate )
 	return false;  // Never merge copy operations
 }
 
-} //GParted
+
+}  // namespace GParted

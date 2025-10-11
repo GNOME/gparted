@@ -187,4 +187,4 @@ bool bcachefs::check_repair(const Partition& partition, OperationDetail& operati
 }
 
 
-} //GParted
+}  // namespace GParted

@@ -192,4 +192,4 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 }
 
 
-} //GParted
+}  // namespace GParted

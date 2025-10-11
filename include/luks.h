@@ -21,8 +21,10 @@
 #include "FileSystem.h"
 #include "Partition.h"
 
+
 namespace GParted
 {
+
 
 class luks : public FileSystem
 {
@@ -34,6 +36,8 @@ public:
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition );
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_LUKS_H */

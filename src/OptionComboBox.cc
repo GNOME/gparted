@@ -24,6 +24,7 @@
 namespace GParted
 {
 
+
 // NOTE: As stated in Gtkmm3 documentation, slots can be shared for all model instances.
 // See: Class Reference for Gtk::TreeModelColumn and Gtk::TreeModelColumnRecord.
 //     https://developer.gnome.org/gtkmm/3.22/classGtk_1_1TreeModelColumnRecord.html#details
@@ -368,4 +369,4 @@ OptionStore_Item_Const OptionComboBox::get_active() const
 }
 
 
-}//GParted
+}  // namespace GParted

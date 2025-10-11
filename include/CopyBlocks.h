@@ -27,6 +27,7 @@
 
 namespace GParted {
 
+
 class CopyBlocks
 {
 	const Glib::ustring & src_device;
@@ -65,6 +66,8 @@ public:
 	bool copy();
 };
 
-} // namespace GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_COPYBLOCKS_H */

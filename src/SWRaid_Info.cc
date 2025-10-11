@@ -22,8 +22,10 @@
 #include <glibmm/miscutils.h>
 #include <fstream>
 
+
 namespace GParted
 {
+
 
 // Data model:
 // cache_initialised - Has the cache been loaded?
@@ -381,4 +383,5 @@ Glib::ustring SWRaid_Info::mdadm_to_canonical_uuid( const Glib::ustring & mdadm_
 	return canonical_uuid;
 }
 
-} //GParted
+
+}  // namespace GParted

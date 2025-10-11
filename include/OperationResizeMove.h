@@ -50,6 +50,8 @@ private:
 	void remove_adjacent_unallocated( PartitionVector & partitions, int index_orig );
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_OPERATIONRESIZEMOVE_H */

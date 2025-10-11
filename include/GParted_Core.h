@@ -39,6 +39,7 @@
 namespace GParted
 {
 
+
 class GParted_Core
 {
 friend class EraseFileSystemSignaturesTest;  // To allow unit testing to call private
@@ -244,6 +245,8 @@ private:
 	static std::unique_ptr<SupportedFileSystems> supported_filesystems;
 };
 
-} //GParted
+
+}  // namespace GParted
+
 
 #endif /* GPARTED_GPARTED_CORE_H */
