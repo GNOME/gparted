@@ -39,4 +39,5 @@ std::ostream& operator<<(std::ostream& out, const OperationDetail& od);
 
 }  // namespace GParted
 
+
 #endif /* GPARTED_TEST_INSERTION_OPERATORS_H */

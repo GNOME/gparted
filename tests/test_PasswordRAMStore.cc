@@ -43,8 +43,10 @@
 #include <string>
 #include <glibmm/ustring.h>
 
+
 namespace GParted
 {
+
 
 // Generate repeatable unique keys
 static const char * gen_key( unsigned int i )
@@ -291,5 +293,6 @@ TEST_F( PasswordRAMStoreTest, TotalErasure )
 	PasswordRAMStoreTest::erase_all();
 	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );
 }
+
 
 }  // namespace GParted

@@ -112,4 +112,4 @@ void ensure_x11_display(int argc, char** argv)
 }
 
 
-} //GParted
+}  // namespace GParted

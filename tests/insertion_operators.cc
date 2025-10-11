@@ -117,4 +117,4 @@ std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
 }
 
 
-} //GParted
+}  // namespace GParted

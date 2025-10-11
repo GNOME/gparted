@@ -62,6 +62,7 @@
 namespace GParted
 {
 
+
 // Print method for a BlockSpecial object
 std::ostream& operator<<( std::ostream & out, const BlockSpecial & bs )
 {
@@ -490,5 +491,6 @@ TEST( BlockSpecialTest, OperatorLessThanTwoDifferentBlockDevicesMinorNumbers )
 	BlockSpecial bs2( "/dummy_block1" );
 	EXPECT_TRUE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
+
 
 }  // namespace GParted

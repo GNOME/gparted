@@ -40,4 +40,5 @@ void ensure_x11_display(int argc, char** argv);
 
 }  // namespace GParted
 
+
 #endif /* GPARTED_TEST_COMMON_H */
