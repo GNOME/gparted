@@ -3462,7 +3462,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		if (partition.is_flag_set("lba")                                     &&
 		    ped_partition_is_flag_available(lp_partition, PED_PARTITION_LBA)   )
 		{
-			success = success && set_partition_type_using_flag(lp_partition, PED_PARTITION_LBA, child_od);
+			success = success && set_partition_flag(lp_partition, PED_PARTITION_LBA, child_od);
 		}
 	}
 
@@ -3477,6 +3477,14 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 bool GParted_Core::set_partition_type_using_flag(PedPartition* lp_partition,
                                                  PedPartitionFlag lp_flag,
                                                  OperationDetail& operationdetail)
+{
+	return set_partition_flag(lp_partition, lp_flag, operationdetail);
+}
+
+
+bool GParted_Core::set_partition_flag(PedPartition* lp_partition,
+                                      PedPartitionFlag lp_flag,
+                                      OperationDetail& operationdetail)
 {
 	/* TO TRANSLATORS: looks like   new partition flag: lvm */
 	operationdetail.add_child(OperationDetail(Glib::ustring::compose(_("new partition flag: %1"),

@@ -212,6 +212,9 @@ private:
 	static bool set_partition_type_using_flag(PedPartition* lp_partition,
 					          PedPartitionFlag lp_flag,
 					          OperationDetail& operationdetail);
+	static bool set_partition_flag(PedPartition* lp_partition,
+	                               PedPartitionFlag lp_flag,
+	                               OperationDetail& operationdetail);
 	static bool set_partition_type_using_fstype(PedPartition* lp_partition,
 					            FSType fstype,
 					            OperationDetail& operationdetail);
