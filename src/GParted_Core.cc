@@ -1446,11 +1446,13 @@ void GParted_Core::compose_partition_flags(Partition& partition, const Glib::ust
 		return;
 	}
 
-	// On an MSDOS table for this FAT16/32 file system always set the LBA (Logical
-	// Block Addressing) flag to move into the 21 century and match how the Parted
-	// command and GNOME Disks create such partitions.
-	if (disktype == "msdos"                                            &&
-	    (partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   )
+	// On an MSDOS table for this Extended partition or FAT16/32 file system always
+	// set the LBA (Logical Block Addressing) flag to move into the 21 century and
+	// match how the Parted command and GNOME Disks create such partitions.
+	if (disktype == "msdos"                    &&
+	    (partition.type   == TYPE_EXTENDED ||
+	     partition.fstype == FS_FAT16      ||
+	     partition.fstype == FS_FAT32        )   )
 	{
 		partition.clear_flag("esp");
 		partition.clear_flag("lvm");
@@ -1809,8 +1811,9 @@ bool GParted_Core::create( Partition & new_partition, OperationDetail & operatio
 			return false;
 	}
 
-	if (new_partition.type   == TYPE_EXTENDED  ||
-	    new_partition.fstype == FS_UNFORMATTED   )
+	if (new_partition.type == TYPE_EXTENDED)
+		return set_partition_type(new_partition, operationdetail);
+	else if (new_partition.fstype == FS_UNFORMATTED)
 		return true;
 	else if (new_partition.fstype == FS_CLEARED)
 		return erase_filesystem_signatures( new_partition, operationdetail );
@@ -3427,7 +3430,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		return false;
 	}
 
-	PedPartition* lp_partition = ped_disk_get_partition_by_sector(lp_disk, partition.get_sector());
+	PedPartition* lp_partition = get_lp_partition(lp_disk, partition);
 	if (! lp_partition)
 	{
 		child_od.set_success_and_capture_errors(false);
@@ -3437,9 +3440,16 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 	// Set the on-disk partition type appropriately.  Libparted uses the file system
 	// type, overridden or modified by flags.
 	bool success = false;
-	if ((partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   &&
-	    partition.is_flag_set("esp")                                     &&
-	    ped_partition_is_flag_available(lp_partition, PED_PARTITION_ESP)   )
+	if (partition.type == TYPE_EXTENDED                                  &&
+	    ped_partition_is_flag_available(lp_partition, PED_PARTITION_LBA)   )
+	{
+		// Set the LBA flag for this extended partition to match what the Parted
+		// command does.  Only available on MSDOS tables.
+		success = set_partition_flag(lp_partition, PED_PARTITION_LBA, child_od);
+	}
+	else if ((partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   &&
+	         partition.is_flag_set("esp")                                     &&
+	         ped_partition_is_flag_available(lp_partition, PED_PARTITION_ESP)   )
 	{
 		// The UEFI specification only supports FAT file systems in EFI System
 		// Partitions (ESP)s.  Set the libparted ESP flag to set the on-disk
