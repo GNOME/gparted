@@ -1814,9 +1814,8 @@ bool GParted_Core::create( Partition & new_partition, OperationDetail & operatio
 		return    erase_filesystem_signatures( new_partition, operationdetail )
 		       && set_partition_type( new_partition, operationdetail )
 		       && create_filesystem( new_partition, operationdetail );
-
-	return false;
 }
+
 
 bool GParted_Core::create_partition( Partition & new_partition, OperationDetail & operationdetail, Sector min_size )
 {
