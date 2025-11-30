@@ -17,6 +17,12 @@
 
 #include "Partition.h"
 
+#include "Utils.h"
+
+#include <algorithm>
+#include <vector>
+#include <glibmm/ustring.h>
+
 
 namespace GParted
 {

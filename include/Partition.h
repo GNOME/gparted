@@ -23,10 +23,12 @@
 #ifndef GPARTED_PARTITION_H
 #define GPARTED_PARTITION_H
 
-#include "Utils.h"
+
 #include "PartitionVector.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
+#include <vector>
 
 
 namespace GParted
