@@ -82,6 +82,7 @@ public:
 	                                Byte_Value sector_size,
 	                                bool inside_extended );
 	static Glib::ustring check_logical_esp_warning(PartitionType ptntype, bool esp_flag);
+	static void compose_partition_flags(Partition& partition);
 
 private:
 	//detectionstuff..

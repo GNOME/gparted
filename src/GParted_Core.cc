@@ -1423,6 +1423,33 @@ Glib::ustring GParted_Core::check_logical_esp_warning(PartitionType ptntype, boo
 }
 
 
+// Set and clear partition flags consistently according to the existing flags and file
+// system type.
+void GParted_Core::compose_partition_flags(Partition& partition)
+{
+	// For this EFI System Partition (ESP) containing a FAT file system clear possible
+	// LVM flag.
+	if (partition.is_flag_set("esp")                                   &&
+	    (partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   )
+	{
+		partition.clear_flag("lvm");
+		return;
+	}
+
+	// For this LVM2 PV file system only set the LVM flag.
+	if (partition.fstype == FS_LVM2_PV)
+	{
+		partition.clear_flag("esp");
+		partition.set_flag("lvm");
+		return;
+	}
+
+	// Otherwise clear the flags.
+	partition.clear_flag("esp");
+	partition.clear_flag("lvm");
+}
+
+
 void GParted_Core::set_mountpoints( Partition & partition )
 {
 	if (partition.fstype == FS_LVM2_PV)
