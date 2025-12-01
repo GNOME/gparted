@@ -2352,7 +2352,7 @@ void Win_GParted::activate_paste()
 			filesystem_ptn_new.clear_messages();
 		}
 
-		GParted_Core::compose_partition_flags(*partition_new);
+		GParted_Core::compose_partition_flags(*partition_new, m_devices[m_current_device].disktype);
  
 		std::unique_ptr<Operation> operation = std::make_unique<OperationCopy>(
 		                        m_devices[m_current_device],
@@ -2614,7 +2614,7 @@ void Win_GParted::activate_format( FSType new_fs )
 	temp_ptn->name = selected_partition_ptr->name;
 	// Copy flags to allow ESP to be maintained.
 	temp_ptn->flags = selected_partition_ptr->flags;
-	GParted_Core::compose_partition_flags(*temp_ptn);
+	GParted_Core::compose_partition_flags(*temp_ptn, m_devices[m_current_device].disktype);
 
 	// Generate minimum and maximum partition size limits for the new file system.
 	FS_Limits fs_limits = gparted_core.get_filesystem_limits( new_fs, temp_ptn->get_filesystem_partition() );

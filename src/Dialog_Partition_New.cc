@@ -307,7 +307,7 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 			break;
 	}
 
-	GParted_Core::compose_partition_flags(*m_new_partition);
+	GParted_Core::compose_partition_flags(*m_new_partition, m_device.disktype);
 
 	m_new_partition->free_space_before =   Sector(spinbutton_before.get_value_as_int())
 	                                     * (MEBIBYTE / m_new_partition->sector_size);

@@ -1423,16 +1423,17 @@ Glib::ustring GParted_Core::check_logical_esp_warning(PartitionType ptntype, boo
 }
 
 
-// Set and clear partition flags consistently according to the existing flags and file
-// system type.
-void GParted_Core::compose_partition_flags(Partition& partition)
+// Set and clear partition flags consistently according to the existing flags, partition
+// table and file system type.
+void GParted_Core::compose_partition_flags(Partition& partition, const Glib::ustring& disktype)
 {
-	// For this EFI System Partition (ESP) containing a FAT file system clear possible
-	// LVM flag.
+	// For this EFI System Partition (ESP) containing a FAT file system clear other
+	// possible flags.
 	if (partition.is_flag_set("esp")                                   &&
 	    (partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   )
 	{
 		partition.clear_flag("lvm");
+		partition.clear_flag("lba");
 		return;
 	}
 
@@ -1441,12 +1442,26 @@ void GParted_Core::compose_partition_flags(Partition& partition)
 	{
 		partition.clear_flag("esp");
 		partition.set_flag("lvm");
+		partition.clear_flag("lba");
+		return;
+	}
+
+	// On an MSDOS table for this FAT16/32 file system always set the LBA (Logical
+	// Block Addressing) flag to move into the 21 century and match how the Parted
+	// command and GNOME Disks create such partitions.
+	if (disktype == "msdos"                                            &&
+	    (partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   )
+	{
+		partition.clear_flag("esp");
+		partition.clear_flag("lvm");
+		partition.set_flag("lba");
 		return;
 	}
 
 	// Otherwise clear the flags.
 	partition.clear_flag("esp");
 	partition.clear_flag("lvm");
+	partition.clear_flag("lba");
 }
 
 
@@ -3420,7 +3435,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 	}
 
 	// Set the on-disk partition type appropriately.  Libparted uses the file system
-	// type, overridden by flags.
+	// type, overridden or modified by flags.
 	bool success = false;
 	if ((partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   &&
 	    partition.is_flag_set("esp")                                     &&
@@ -3443,6 +3458,12 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		// Tell libparted the type of the file system so it can set an appropriate
 		// on-disk partition type.
 		success = set_partition_type_using_fstype(lp_partition, partition.fstype, child_od);
+
+		if (partition.is_flag_set("lba")                                     &&
+		    ped_partition_is_flag_available(lp_partition, PED_PARTITION_LBA)   )
+		{
+			success = success && set_partition_type_using_flag(lp_partition, PED_PARTITION_LBA, child_od);
+		}
 	}
 
 	success = success && commit(lp_disk);
