@@ -217,7 +217,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 }
 
 
-const Partition & Dialog_Partition_New::Get_New_Partition()
+const Partition& Dialog_Partition_New::get_new_partition()
 {
 	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 

@@ -180,7 +180,7 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 }
 
 
-const Partition & Dialog_Base_Partition::Get_New_Partition()
+const Partition& Dialog_Base_Partition::get_new_partition()
 {
 	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
 

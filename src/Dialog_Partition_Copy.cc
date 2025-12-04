@@ -147,7 +147,7 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 }
 
 
-const Partition & Dialog_Partition_Copy::Get_New_Partition()
+const Partition& Dialog_Partition_Copy::get_new_partition()
 {
 	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 

@@ -40,7 +40,7 @@ public:
 	Dialog_Partition_Copy(const Dialog_Partition_Copy& src) = delete;             // Copy construction prohibited
 	Dialog_Partition_Copy& operator=(const Dialog_Partition_Copy& rhs) = delete;  // Copy assignment prohibited
 
-	const Partition & Get_New_Partition();
+	const Partition& get_new_partition();
 
 private:
 	void set_data( const Partition & selected_partition, const Partition & copied_partition );

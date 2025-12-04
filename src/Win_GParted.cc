@@ -2080,7 +2080,7 @@ void Win_GParted::activate_resize()
 
 		// Apply resize/move from the dialog to a copy of the selected partition.
 		Partition * resized_ptn = selected_partition_ptr->clone();
-		resized_ptn->resize( dialog.Get_New_Partition() );
+		resized_ptn->resize(dialog.get_new_partition());
 
 		std::unique_ptr<Operation> operation = std::make_unique<OperationResizeMove>(
 		                        m_devices[m_current_device],
@@ -2256,7 +2256,7 @@ void Win_GParted::activate_paste()
 				std::unique_ptr<Operation> operation = std::make_unique<OperationCopy>(
 				                        m_devices[m_current_device],
 				                        *selected_partition_ptr,
-				                        dialog.Get_New_Partition(),
+				                        dialog.get_new_partition(),
 				                        *copied_partition);
 				operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
 
@@ -2420,7 +2420,7 @@ void Win_GParted::activate_new()
 			std::unique_ptr<Operation> operation = std::make_unique<OperationCreate>(
 			                        m_devices[m_current_device],
 			                        *selected_partition_ptr,
-			                        dialog.Get_New_Partition());
+			                        dialog.get_new_partition());
 			operation->m_icon = Utils::mk_pixbuf(*this, Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
 
 			add_operation(m_devices[m_current_device], std::move(operation));

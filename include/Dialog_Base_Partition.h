@@ -51,7 +51,7 @@ public:
 	Dialog_Base_Partition& operator=(const Dialog_Base_Partition& rhs) = delete;  // Copy assignment prohibited
 
 	void Set_Resizer( bool extended ) ;
-	const Partition & Get_New_Partition();
+	const Partition& get_new_partition();
 
 protected:
 	enum SPINBUTTON {

@@ -48,7 +48,7 @@ public:
 	Dialog_Partition_New(const Dialog_Partition_New& src) = delete;             // Copy construction prohibited
 	Dialog_Partition_New& operator=(const Dialog_Partition_New& rhs) = delete;  // Copy assignment prohibited
 
-	const Partition & Get_New_Partition();
+	const Partition& get_new_partition();
 
 private:
 	void set_data( const Device & device,
