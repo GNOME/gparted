@@ -156,6 +156,7 @@ const Partition & Dialog_Partition_Copy::Get_New_Partition()
 
 	//set proper name and status for partition
 	m_new_partition->status = STAT_COPY;
+	GParted_Core::compose_partition_flags(*m_new_partition, m_device.disktype);
 
 	return *m_new_partition;
 }
