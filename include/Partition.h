@@ -127,8 +127,8 @@ public:
 	const Glib::ustring& get_filesystem_label() const;
 	void set_filesystem_label( const Glib::ustring & filesystem_label );
 	bool is_flag_set(const Glib::ustring& flag) const;
-	void set_flag(const Glib::ustring& flag);
-	void clear_flag(const Glib::ustring& flag);
+	void set_only_flag(const Glib::ustring& flag);
+	void clear_all_flags();
 
 	// Message accessors.  Messages are stored locally and accessed globally.
 	// Stored locally means the messages are stored in the Partition object to which

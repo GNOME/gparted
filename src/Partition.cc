@@ -301,23 +301,16 @@ bool Partition::is_flag_set(const Glib::ustring& flag) const
 }
 
 
-void Partition::set_flag(const Glib::ustring& flag)
+void Partition::set_only_flag(const Glib::ustring& flag)
 {
-	if (! is_flag_set(flag))
-		flags.push_back(flag);
+	flags.clear();
+	flags.push_back(flag);
 }
 
 
-void Partition::clear_flag(const Glib::ustring& flag)
+void Partition::clear_all_flags()
 {
-	for (unsigned int i = 0; i < flags.size(); i++)
-	{
-		if (flags[i] == flag)
-		{
-			flags.erase(flags.begin() + i);
-			return;
-		}
-	}
+	flags.clear();
 }
 
 

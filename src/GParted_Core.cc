@@ -1432,17 +1432,14 @@ void GParted_Core::compose_partition_flags(Partition& partition, const Glib::ust
 	if (partition.is_flag_set("esp")                                   &&
 	    (partition.fstype == FS_FAT16 || partition.fstype == FS_FAT32)   )
 	{
-		partition.clear_flag("lvm");
-		partition.clear_flag("lba");
+		partition.set_only_flag("esp");
 		return;
 	}
 
 	// For this LVM2 PV file system only set the LVM flag.
 	if (partition.fstype == FS_LVM2_PV)
 	{
-		partition.clear_flag("esp");
-		partition.set_flag("lvm");
-		partition.clear_flag("lba");
+		partition.set_only_flag("lvm");
 		return;
 	}
 
@@ -1454,16 +1451,12 @@ void GParted_Core::compose_partition_flags(Partition& partition, const Glib::ust
 	     partition.fstype == FS_FAT16      ||
 	     partition.fstype == FS_FAT32        )   )
 	{
-		partition.clear_flag("esp");
-		partition.clear_flag("lvm");
-		partition.set_flag("lba");
+		partition.set_only_flag("lba");
 		return;
 	}
 
 	// Otherwise clear the flags.
-	partition.clear_flag("esp");
-	partition.clear_flag("lvm");
-	partition.clear_flag("lba");
+	partition.clear_all_flags();
 }
 
 
