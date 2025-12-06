@@ -73,17 +73,20 @@ static bool udevadm_found = false;
 
 static const Glib::ustring GPARTED_BUG( _("GParted Bug") );
 
+
 GParted_Core::GParted_Core()
 {
 	thread_status_message = "" ;
 
 	ped_exception_set_handler( ped_exception_handler ) ; 
 
-	//get valid flags ...
+	// Get all libparted flags
 	for ( PedPartitionFlag flag = ped_partition_flag_next( static_cast<PedPartitionFlag>( 0 ) ) ;
 	      flag ;
 	      flag = ped_partition_flag_next( flag ) )
-		flags .push_back( flag ) ;
+	{
+		m_all_libparted_flags.push_back(flag);
+	}
 
 	find_supported_core();
 
@@ -589,12 +592,14 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 		PedPartition* lp_partition = get_lp_partition( lp_disk, partition );
 		if ( lp_partition )
 		{
-			for ( unsigned int t = 0 ; t < flags .size() ; t++ )
-				if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) )
-					flag_info[ ped_partition_flag_get_name( flags[ t ] ) ] =
-						ped_partition_get_flag( lp_partition, flags[ t ] ) ;
+			for (unsigned int i = 0; i < m_all_libparted_flags.size(); i++)
+				if (ped_partition_is_flag_available(lp_partition, m_all_libparted_flags[i]))
+				{
+					flag_info[ped_partition_flag_get_name(m_all_libparted_flags[i])] =
+						ped_partition_get_flag(lp_partition, m_all_libparted_flags[i]);
+				}
 		}
-	
+
 		destroy_device_and_disk( lp_device, lp_disk ) ;
 	}
 
@@ -1771,10 +1776,12 @@ void GParted_Core::LP_set_used_sectors( Partition & partition, PedDisk* lp_disk 
 
 void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition )
 {
-	for ( unsigned int t = 0 ; t < flags .size() ; t++ )
-		if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) &&
-		     ped_partition_get_flag( lp_partition, flags[ t ] ) )
-			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
+	for (unsigned int i = 0; i < m_all_libparted_flags.size(); i++)
+		if (ped_partition_is_flag_available(lp_partition, m_all_libparted_flags[i]) &&
+		    ped_partition_get_flag(lp_partition, m_all_libparted_flags[i])            )
+		{
+			partition.flags.push_back(ped_partition_flag_get_name(m_all_libparted_flags[i]));
+		}
 
 	Glib::ustring warning = check_logical_esp_warning(partition.type, partition.is_flag_set("esp"));
 	if (warning.size() > 0)
@@ -3540,11 +3547,11 @@ bool GParted_Core::set_partition_type_using_fstype(PedPartition* lp_partition,
 
 	// Clear all libparted flags so they don't override the on-disk partition type
 	// being set using the file system type.
-	for (unsigned int i = 0; i < flags.size(); i++)
+	for (unsigned int i = 0; i < m_all_libparted_flags.size(); i++)
 	{
-		if (ped_partition_is_flag_available(lp_partition, flags[i]))
+		if (ped_partition_is_flag_available(lp_partition, m_all_libparted_flags[i]))
 		{
-			if (! ped_partition_set_flag(lp_partition, flags[i], 0))
+			if (! ped_partition_set_flag(lp_partition, m_all_libparted_flags[i], 0))
 			{
 				operationdetail.get_last_child().set_success_and_capture_errors(false);
 				return false;

@@ -242,7 +242,7 @@ private:
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
-	std::vector<PedPartitionFlag> flags;
+	std::vector<PedPartitionFlag> m_all_libparted_flags;
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
 	Glib::ustring thread_status_message;  //Used to pass data to show_pulsebar method
