@@ -1780,7 +1780,7 @@ void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition 
 		if (ped_partition_is_flag_available(lp_partition, m_all_libparted_flags[i]) &&
 		    ped_partition_get_flag(lp_partition, m_all_libparted_flags[i])            )
 		{
-			partition.flags.push_back(ped_partition_flag_get_name(m_all_libparted_flags[i]));
+			partition.m_flags.push_back(ped_partition_flag_get_name(m_all_libparted_flags[i]));
 		}
 
 	Glib::ustring warning = check_logical_esp_warning(partition.type, partition.is_flag_set("esp"));

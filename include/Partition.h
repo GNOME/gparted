@@ -178,7 +178,7 @@ public:
 	bool inside_extended;
 	bool busy;
 	bool fs_readonly;  // Is the file system mounted read-only?
-	std::vector<Glib::ustring> flags ;
+	std::vector<Glib::ustring> m_flags;
 
 	PartitionVector logicals;
 

@@ -62,9 +62,10 @@ void Partition::Reset()
 	inside_extended = busy = strict_start = false ;
 	fs_readonly = false;
 	logicals .clear() ;
-	flags .clear() ;
+	m_flags.clear();
 	mountpoints .clear() ;
 }
+
 
 void Partition::Set( const Glib::ustring & device_path,
                      const Glib::ustring & partition,
@@ -300,8 +301,8 @@ void Partition::set_filesystem_label( const Glib::ustring & filesystem_label )
 
 bool Partition::is_flag_set(const Glib::ustring& flag) const
 {
-	for (unsigned int i = 0; i < flags.size(); i++)
-		if (flags[i] == flag)
+	for (unsigned int i = 0; i < m_flags.size(); i++)
+		if (m_flags[i] == flag)
 			return true;
 	return false;
 }
@@ -309,14 +310,14 @@ bool Partition::is_flag_set(const Glib::ustring& flag) const
 
 void Partition::set_only_flag(const Glib::ustring& flag)
 {
-	flags.clear();
-	flags.push_back(flag);
+	m_flags.clear();
+	m_flags.push_back(flag);
 }
 
 
 void Partition::clear_all_flags()
 {
-	flags.clear();
+	m_flags.clear();
 }
 
 

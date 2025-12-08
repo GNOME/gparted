@@ -507,7 +507,7 @@ void Dialog_Progress::write_partition_details(const Partition& partition, std::o
 	    << "<td>" << Partition::get_partition_type_string(partition.type) << "</td>"
 	    << "<td class='number_col'>" << partition.sector_start << "</td>"
 	    << "<td class='number_col'>" << partition.sector_end << "</td>"
-	    << "<td>" << Glib::build_path(", ", partition.flags) << "</td>"
+	    << "<td>" << Glib::build_path(", ", partition.m_flags) << "</td>"
 	    << "<td>" << partition.name << "</td>"
 	    << "<td>" << partition.get_filesystem_string() << "</td>"
 	    << "<td>" << partition.get_filesystem_label() << "</td>"
