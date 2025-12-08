@@ -315,9 +315,28 @@ void Partition::set_only_flag(const Glib::ustring& flag)
 }
 
 
+void Partition::set_flag(const Glib::ustring& flag)
+{
+	if (! is_flag_set(flag))
+		m_flags.push_back(flag);
+}
+
+
 void Partition::clear_all_flags()
 {
 	m_flags.clear();
+}
+
+
+const std::vector<Glib::ustring>& Partition::get_flags() const
+{
+	return m_flags;
+}
+
+
+void Partition::set_flags(const std::vector<Glib::ustring>& flags)
+{
+	m_flags = flags;
 }
 
 

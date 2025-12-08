@@ -621,7 +621,8 @@ void Dialog_Partition_Info::Display_Info()
 		// Flags
 		Gtk::Label *label_flags = Utils::mk_label("<b>" + Glib::ustring(_("Flags:")) + "</b>");
 		grid->attach(*label_flags, 1, top, 1, 1);
-		Gtk::Label *value_flags = Utils::mk_label(Glib::build_path(", ", partition.m_flags), true, false, true);
+		Gtk::Label* value_flags = Utils::mk_label(Glib::build_path(", ", partition.get_flags()),
+		                                          true, false, true);
 		grid->attach(*value_flags, 2, top++, 1, 1);
 		value_flags->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 		                                                label_flags->get_accessible());

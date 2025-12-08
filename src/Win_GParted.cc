@@ -2613,7 +2613,7 @@ void Win_GParted::activate_format( FSType new_fs )
 	}
 	temp_ptn->name = selected_partition_ptr->name;
 	// Copy flags to allow ESP to be maintained.
-	temp_ptn->m_flags = selected_partition_ptr->m_flags;
+	temp_ptn->set_flags(selected_partition_ptr->get_flags());
 	GParted_Core::compose_partition_flags(*temp_ptn, m_devices[m_current_device].disktype);
 
 	// Generate minimum and maximum partition size limits for the new file system.

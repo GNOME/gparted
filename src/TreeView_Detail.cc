@@ -223,7 +223,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 		unused == -1 ? "---" : Utils::format_size( unused, partition .sector_size ) ;
 
 	//flags	
-	treerow[m_treeview_detail_columns.flags] = Glib::build_path(", ", partition.m_flags);
+	treerow[m_treeview_detail_columns.flags] = Glib::build_path(", ", partition.get_flags());
 
 	// Hidden column (pointer to partition object)
 	treerow[m_treeview_detail_columns.partition_ptr] = &partition;
