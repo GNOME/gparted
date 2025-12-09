@@ -1745,8 +1745,8 @@ void GParted_Core::LP_set_used_sectors( Partition & partition, PedDisk* lp_disk 
 
 	if ( lp_disk )
 	{
-		PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
-		
+		PedPartition* lp_partition = get_lp_partition(lp_disk, partition);
+
 		if ( lp_partition )
 		{
 			fs = ped_file_system_open( & lp_partition ->geom ); 	
@@ -2113,7 +2113,7 @@ bool GParted_Core::name_partition( const Partition & partition, OperationDetail 
 	PedDisk* lp_disk = nullptr;
 	if ( get_device_and_disk( partition.device_path, lp_device, lp_disk ) )
 	{
-		PedPartition *lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
+		PedPartition* lp_partition = get_lp_partition(lp_disk, partition);
 		if ( lp_partition )
 		{
 			success =    ped_partition_set_name( lp_partition, partition.name.c_str() )
@@ -3826,7 +3826,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		else if ( get_disk( lp_device, lp_disk ) )
 		{
 			// Partitioned device; copy partition geometry
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
+			lp_partition = get_lp_partition(lp_disk, partition);
 			if (lp_partition)
 				lp_geom = ped_geometry_duplicate(&lp_partition->geom);
 		}
