@@ -35,6 +35,7 @@ public:
 	void set_used_sectors(Partition& partition);
 	bool create(const Partition& new_partition, OperationDetail& operationdetail);
 	void read_label(Partition& partition);
+	bool write_label(const Partition& partition, OperationDetail& operationdetail);
 	void read_uuid(Partition& partition);
 	bool resize(const Partition& partition_new, OperationDetail& operationdetail, bool fill_partition);
 	bool check_repair(const Partition& partition, OperationDetail& operationdetail);

@@ -23,10 +23,17 @@
 #include "Partition.h"
 #include "Utils.h"
 
+#include <errno.h>
+#include <fcntl.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
+#include <glibmm/stringutils.h>
 #include <glibmm/ustring.h>
+#include <linux/fs.h>
 #include <stdio.h>
+#include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 
 namespace GParted
@@ -40,6 +47,10 @@ FS bcachefs::get_filesystem_support()
 	fs.busy = FS::GPARTED;
 	fs.move = FS::GPARTED;
 	fs.copy = FS::GPARTED;
+
+	// Writing a new label can only be done while mounted.
+	if (Utils::kernel_supports_fs("bcachefs"))
+		fs.online_write_label = FS::EXTERNAL;
 
 	if (! Glib::find_program_in_path("bcachefs").empty())
 	{
@@ -152,6 +163,46 @@ void bcachefs::read_label(Partition& partition)
 	}
 
 	partition.set_filesystem_label(Utils::regexp_label(output, "^Label:[[:blank:]]*(.*)$"));
+}
+
+
+bool bcachefs::write_label(const Partition& partition, OperationDetail& operationdetail)
+{
+	operationdetail.add_child(OperationDetail(_("set file system label")));
+	OperationDetail& child_od = operationdetail.get_last_child();
+
+	int fd = open(partition.get_mountpoint().c_str(), O_RDONLY);
+	if (fd == -1)
+	{
+		int e = errno;
+		child_od.add_child(OperationDetail(Glib::ustring::compose("open(\"%1\", O_RDONLY): %2",
+		                                                          partition.get_mountpoint(),
+		                                                          Glib::strerror(e)),
+		                                   STATUS_NONE,
+		                                   FONT_MONOSPACE));
+		child_od.set_success_and_capture_errors(false);
+		return false;
+	}
+
+	bool success = true;
+	char label_buf[FSLABEL_MAX+1];
+	snprintf(label_buf, sizeof(label_buf), "%s", partition.get_filesystem_label().c_str());
+	int status = ioctl(fd, FS_IOC_SETFSLABEL, label_buf);
+	if (status == -1)
+	{
+		int e = errno;
+		child_od.add_child(OperationDetail(Glib::ustring::compose("ioctl(%1, FS_IOC_SETFSLABEL, \"%2\"): %3",
+		                                                          fd,
+		                                                          partition.get_filesystem_label(),
+		                                                          Glib::strerror(e)),
+		                                   STATUS_NONE,
+		                                   FONT_MONOSPACE));
+		success = false;
+	}
+
+	close(fd);
+	child_od.set_success_and_capture_errors(success);
+	return success;
 }
 
 
