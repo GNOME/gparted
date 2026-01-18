@@ -40,6 +40,55 @@ namespace GParted
 {
 
 
+namespace  // unnamed
+{
+
+
+static bool online_write_label(const Glib::ustring& mount_point,
+                               const Glib::ustring& label,
+                               OperationDetail& operationdetail)
+{
+	operationdetail.add_child(OperationDetail(_("set file system label")));
+	OperationDetail& child_od = operationdetail.get_last_child();
+
+	int fd = open(mount_point.c_str(), O_RDONLY);
+	if (fd == -1)
+	{
+		int e = errno;
+		child_od.add_child(OperationDetail(Glib::ustring::compose("open(\"%1\", O_RDONLY): %2",
+		                                                          mount_point,
+		                                                          Glib::strerror(e)),
+		                                   STATUS_NONE,
+		                                   FONT_MONOSPACE));
+		child_od.set_success_and_capture_errors(false);
+		return false;
+	}
+
+	bool success = true;
+	char label_buf[FSLABEL_MAX+1];
+	snprintf(label_buf, sizeof(label_buf), "%s", label.c_str());
+	int status = ioctl(fd, FS_IOC_SETFSLABEL, label_buf);
+	if (status == -1)
+	{
+		int e = errno;
+		child_od.add_child(OperationDetail(Glib::ustring::compose("ioctl(%1, FS_IOC_SETFSLABEL, \"%2\"): %3",
+		                                                          fd,
+		                                                          label,
+		                                                          Glib::strerror(e)),
+		                                   STATUS_NONE,
+		                                   FONT_MONOSPACE));
+		success = false;
+	}
+
+	close(fd);
+	child_od.set_success_and_capture_errors(success);
+	return success;
+}
+
+
+}  // unnamed namespace
+
+
 FS bcachefs::get_filesystem_support()
 {
 	FS fs(FS_BCACHEFS);
@@ -171,41 +220,9 @@ void bcachefs::read_label(Partition& partition)
 
 bool bcachefs::write_label(const Partition& partition, OperationDetail& operationdetail)
 {
-	operationdetail.add_child(OperationDetail(_("set file system label")));
-	OperationDetail& child_od = operationdetail.get_last_child();
-
-	int fd = open(partition.get_mountpoint().c_str(), O_RDONLY);
-	if (fd == -1)
-	{
-		int e = errno;
-		child_od.add_child(OperationDetail(Glib::ustring::compose("open(\"%1\", O_RDONLY): %2",
-		                                                          partition.get_mountpoint(),
-		                                                          Glib::strerror(e)),
-		                                   STATUS_NONE,
-		                                   FONT_MONOSPACE));
-		child_od.set_success_and_capture_errors(false);
-		return false;
-	}
-
-	bool success = true;
-	char label_buf[FSLABEL_MAX+1];
-	snprintf(label_buf, sizeof(label_buf), "%s", partition.get_filesystem_label().c_str());
-	int status = ioctl(fd, FS_IOC_SETFSLABEL, label_buf);
-	if (status == -1)
-	{
-		int e = errno;
-		child_od.add_child(OperationDetail(Glib::ustring::compose("ioctl(%1, FS_IOC_SETFSLABEL, \"%2\"): %3",
-		                                                          fd,
-		                                                          partition.get_filesystem_label(),
-		                                                          Glib::strerror(e)),
-		                                   STATUS_NONE,
-		                                   FONT_MONOSPACE));
-		success = false;
-	}
-
-	close(fd);
-	child_od.set_success_and_capture_errors(success);
-	return success;
+	return online_write_label(partition.get_mountpoint(),
+	                          partition.get_filesystem_label(),
+	                          operationdetail);
 }
 
 
