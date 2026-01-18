@@ -97,10 +97,14 @@ FS bcachefs::get_filesystem_support()
 	fs.move = FS::GPARTED;
 	fs.copy = FS::GPARTED;
 
-	// Writing a new label can only be done while mounted.
-	if (Utils::kernel_supports_fs("bcachefs")    &&
-	    Utils::kernel_version_at_least(6, 11, 0)   )
+	// Writing a new label can only be done while mounted.  (To keep this condition
+	// simple require mount/umount commands for the online case too).
+	if (Utils::kernel_supports_fs("bcachefs")          &&
+	    Utils::kernel_version_at_least(6, 11, 0)       &&
+	    ! Glib::find_program_in_path("mount").empty()  &&
+	    ! Glib::find_program_in_path("umount").empty()   )
 	{
+		fs.write_label        = FS::EXTERNAL;
 		fs.online_write_label = FS::EXTERNAL;
 	}
 
@@ -220,9 +224,46 @@ void bcachefs::read_label(Partition& partition)
 
 bool bcachefs::write_label(const Partition& partition, OperationDetail& operationdetail)
 {
-	return online_write_label(partition.get_mountpoint(),
-	                          partition.get_filesystem_label(),
-	                          operationdetail);
+	// Writing a new label can only be done while the file system is mounted so if
+	// it's not already mounted, mount it beforehand and unmount it after.
+	Glib::ustring mount_point;
+	int exit_status = 0;
+	if (! partition.busy)
+	{
+		mount_point = mk_temp_dir("", operationdetail);
+		if (mount_point.empty())
+			return false;
+
+		exit_status = operationdetail.execute_command("mount -v -t bcachefs " +
+		                        Glib::shell_quote(partition.get_path()) +
+		                        " " + Glib::shell_quote(mount_point),
+		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+		{
+			rm_temp_dir(mount_point, operationdetail);
+			return false;
+		}
+	}
+	else
+	{
+		mount_point = partition.get_mountpoint();
+	}
+
+	bool success = online_write_label(mount_point,
+	                                  partition.get_filesystem_label(),
+	                                  operationdetail);
+
+	if (! partition.busy)
+	{
+		exit_status = operationdetail.execute_command("umount -v " + Glib::shell_quote(mount_point),
+		                        EXEC_CHECK_STATUS);
+		if (exit_status != 0)
+			return false;
+
+		rm_temp_dir(mount_point, operationdetail);
+	}
+
+	return success;
 }
 
 
