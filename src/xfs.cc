@@ -147,23 +147,22 @@ void xfs::set_used_sectors(Partition& partition)
 }
 
 
-void xfs::read_label( Partition & partition )
+void xfs::read_label(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	if ( ! Utils::execute_command( "xfs_db -r -c 'label' " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                                )
+	int exit_status = Utils::execute_command("xfs_db -r -c 'label' " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
+	if (exit_status != 0)
 	{
-		partition.set_filesystem_label( Utils::regexp_label( output, "^label = \"(.*)\"" ) );
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
-	}
+
+	partition.set_filesystem_label(Utils::regexp_label(output, "^label = \"(.*)\""));
 }
 
 
