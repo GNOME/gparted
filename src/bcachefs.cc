@@ -218,7 +218,10 @@ void bcachefs::read_label(Partition& partition)
 		return;
 	}
 
-	partition.set_filesystem_label(Utils::regexp_label(output, "^Label:[[:blank:]]*(.*)$"));
+	Glib::ustring label = Utils::regexp_label(output, "^Label:[[:blank:]]*(.*)$");
+	if (label == "(none)")
+		label = "";
+	partition.set_filesystem_label(label);
 }
 
 
