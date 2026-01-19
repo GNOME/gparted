@@ -124,27 +124,25 @@ void nilfs2::set_used_sectors(Partition& partition)
 }
 
 
-void nilfs2::read_label( Partition & partition )
+void nilfs2::read_label(Partition& partition)
 {
 	Glib::ustring output;
 	Glib::ustring error;
-	if ( ! Utils::execute_command( "nilfs-tune -l " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                         )
+	int exit_status = Utils::execute_command("nilfs-tune -l " + Glib::shell_quote(partition.get_path()),
+	                        output, error, true);
+	if (exit_status != 0)
 	{
-		Glib::ustring label = Utils::regexp_label( output, "^Filesystem volume name:[\t ]*(.*)$" ) ;
-		if ( label != "(none)" )
-			partition.set_filesystem_label( label );
-		else
-			partition.set_filesystem_label( "" );
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
 
-		if ( ! error .empty() )
-			partition.push_back_message( error );
-	}
+	Glib::ustring label = Utils::regexp_label(output, "^Filesystem volume name:[\t ]*(.*)$");
+	if (label == "(none)")
+		label = "";
+	partition.set_filesystem_label(label);
 }
 
 
