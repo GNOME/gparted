@@ -414,6 +414,8 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUsage)
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	// FIXME: Remove loopdev requirement when nilfs-utils 2.2.11 is available
+	// everywhere.
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	create_image_file();
@@ -443,6 +445,8 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadLabel)
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read_label);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	// FIXME: Remove loopdev requirement when nilfs-utils 2.2.11 is available
+	// everywhere.
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	const char* fs_label = "TEST_LABEL";
@@ -465,6 +469,8 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUUID)
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read_uuid);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	// FIXME: Remove loopdev requirement when nilfs-utils 2.2.11 is available
+	// everywhere.
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	create_image_file();
@@ -495,6 +501,8 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteLabel)
 	SKIP_IF_FS_DOESNT_SUPPORT(write_label);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_BCACHEFS);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	// FIXME: Remove loopdev requirement when nilfs-utils 2.2.11 is available
+	// everywhere.
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	create_image_file();
@@ -516,6 +524,8 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteUUID)
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(write_uuid);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	// FIXME: Remove loopdev requirement when nilfs-utils 2.2.11 is available
+	// everywhere.
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	create_image_file();
@@ -532,6 +542,8 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteUUIDAndReadLabel)
 	SKIP_IF_FS_DOESNT_SUPPORT(write_uuid);
 	SKIP_IF_FS_DOESNT_SUPPORT(read_label);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	// FIXME: Remove loopdev requirement when nilfs-utils 2.2.11 is available
+	// everywhere.
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	const char* fs_label = "TEST_LABEL";
