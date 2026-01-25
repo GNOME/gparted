@@ -27,7 +27,7 @@ namespace GParted
 {
 
 
-// Hacky XML parser which strips italic and bold markup added in
+// Hacky XML parser which strips italic, bold and monospace markup added in
 // OperationDetail::set_description() and reverts just these 5 characters &<>'" encoded by
 // Glib::Markup::escape_text() -> g_markup_escape_text() -> append_escaped_text().
 static Glib::ustring strip_markup(const Glib::ustring& str)
@@ -46,6 +46,10 @@ static Glib::ustring strip_markup(const Glib::ustring& str)
 			i += 3;
 		else if (str.compare(i, 4, "</b>") == 0)
 			i += 4;
+		else if (str.compare(i, 4, "<tt>") == 0)
+			i += 4;
+		else if (str.compare(i, 5, "</tt>") == 0)
+			i += 5;
 		else if (str.compare(i, 5, "&amp;") == 0)
 		{
 			ret.push_back('&');
