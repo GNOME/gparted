@@ -1,4 +1,64 @@
 ============================
+GParted 1.8.0   (2026-01-26)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes enhancements, bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Fix crash due to not checking for failure to load icon
+  * Fix hangs setting FAT label when matches a root folder entry
+  * Erase file system signatures before all FileSystem copies
+
+Bug Fixes
+---------
+  * Move FileSystem::execute_command() to OperationDetail class (!132)
+  * Fix Google Test compilation against GCC 15 libstdc++ (#281, !133)
+  * Fix crash in CommandStatus when compiled without optimization (#283, !134)
+  * Refactor DMRaid to static class, make mutating getters ret-by-val (!135)
+  * Fix crash due to not checking for failure to load icon (#282, !136)
+  * Fix hangs setting FAT label when matches a root folder entry (#272, !137)
+  * Require C++14 compilation and update to Google Test 1.16.0 (!138)
+  * Create mount points in a private temporary working directory (!139)
+  * Fix GParted displays error messages along with the FAT label (#286, !140)
+  * Fix configure script detect of C++14 without AX_CXX_COMPILE_STDCXX_14 (!141)
+  * Fix UI label not updated if newer job queued for same partition (#117, !142)
+  * Convert SupportedFS to smart pointers, remove empty class destructors (!143)
+  * Replace all uses of malloc() with vector(char) (!144)
+  * Convert Operations to smart pointers (!145)
+  * Fix GPT partition type GUID not copied in copy/paste (#288)
+  * Maintain EFI System Partition type when copying to new partition (!146)
+  * Fix expansion of details in Applying pending operations dialog (#168, !147)
+  * Display a warning for logical EFI System Partitions ESPs (#291, !148)
+  * Use fixed width font to show command output in operation details (#72, !149)
+  * Stop disabling 64-bit on ext4 file systems < 16 TiB (#295, !150)
+  * Convert Dialog_Base_Partition to use smart pointers (!151)
+  * Update main window screenshot in GParted Manual and its translations (!152)
+  * Erase file system signatures before all FS copies (#297, !153)
+  * Set LBA flag for create FAT16/32, extended part on MSDOS table (#300, !154)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  be(Vasil Pupkin), id(Andika Triwidada), ja(Takayuki KUSANO),
+  kk(Baurzhan Muftakhidinov), lt(Aurimas Černius),
+  pt_BR(Álvaro Burns, Juliano de Souza Camargo), ru(Sergej A.),
+  sk(Dušan Kazik), sl(Martin Srebotnjak), sr(Мирослав Николић),
+  sv(Anders Jonsson), th(Aefgh Threenine), tr(Sabri Ünal, Emin Tufan Çetin),
+  uk(Yuri Chornoivan), zn_CH(luming zh)
+
+Dependencies (new/updated)
+--------------------------
+  * n/a
+
+
+============================
 GParted 1.7.0   (2025-01-30)
 ============================
 
