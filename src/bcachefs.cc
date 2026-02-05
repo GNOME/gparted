@@ -49,8 +49,11 @@ FS bcachefs::get_filesystem_support()
 	fs.copy = FS::GPARTED;
 
 	// Writing a new label can only be done while mounted.
-	if (Utils::kernel_supports_fs("bcachefs"))
+	if (Utils::kernel_supports_fs("bcachefs")    &&
+	    Utils::kernel_version_at_least(6, 11, 0)   )
+	{
 		fs.online_write_label = FS::EXTERNAL;
+	}
 
 	if (! Glib::find_program_in_path("bcachefs").empty())
 	{
