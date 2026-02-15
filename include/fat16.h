@@ -20,7 +20,11 @@
 #define GPARTED_FAT16_H
 
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
+#include "Utils.h"
+
+#include <glibmm/ustring.h>
 
 
 namespace GParted
