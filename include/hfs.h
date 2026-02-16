@@ -19,7 +19,9 @@
 #ifndef GPARTED_HFS_H
 #define GPARTED_HFS_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 
 
