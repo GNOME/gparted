@@ -174,11 +174,6 @@ bool ntfs::write_label( const Partition & partition, OperationDetail & operation
 }
 
 
-void ntfs::read_uuid( Partition & partition )
-{
-}
-
-
 bool ntfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
 	if ( partition .uuid == UUID_RANDOM_NTFS_HALF )
