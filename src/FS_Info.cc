@@ -184,24 +184,26 @@ bool FS_Info::not_initialised_then_error()
 void FS_Info::set_command_found()
 {
 	blkid_found = (! Glib::find_program_in_path( "blkid" ) .empty() ) ;
-	if ( blkid_found )
+	if (! blkid_found)
+		return;
+
+	// Blkid from util-linux before 2.23 has a cache update bug which prevents correct
+	// identification between FAT16 and FAT32 when overwriting one with the other.
+	// Detect the need for a workaround.
+	Glib::ustring output;
+	Glib::ustring error;
+	Utils::execute_command("blkid -v", output, error, true);
+	Glib::ustring blkid_version = Utils::regexp_label(output, "blkid.* ([0-9\\.]+) ");
+	int blkid_major_ver = 0;
+	int blkid_minor_ver = 0;
+	if (sscanf(blkid_version.c_str(), "%d.%d", &blkid_major_ver, &blkid_minor_ver) == 2)
 	{
-		// Blkid from util-linux before 2.23 has a cache update bug which prevents
-		// correct identification between FAT16 and FAT32 when overwriting one
-		// with the other.  Detect the need for a workaround.
-		Glib::ustring output, error;
-		Utils::execute_command( "blkid -v", output, error, true );
-		Glib::ustring blkid_version = Utils::regexp_label( output, "blkid.* ([0-9\\.]+) " );
-		int blkid_major_ver = 0;
-		int blkid_minor_ver = 0;
-		if ( sscanf( blkid_version.c_str(), "%d.%d", &blkid_major_ver, &blkid_minor_ver ) == 2 )
-		{
-			need_blkid_vfat_cache_update_workaround =
-					( blkid_major_ver < 2                              ||
-					  ( blkid_major_ver == 2 && blkid_minor_ver < 23 )    );
-		}
+		need_blkid_vfat_cache_update_workaround =
+				(blkid_major_ver < 2                            ||
+				 (blkid_major_ver == 2 && blkid_minor_ver < 23)   );
 	}
 }
+
 
 const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
 {
