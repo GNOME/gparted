@@ -52,8 +52,8 @@ private:
 	size_t                        m_fill_offset;         // Filling offset into m_readbuf
 	std::vector<gunichar>         m_linevec;             // Current line stored as UCS-4 characters
 	size_t                        m_cursor;              // Cursor position index into m_linevec
-	std::string capturebuf;         // Captured output as UTF-8 characters
-	size_t line_start;              // Index into capturebuf where current line starts
+	std::string                   m_capturebuf;          // Captured output as UTF-8 characters
+	size_t                        m_line_start;          // Index into m_capturebuf where current line starts
 	Glib::ustring & callerbuf;      // Reference to caller supplied buffer
 	bool callerbuf_uptodate;        // Has capturebuf changed since last copied to callerbuf?
 };

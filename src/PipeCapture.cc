@@ -111,7 +111,7 @@ static void append_unichar_vector_to_utf8(std::string& str, const std::vector<gu
 
 PipeCapture::PipeCapture(int fd, Glib::ustring& buffer)
  : m_readbuf(64*KIBIBYTE),  // Construct vector of 64K chars (and zero initialise)
-   m_fill_offset(0), m_cursor(0), line_start(0), callerbuf(buffer)
+   m_fill_offset(0), m_cursor(0), m_line_start(0), callerbuf(buffer)
 {
 	callerbuf.clear();
 	callerbuf_uptodate = true;
@@ -161,10 +161,10 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	//                                                             ^
 	//                                                             m_cursor
 	//
-	//     capturebuf "First line\n
-	//                 Current line.  Text progress bar: XXXX-----------"
-	//                 ^
-	//                 line_start
+	//     m_capturebuf "First line\n
+	//                   Current line.  Text progress bar: XXXX-----------"
+	//                   ^
+	//                   m_line_start
 	//
 	// Processing details:
 	// Bytes are read into m_readbuf.  Valid UTF-8 character byte sequences are
@@ -172,13 +172,13 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	// characters storing the current line, m_linevec.  (m_linevec uses UCS-4 encoding
 	// for fixed sized values accessible in constant time via pointer arithmetic).
 	// When a new line character is encountered the complete current line, or when
-	// m_readbuf is drained the partial current line, is pasted into capturebuf at the
-	// offset where the last line starts.  (Capturebuf stores UTF-8 encoded characters
-	// in a std::string for constant time access to line_start offset).  When
-	// m_readbuf is drained and there are registered update callbacks, capturebuf is
-	// copied into callerbuf and signal_update slot fired.  (Callerbuf stores UTF-8
-	// encoded characters in a Glib::ustring).  When EOF is encountered capturebuf is
-	// copied into callerbuf if required and signal_eof slot fired.
+	// m_readbuf is drained the partial current line, is pasted into m_capturebuf at
+	// the offset where the last line starts.  (m_capturebuf stores UTF-8 encoded
+	// characters in a std::string for constant time access to m_line_start offset).
+	// When m_readbuf is drained and there are registered update callbacks,
+	// m_capturebuf is copied into callerbuf and signal_update slot fired.  (Callerbuf
+	// stores UTF-8 encoded characters in a Glib::ustring).  When EOF is encountered
+	// m_capturebuf is copied into callerbuf if required and signal_eof slot fired.
 	//
 	// Golden rule:
 	// Use Glib::ustrings as little as possible for large amounts of data!
@@ -250,9 +250,9 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 				m_linevec.push_back('\n');
 				m_cursor ++;
 
-				capturebuf.resize( line_start );
-				append_unichar_vector_to_utf8(capturebuf, m_linevec);
-				line_start = capturebuf.size();
+				m_capturebuf.resize(m_line_start);
+				append_unichar_vector_to_utf8(m_capturebuf, m_linevec);
+				m_line_start = m_capturebuf.size();
 				callerbuf_uptodate = false;
 
 				m_linevec.clear();
@@ -281,8 +281,8 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 		}
 
 		// Paste partial line to capture buffer.
-		capturebuf.resize( line_start );
-		append_unichar_vector_to_utf8(capturebuf, m_linevec);
+		m_capturebuf.resize(m_line_start);
+		append_unichar_vector_to_utf8(m_capturebuf, m_linevec);
 		callerbuf_uptodate = false;
 
 		if ( ! signal_update.empty() )
@@ -290,7 +290,7 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 			// Performance optimisation, especially for large capture buffers:
 			// only copy capture buffer to callers buffer and fire update
 			// callbacks when there are any registered update callbacks.
-			callerbuf = capturebuf;
+			callerbuf = m_capturebuf;
 			callerbuf_uptodate = true;
 			signal_update.emit();
 		}
@@ -304,7 +304,7 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 
 	if ( ! callerbuf_uptodate )
 	{
-		callerbuf = capturebuf;
+		callerbuf = m_capturebuf;
 		callerbuf_uptodate = true;
 	}
 	// signal completion
