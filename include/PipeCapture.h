@@ -47,7 +47,7 @@ private:
 	                             GIOCondition condition,
 	                             gpointer data );
 
-	Glib::RefPtr<Glib::IOChannel> channel;  // Wrapper around fd
+	Glib::RefPtr<Glib::IOChannel> m_channel;             // Wrapper around fd
 	std::vector<char> readbuf;      // Bytes read from IOChannel (fd)
 	size_t fill_offset;             // Filling offset into readbuf
 	std::vector<gunichar> linevec;  // Current line stored as UCS-4 characters

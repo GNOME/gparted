@@ -117,18 +117,20 @@ PipeCapture::PipeCapture(int fd, Glib::ustring& buffer)
 	callerbuf_uptodate = true;
 	// tie fd to string
 	// make channel
-	channel = Glib::IOChannel::create_from_fd( fd );
-	channel->set_encoding("");
+	m_channel = Glib::IOChannel::create_from_fd(fd);
+	m_channel->set_encoding("");
 }
+
 
 void PipeCapture::connect_signal()
 {
 	// connect handler to signal input/output
-	g_io_add_watch( channel->gobj(),
-	                GIOCondition(G_IO_IN | G_IO_ERR | G_IO_HUP),
-	                _OnReadable,
-	                this );
+	g_io_add_watch(m_channel->gobj(),
+	               GIOCondition(G_IO_IN | G_IO_ERR | G_IO_HUP),
+	               _OnReadable,
+	               this);
 }
+
 
 gboolean PipeCapture::_OnReadable( GIOChannel *source,
 				   GIOCondition condition,
@@ -194,7 +196,7 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	//    have to be moved in memory.
 
 	gsize bytes_read;
-	Glib::IOStatus status = channel->read(readbuf.data() + fill_offset, READBUF_SIZE - fill_offset, bytes_read);
+	Glib::IOStatus status = m_channel->read(readbuf.data() + fill_offset, READBUF_SIZE - fill_offset, bytes_read);
 	if ( status == Glib::IO_STATUS_NORMAL )
 	{
 		const char* read_ptr = readbuf.data();
