@@ -36,7 +36,6 @@ class PipeCapture
 {
 public:
 	PipeCapture( int fd, Glib::ustring &buffer );
-	~PipeCapture();
 
 	void connect_signal();
 	sigc::signal<void> signal_eof;

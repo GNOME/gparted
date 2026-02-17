@@ -303,9 +303,4 @@ int PipeCapture::utf8_char_length( unsigned char firstbyte )
 }
 
 
-PipeCapture::~PipeCapture()
-{
-}
-
-
 }  // namespace GParted
