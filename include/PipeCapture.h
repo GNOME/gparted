@@ -54,8 +54,8 @@ private:
 	size_t                        m_cursor;              // Cursor position index into m_linevec
 	std::string                   m_capturebuf;          // Captured output as UTF-8 characters
 	size_t                        m_line_start;          // Index into m_capturebuf where current line starts
-	Glib::ustring & callerbuf;      // Reference to caller supplied buffer
-	bool callerbuf_uptodate;        // Has capturebuf changed since last copied to callerbuf?
+	Glib::ustring&                m_callerbuf;           // Reference to caller supplied buffer
+	bool                          m_callerbuf_uptodate;  // Has m_capturebuf changed since last copied to m_callerbuf?
 };
 
 
