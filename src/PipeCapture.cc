@@ -110,8 +110,8 @@ static void append_unichar_vector_to_utf8(std::string& str, const std::vector<gu
 
 
 PipeCapture::PipeCapture(int fd, Glib::ustring& buffer)
- : readbuf(64*KIBIBYTE),  // Construct vector of 64K chars (and zero initialise)
-   fill_offset(0), cursor(0), line_start(0), callerbuf(buffer)
+ : m_readbuf(64*KIBIBYTE),  // Construct vector of 64K chars (and zero initialise)
+   m_fill_offset(0), cursor(0), line_start(0), callerbuf(buffer)
 {
 	callerbuf.clear();
 	callerbuf_uptodate = true;
@@ -150,12 +150,12 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	//
 	// Data model:
 	//
-	//                 fill_offset
-	//                 v
-	//     readbuf    "XXXX......................"
-	//                 ^   ^
-	//                 |   end_ptr
-	//                 read_ptr
+	//                   m_fill_offset
+	//                   v
+	//     m_readbuf    "XXXX......................"
+	//                   ^   ^
+	//                   |   end_ptr
+	//                   read_ptr
 	//
 	//     linevec    "Current line.  Text progress bar: XXXXXXXX--------"
 	//                                                           ^
@@ -167,18 +167,18 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	//                 line_start
 	//
 	// Processing details:
-	// Bytes are read into readbuf.  Valid UTF-8 character byte sequences are
+	// Bytes are read into m_readbuf.  Valid UTF-8 character byte sequences are
 	// recognised and, applying a simple line discipline, added into the vector of
 	// characters storing the current line, linevec.  (Linevec uses UCS-4 encoding for
 	// fixed sized values accessible in constant time via pointer arithmetic).  When
-	// a new line character is encountered the complete current line, or when readbuf
-	// is drained the partial current line, is pasted into capturebuf at the offset
-	// where the last line starts.  (Capturebuf stores UTF-8 encoded characters in a
-	// std::string for constant time access to line_start offset).  When readbuf
-	// is drained and there are registered update callbacks, capturebuf is copied into
-	// callerbuf and signal_update slot fired.  (Callerbuf stores UTF-8 encoded
-	// characters in a Glib::ustring).  When EOF is encountered capturebuf is copied
-	// into callerbuf if required and signal_eof slot fired.
+	// a new line character is encountered the complete current line, or when
+	// m_readbuf is drained the partial current line, is pasted into capturebuf at the
+	// offset where the last line starts.  (Capturebuf stores UTF-8 encoded characters
+	// in a std::string for constant time access to line_start offset).  When
+	// m_readbuf is drained and there are registered update callbacks, capturebuf is
+	// copied into callerbuf and signal_update slot fired.  (Callerbuf stores UTF-8
+	// encoded characters in a Glib::ustring).  When EOF is encountered capturebuf is
+	// copied into callerbuf if required and signal_eof slot fired.
 	//
 	// Golden rule:
 	// Use Glib::ustrings as little as possible for large amounts of data!
@@ -196,12 +196,12 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	//    have to be moved in memory.
 
 	gsize bytes_read;
-	Glib::IOStatus status = m_channel->read(readbuf.data() + fill_offset, READBUF_SIZE - fill_offset, bytes_read);
+	Glib::IOStatus status = m_channel->read(m_readbuf.data() + m_fill_offset, READBUF_SIZE - m_fill_offset, bytes_read);
 	if ( status == Glib::IO_STATUS_NORMAL )
 	{
-		const char* read_ptr = readbuf.data();
-		const char* end_ptr = readbuf.data() + fill_offset + bytes_read;
-		fill_offset = 0;
+		const char* read_ptr = m_readbuf.data();
+		const char* end_ptr = m_readbuf.data() + m_fill_offset + bytes_read;
+		m_fill_offset = 0;
 		while ( read_ptr < end_ptr )
 		{
 			gunichar uc = get_utf8_char_validated(read_ptr, end_ptr - read_ptr);
@@ -210,8 +210,8 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 				// Partial UTF-8 character at end of read buffer.  Copy to
 				// start of read buffer.
 				size_t bytes_remaining = end_ptr - read_ptr;
-				memcpy(readbuf.data(), read_ptr, bytes_remaining);
-				fill_offset = bytes_remaining;
+				memcpy(m_readbuf.data(), read_ptr, bytes_remaining);
+				m_fill_offset = bytes_remaining;
 				break;
 			}
 			else if ( uc == UTF8_INVALID )

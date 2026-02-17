@@ -48,8 +48,8 @@ private:
 	                             gpointer data );
 
 	Glib::RefPtr<Glib::IOChannel> m_channel;             // Wrapper around fd
-	std::vector<char> readbuf;      // Bytes read from IOChannel (fd)
-	size_t fill_offset;             // Filling offset into readbuf
+	std::vector<char>             m_readbuf;             // Bytes read from IOChannel (fd)
+	size_t                        m_fill_offset;         // Filling offset into m_readbuf
 	std::vector<gunichar> linevec;  // Current line stored as UCS-4 characters
 	size_t cursor;                  // Cursor position index into linevec
 	std::string capturebuf;         // Captured output as UTF-8 characters
