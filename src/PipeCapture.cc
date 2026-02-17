@@ -38,12 +38,10 @@ const gunichar UTF8_PARTIAL = (gunichar)-2;
 const gunichar UTF8_INVALID = (gunichar)-1;
 
 
-PipeCapture::PipeCapture( int fd, Glib::ustring &buffer ) : fill_offset( 0 ),
-                                                            cursor( 0 ),
-                                                            line_start( 0 ),
-                                                            callerbuf( buffer )
+PipeCapture::PipeCapture(int fd, Glib::ustring& buffer)
+ : readbuf(64*KIBIBYTE),  // Construct vector of 64K chars (and zero initialise)
+   fill_offset(0), cursor(0), line_start(0), callerbuf(buffer)
 {
-	readbuf = new char[READBUF_SIZE];
 	callerbuf.clear();
 	callerbuf_uptodate = true;
 	// tie fd to string
@@ -125,11 +123,11 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	//    have to be moved in memory.
 
 	gsize bytes_read;
-	Glib::IOStatus status = channel->read( readbuf + fill_offset, READBUF_SIZE - fill_offset, bytes_read );
+	Glib::IOStatus status = channel->read(readbuf.data() + fill_offset, READBUF_SIZE - fill_offset, bytes_read);
 	if ( status == Glib::IO_STATUS_NORMAL )
 	{
-		const char * read_ptr = readbuf;
-		const char * end_ptr = readbuf + fill_offset + bytes_read;
+		const char* read_ptr = readbuf.data();
+		const char* end_ptr = readbuf.data() + fill_offset + bytes_read;
 		fill_offset = 0;
 		while ( read_ptr < end_ptr )
 		{
@@ -139,7 +137,7 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 				// Partial UTF-8 character at end of read buffer.  Copy to
 				// start of read buffer.
 				size_t bytes_remaining = end_ptr - read_ptr;
-				memcpy( readbuf, read_ptr, bytes_remaining );
+				memcpy(readbuf.data(), read_ptr, bytes_remaining);
 				fill_offset = bytes_remaining;
 				break;
 			}
@@ -304,9 +302,9 @@ int PipeCapture::utf8_char_length( unsigned char firstbyte )
 		return -1;
 }
 
+
 PipeCapture::~PipeCapture()
 {
-	delete[] readbuf;
 }
 
 

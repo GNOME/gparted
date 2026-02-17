@@ -53,7 +53,7 @@ private:
 	static int utf8_char_length( unsigned char firstbyte );
 
 	Glib::RefPtr<Glib::IOChannel> channel;  // Wrapper around fd
-	char * readbuf;                 // Bytes read from IOChannel (fd)
+	std::vector<char> readbuf;      // Bytes read from IOChannel (fd)
 	size_t fill_offset;             // Filling offset into readbuf
 	std::vector<gunichar> linevec;  // Current line stored as UCS-4 characters
 	size_t cursor;                  // Cursor position index into linevec
