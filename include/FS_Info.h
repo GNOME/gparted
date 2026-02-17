@@ -50,7 +50,7 @@ public:
 
 private:
 	static bool not_initialised_then_error();
-	static void set_commands_found();
+	static void set_command_found();
 	static const FS_Entry & get_cache_entry_by_path( const Glib::ustring & path );
 	static void run_blkid_load_cache(const std::vector<Glib::ustring>& paths);
 	static void update_fs_info_cache_all_labels();

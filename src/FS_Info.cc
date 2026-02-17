@@ -54,7 +54,7 @@ std::vector<FS_Entry> FS_Info::fs_info_cache;
 
 void FS_Info::clear_cache()
 {
-	set_commands_found();
+	set_command_found();
 	fs_info_cache.clear();
 	fs_info_cache_initialized = true;
 }
@@ -181,9 +181,8 @@ bool FS_Info::not_initialised_then_error()
 }
 
 
-void FS_Info::set_commands_found()
+void FS_Info::set_command_found()
 {
-	//Set status of commands found 
 	blkid_found = (! Glib::find_program_in_path( "blkid" ) .empty() ) ;
 	if ( blkid_found )
 	{
