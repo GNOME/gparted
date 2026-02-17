@@ -111,7 +111,7 @@ static void append_unichar_vector_to_utf8(std::string& str, const std::vector<gu
 
 PipeCapture::PipeCapture(int fd, Glib::ustring& buffer)
  : m_readbuf(64*KIBIBYTE),  // Construct vector of 64K chars (and zero initialise)
-   m_fill_offset(0), cursor(0), line_start(0), callerbuf(buffer)
+   m_fill_offset(0), m_cursor(0), line_start(0), callerbuf(buffer)
 {
 	callerbuf.clear();
 	callerbuf_uptodate = true;
@@ -157,9 +157,9 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	//                   |   end_ptr
 	//                   read_ptr
 	//
-	//     linevec    "Current line.  Text progress bar: XXXXXXXX--------"
-	//                                                           ^
-	//                                                           cursor
+	//     m_linevec    "Current line.  Text progress bar: XXXXXXXX--------"
+	//                                                             ^
+	//                                                             m_cursor
 	//
 	//     capturebuf "First line\n
 	//                 Current line.  Text progress bar: XXXX-----------"
@@ -169,9 +169,9 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	// Processing details:
 	// Bytes are read into m_readbuf.  Valid UTF-8 character byte sequences are
 	// recognised and, applying a simple line discipline, added into the vector of
-	// characters storing the current line, linevec.  (Linevec uses UCS-4 encoding for
-	// fixed sized values accessible in constant time via pointer arithmetic).  When
-	// a new line character is encountered the complete current line, or when
+	// characters storing the current line, m_linevec.  (m_linevec uses UCS-4 encoding
+	// for fixed sized values accessible in constant time via pointer arithmetic).
+	// When a new line character is encountered the complete current line, or when
 	// m_readbuf is drained the partial current line, is pasted into capturebuf at the
 	// offset where the last line starts.  (Capturebuf stores UTF-8 encoded characters
 	// in a std::string for constant time access to line_start offset).  When
@@ -236,27 +236,27 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 
 			if ( uc == '\b' )
 			{
-				if ( cursor > 0 )
-					cursor --;
+				if (m_cursor > 0)
+					m_cursor --;
 			}
 			else if ( uc == '\r' )
 			{
-				cursor = 0;
+				m_cursor = 0;
 			}
 			else if ( uc == '\n' )
 			{
 				// Append char to current line; paste current line to
 				// capture buffer; reset current line.
-				linevec.push_back( '\n' );
-				cursor ++;
+				m_linevec.push_back('\n');
+				m_cursor ++;
 
 				capturebuf.resize( line_start );
-				append_unichar_vector_to_utf8( capturebuf, linevec );
+				append_unichar_vector_to_utf8(capturebuf, m_linevec);
 				line_start = capturebuf.size();
 				callerbuf_uptodate = false;
 
-				linevec.clear();
-				cursor = 0;
+				m_linevec.clear();
+				m_cursor = 0;
 			}
 			else if ( uc == '\x01' || uc == '\x02' )
 			{
@@ -265,24 +265,24 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 			}
 			else
 			{
-				if ( cursor < linevec.size() )
+				if (m_cursor < m_linevec.size())
 				{
 					// Replace char in current line.
-					linevec[cursor] = uc;
-					cursor ++;
+					m_linevec[m_cursor] = uc;
+					m_cursor ++;
 				}
 				else
 				{
 					// Append char to current line.
-					linevec.push_back( uc );
-					cursor ++;
+					m_linevec.push_back(uc);
+					m_cursor ++;
 				}
 			}
 		}
 
 		// Paste partial line to capture buffer.
 		capturebuf.resize( line_start );
-		append_unichar_vector_to_utf8( capturebuf, linevec );
+		append_unichar_vector_to_utf8(capturebuf, m_linevec);
 		callerbuf_uptodate = false;
 
 		if ( ! signal_update.empty() )
