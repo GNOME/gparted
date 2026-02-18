@@ -18,8 +18,12 @@
 #ifndef GPARTED_LUKS_H
 #define GPARTED_LUKS_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
+
+#include <glibmm/ustring.h>
 
 
 namespace GParted

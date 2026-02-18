@@ -14,14 +14,19 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#include "luks.h"
+
 #include "FileSystem.h"
 #include "LUKS_Info.h"
+#include "OperationDetail.h"
+#include "Partition.h"
 #include "PasswordRAMStore.h"
 #include "Utils.h"
-#include "luks.h"
 
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
+#include <glibmm/ustring.h>
 
 
 namespace GParted
