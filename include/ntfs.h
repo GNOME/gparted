@@ -19,8 +19,12 @@
 #ifndef GPARTED_NTFS_H
 #define GPARTED_NTFS_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
+
+#include <glibmm/ustring.h>
 
 
 namespace GParted
