@@ -18,8 +18,12 @@
 #ifndef GPARTED_LVM2_PV_H
 #define GPARTED_LVM2_PV_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
+
+#include <glibmm/ustring.h>
 
 
 namespace GParted

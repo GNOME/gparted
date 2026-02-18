@@ -14,12 +14,17 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#include "lvm2_pv.h"
+
 #include "FileSystem.h"
 #include "LVM2_PV_Info.h"
-#include "lvm2_pv.h"
+#include "OperationDetail.h"
 #include "Partition.h"
+#include "Utils.h"
 
 #include <glibmm/shell.h>
+#include <glibmm/ustring.h>
 
 
 namespace GParted
