@@ -18,7 +18,9 @@
 #ifndef GPARTED_UDF_H
 #define GPARTED_UDF_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 
 #include <stddef.h>

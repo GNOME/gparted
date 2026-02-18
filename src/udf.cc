@@ -14,16 +14,19 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "udf.h"
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 #include "Utils.h"
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
+#include <glibmm/ustring.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 
 namespace GParted
