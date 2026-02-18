@@ -18,7 +18,9 @@
 #ifndef GPARTED_NILFS2_H
 #define GPARTED_NILFS2_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 
 
