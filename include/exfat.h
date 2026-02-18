@@ -14,6 +14,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef GPARTED_EXFAT_H
 #define GPARTED_EXFAT_H
 
@@ -21,6 +22,8 @@
 #include "FileSystem.h"
 #include "OperationDetail.h"
 #include "Partition.h"
+
+#include <glibmm/ustring.h>
 
 
 namespace GParted
