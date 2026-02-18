@@ -19,7 +19,9 @@
 #ifndef GPARTED_REISERFS_H
 #define GPARTED_REISERFS_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 
 
