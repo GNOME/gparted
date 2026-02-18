@@ -15,17 +15,22 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "btrfs.h"
+
 #include "BlockSpecial.h"
 #include "FileSystem.h"
 #include "Mount_Info.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 #include "Utils.h"
 
-#include <ctype.h>
-#include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
+#include <glibmm/ustring.h>
+#include <map>
+#include <stdio.h>
+#include <vector>
 
 
 namespace GParted
