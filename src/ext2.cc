@@ -15,16 +15,21 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "ext2.h"
+
 #include "FileSystem.h"
 #include "OperationDetail.h"
 #include "Partition.h"
+#include "ProgressBar.h"
 #include "Utils.h"
 
-#include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
+#include <glibmm/ustring.h>
 #include <sigc++/signal.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 namespace GParted
