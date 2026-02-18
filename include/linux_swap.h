@@ -19,8 +19,12 @@
 #ifndef GPARTED_LINUX_SWAP_H
 #define GPARTED_LINUX_SWAP_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
+
+#include <glibmm/ustring.h>
 
 
 namespace GParted

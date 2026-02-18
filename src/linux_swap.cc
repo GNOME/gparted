@@ -15,16 +15,22 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "linux_swap.h"
+
 #include "BlockSpecial.h"
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
+#include "Utils.h"
 
 #include <cerrno>
 #include <fstream>
 #include <glibmm/miscutils.h>
-#include <glibmm/stringutils.h>
 #include <glibmm/shell.h>
+#include <glibmm/stringutils.h>
+#include <glibmm/ustring.h>
+#include <stdio.h>
 
 
 namespace GParted
