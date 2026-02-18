@@ -19,7 +19,9 @@
 #ifndef GPARTED_JFS_H
 #define GPARTED_JFS_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 
 
