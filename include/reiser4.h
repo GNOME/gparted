@@ -19,7 +19,9 @@
 #ifndef GPARTED_REISER4_H
 #define GPARTED_REISER4_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 
 
