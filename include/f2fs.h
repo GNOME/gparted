@@ -18,7 +18,9 @@
 #ifndef GPARTED_F2FS_H
 #define GPARTED_F2FS_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
 #include "Partition.h"
 
 
