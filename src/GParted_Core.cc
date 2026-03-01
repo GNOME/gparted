@@ -111,7 +111,9 @@ Glib::ustring GParted_Core::get_version_and_config_string()
 		str += " (none)";
 	str += "\n";
 
-	str += Glib::ustring("libparted ") + ped_get_version();
+	str += Glib::ustring("libparted ") + ped_get_version() + "\n";
+
+	str += FS_Info::get_blkid_version_string();
 
 	return str;
 }

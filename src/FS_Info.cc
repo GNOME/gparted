@@ -33,6 +33,8 @@ namespace GParted
 //initialize static data elements
 bool FS_Info::fs_info_cache_initialized = false ;
 bool FS_Info::blkid_found  = false ;
+Glib::ustring FS_Info::full_blkid_version;
+
 // Assume workaround is needed just in case determination fails and as
 // it only costs a fraction of a second to run blkid command again.
 bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
@@ -50,6 +52,13 @@ bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
 //      {BS("/dev/sdb3"), ""           , ""      , ""                                      , false     , ""          }
 //     ]
 std::vector<FS_Entry> FS_Info::fs_info_cache;
+
+
+const Glib::ustring& FS_Info::get_blkid_version_string()
+{
+	set_command_found();
+	return full_blkid_version;
+}
 
 
 void FS_Info::clear_cache()
@@ -206,14 +215,19 @@ void FS_Info::set_command_found()
 {
 	blkid_found = (! Glib::find_program_in_path( "blkid" ) .empty() ) ;
 	if (! blkid_found)
+	{
+		full_blkid_version = "blkid command not found";
 		return;
+	}
+
+	Glib::ustring output;
+	Glib::ustring error;
+	Utils::execute_command("blkid -v", output, error, true);
+	full_blkid_version = Utils::trim_trailing_new_line(output);
 
 	// Blkid from util-linux before 2.23 has a cache update bug which prevents correct
 	// identification between FAT16 and FAT32 when overwriting one with the other.
 	// Detect the need for a workaround.
-	Glib::ustring output;
-	Glib::ustring error;
-	Utils::execute_command("blkid -v", output, error, true);
 	Glib::ustring blkid_version = Utils::regexp_label(output, "blkid.* ([0-9\\.]+) ");
 	int blkid_major_ver = 0;
 	int blkid_minor_ver = 0;

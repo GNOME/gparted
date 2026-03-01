@@ -43,6 +43,7 @@ struct FS_Entry
 class FS_Info
 {
 public:
+	static const Glib::ustring& get_blkid_version_string();
 	static void clear_cache();
 	static void load_cache_for_device_and_partition_names(
 	                        const std::vector<DeviceAndPartitionNames>& dev_ptn_names);
@@ -65,6 +66,7 @@ private:
 
 	static bool fs_info_cache_initialized ;
 	static bool blkid_found ;
+	static Glib::ustring full_blkid_version;
 	static bool need_blkid_vfat_cache_update_workaround;
 	static std::vector<FS_Entry> fs_info_cache;
 };
