@@ -79,10 +79,10 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 		bool set_active = false ;
 		for ( unsigned int t = 0 ; t < labeltypes .size() ; t ++ )
 		{
-			combo_labeltypes.append(labeltypes[t]);
+			m_combo_labeltypes.append(labeltypes[t]);
 			if ( default_label == labeltypes[ t ] )
 			{
-				combo_labeltypes .set_active( t ) ;
+				m_combo_labeltypes.set_active(t);
 				set_active = true ;
 			}
 		}
@@ -90,9 +90,9 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 		//  partition table types, but just in case fallback to activating the
 		//  first item in the combobox.
 		if ( ! set_active && labeltypes .size() )
-			combo_labeltypes .set_active( 0 ) ;
+			m_combo_labeltypes.set_active(0);
 
-		hbox->pack_start(combo_labeltypes, Gtk::PACK_SHRINK);
+		hbox->pack_start(m_combo_labeltypes, Gtk::PACK_SHRINK);
 	}
 
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
@@ -100,10 +100,12 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 	this ->show_all_children() ;
 }
 
+
 Glib::ustring Dialog_Disklabel::Get_Disklabel() 
 {
-	return labeltypes[ combo_labeltypes .get_active_row_number() ] ;
+	return labeltypes[m_combo_labeltypes.get_active_row_number()];
 }
+
 
 Dialog_Disklabel::~Dialog_Disklabel()
 {
