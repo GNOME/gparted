@@ -18,14 +18,13 @@
 #ifndef GPARTED_DIALOG_DISKLABEL_H
 #define GPARTED_DIALOG_DISKLABEL_H
 
-#include "Utils.h"
+
 #include "Device.h"
 
 #include <gtkmm/dialog.h>
-#include <gtkmm/button.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/expander.h>
 #include <gtkmm/comboboxtext.h>
+#include <glibmm/ustring.h>
+#include <vector>
 
 
 namespace GParted

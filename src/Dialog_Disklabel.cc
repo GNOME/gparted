@@ -15,9 +15,19 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "Dialog_Disklabel.h"
+
+#include "Device.h"
 #include "GParted_Core.h"
 #include "Utils.h"
+
+#include <glibmm/ustring.h>
+#include <gtkmm/box.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/enums.h>
+#include <gtkmm/image.h>
+#include <gtkmm/stock.h>
 
 
 namespace GParted
