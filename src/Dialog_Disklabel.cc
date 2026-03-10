@@ -74,13 +74,13 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 			default_label = "gpt" ;
 
 		//create and add combo with partition table types (label types)
-		this ->labeltypes = GParted_Core::get_disklabeltypes() ;
+		m_labeltypes = GParted_Core::get_disklabeltypes();
 
 		bool set_active = false ;
-		for ( unsigned int t = 0 ; t < labeltypes .size() ; t ++ )
+		for (unsigned int t = 0; t < m_labeltypes.size(); t++)
 		{
-			m_combo_labeltypes.append(labeltypes[t]);
-			if ( default_label == labeltypes[ t ] )
+			m_combo_labeltypes.append(m_labeltypes[t]);
+			if (default_label == m_labeltypes[t])
 			{
 				m_combo_labeltypes.set_active(t);
 				set_active = true ;
@@ -89,7 +89,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 		//Should be impossible for libparted to not known about MSDOS and GPT
 		//  partition table types, but just in case fallback to activating the
 		//  first item in the combobox.
-		if ( ! set_active && labeltypes .size() )
+		if (! set_active && m_labeltypes.size())
 			m_combo_labeltypes.set_active(0);
 
 		hbox->pack_start(m_combo_labeltypes, Gtk::PACK_SHRINK);
@@ -103,7 +103,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 
 Glib::ustring Dialog_Disklabel::Get_Disklabel() 
 {
-	return labeltypes[m_combo_labeltypes.get_active_row_number()];
+	return m_labeltypes[m_combo_labeltypes.get_active_row_number()];
 }
 
 

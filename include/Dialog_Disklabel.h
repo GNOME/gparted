@@ -42,7 +42,7 @@ public:
 
 private:
 	Gtk::ComboBoxText          m_combo_labeltypes;
-	std::vector<Glib::ustring> labeltypes ;
+	std::vector<Glib::ustring> m_labeltypes;
 };
 
 
