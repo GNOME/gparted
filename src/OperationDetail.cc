@@ -260,6 +260,26 @@ OperationDetail & OperationDetail::get_last_child()
 	return *sub_details[sub_details.size() - 1];
 }
 
+
+// Return the zeroth grandchild's description, which is the marked-up executed command
+// standard output.  execute_command_internal() created this OperationDetail hierarchy:
+//     OperationDetail object     description
+//     ------------------------   --------------------------------------------------------
+//     this                       "description of step, e.g. check file system on /dev..."
+//         ->sub_details[0]       "executed command, e.g. fsck.f2fs -f -a /dev/PTN"
+//             ->sub_details[0]   "marked-up standard output"
+//             ->sub_details[1]   "marked-up error output"
+const Glib::ustring& OperationDetail::get_grandchild_cmd_output_description() const
+{
+	static const Glib::ustring empty_desc;
+	if (sub_details.size() == 0)
+		return empty_desc;
+	if (sub_details[0]->sub_details.size() == 0)
+		return empty_desc;
+	return sub_details[0]->sub_details[0]->description;
+}
+
+
 void OperationDetail::run_progressbar( double progress, double target, ProgressBar_Text text_mode )
 {
 	if ( ! single_progressbar.running() )

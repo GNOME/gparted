@@ -48,6 +48,9 @@ FS f2fs::get_filesystem_support()
 	}
 
 	if (! Glib::find_program_in_path("fsck.f2fs").empty())
+		// Don't require Utils::kernel_supports_fs("f2fs") for optional and
+		// unlikely needed mount of F2FS.  This is to allow check to be performed
+		// even if mount would fail.
 		fs.check = FS::EXTERNAL;
 
 	if (! Glib::find_program_in_path("resize.f2fs").empty())
@@ -151,8 +154,47 @@ bool f2fs::resize(const Partition & partition_new, OperationDetail & operationde
 
 bool f2fs::check_repair(const Partition & partition, OperationDetail & operationdetail)
 {
-	return ! operationdetail.execute_command("fsck.f2fs -f -a " + Glib::shell_quote(partition.get_path()),
+	int exit_status = operationdetail.execute_command("fsck.f2fs -f -a " + Glib::shell_quote(partition.get_path()),
 	                        EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+	if (exit_status != 0)
+		return false;
+
+	// Search fsck output for the unclean unmount message.
+	const Glib::ustring& fsck_output = operationdetail.get_grandchild_cmd_output_description();
+	Glib::ustring poweroff_line = Utils::regexp_label(fsck_output,
+	                                                  "^(Info: checkpoint state = [^\n]*sudden-power-off)$");
+	if (poweroff_line.size() == 0)
+		return true;
+
+	// Report the FS needs log replay, including the unclean unmount message.  This is
+	// to indicate why the following FS mount and unmount is needed.  (Log replay only
+	// happens when the f2fs kernel code mounts the FS).
+	operationdetail.add_child(OperationDetail(_("File system needs log replay"), STATUS_NONE));
+	operationdetail.get_last_child().add_child(OperationDetail(poweroff_line, STATUS_NONE, FONT_MONOSPACE));
+
+	Glib::ustring mount_point = mk_temp_dir("", operationdetail);
+	if (mount_point.empty())
+		return false;
+
+	exit_status = operationdetail.execute_command("mount -v -t f2fs " +
+	                        Glib::shell_quote(partition.get_path()) +
+	                        " " + Glib::shell_quote(mount_point),
+	                        EXEC_CHECK_STATUS);
+	if (exit_status != 0)
+	{
+		rm_temp_dir(mount_point, operationdetail);
+		return false;
+	}
+
+	exit_status = operationdetail.execute_command("umount -v " +
+	                        Glib::shell_quote(mount_point),
+	                        EXEC_CHECK_STATUS);
+	if (exit_status != 0)
+		return false;
+
+	rm_temp_dir(mount_point, operationdetail);
+
+	return true;
 }
 
 
