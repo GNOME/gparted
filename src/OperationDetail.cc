@@ -100,13 +100,13 @@ static void cancel_command(bool force, Glib::Pid pid, bool cancel_safe)
 
 
 OperationDetail::OperationDetail()
- : m_cancelflag(0), status(STATUS_NONE), time_start(-1), time_elapsed(-1), no_more_children(false)
+ : m_cancelflag(0), m_status(STATUS_NONE), time_start(-1), time_elapsed(-1), no_more_children(false)
 {
 }
 
 
 OperationDetail::OperationDetail(const Glib::ustring& description, OperationDetailStatus status, Font font)
-: m_cancelflag(0), status(STATUS_NONE), time_start(-1), time_elapsed(-1), no_more_children(false)
+: m_cancelflag(0), m_status(STATUS_NONE), time_start(-1), time_elapsed(-1), no_more_children(false)
 {
 	set_description( description, font );
 	set_status( status );
@@ -164,7 +164,7 @@ const Glib::ustring& OperationDetail::get_description() const
 
 void OperationDetail::set_status( OperationDetailStatus status ) 
 {	
-	if ( this ->status != STATUS_ERROR )
+	if (m_status != STATUS_ERROR)
 	{
 		switch ( status )
 		{
@@ -183,10 +183,11 @@ void OperationDetail::set_status( OperationDetailStatus status )
 				break ;
 		}
 
-		this ->status = status ;
+		m_status = status;
 		on_update( *this ) ;
 	}
 }
+
 
 void OperationDetail::set_success_and_capture_errors( bool success )
 {
@@ -195,11 +196,13 @@ void OperationDetail::set_success_and_capture_errors( bool success )
 	no_more_children = true;
 }
 
+
 OperationDetailStatus OperationDetail::get_status() const
 {
-	return status ;
+	return m_status;
 }
-	
+
+
 void OperationDetail::set_treepath( const Glib::ustring & treepath ) 
 {
 	this ->treepath = treepath ;

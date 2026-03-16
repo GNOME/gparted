@@ -132,7 +132,7 @@ private:
 	                             TimedSlot timed_progress_slot);
 
 	Glib::ustring                 m_description;
-	OperationDetailStatus status ; 
+	OperationDetailStatus         m_status;
 
 	Glib::ustring treepath ;
 	
