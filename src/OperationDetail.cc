@@ -99,17 +99,19 @@ static void cancel_command(bool force, Glib::Pid pid, bool cancel_safe)
 }  // unnamed namespace
 
 
-OperationDetail::OperationDetail() : cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 ),
-                                     no_more_children( false )
+OperationDetail::OperationDetail()
+ : m_cancelflag(0), status(STATUS_NONE), time_start(-1), time_elapsed(-1), no_more_children(false)
 {
 }
 
-OperationDetail::OperationDetail( const Glib::ustring & description, OperationDetailStatus status, Font font ) :
-	cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 ), no_more_children( false )
+
+OperationDetail::OperationDetail(const Glib::ustring& description, OperationDetailStatus status, Font font)
+: m_cancelflag(0), status(STATUS_NONE), time_start(-1), time_elapsed(-1), no_more_children(false)
 {
 	set_description( description, font );
 	set_status( status );
 }
+
 
 OperationDetail::~OperationDetail()
 {
@@ -358,11 +360,12 @@ void OperationDetail::add_child_implement( const OperationDetail & operationdeta
 	sub_details.back()->signal_update.connect( sigc::mem_fun( this, &OperationDetail::on_update ) );
 	sub_details.back()->cancelconnection = signal_cancel.connect(
 				sigc::mem_fun( sub_details.back(), &OperationDetail::cancel ) );
-	if ( cancelflag )
-		sub_details.back()->cancel( cancelflag == 2 );
+	if (m_cancelflag)
+		sub_details.back()->cancel(m_cancelflag == 2);
 	sub_details.back()->signal_capture_errors.connect( this->signal_capture_errors );
 	on_update( *sub_details.back() );
 }
+
 
 void OperationDetail::on_update( const OperationDetail & operationdetail ) 
 {
@@ -370,14 +373,16 @@ void OperationDetail::on_update( const OperationDetail & operationdetail )
 		signal_update .emit( operationdetail ) ;
 }
 
+
 void OperationDetail::cancel( bool force )
 {
 	if ( force )
-		cancelflag = 2;
+		m_cancelflag = 2;
 	else
-		cancelflag = 1;
+		m_cancelflag = 1;
 	signal_cancel.emit( force );
 }
+
 
 const ProgressBar& OperationDetail::get_progressbar() const
 {

@@ -62,9 +62,10 @@ CopyBlocks::CopyBlocks( const Glib::ustring & in_src_device,
 {
 	operationdetail.signal_cancel.connect(
 		sigc::mem_fun(*this, &CopyBlocks::set_cancel));
-	if (operationdetail.cancelflag)
-		set_cancel( operationdetail.cancelflag == 2 );
+	if (operationdetail.m_cancelflag)
+		set_cancel(operationdetail.m_cancelflag == 2);
 }
+
 
 bool CopyBlocks::set_progress_info()
 {
