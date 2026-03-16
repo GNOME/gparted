@@ -16,21 +16,31 @@
 
 
 #include "OperationDetail.h"
+
 #include "PipeCapture.h"
 #include "ProgressBar.h"
 #include "Utils.h"
 
 #include <cerrno>
-#include <unistd.h>
+#include <ctime>
 #include <fcntl.h>
+#include <glibmm/exception.h>
 #include <glibmm/main.h>
-#include <glibmm/ustring.h>
-#include <glibmm/stringutils.h>
-#include <glibmm/spawn.h>
+#include <glibmm/markup.h>
 #include <glibmm/shell.h>
+#include <glibmm/spawn.h>
+#include <glibmm/stringutils.h>
+#include <glibmm/ustring.h>
 #include <gtkmm/main.h>
+#include <iostream>
 #include <sigc++/bind.h>
+#include <sigc++/connection.h>
 #include <sigc++/signal.h>
+#include <signal.h>
+#include <stddef.h>
+#include <string.h>
+#include <unistd.h>
+#include <vector>
 
 
 namespace GParted

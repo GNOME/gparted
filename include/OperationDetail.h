@@ -21,13 +21,12 @@
 
 #include "ProgressBar.h"
 
+#include <ctime>
 #include <glibmm/ustring.h>
-#include <glibmm/markup.h>
 #include <sigc++/connection.h>
 #include <sigc++/signal.h>
 #include <sigc++/slot.h>
 #include <vector>
-#include <ctime>
 
 
 namespace GParted
