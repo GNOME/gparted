@@ -131,25 +131,25 @@ void OperationDetail::set_description(const Glib::ustring& description, Font fon
 		switch (font)
 		{
 			case FONT_NORMAL:
-				this->description = Glib::Markup::escape_text(description);
+				m_description = Glib::Markup::escape_text(description);
 				break;
 			case FONT_BOLD:
-				this->description = "<b>" + Glib::Markup::escape_text(description) + "</b>";
+				m_description = "<b>" + Glib::Markup::escape_text(description) + "</b>";
 				break;
 			case FONT_ITALIC:
-				this->description = "<i>" + Glib::Markup::escape_text(description) + "</i>";
+				m_description = "<i>" + Glib::Markup::escape_text(description) + "</i>";
 				break;
 			case FONT_BOLD_ITALIC:
-				this->description = "<b><i>" + Glib::Markup::escape_text(description) + "</i></b>";
+				m_description = "<b><i>" + Glib::Markup::escape_text(description) + "</i></b>";
 				break;
 			case FONT_MONOSPACE:
-				this->description = "<tt>" + Glib::Markup::escape_text(description) + "</tt>";
+				m_description = "<tt>" + Glib::Markup::escape_text(description) + "</tt>";
 				break;
 		}
 	}
 	catch (Glib::Exception& e)
 	{
-		this->description = e.what();
+		m_description = e.what();
 	}
 
 	on_update(*this);
@@ -158,7 +158,7 @@ void OperationDetail::set_description(const Glib::ustring& description, Font fon
 
 const Glib::ustring& OperationDetail::get_description() const
 {
-	return description ;
+	return m_description;
 }
 
 
@@ -265,7 +265,7 @@ OperationDetail & OperationDetail::get_last_child()
 
 // Return the zeroth grandchild's description, which is the marked-up executed command
 // standard output.  execute_command_internal() created this OperationDetail hierarchy:
-//     OperationDetail object     description
+//     OperationDetail object     m_description
 //     ------------------------   --------------------------------------------------------
 //     this                       "description of step, e.g. check file system on /dev..."
 //         ->sub_details[0]       "executed command, e.g. fsck.f2fs -f -a /dev/PTN"
@@ -278,7 +278,7 @@ const Glib::ustring& OperationDetail::get_grandchild_cmd_output_description() co
 		return empty_desc;
 	if (sub_details[0]->sub_details.size() == 0)
 		return empty_desc;
-	return sub_details[0]->sub_details[0]->description;
+	return sub_details[0]->sub_details[0]->m_description;
 }
 
 

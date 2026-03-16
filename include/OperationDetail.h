@@ -131,7 +131,7 @@ private:
 	                             StreamSlot stream_progress_slot,
 	                             TimedSlot timed_progress_slot);
 
-	Glib::ustring description ;
+	Glib::ustring                 m_description;
 	OperationDetailStatus status ; 
 
 	Glib::ustring treepath ;
