@@ -140,8 +140,7 @@ private:
 	                              // Disallow adding more children to ensure captured errors
 	                              // remain the last child of this operation detail.
 	bool                          m_no_more_children;
-	
-	std::vector<OperationDetail*> sub_details;
+	std::vector<OperationDetail*> m_sub_details;
 
 	sigc::connection cancelconnection;
 };

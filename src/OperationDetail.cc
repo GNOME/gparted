@@ -116,10 +116,10 @@ OperationDetail::OperationDetail(const Glib::ustring& description, OperationDeta
 OperationDetail::~OperationDetail()
 {
 	cancelconnection.disconnect();
-	while (sub_details.size())
+	while (m_sub_details.size())
 	{
-		delete sub_details.back();
-		sub_details.pop_back();
+		delete m_sub_details.back();
+		m_sub_details.pop_back();
 	}
 }
 
@@ -248,42 +248,42 @@ void OperationDetail::add_child( const OperationDetail & operationdetail )
 
 std::vector<OperationDetail*>& OperationDetail::get_children()
 {
-	return sub_details;
+	return m_sub_details;
 }
 
 
 const std::vector<OperationDetail*>& OperationDetail::get_children() const
 {
-	return sub_details;
+	return m_sub_details;
 }
 
 
 OperationDetail & OperationDetail::get_last_child()
 {
 	//little bit of (healthy?) paranoia
-	if ( sub_details .size() == 0 )
+	if (m_sub_details.size() == 0)
 		add_child( OperationDetail( "---", STATUS_ERROR ) ) ;
 
-	return *sub_details[sub_details.size() - 1];
+	return *m_sub_details[m_sub_details.size() - 1];
 }
 
 
 // Return the zeroth grandchild's description, which is the marked-up executed command
 // standard output.  execute_command_internal() created this OperationDetail hierarchy:
-//     OperationDetail object     m_description
-//     ------------------------   --------------------------------------------------------
-//     this                       "description of step, e.g. check file system on /dev..."
-//         ->sub_details[0]       "executed command, e.g. fsck.f2fs -f -a /dev/PTN"
-//             ->sub_details[0]   "marked-up standard output"
-//             ->sub_details[1]   "marked-up error output"
+//     OperationDetail object       m_description
+//     --------------------------   --------------------------------------------------------
+//     this                         "description of step, e.g. check file system on /dev..."
+//         ->m_sub_details[0]       "executed command, e.g. fsck.f2fs -f -a /dev/PTN"
+//             ->m_sub_details[0]   "marked-up standard output"
+//             ->m_sub_details[1]   "marked-up error output"
 const Glib::ustring& OperationDetail::get_grandchild_cmd_output_description() const
 {
 	static const Glib::ustring empty_desc;
-	if (sub_details.size() == 0)
+	if (m_sub_details.size() == 0)
 		return empty_desc;
-	if (sub_details[0]->sub_details.size() == 0)
+	if (m_sub_details[0]->m_sub_details.size() == 0)
 		return empty_desc;
-	return sub_details[0]->sub_details[0]->m_description;
+	return m_sub_details[0]->m_sub_details[0]->m_description;
 }
 
 
@@ -359,16 +359,16 @@ const Glib::ustring& OperationDetail::get_command_error()
 
 void OperationDetail::add_child_implement( const OperationDetail & operationdetail )
 {
-	sub_details .push_back( new OperationDetail( operationdetail ) );
+	m_sub_details.push_back(new OperationDetail(operationdetail));
 
-	sub_details.back()->set_treepath(m_treepath + ":" + Utils::num_to_str(sub_details.size() - 1));
-	sub_details.back()->signal_update.connect( sigc::mem_fun( this, &OperationDetail::on_update ) );
-	sub_details.back()->cancelconnection = signal_cancel.connect(
-				sigc::mem_fun( sub_details.back(), &OperationDetail::cancel ) );
+	m_sub_details.back()->set_treepath(m_treepath + ":" + Utils::num_to_str(m_sub_details.size() - 1));
+	m_sub_details.back()->signal_update.connect(sigc::mem_fun(this, &OperationDetail::on_update));
+	m_sub_details.back()->cancelconnection = signal_cancel.connect(
+				sigc::mem_fun(m_sub_details.back(), &OperationDetail::cancel));
 	if (m_cancelflag)
-		sub_details.back()->cancel(m_cancelflag == 2);
-	sub_details.back()->signal_capture_errors.connect( this->signal_capture_errors );
-	on_update( *sub_details.back() );
+		m_sub_details.back()->cancel(m_cancelflag == 2);
+	m_sub_details.back()->signal_capture_errors.connect(this->signal_capture_errors);
+	on_update(*m_sub_details.back());
 }
 
 
