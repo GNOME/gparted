@@ -136,10 +136,12 @@ private:
 	Glib::ustring                 m_treepath;
 	std::time_t                   m_time_start;
 	std::time_t                   m_time_elapsed;
+
+	                              // Disallow adding more children to ensure captured errors
+	                              // remain the last child of this operation detail.
+	bool                          m_no_more_children;
 	
 	std::vector<OperationDetail*> sub_details;
-	bool no_more_children;  // Disallow adding more children to ensure captured errors
-	                        // remain the last child of this operation detail.
 
 	sigc::connection cancelconnection;
 };

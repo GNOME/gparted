@@ -100,13 +100,13 @@ static void cancel_command(bool force, Glib::Pid pid, bool cancel_safe)
 
 
 OperationDetail::OperationDetail()
- : m_cancelflag(0), m_status(STATUS_NONE), m_time_start(-1), m_time_elapsed(-1), no_more_children(false)
+ : m_cancelflag(0), m_status(STATUS_NONE), m_time_start(-1), m_time_elapsed(-1), m_no_more_children(false)
 {
 }
 
 
 OperationDetail::OperationDetail(const Glib::ustring& description, OperationDetailStatus status, Font font)
-: m_cancelflag(0), m_status(STATUS_NONE), m_time_start(-1), m_time_elapsed(-1), no_more_children(false)
+: m_cancelflag(0), m_status(STATUS_NONE), m_time_start(-1), m_time_elapsed(-1), m_no_more_children(false)
 {
 	set_description( description, font );
 	set_status( status );
@@ -193,7 +193,7 @@ void OperationDetail::set_success_and_capture_errors( bool success )
 {
 	set_status( success ? STATUS_SUCCESS : STATUS_ERROR );
 	signal_capture_errors.emit( *this, success );
-	no_more_children = true;
+	m_no_more_children = true;
 }
 
 
@@ -226,7 +226,7 @@ Glib::ustring OperationDetail::get_elapsed_time() const
 
 void OperationDetail::add_child( const OperationDetail & operationdetail )
 {
-	if ( no_more_children )
+	if (m_no_more_children)
 		// Adding a child after this OperationDetail has been set to prevent it is
 		// a programming bug.  However the best way to report it is by adding yet
 		// another child containing the bug report, and allowing the child to be
