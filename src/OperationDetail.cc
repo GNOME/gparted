@@ -205,15 +205,16 @@ OperationDetailStatus OperationDetail::get_status() const
 
 void OperationDetail::set_treepath( const Glib::ustring & treepath ) 
 {
-	this ->treepath = treepath ;
+	m_treepath = treepath;
 }
 
 
 const Glib::ustring& OperationDetail::get_treepath() const
 {
-	return treepath ;
+	return m_treepath;
 }
-	
+
+
 Glib::ustring OperationDetail::get_elapsed_time() const 
 {
 	if ( time_elapsed >= 0 ) 
@@ -359,7 +360,7 @@ void OperationDetail::add_child_implement( const OperationDetail & operationdeta
 {
 	sub_details .push_back( new OperationDetail( operationdetail ) );
 
-	sub_details.back()->set_treepath( treepath + ":" + Utils::num_to_str( sub_details .size() - 1 ) );
+	sub_details.back()->set_treepath(m_treepath + ":" + Utils::num_to_str(sub_details.size() - 1));
 	sub_details.back()->signal_update.connect( sigc::mem_fun( this, &OperationDetail::on_update ) );
 	sub_details.back()->cancelconnection = signal_cancel.connect(
 				sigc::mem_fun( sub_details.back(), &OperationDetail::cancel ) );
@@ -372,7 +373,7 @@ void OperationDetail::add_child_implement( const OperationDetail & operationdeta
 
 void OperationDetail::on_update( const OperationDetail & operationdetail ) 
 {
-	if ( ! treepath .empty() )
+	if (! m_treepath.empty())
 		signal_update .emit( operationdetail ) ;
 }
 

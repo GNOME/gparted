@@ -133,8 +133,7 @@ private:
 
 	Glib::ustring                 m_description;
 	OperationDetailStatus         m_status;
-
-	Glib::ustring treepath ;
+	Glib::ustring                 m_treepath;
 	
 	std::vector<OperationDetail*> sub_details;
 	std::time_t time_start, time_elapsed ;
