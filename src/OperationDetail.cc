@@ -100,13 +100,13 @@ static void cancel_command(bool force, Glib::Pid pid, bool cancel_safe)
 
 
 OperationDetail::OperationDetail()
- : m_cancelflag(0), m_status(STATUS_NONE), time_start(-1), time_elapsed(-1), no_more_children(false)
+ : m_cancelflag(0), m_status(STATUS_NONE), m_time_start(-1), m_time_elapsed(-1), no_more_children(false)
 {
 }
 
 
 OperationDetail::OperationDetail(const Glib::ustring& description, OperationDetailStatus status, Font font)
-: m_cancelflag(0), m_status(STATUS_NONE), time_start(-1), time_elapsed(-1), no_more_children(false)
+: m_cancelflag(0), m_status(STATUS_NONE), m_time_start(-1), m_time_elapsed(-1), no_more_children(false)
 {
 	set_description( description, font );
 	set_status( status );
@@ -169,14 +169,14 @@ void OperationDetail::set_status( OperationDetailStatus status )
 		switch ( status )
 		{
 			case STATUS_EXECUTE:
-				time_elapsed = -1 ;
-				time_start = std::time(nullptr);
+				m_time_elapsed = -1;
+				m_time_start = std::time(nullptr);
 				break ;
 			case STATUS_ERROR:
 			case STATUS_WARNING:
 			case STATUS_SUCCESS:
-				if( time_start != -1 )
-					time_elapsed = std::time(nullptr) - time_start;
+				if(m_time_start != -1)
+					m_time_elapsed = std::time(nullptr) - m_time_start;
 				break ;
 
 			default:
@@ -217,11 +217,12 @@ const Glib::ustring& OperationDetail::get_treepath() const
 
 Glib::ustring OperationDetail::get_elapsed_time() const 
 {
-	if ( time_elapsed >= 0 ) 
-		return Utils::format_time( time_elapsed ) ;
+	if (m_time_elapsed >= 0)
+		return Utils::format_time(m_time_elapsed);
 	
 	return "" ;
 }
+
 
 void OperationDetail::add_child( const OperationDetail & operationdetail )
 {

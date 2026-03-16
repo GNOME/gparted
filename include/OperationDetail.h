@@ -134,9 +134,10 @@ private:
 	Glib::ustring                 m_description;
 	OperationDetailStatus         m_status;
 	Glib::ustring                 m_treepath;
+	std::time_t                   m_time_start;
+	std::time_t                   m_time_elapsed;
 	
 	std::vector<OperationDetail*> sub_details;
-	std::time_t time_start, time_elapsed ;
 	bool no_more_children;  // Disallow adding more children to ensure captured errors
 	                        // remain the last child of this operation detail.
 
