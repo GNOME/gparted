@@ -164,7 +164,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 				break ;
 			case STATUS_NONE:
 				static_cast< Glib::RefPtr<Gdk::Pixbuf> >(
-					treerow[m_treeview_operations_columns.status_icon]).clear();
+					treerow[m_treeview_operations_columns.status_icon]).reset();
 				break ;
 		}
 
