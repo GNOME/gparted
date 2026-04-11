@@ -104,13 +104,6 @@ private:
 			x_unallocated_start = unallocated_length =
 			y_usage_start = usage_height =
 			x_text = y_text = 0 ;
-
-			logicals .clear() ;
-		}
-
-		~VisualPartition()
-		{
-			logicals .clear() ;
 		}
 	};
 
