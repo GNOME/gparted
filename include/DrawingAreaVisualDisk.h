@@ -77,34 +77,32 @@ private:
 	//variables
 	struct VisualPartition
 	{
-		double fraction ;		//Partition size as a fraction of containing disk or extended partition size
-		int x_start, length ;
-		int y_start, height ;
-		int x_used_start, used_length ;
-		int x_unused_start, unused_length ;
-		int x_unallocated_start, unallocated_length ;
-		int y_usage_start, usage_height ;
-		int x_text, y_text ;
+		double fraction = 0.0;  // Partition size as a fraction of containing disk or extended partition size
+
+		int x_start             = 0;
+		int length              = 0;
+		int y_start             = 0;
+		int height              = 0;
+		int x_used_start        = 0;
+		int used_length         = 0;
+		int x_unused_start      = 0;
+		int unused_length       = 0;
+		int x_unallocated_start = 0;
+		int unallocated_length  = 0;
+		int y_usage_start       = 0;
+		int usage_height        = 0;
+		int x_text              = 0;
+		int y_text              = 0;
 
 		Gdk::RGBA color;
 		Glib::RefPtr<Pango::Layout> pango_layout;
 
 		// Pointer to real partition.  (Alias to element in Win_GParted::m_display_device.partitions[] vector).
-		const Partition * partition_ptr;
+		const Partition* partition_ptr = nullptr;
 
 		std::vector<VisualPartition> logicals;
 
-		VisualPartition()
-		{
-			fraction = 0.0 ;
-			x_start = length =
-			y_start = height =
-			x_used_start = used_length =
-			x_unused_start = unused_length =
-			x_unallocated_start = unallocated_length =
-			y_usage_start = usage_height =
-			x_text = y_text = 0 ;
-		}
+		VisualPartition() = default;
 	};
 
 	std::vector<VisualPartition> m_visual_partitions;
