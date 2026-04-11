@@ -105,13 +105,11 @@ private:
 			y_usage_start = usage_height =
 			x_text = y_text = 0 ;
 
-			pango_layout .clear() ;
 			logicals .clear() ;
 		}
 
 		~VisualPartition()
 		{
-			pango_layout .clear() ;
 			logicals .clear() ;
 		}
 	};
