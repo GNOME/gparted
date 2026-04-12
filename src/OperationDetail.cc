@@ -56,15 +56,13 @@ static ProgressBar single_progressbar;
 
 
 // Single set of coordination data between execute_command_internal() and helpers
-static struct CommandStatus {
-	bool          running;
-	int           pipecount;
+static struct CommandStatus
+{
+	bool          running     = false;
+	int           pipecount   = 0;
 	Glib::ustring output;
 	Glib::ustring error;
-	int           exit_status;
-
-	// Default constructor to initialise POD (Plain Old Data) members
-	CommandStatus() : running(false), pipecount(0), exit_status(0)  {};
+	int           exit_status = 0;
 } cmd_status;
 
 
