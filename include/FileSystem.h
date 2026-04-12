@@ -61,32 +61,27 @@ struct FS
 		EXTERNAL  = 3
 	};
 
-	FSType fstype;
-	Support busy;               // How to determine if partition/file system is busy
-	Support read;               // Can and how to read sector usage while inactive
-	Support read_label;
-	Support write_label;
-	Support read_uuid;
-	Support write_uuid;
-	Support create;
-	Support create_with_label;  // Can and how to format file system with label
-	Support grow;
-	Support shrink;
-	Support move;               // start point and endpoint
-	Support check;              // Some check tool available?
-	Support copy;
-	Support remove;
-	Support online_read;        // Can and how to read sector usage while active
-	Support online_grow;
-	Support online_shrink;
-	Support online_write_label;
+	FSType  fstype             = FS_UNSUPPORTED;
+	Support busy               = NONE;  // How to determine if partition/file system is busy
+	Support read               = NONE;  // Can and how to read sector usage while inactive
+	Support read_label         = NONE;
+	Support write_label        = NONE;
+	Support read_uuid          = NONE;
+	Support write_uuid         = NONE;
+	Support create             = NONE;
+	Support create_with_label  = NONE;  // Can and how to format file system with label
+	Support grow               = NONE;
+	Support shrink             = NONE;
+	Support move               = NONE;  // start point and endpoint
+	Support check              = NONE;  // Some check tool available?
+	Support copy               = NONE;
+	Support remove             = NONE;
+	Support online_read        = NONE;  // Can and how to read sector usage while active
+	Support online_grow        = NONE;
+	Support online_shrink      = NONE;
+	Support online_write_label = NONE;
 
-	FS(FSType fstype_ = FS_UNSUPPORTED) : fstype(fstype_)
-	{
-		busy = read = read_label = write_label = read_uuid = write_uuid = create =
-		create_with_label = grow = shrink = move = check = copy = remove = online_read =
-		online_grow = online_shrink = online_write_label = NONE;
-	}
+	FS(FSType fstype_ = FS_UNSUPPORTED) : fstype(fstype_) {};
 };
 
 
