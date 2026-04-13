@@ -39,8 +39,8 @@ public:
 private:
 	void on_button_unlock();
 
-	Gtk::Entry *m_entry;
-	Gtk::Label *m_error_message;
+	Gtk::Entry* m_entry         = nullptr;
+	Gtk::Label* m_error_message = nullptr;
 };
 
 
