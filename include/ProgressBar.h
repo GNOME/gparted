@@ -36,7 +36,7 @@ enum ProgressBar_Text
 class ProgressBar
 {
 public:
-	ProgressBar();
+	ProgressBar() = default;
 
 	ProgressBar(const ProgressBar& src) = delete;             // Copy construction prohibited
 	ProgressBar& operator=(const ProgressBar& rhs) = delete;  // Copy assignment prohibited
@@ -51,13 +51,14 @@ public:
 private:
 	void do_update();
 
-	bool              m_running;    // Is this progress bar running?
-	double            m_target;     // Progress bar target should be > 0.0
-	double            m_progress;   // Should be 0.0 <= m_progress <= m_target
-	double            m_fraction;   // Always between 0.0 and 1.0 for passing to Gtk::ProgressBar.set_fraction()
-	ProgressBar_Text  m_text_mode;  // Style of text generation
-	Glib::ustring     m_text;       // Text for passing to Gtk::ProgressBar.set_text()
-	Glib::Timer       m_timer;      // Measures elapsed time to the microsecond for accurate estimation
+	bool              m_running   = false;  // Is this progress bar running?
+	double            m_target    = 1.0;    // Progress bar target should be > 0.0
+	double            m_progress  = 0.0;    // Should be 0.0 <= m_progress <= m_target
+	double            m_fraction  = 0.0;    // Always between 0.0 and 1.0 for passing
+	                                        // to Gtk::ProgressBar.set_fraction()
+	ProgressBar_Text  m_text_mode = PROGRESSBAR_TEXT_TIME_REMAINING;  // Style of text generation
+	Glib::ustring     m_text;               // Text for passing to Gtk::ProgressBar.set_text()
+	Glib::Timer       m_timer;              // Measures elapsed time to the microsecond for accurate estimation
 };
 
 
