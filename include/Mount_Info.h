@@ -37,11 +37,12 @@ namespace GParted
 
 struct MountEntry
 {
-	bool                       readonly;     // Is the file system mounted read-only?
-	std::vector<Glib::ustring> mountpoints;  // File system mounted on ...
+	bool                       readonly    = false;  // Is the file system mounted read-only?
+	std::vector<Glib::ustring> mountpoints;          // File system mounted on ...
 
-	MountEntry() : readonly( false )  {};
+	MountEntry() = default;
 };
+
 
 class Mount_Info
 {
