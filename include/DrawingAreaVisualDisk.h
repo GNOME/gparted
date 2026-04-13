@@ -106,9 +106,9 @@ private:
 	};
 
 	std::vector<VisualPartition> m_visual_partitions;
-	const VisualPartition*       m_selected_vp;
-	int                          m_tot_sep;
-	int                          m_min_size;
+	const VisualPartition*       m_selected_vp       = nullptr;
+	int                          m_tot_sep           = 0;
+	int                          m_min_size          = 0;
 	const Gdk::RGBA              m_color_used;
 	const Gdk::RGBA              m_color_unused;
 	const Gdk::RGBA              m_color_unallocated;

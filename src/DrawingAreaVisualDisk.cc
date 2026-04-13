@@ -38,8 +38,9 @@ namespace GParted
 
 
 DrawingAreaVisualDisk::DrawingAreaVisualDisk()
- : m_selected_vp(nullptr), m_tot_sep(0), m_min_size(0), m_color_used(Utils::get_color(FS_USED)),
-   m_color_unused(Utils::get_color(FS_UNUSED)), m_color_unallocated(Utils::get_color(FS_UNALLOCATED)),
+ : m_color_used(Utils::get_color(FS_USED)),
+   m_color_unused(Utils::get_color(FS_UNUSED)),
+   m_color_unallocated(Utils::get_color(FS_UNALLOCATED)),
    m_color_text("black")
 {
 	add_events( Gdk::BUTTON_PRESS_MASK );
