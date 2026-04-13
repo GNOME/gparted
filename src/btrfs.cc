@@ -431,7 +431,7 @@ std::vector<Glib::ustring> btrfs::get_members( const Glib::ustring & path )
 //Return btrfs device cache entry, incrementally loading cache as required
 const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 {
-	static BTRFS_Device not_found_btrfs_dev = {-1, };
+	static BTRFS_Device not_found_btrfs_dev;  // {-1, []}
 	if (! btrfs_found)
 		// Without the btrfs command it can't be executed to discover the devices
 		// in a btrfs file system and so btrfs_device_cache is never populated.

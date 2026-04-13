@@ -35,9 +35,10 @@ namespace GParted
 
 struct BTRFS_Device
 {
-	int                       devid;
+	int                       devid   = -1;
 	std::vector<BlockSpecial> members;
-} ;
+};
+
 
 class btrfs : public FileSystem
 {
