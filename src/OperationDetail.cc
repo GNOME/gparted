@@ -107,14 +107,7 @@ static void cancel_command(bool force, Glib::Pid pid, bool cancel_safe)
 }  // unnamed namespace
 
 
-OperationDetail::OperationDetail()
- : m_cancelflag(0), m_status(STATUS_NONE), m_time_start(-1), m_time_elapsed(-1), m_no_more_children(false)
-{
-}
-
-
 OperationDetail::OperationDetail(const Glib::ustring& description, OperationDetailStatus status, Font font)
-: m_cancelflag(0), m_status(STATUS_NONE), m_time_start(-1), m_time_elapsed(-1), m_no_more_children(false)
 {
 	set_description( description, font );
 	set_status( status );

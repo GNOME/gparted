@@ -86,11 +86,11 @@ friend class Dialog_Progress;  // To allow Dialog_Progress::on_signal_update() t
                                // get_progressbar() and get direct access to the progress bar.
 
 public:	
-	OperationDetail() ;
-	~OperationDetail();
+	OperationDetail() = default;
 	OperationDetail( const Glib::ustring & description,
 			 OperationDetailStatus status = STATUS_EXECUTE,
 			 Font font = FONT_NORMAL ) ;
+	~OperationDetail();
 	void set_description( const Glib::ustring & description, Font font = FONT_NORMAL ) ;
 	const Glib::ustring& get_description() const;
 	const Glib::ustring& get_grandchild_cmd_output_description() const;
@@ -118,7 +118,7 @@ public:
 	sigc::signal< void, const OperationDetail & > signal_update ;
 	sigc::signal< void, bool > signal_cancel;
 	sigc::signal< void, OperationDetail &, bool > signal_capture_errors;
-	char m_cancelflag;
+	char m_cancelflag = 0;
 
 private:
 	void add_child_implement( const OperationDetail & operationdetail );
@@ -131,14 +131,14 @@ private:
 	                             TimedSlot timed_progress_slot);
 
 	Glib::ustring                 m_description;
-	OperationDetailStatus         m_status;
+	OperationDetailStatus         m_status           = STATUS_NONE;
 	Glib::ustring                 m_treepath;
-	std::time_t                   m_time_start;
-	std::time_t                   m_time_elapsed;
+	std::time_t                   m_time_start       = -1;
+	std::time_t                   m_time_elapsed     = -1;
 
 	                              // Disallow adding more children to ensure captured errors
 	                              // remain the last child of this operation detail.
-	bool                          m_no_more_children;
+	bool                          m_no_more_children = false;
 	std::vector<OperationDetail*> m_sub_details;
 
 	sigc::connection cancelconnection;
