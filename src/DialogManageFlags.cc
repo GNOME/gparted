@@ -36,8 +36,7 @@ namespace GParted
 
 
 DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::ustring, bool> flag_info)
- : m_changed(false),
-   m_warning_message(std::move(*Utils::mk_label("", false, true, true, Gtk::ALIGN_START))),
+ : m_warning_message(std::move(*Utils::mk_label("", false, true, true, Gtk::ALIGN_START))),
    m_partition(partition), m_flag_info(flag_info)
 {
 	set_title( Glib::ustring::compose( _("Manage flags on %1"), partition .get_path() ) );

@@ -43,7 +43,7 @@ public:
 	sigc::signal< std::map<Glib::ustring, bool>, const Partition & > signal_get_flags ;
 	sigc::signal< bool, const Partition &, const Glib::ustring &, bool > signal_toggle_flag ;
 
-	bool m_changed;
+	bool m_changed = false;
 
 private:
 	void load_treeview() ;
