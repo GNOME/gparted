@@ -44,11 +44,8 @@ typedef std::map<Glib::ustring, MM_Number> MMNumberMapping;
 //     mm_number_cache["sysfs"]     = {0, 0}
 static MMNumberMapping mm_number_cache;
 
-BlockSpecial::BlockSpecial() : m_name( "" ), m_major( 0UL ), m_minor( 0UL )
-{
-}
 
-BlockSpecial::BlockSpecial( const Glib::ustring & name ) : m_name( name ), m_major( 0UL ), m_minor( 0UL )
+BlockSpecial::BlockSpecial(const Glib::ustring& name) : m_name(name)
 {
 	MMNumberMapping::const_iterator mm_num_iter = mm_number_cache.find( name );
 	if ( mm_num_iter != mm_number_cache.end() )

@@ -36,17 +36,18 @@ namespace GParted
 class BlockSpecial
 {
 public:
-	BlockSpecial();
+	BlockSpecial() = default;
 	BlockSpecial( const Glib::ustring & name );
 
-	Glib::ustring m_name;   // E.g. Block special file {"/dev/sda1", 8, 1},
-	unsigned long m_major;  // plain file {"FILENAME", 0, 0} and empty object
-	unsigned long m_minor;  // {"", 0, 0}.
+	Glib::ustring m_name;         // E.g. Block special file {"/dev/sda1", 8, 1},
+	unsigned long m_major = 0UL;  // plain file {"FILENAME", 0, 0} and empty object
+	unsigned long m_minor = 0UL;  // {"", 0, 0}.
 
 	static void clear_cache();
 	static void register_block_special( const Glib::ustring & name,
 	                                    unsigned long major, unsigned long minor );
 };
+
 
 // Operator overloading > The Decision between Member and Non-member
 // http://stackoverflow.com/questions/4421706/operator-overloading/4421729#4421729
