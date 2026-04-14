@@ -47,19 +47,19 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	Gtk::Label *label_name = Utils::mk_label("<b>" + Glib::ustring(_("Name:")) + "</b>");
 	hbox->pack_start(*label_name, Gtk::PACK_SHRINK);
 
-	entry = Gtk::manage(new Gtk::Entry());
+	m_entry = Gtk::manage(new Gtk::Entry());
 	// NOTE: This limits the Gtk::Entry size in UTF-8 characters but partition names
 	// are defined in terms of ASCII characters, or for GPT, UTF-16LE code points.
 	// See Utils::get_max_partition_name_length().  So for certain extended characters
 	// this limit will be too generous.
-	entry->set_max_length( max_length );
+	m_entry->set_max_length(max_length);
 
-	entry->set_width_chars( 30 );
-	entry->set_activates_default( true );
-	entry->set_text( partition.name );
-	entry->select_region( 0, entry->get_text_length() );
-	entry->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_name->get_accessible());
-	hbox->pack_start( *entry, Gtk::PACK_SHRINK );
+	m_entry->set_width_chars(30);
+	m_entry->set_activates_default(true);
+	m_entry->set_text(partition.name);
+	m_entry->select_region(0, m_entry->get_text_length());
+	m_entry->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_name->get_accessible());
+	hbox->pack_start(*m_entry, Gtk::PACK_SHRINK);
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this->add_button( Gtk::Stock::OK, Gtk::RESPONSE_OK );
@@ -70,7 +70,7 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 
 Glib::ustring Dialog_Partition_Name::get_new_name()
 {
-	return Utils::trim( Glib::ustring( entry->get_text() ) );
+	return Utils::trim(Glib::ustring(m_entry->get_text()));
 }
 
 
