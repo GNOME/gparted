@@ -47,9 +47,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const Opera
    m_icon_info   (Utils::mk_pixbuf(*this, Gtk::Stock::INFO,           Gtk::ICON_SIZE_LARGE_TOOLBAR)),
    m_icon_warning(Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR)),
    m_devices(devices), m_operations(operations),
-   m_fraction(1.0 / operations.size()),
-   m_success(true), m_cancel(false),
-   m_curr_op(0), m_warnings(0), m_cancel_countdown(0)
+   m_fraction(1.0 / operations.size())
 {
 	this ->set_title( _("Applying pending operations") ) ;
 	this->property_default_width() = 700;

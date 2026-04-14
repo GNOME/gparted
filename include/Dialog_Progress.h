@@ -99,14 +99,14 @@ private:
 
 	const std::vector<Device>& m_devices;
 	const OperationVector&     m_operations;
-	const double               m_fraction;
-	bool                       m_success;
-	bool                       m_cancel;
-	unsigned int               m_curr_op;
-	unsigned int               m_warnings;
+	const double               m_fraction               = 1.0;
+	bool                       m_success                = true;
+	bool                       m_cancel                 = false;
+	unsigned int               m_curr_op                = 0;
+	unsigned int               m_warnings               = 0;
 	Glib::ustring              m_progress_text;
 	Glib::ustring              m_label_current_sub_text;
-	unsigned int               m_cancel_countdown;
+	unsigned int               m_cancel_countdown       = 0;
 
 	sigc::connection pulsetimer;
 	sigc::connection canceltimer;
