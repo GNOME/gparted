@@ -70,8 +70,8 @@ private:
 	//signal handlers
 	void combobox_changed(bool combo_type_changed);
 
-	unsigned short new_count;
-	int default_fs;
+	unsigned short new_count  = 0;
+	int            default_fs = -1;
 };
 
 

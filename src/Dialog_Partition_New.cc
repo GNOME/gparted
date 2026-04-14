@@ -44,7 +44,7 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
                                             bool any_extended,
                                             unsigned short new_count,
                                             const std::vector<FS> & FILESYSTEMS )
- : Dialog_Base_Partition(device), default_fs(-1)
+ : Dialog_Base_Partition(device)
 {
 	/*TO TRANSLATORS: dialogtitle */
 	this ->set_title( _("Create new Partition") ) ;
