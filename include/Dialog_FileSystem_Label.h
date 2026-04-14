@@ -36,7 +36,7 @@ public:
 	Glib::ustring get_new_label();
 
 private:
-	Gtk::Entry* entry = nullptr;
+	Gtk::Entry* m_entry = nullptr;
 };
 
 
