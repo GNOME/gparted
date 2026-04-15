@@ -76,8 +76,6 @@ static const Glib::ustring GPARTED_BUG( _("GParted Bug") );
 
 GParted_Core::GParted_Core()
 {
-	thread_status_message = "" ;
-
 	ped_exception_set_handler( ped_exception_handler ) ; 
 
 	// Get all libparted flags
@@ -286,12 +284,13 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 void GParted_Core::set_thread_status_message( Glib::ustring msg )
 {
 	//Remember to clear status message when finished with thread.
-	thread_status_message = msg ;
+	m_thread_status_message = msg;
 }
+
 
 Glib::ustring GParted_Core::get_thread_status_message( )
 {
-	return thread_status_message ;
+	return m_thread_status_message;
 }
 
 
