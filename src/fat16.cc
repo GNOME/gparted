@@ -327,7 +327,7 @@ bool fat16::check_repair( const Partition & partition, OperationDetail & operati
 
 //Private methods
 
-const Glib::ustring fat16::sanitize_label( const Glib::ustring &label ) const
+Glib::ustring fat16::sanitize_label(const Glib::ustring& label)
 {
 	Glib::ustring uppercase_label = label.uppercase();
 	Glib::ustring new_label;

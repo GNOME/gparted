@@ -47,7 +47,7 @@ public:
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 
 private:
-	const Glib::ustring sanitize_label( const Glib::ustring & label ) const;
+	static Glib::ustring sanitize_label(const Glib::ustring& label);
 	static Glib::ustring remove_spaces(const Glib::ustring& str);
 
 	const FSType m_specific_fstype     = FS_UNKNOWN;
