@@ -59,6 +59,7 @@
 #include <gtkmm/main.h>
 #include <gtkmm/separator.h>
 #include <gtkmm/grid.h>
+#include <gtkmm/image.h>
 #include <gtkmm/label.h>
 #include <gtkmm/menu.h>
 #include <gtkmm/toolbutton.h>
@@ -174,7 +175,7 @@ void Win_GParted::init_menubar()
 	//fill menubar_main and connect callbacks 
 	//gparted
 	Gtk::Menu* menu = Gtk::manage(new Gtk::Menu());
-	image = Utils::mk_image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU);
+	Gtk::Image* image = Utils::mk_image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU);
 	item = Gtk::manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Refresh Devices"),
 		Gtk::AccelKey("<control>r"),
@@ -305,7 +306,7 @@ void Win_GParted::init_toolbar()
 	hbox_toolbar.pack_start( toolbar_main );
 
 	//NEW and DELETE
-	image = Utils::mk_image(Gtk::Stock::NEW, Gtk::ICON_SIZE_BUTTON);
+	Gtk::Image* image = Utils::mk_image(Gtk::Stock::NEW, Gtk::ICON_SIZE_BUTTON);
 	/*TO TRANSLATORS: "New" is a tool bar item for partition actions. */
 	Glib::ustring str_temp = _("New") ;
 	Gtk::ToolButton* toolbutton = Gtk::manage(new Gtk::ToolButton(*image, str_temp));
@@ -409,7 +410,7 @@ void Win_GParted::init_partition_menu()
 	Gtk::MenuItem *item;
 
 	//fill menu_partition
-	image = Utils::mk_image(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
+	Gtk::Image* image = Utils::mk_image(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
 	item = Gtk::manage(new
 			/*TO TRANSLATORS: "_New" is a sub menu item for the partition menu. */
 			GParted::Menu_Helpers::ImageMenuElem(_("_New"),
