@@ -28,8 +28,8 @@ namespace GParted
 class Frame_Resizer_Extended : public Frame_Resizer_Base
 {
 public:
-	Frame_Resizer_Extended() ;
-	
+	Frame_Resizer_Extended() = default;
+
 	void set_used_start( int used_start ) ;
 
 private:

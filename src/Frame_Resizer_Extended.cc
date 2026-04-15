@@ -24,10 +24,6 @@ namespace GParted
 {
 
 
-Frame_Resizer_Extended::Frame_Resizer_Extended()
-{
-}
-
 void Frame_Resizer_Extended::set_used_start( int used_start ) 
 {
 	if ( used_start <= 0 )
