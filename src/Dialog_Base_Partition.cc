@@ -47,11 +47,7 @@ namespace GParted
 Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
  : m_device(device)
 {
-	GRIP = false ;
-	this ->fixed_start = false ;
 	this ->set_resizable( false );
-	ORIG_BEFORE = ORIG_SIZE = ORIG_AFTER = -1 ;
-	MIN_SPACE_BEFORE_MB = -1 ;
 
 	// Pack resizer hbox
 	hbox_resizer.set_orientation(Gtk::ORIENTATION_HORIZONTAL);

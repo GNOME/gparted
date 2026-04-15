@@ -74,13 +74,14 @@ protected:
 	void Set_Confirm_Button( CONFIRMBUTTON button_type ) ;
 	void Set_MinMax_Text( Sector min, Sector max ) ;
 
-	double MB_PER_PIXEL ;
-	Sector TOTAL_MB ;
+	double MB_PER_PIXEL = 0.0;
+	Sector TOTAL_MB     = 0;
 	std::unique_ptr<Frame_Resizer_Base> m_frame_resizer_base;
 	std::unique_ptr<Partition>          m_new_partition;
 
-	Sector START; //the first sector of the first relevant partition ( this is either current or current -1 )  needed in Get_Resized_Partition()
-	Sector total_length ; //total amount of sectors ( this can be up to 3 partitions...)
+	Sector START        = 0;  // The first sector of the first relevant partition (this is
+	                          // either current or current - 1).
+	Sector total_length = 0;  // Total amount of sectors (this can be up to 3 partitions).
 
 	Gtk::Box hbox_main;
 	Gtk::SpinButton spinbutton_before, spinbutton_size, spinbutton_after;
@@ -89,10 +90,12 @@ protected:
 	sigc::connection before_change_connection, size_change_connection, after_change_connection ;
 
 	//used to enable/disable OKbutton...
-	int ORIG_BEFORE, ORIG_SIZE, ORIG_AFTER ;
+	int ORIG_BEFORE = -1;
+	int ORIG_SIZE   = -1;
+	int ORIG_AFTER  = -1;
 
 	//used to reserve space for Master or Extended Boot Record (1 MiB)
-	int MIN_SPACE_BEFORE_MB ;
+	int MIN_SPACE_BEFORE_MB = 0;
 
 	static int MB_Needed_for_Boot_Record(const Partition& partition);
 
@@ -101,8 +104,9 @@ protected:
 	void on_signal_resize( int, int, Frame_Resizer_Base::ArrowType );
 	void on_spinbutton_value_changed( SPINBUTTON ) ;
 
-	bool fixed_start, GRIP ;
-	double before_value ;
+	bool GRIP           = false;
+	bool fixed_start    = false;
+	double before_value = 0.0;
 	const Device& m_device;
 	FS fs ;
 	FS_Limits fs_limits;  // Working copy of file system min/max size limits
