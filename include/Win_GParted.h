@@ -231,7 +231,6 @@ private:
 	Gtk::MenuBar menubar_main;
 	Gtk::ComboBox combo_devices ;
 	Gtk::Menu menu_partition;
-	Gtk::ToolButton *toolbutton;
 	Gtk::Statusbar statusbar;
 	Gtk::Image *image ;
 	Gtk::ScrolledWindow *scrollwindow;

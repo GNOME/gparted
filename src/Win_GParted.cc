@@ -61,6 +61,7 @@
 #include <gtkmm/grid.h>
 #include <gtkmm/label.h>
 #include <gtkmm/menu.h>
+#include <gtkmm/toolbutton.h>
 #include <atkmm/relation.h>
 #include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
@@ -307,7 +308,7 @@ void Win_GParted::init_toolbar()
 	image = Utils::mk_image(Gtk::Stock::NEW, Gtk::ICON_SIZE_BUTTON);
 	/*TO TRANSLATORS: "New" is a tool bar item for partition actions. */
 	Glib::ustring str_temp = _("New") ;
-	toolbutton = Gtk::manage(new Gtk::ToolButton(*image, str_temp));
+	Gtk::ToolButton* toolbutton = Gtk::manage(new Gtk::ToolButton(*image, str_temp));
 	toolbutton ->signal_clicked() .connect( sigc::mem_fun( *this, &Win_GParted::activate_new ) );
 	toolbar_main .append( *toolbutton );
 	TOOLBAR_NEW = index++ ;
