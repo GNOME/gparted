@@ -133,10 +133,11 @@ void GParted_Core::find_supported_filesystems()
 
 void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
 {
-	this ->device_paths = user_devices ;
+	m_device_paths = user_devices;
 	this ->probe_devices = ! user_devices .size() ;
 }
-	
+
+
 void GParted_Core::set_devices( std::vector<Device> & devices )
 {
 	Glib::Thread::create( sigc::bind(
@@ -168,7 +169,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	//only probe if no devices were specified as arguments..
 	if ( probe_devices )
 	{
-		device_paths .clear() ;
+		m_device_paths.clear();
 
 		//FIXME:  When libparted bug 194 is fixed, remove code to read:
 		//           /proc/partitions
@@ -215,12 +216,12 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 
 			//only add this device if we can read the first sector (which means it's a real device)
 			if ( useable_device( lp_device ) )
-				device_paths.push_back( lp_device->path );
+				m_device_paths.push_back(lp_device->path);
 
 			lp_device = ped_device_get_next( lp_device ) ;
 		}
 
-		std::sort( device_paths .begin(), device_paths .end() ) ;
+		std::sort(m_device_paths.begin(), m_device_paths.end());
 	}
 	else
 	{
@@ -231,28 +232,28 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 		// Reference:
 		//     What's the most efficient way to erase duplicates and sort a vector?
 		//     http://stackoverflow.com/questions/1041620/whats-the-most-efficient-way-to-erase-duplicates-and-sort-a-vector
-		std::sort( device_paths.begin(), device_paths.end() );
-		device_paths.erase( std::unique( device_paths.begin(), device_paths.end() ), device_paths.end() );
+		std::sort(m_device_paths.begin(), m_device_paths.end());
+		m_device_paths.erase(std::unique(m_device_paths.begin(), m_device_paths.end()), m_device_paths.end());
 
-		for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
+		for (unsigned int t = 0; t < m_device_paths.size(); t++)
 		{
-			set_thread_status_message( Glib::ustring::compose( _("Confirming %1"), device_paths[t] ) );
+			set_thread_status_message(Glib::ustring::compose(_("Confirming %1"), m_device_paths[t]));
 
 #ifndef USE_LIBPARTED_DMRAID
 			// Ensure that dmraid device entries are created
-			if (DMRaid::is_dmraid_supported()             &&
-			    DMRaid::is_dmraid_device(device_paths[t])   )
+			if (DMRaid::is_dmraid_supported()               &&
+			    DMRaid::is_dmraid_device(m_device_paths[t])   )
 			{
-				DMRaid::create_dev_map_entries(DMRaid::get_dmraid_name(device_paths[t]));
+				DMRaid::create_dev_map_entries(DMRaid::get_dmraid_name(m_device_paths[t]));
 				settle_device( SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
 			}
 #endif
 
-			PedDevice* lp_device = ped_device_get( device_paths[t].c_str() );
+			PedDevice* lp_device = ped_device_get(m_device_paths[t].c_str());
 			if (lp_device == nullptr || ! useable_device(lp_device))
 			{
 				// Remove this disk device which isn't useable
-				device_paths.erase( device_paths.begin() + t-- );
+				m_device_paths.erase(m_device_paths.begin() + t--);
 			}
 		}
 	}
@@ -260,7 +261,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	// Initialise and load caches needed for content discovery.
 	FS_Info::clear_cache();
 	const std::vector<DeviceAndPartitionNames> dev_ptn_names =
-	                Proc_Partitions_Info::get_device_and_partition_names_for(device_paths);
+	                Proc_Partitions_Info::get_device_and_partition_names_for(m_device_paths);
 	FS_Info::load_cache_for_device_and_partition_names(dev_ptn_names);
 	Mount_Info::load_cache();
 	LVM2_PV_Info::clear_cache();
@@ -268,12 +269,12 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	SWRaid_Info::load_cache();
 	LUKS_Info::clear_cache();
 
-	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
+	for (unsigned int t = 0; t < m_device_paths.size(); t++)
 	{
 		/*TO TRANSLATORS: looks like Searching /dev/sda partitions */ 
-		set_thread_status_message( Glib::ustring::compose( _("Searching %1 partitions"), device_paths[ t ] ) ) ;
+		set_thread_status_message(Glib::ustring::compose(_("Searching %1 partitions"), m_device_paths[t]));
 		Device temp_device;
-		set_device_from_disk( temp_device, device_paths[t] );
+		set_device_from_disk(temp_device, m_device_paths[t]);
 		devices.push_back( temp_device );
 	}
 
