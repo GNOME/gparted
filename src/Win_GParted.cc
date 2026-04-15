@@ -62,6 +62,7 @@
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
 #include <gtkmm/menu.h>
+#include <gtkmm/scrolledwindow.h>
 #include <gtkmm/toolbutton.h>
 #include <atkmm/relation.h>
 #include <glibmm/ustring.h>
@@ -686,7 +687,7 @@ void Win_GParted::init_hpaned_main()
 {
 	hpaned_main.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
 	//left scrollwindow (holds device info)
-	scrollwindow = Gtk::manage(new Gtk::ScrolledWindow());
+	Gtk::ScrolledWindow* scrollwindow = Gtk::manage(new Gtk::ScrolledWindow());
 	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
 	scrollwindow ->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
 #if HAVE_SET_PROPAGATE_NATURAL_WIDTH

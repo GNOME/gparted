@@ -232,7 +232,6 @@ private:
 	Gtk::ComboBox combo_devices ;
 	Gtk::Menu menu_partition;
 	Gtk::Statusbar statusbar;
-	Gtk::ScrolledWindow *scrollwindow;
 	Gtk::ProgressBar pulsebar ;
 	Gtk::TreeRow treerow;
 	
