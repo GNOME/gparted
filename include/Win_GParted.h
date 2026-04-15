@@ -212,13 +212,14 @@ private:
 	bool remove_non_empty_lvm2_pv_dialog( const OperationType optype ) ;
 
 	// private variables
-	unsigned int        m_current_device;
+	unsigned int        m_current_device = 0;
 	std::vector<Device> m_devices;
-	Device              m_display_device;       // Copy of m_devices[m_current_device] with pending operations
-	                                            // applied to partitions for displaying in the UI.
-	const Partition * selected_partition_ptr;   // Pointer to the selected partition.  (Alias to element
-	                                            // in Win_GParted::m_display_device.partitions[] vector).
-	const Partition* copied_partition;          // nullptr or copy of source partition object.
+	Device              m_display_device;                  // Copy of m_devices[m_current_device] with pending
+	                                                       // operations applied to partitions for displaying in
+	                                                       // the UI.
+	const Partition*    selected_partition_ptr = nullptr;  // Pointer to the selected partition.  (Alias to element
+	                                                       // in Win_GParted::m_display_device.partitions[] vector).
+	const Partition*    copied_partition       = nullptr;  // nullptr or copy of source partition object.
 	OperationVector     m_operations;
 
 //gui stuff
@@ -259,14 +260,13 @@ private:
 	TreeView_Devices_Columns m_treeview_devices_columns;
 
 	// Indices for toolbar
-	int
-	TOOLBAR_NEW,
-	TOOLBAR_DEL,
-	TOOLBAR_RESIZE_MOVE,
-	TOOLBAR_COPY,
-	TOOLBAR_PASTE,
-	TOOLBAR_UNDO,
-	TOOLBAR_APPLY;
+	int TOOLBAR_NEW         = -1;
+	int TOOLBAR_DEL         = -1;
+	int TOOLBAR_RESIZE_MOVE = -1;
+	int TOOLBAR_COPY        = -1;
+	int TOOLBAR_PASTE       = -1;
+	int TOOLBAR_UNDO        = -1;
+	int TOOLBAR_APPLY       = -1;
 
 	enum MainMenu_Items
 	{
@@ -304,8 +304,8 @@ private:
 	std::map<int, Gtk::MenuItem*> partitionmenu_items;
 
 	//usefull variables which are used by many different functions...
-	unsigned short new_count;//new_count keeps track of the new created partitions
-	bool m_operationslist_open;
+	unsigned short new_count             = 1;  // new_count keeps track of the new created partitions
+	bool           m_operationslist_open = true;
 
 	GParted_Core gparted_core ;
 	std::vector<Gtk::Label *> device_info ;

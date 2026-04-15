@@ -81,20 +81,8 @@ namespace GParted
 
 
 Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
- : m_current_device(0), m_operationslist_open(true)
 {
-	copied_partition = nullptr;
-	selected_partition_ptr = nullptr;
-	new_count = 1;
 	gparted_core .set_user_devices( user_devices ) ;
-
-	TOOLBAR_NEW =
-	TOOLBAR_DEL =
-	TOOLBAR_RESIZE_MOVE =
-	TOOLBAR_COPY =
-	TOOLBAR_PASTE =
-	TOOLBAR_UNDO =
-	TOOLBAR_APPLY = -1;
 
 	//==== GUI =========================
 	this ->set_title( _("GParted") );
