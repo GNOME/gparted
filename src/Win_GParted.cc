@@ -60,6 +60,7 @@
 #include <gtkmm/separator.h>
 #include <gtkmm/grid.h>
 #include <gtkmm/label.h>
+#include <gtkmm/menu.h>
 #include <atkmm/relation.h>
 #include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
@@ -171,7 +172,7 @@ void Win_GParted::init_menubar()
 
 	//fill menubar_main and connect callbacks 
 	//gparted
-	menu = Gtk::manage(new Gtk::Menu());
+	Gtk::Menu* menu = Gtk::manage(new Gtk::Menu());
 	image = Utils::mk_image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU);
 	item = Gtk::manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Refresh Devices"),
@@ -535,23 +536,23 @@ void Win_GParted::init_partition_menu()
 Gtk::Menu * Win_GParted::create_format_menu()
 {
 	const std::vector<FS> & fss = gparted_core .get_filesystems() ;
-	menu = Gtk::manage(new Gtk::Menu());
+	Gtk::Menu* menu = Gtk::manage(new Gtk::Menu());
 
 	for ( unsigned int t = 0 ; t < fss .size() ; t++ )
 	{
 		if (GParted_Core::supported_filesystem(fss[t].fstype) &&
 		    fss[t].fstype != FS_LUKS                            )
-			create_format_menu_add_item(fss[t].fstype, fss[t].create);
+			create_format_menu_add_item(menu, fss[t].fstype, fss[t].create);
 	}
 	//Add cleared at the end of the list
-	create_format_menu_add_item( FS_CLEARED, true ) ;
+	create_format_menu_add_item(menu, FS_CLEARED, true);
 
 	return menu ;
 }
 
 
 //Add one entry to the Partition --> Format to --> (file system list) menu
-void Win_GParted::create_format_menu_add_item(FSType fstype, bool activate)
+void Win_GParted::create_format_menu_add_item(Gtk::Menu* menu, FSType fstype, bool activate)
 {
 	Gtk::Box* hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 	//the colored square
@@ -742,7 +743,7 @@ void Win_GParted::refresh_combo_devices()
 	combo_devices_changed_connection .block();
 	liststore_devices ->clear() ;
 
-	menu = Gtk::manage(new Gtk::Menu());
+	Gtk::Menu* menu = Gtk::manage(new Gtk::Menu());
 	Gtk::RadioButtonGroup radio_group ;
 
 	for (unsigned int i = 0; i < m_devices.size(); i++)

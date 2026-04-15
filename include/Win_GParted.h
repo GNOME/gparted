@@ -32,6 +32,7 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/separatortoolitem.h>
 #include <gtkmm/checkmenuitem.h>
+#include <gtkmm/menu.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/statusbar.h>
 #include <gtkmm/combobox.h>
@@ -60,7 +61,7 @@ private:
 	void init_toolbar() ;
 	void init_partition_menu() ;
 	Gtk::Menu * create_format_menu() ;
-	void create_format_menu_add_item(FSType fstype, bool activate);
+	void create_format_menu_add_item(Gtk::Menu* menu, FSType fstype, bool activate);
 	void init_device_info() ;
 	void init_hpaned_main() ;
 	void add_custom_css();
@@ -229,7 +230,7 @@ private:
 	Gtk::Toolbar toolbar_main;
 	Gtk::MenuBar menubar_main;
 	Gtk::ComboBox combo_devices ;
-	Gtk::Menu menu_partition, *menu ;
+	Gtk::Menu menu_partition;
 	Gtk::ToolButton *toolbutton;
 	Gtk::Statusbar statusbar;
 	Gtk::Image *image ;
