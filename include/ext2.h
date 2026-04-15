@@ -34,7 +34,7 @@ namespace GParted
 class ext2 : public FileSystem
 {
 public:
-	ext2(FSType fstype) : m_specific_fstype(fstype), m_fs_block_size(0LL)  {};
+	ext2(FSType fstype) : m_specific_fstype(fstype) {};
 
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
@@ -58,10 +58,10 @@ private:
 	void check_repair_progress( OperationDetail *operationdetail );
 	void copy_progress( OperationDetail *operationdetail );
 
-	const FSType  m_specific_fstype;
+	const FSType  m_specific_fstype = FS_UNKNOWN;
 	Glib::ustring m_mkfs_cmd;
 
-	Byte_Value m_fs_block_size;  // Holds file system block size for the copy_progress() callback
+	Byte_Value m_fs_block_size = 0LL;  // Holds file system block size for the copy_progress() callback
 };
 
 
