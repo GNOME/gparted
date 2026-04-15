@@ -33,7 +33,7 @@ public:
 	void set_used_start( int used_start ) ;
 
 private:
-	int USED_START ;
+	int USED_START = 0;
 
 	//overridden signal handler
 	virtual bool drawingarea_on_mouse_motion( GdkEventMotion * ev ) ;
