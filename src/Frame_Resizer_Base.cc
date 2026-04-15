@@ -27,13 +27,9 @@ namespace GParted
 
 Frame_Resizer_Base::Frame_Resizer_Base()
 {
-	BORDER = 8 ;
-	GRIPPER = 10 ;
-	X_MIN_SPACE_BEFORE = 0 ;
-
-	fixed_start = false ;
 	init() ;
 }
+
 
 void Frame_Resizer_Base::init() 
 {
@@ -62,11 +58,9 @@ void Frame_Resizer_Base::init()
 
 	cursor_resize = Gdk::Cursor::create(Gdk::SB_H_DOUBLE_ARROW);
 	cursor_move   = Gdk::Cursor::create(Gdk::FLEUR);
-	  
-	GRIP_MOVE = GRIP_LEFT = GRIP_RIGHT = false;
-	X_END = 0;
+
 	set_size_limits( 0, 500 ) ;
-	
+
 	Gdk::Point p;
 	p .set_y( 15 ); 	arrow_points .push_back( p ) ;
 	p .set_y( 25 ); 	arrow_points .push_back( p ) ;

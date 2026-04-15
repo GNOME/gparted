@@ -61,10 +61,19 @@ public:
 	sigc::signal<void,int,int> signal_move;
 
 protected:
-	int BORDER, GRIPPER ;
-	int X_MIN_SPACE_BEFORE ;
-	int X_START, USED, UNUSED, X_END, X_START_MOVE, MIN_SIZE, MAX_SIZE;
-	bool GRIP_LEFT, GRIP_RIGHT, GRIP_MOVE ;
+	const int BORDER             = 8;
+	const int GRIPPER            = 10;
+	int       X_MIN_SPACE_BEFORE = 0;
+	int       X_START            = 0;
+	int       USED               = 0;
+	int       UNUSED             = 0;
+	int       X_END              = 0;
+	int       X_START_MOVE       = 0;
+	int       MIN_SIZE           = 0;
+	int       MAX_SIZE           = 0;
+	bool      GRIP_LEFT          = false;
+	bool      GRIP_RIGHT         = false;
+	bool      GRIP_MOVE          = false;
 
 	//signal handlers
 	void drawingarea_on_realize();
@@ -86,11 +95,12 @@ protected:
 	Gdk::RGBA color_arrow_rectangle;
 
 	std::vector<Gdk::Point> arrow_points;
-	
+
 	Glib::RefPtr<Gdk::Cursor> cursor_resize;
 	Glib::RefPtr<Gdk::Cursor> cursor_move;
 
-	bool fixed_start; //a fixed start disables moving the start and thereby the whole move functionality..
+	bool fixed_start = false;  // A fixed start disables moving the start and
+	                           // therefore the whole move functionality.
 
 private:
 	void init() ;
