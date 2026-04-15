@@ -361,9 +361,10 @@ SWRaid_Member & SWRaid_Info::get_cache_entry_by_member( const Glib::ustring & me
 		if ( bs == swraid_info_cache[i].member )
 			return swraid_info_cache[i];
 	}
-	static SWRaid_Member memb = {BlockSpecial(), FS_UNKNOWN, "", "", "", false};
-	return memb;
+	static SWRaid_Member not_found;  // {BlockSpecial(), FS_UNKNOWN, "", "", "", false}
+	return not_found;
 }
+
 
 // Reformat mdadm printed UUID into canonical format.  Returns "" if source not correctly
 // formatted.

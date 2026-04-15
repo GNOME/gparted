@@ -45,11 +45,11 @@ namespace GParted
 struct SWRaid_Member
 {
 	BlockSpecial  member;
-	FSType        fstype;
+	FSType        fstype = FS_UNKNOWN;
 	Glib::ustring array;
 	Glib::ustring uuid;
 	Glib::ustring label;
-	bool          active;
+	bool          active = false;
 };
 
 class SWRaid_Info
