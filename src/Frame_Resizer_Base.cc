@@ -27,12 +27,6 @@ namespace GParted
 
 Frame_Resizer_Base::Frame_Resizer_Base()
 {
-	init() ;
-}
-
-
-void Frame_Resizer_Base::init() 
-{
 	drawingarea .set_size_request( 500 + GRIPPER * 2 + BORDER *2, 50 );
 
 	drawingarea .signal_realize() .connect( 

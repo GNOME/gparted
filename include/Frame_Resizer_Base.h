@@ -101,10 +101,6 @@ protected:
 
 	bool fixed_start = false;  // A fixed start disables moving the start and
 	                           // therefore the whole move functionality.
-
-private:
-	void init() ;
-
 };
 
 
