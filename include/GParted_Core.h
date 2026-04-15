@@ -244,7 +244,7 @@ private:
 
 	std::vector<PedPartitionFlag> m_all_libparted_flags;
 	std::vector<Glib::ustring>    m_device_paths;
-	bool probe_devices = false;
+	bool                          m_probe_devices         = false;
 	Glib::ustring thread_status_message;  //Used to pass data to show_pulsebar method
 	static std::unique_ptr<SupportedFileSystems> supported_filesystems;
 };

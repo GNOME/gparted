@@ -134,7 +134,7 @@ void GParted_Core::find_supported_filesystems()
 void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
 {
 	m_device_paths = user_devices;
-	this ->probe_devices = ! user_devices .size() ;
+	m_probe_devices = user_devices.empty();
 }
 
 
@@ -167,7 +167,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	DMRaid::load_cache();
 
 	//only probe if no devices were specified as arguments..
-	if ( probe_devices )
+	if (m_probe_devices)
 	{
 		m_device_paths.clear();
 
