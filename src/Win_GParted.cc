@@ -2400,15 +2400,15 @@ void Win_GParted::activate_new()
 		Dialog_Partition_New dialog(m_display_device,
 		                            *selected_partition_ptr,
 		                            any_extended,
-		                            new_count,
+		                            m_new_count,
 		                            gparted_core.get_filesystems());
 		dialog .set_transient_for( *this );
 		
 		if ( dialog .run() == Gtk::RESPONSE_OK )
 		{
 			dialog .hide() ;
-			
-			new_count++ ;
+
+			m_new_count++;
 			std::unique_ptr<Operation> operation = std::make_unique<OperationCreate>(
 			                        m_devices[m_current_device],
 			                        *selected_partition_ptr,
@@ -2505,15 +2505,16 @@ void Win_GParted::activate_delete()
 				remove_operation(REMOVE_AT, t--);
 			}
 
-		//determine lowest possible new_count
-		new_count = 0 ; 
+		// Determine lowest possible next composed new partition number
+		m_new_count = 0;
 		for (unsigned int t = 0; t < m_operations.size(); t++)
 			if (m_operations[t]->m_type                               != OPERATION_DELETE &&
 			    m_operations[t]->get_partition_new().status           == STAT_NEW         &&
-			    m_operations[t]->get_partition_new().partition_number >  new_count          )
-				new_count = m_operations[t]->get_partition_new().partition_number;
-
-		new_count += 1 ;
+			    m_operations[t]->get_partition_new().partition_number >  m_new_count        )
+			{
+				m_new_count = m_operations[t]->get_partition_new().partition_number;
+			}
+		m_new_count += 1;
 
 		Refresh_Visual(); 
 
@@ -3346,7 +3347,7 @@ void Win_GParted::activate_undo()
 {
 	//when undoing a creation it's safe to decrease the newcount by one
 	if (m_operations.back()->m_type == OPERATION_CREATE)
-		new_count-- ;
+		m_new_count--;
 
 	remove_operation(REMOVE_LAST);
 
@@ -3469,9 +3470,9 @@ void Win_GParted::activate_apply()
 		hbox_operations .clear() ;
 		close_operationslist() ;
 
-		//reset new_count to 1
-		new_count = 1 ;
-		
+		// Reset number of the next composed new partition back to 1
+		m_new_count = 1;
+
 		//reread devices and their layouts...
 		menu_gparted_refresh_devices() ;
 	}

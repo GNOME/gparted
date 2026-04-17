@@ -304,7 +304,7 @@ private:
 	std::map<int, Gtk::MenuItem*> partitionmenu_items;
 
 	//usefull variables which are used by many different functions...
-	unsigned short new_count             = 1;  // new_count keeps track of the new created partitions
+	unsigned short m_new_count           = 1;  // Number of the next composed new partition, 1 upwards
 	bool           m_operationslist_open = true;
 
 	GParted_Core gparted_core ;
