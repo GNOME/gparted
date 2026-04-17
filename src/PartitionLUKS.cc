@@ -23,14 +23,6 @@ namespace GParted
 {
 
 
-PartitionLUKS::PartitionLUKS() : header_size( 0 )
-{
-	// Nothing further to do here as the base class Partition default constructor,
-	// which calls Partition::Reset(), is called for this object and also to
-	// initialise the encrypted member variable of type Partition.
-}
-
-
 PartitionLUKS * PartitionLUKS::clone() const
 {
 	// Virtual copy constructor method

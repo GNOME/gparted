@@ -31,7 +31,7 @@ namespace GParted
 class PartitionLUKS : public Partition
 {
 public:
-	PartitionLUKS();
+	PartitionLUKS() = default;
 	virtual PartitionLUKS * clone() const;
 	Partition * clone_as_plain() const;
 
@@ -64,7 +64,7 @@ public:
 
 private:
 	Partition encrypted;
-	Sector header_size;  // Size of the LUKS header (everything up to the start of the mapping)
+	Sector header_size = 0;  // Size of the LUKS header (everything up to the start of the mapping)
 };
 
 
