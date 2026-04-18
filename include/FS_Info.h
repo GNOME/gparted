@@ -36,9 +36,10 @@ struct FS_Entry
 	Glib::ustring type;
 	Glib::ustring sec_type;
 	Glib::ustring uuid;
-	bool          have_label;
+	bool          have_label = false;
 	Glib::ustring label;
 };
+
 
 class FS_Info
 {

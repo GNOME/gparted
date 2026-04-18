@@ -247,7 +247,7 @@ FS_Entry& FS_Info::get_cache_entry_by_path(const Glib::ustring& path)
 		if ( bs == fs_info_cache[i].path )
 			return fs_info_cache[i];
 
-	static FS_Entry not_found = {BlockSpecial(), "", "", "", false, ""};
+	static FS_Entry not_found;  // {BlockSpecial(), "", "", "", false, ""}
 	return not_found;
 }
 
@@ -284,7 +284,7 @@ void FS_Info::run_blkid_load_cache(const std::vector<Glib::ustring>& paths)
 	Utils::split(output, lines, "\n");
 	for (unsigned int i = 0; i < lines.size(); i++)
 	{
-		FS_Entry fs_entry = {BlockSpecial(), "", "", "", false, ""};
+		FS_Entry fs_entry;  // {BlockSpecial(), "", "", "", false, ""}
 		Glib::ustring entry_path = Utils::regexp_label(lines[i], "^(.*): ");
 		if (entry_path.length() > 0)
 		{
