@@ -29,19 +29,26 @@ Device::Device()
 	Reset() ;	
 }
 
+
 void Device::Reset()
 {
-	path.clear();
-	partitions .clear() ;
-	length = cylsize = 0 ;
-	heads = sectors = cylinders = 0 ;
-	model = "";
-	serial_number = "";
-	disktype = "";
-	sector_size = max_prims = highest_busy = 0 ;
-	readonly = false ; 	
+	partitions.clear();
+	length                    = 0;
+	heads                     = 0;
+	sectors                   = 0;
+	cylinders                 = 0;
+	cylsize                   = 0;
+	model                     = "";
+	serial_number             = "";
+	disktype                  = "";
+	sector_size               = 0;
+	max_prims                 = 0;
+	highest_busy              = 0;
+	readonly                  = false;
+	path                      = "";
 	max_partition_name_length = 0;
 }
+
 
 Device Device::get_copy_without_partitions() const
 {

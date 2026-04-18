@@ -34,6 +34,8 @@ class Device
 public:
 	Device() ;
 
+	void Reset();
+
 	Device get_copy_without_partitions() const;
 	void set_path( const Glib::ustring & path );
 	const Glib::ustring& get_path() const;
@@ -43,8 +45,7 @@ public:
 
 	bool operator==( const Device & device ) const ;
 	bool operator!=( const Device & device ) const ;
-	
-	void Reset() ;
+
 	PartitionVector partitions;
 	Sector length;
 	Sector heads ;
