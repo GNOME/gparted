@@ -15,13 +15,17 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "DrawingAreaVisualDisk.h"
+
 #include "Partition.h"
 #include "PartitionLUKS.h"
 #include "PartitionVector.h"
 #include "Utils.h"
 
 #include <gdkmm/general.h>
+#include <glib.h>
+
 
 #define MAIN_BORDER 5
 #define BORDER 4
@@ -152,6 +156,7 @@ void DrawingAreaVisualDisk::calc_usage(std::vector<VisualPartition>& visual_part
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
+		g_assert(visual_partitions[t].partition_ptr != nullptr);  // Bug: Not assigned by calling set_static_data()
 		if (visual_partitions[t].partition_ptr->fstype != FS_UNALLOCATED &&
 		    visual_partitions[t].partition_ptr->type   != TYPE_EXTENDED    )
 		{
