@@ -30,40 +30,43 @@ namespace GParted {
 
 class CopyBlocks
 {
-	const Glib::ustring & src_device;
-	const Glib::ustring & dst_device;
+public:
+	CopyBlocks(const Glib::ustring& in_src_device,
+	           const Glib::ustring& in_dst_device,
+	           Sector               src_start,
+	           Sector               dst_start,
+	           Byte_Value           in_length,
+	           Byte_Value           in_blocksize,
+	           OperationDetail&     in_operationdetail,
+	           Byte_Value&          in_total_done,
+	           Byte_Value           in_total_length,
+	           bool                 cancel_safe);
+
+	bool set_progress_info();
+	bool copy();
+
+private:
+	void copy_thread();
+	void copy_block();
+	void set_cancel(bool force);
+
+	const Glib::ustring& src_device;
+	const Glib::ustring& dst_device;
 	Byte_Value           length        = 0;
 	Byte_Value           blocksize     = 0;
-	OperationDetail &operationdetail;
-	Byte_Value & total_done;
+	OperationDetail&     operationdetail;
+	Byte_Value&          total_done;
 	Byte_Value           total_length  = 0;
-	std::vector<char> buf;
+	std::vector<char>    buf;
 	Byte_Value           done          = 0;
 	PedDevice*           lp_device_src = nullptr;
 	PedDevice*           lp_device_dst = nullptr;
 	Sector               offset_src    = 0;
 	Sector               offset_dst    = 0;
 	bool                 success       = false;
-	Glib::ustring error_message;
-	void copy_thread();
+	Glib::ustring        error_message;
 	bool                 cancel        = false;
 	bool                 cancel_safe   = false;
-	void set_cancel( bool force );
-	void copy_block();
-
-public:
-	bool set_progress_info();
-	CopyBlocks( const Glib::ustring & in_src_device,
-	            const Glib::ustring & in_dst_device,
-	            Sector src_start,
-	            Sector dst_start,
-	            Byte_Value in_length,
-	            Byte_Value in_blocksize,
-	            OperationDetail & in_operationdetail,
-	            Byte_Value & in_total_done,
-	            Byte_Value in_total_length,
-	            bool cancel_safe );
-	bool copy();
 };
 
 
