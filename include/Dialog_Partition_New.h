@@ -51,11 +51,10 @@ public:
 	const Partition& get_new_partition();
 
 private:
-	void set_data( const Device & device,
-	               const Partition & partition,
-	               bool any_extended,
-	               unsigned short new_count,
-	               const std::vector<FS> & FILESYSTEMS );
+	void set_data(const Device&          device,
+	              const Partition&       partition,
+	              bool                   any_extended,
+	              const std::vector<FS>& FILESYSTEMS);
 	void build_filesystems_combo(bool only_unformatted);
 	Byte_Value get_filesystem_min_limit( FSType fstype );
 
@@ -70,7 +69,7 @@ private:
 	//signal handlers
 	void combobox_changed(bool combo_type_changed);
 
-	unsigned short new_count  = 0;
+	unsigned short m_new_count  = 0;
 	int            default_fs = -1;
 };
 

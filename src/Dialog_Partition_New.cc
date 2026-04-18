@@ -44,7 +44,7 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
                                             bool any_extended,
                                             unsigned short new_count,
                                             const std::vector<FS> & FILESYSTEMS )
- : Dialog_Base_Partition(device)
+ : Dialog_Base_Partition(device), m_new_count(new_count)
 {
 	/*TO TRANSLATORS: dialogtitle */
 	this ->set_title( _("Create new Partition") ) ;
@@ -54,8 +54,9 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
 	//set used (in pixels)...
 	m_frame_resizer_base->set_used(0);
 
-	set_data(device, selected_partition, any_extended, new_count, FILESYSTEMS );
+	set_data(device, selected_partition, any_extended, FILESYSTEMS);
 }
+
 
 Dialog_Partition_New::~Dialog_Partition_New()
 {
@@ -64,13 +65,11 @@ Dialog_Partition_New::~Dialog_Partition_New()
 	hide();
 }
 
-void Dialog_Partition_New::set_data( const Device & device,
-                                     const Partition & selected_partition,
-                                     bool any_extended,
-                                     unsigned short new_count,
-                                     const std::vector<FS> & FILESYSTEMS )
+void Dialog_Partition_New::set_data(const Device&          device,
+                                    const Partition&       selected_partition,
+                                    bool                   any_extended,
+                                    const std::vector<FS>& FILESYSTEMS)
 {
-	this ->new_count = new_count;
 	m_new_partition.reset(selected_partition.clone());
 
 	// Copy only supported file systems, excluding LUKS, from GParted_Core FILESYSTEMS
@@ -261,8 +260,8 @@ const Partition& Dialog_Partition_New::get_new_partition()
 	bool inside_extended = m_new_partition->inside_extended;
 	m_new_partition->Reset();
 	m_new_partition->Set(device_path,
-	                     Glib::ustring::compose(_("New Partition #%1"), new_count),
-	                     new_count,
+	                     Glib::ustring::compose(_("New Partition #%1"), m_new_count),
+	                     m_new_count,
 	                     part_type,
 	                     FILESYSTEMS[combo_filesystem.get_active_row_number()].fstype,
 	                     new_start,
