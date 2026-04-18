@@ -32,22 +32,22 @@ class CopyBlocks
 {
 	const Glib::ustring & src_device;
 	const Glib::ustring & dst_device;
-	Byte_Value length;
-	Byte_Value blocksize;
+	Byte_Value           length        = 0;
+	Byte_Value           blocksize     = 0;
 	OperationDetail &operationdetail;
 	Byte_Value & total_done;
-	Byte_Value total_length;
+	Byte_Value           total_length  = 0;
 	std::vector<char> buf;
-	Byte_Value done;
-	PedDevice *lp_device_src;
-	PedDevice *lp_device_dst;
-	Sector offset_src;
-	Sector offset_dst;
-	bool success;
+	Byte_Value           done          = 0;
+	PedDevice*           lp_device_src = nullptr;
+	PedDevice*           lp_device_dst = nullptr;
+	Sector               offset_src    = 0;
+	Sector               offset_dst    = 0;
+	bool                 success       = false;
 	Glib::ustring error_message;
 	void copy_thread();
-	bool cancel;
-	bool cancel_safe;
+	bool                 cancel        = false;
+	bool                 cancel_safe   = false;
 	void set_cancel( bool force );
 	void copy_block();
 

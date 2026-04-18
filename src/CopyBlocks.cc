@@ -57,7 +57,6 @@ CopyBlocks::CopyBlocks( const Glib::ustring & in_src_device,
 	total_length ( in_total_length ),
 	offset_src ( src_start ),
 	offset_dst ( dst_start ),
-	cancel( false ),
 	cancel_safe ( in_cancel_safe )
 {
 	operationdetail.signal_cancel.connect(
