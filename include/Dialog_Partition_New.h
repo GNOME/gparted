@@ -70,7 +70,7 @@ private:
 	void combobox_changed(bool combo_type_changed);
 
 	unsigned short m_new_count  = 0;
-	int            default_fs = -1;
+	int            m_default_fs = -1;
 };
 
 
