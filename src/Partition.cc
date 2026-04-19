@@ -42,28 +42,37 @@ Partition * Partition::clone() const
 	return new Partition( *this );
 }
 
+
 void Partition::Reset()
 {
-	path.clear();
-	messages .clear() ;
-	status = STAT_REAL;
-	type = TYPE_UNALLOCATED;
-	alignment = ALIGN_STRICT ;
-	fstype = FS_UNALLOCATED;
-	have_filesystem_label = false;
-	uuid .clear() ;
-	name.clear();
-	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
-	sectors_unallocated = 0 ;
-	significant_threshold = 1 ;
-	free_space_before = -1 ;
-	sector_size = 0 ;
-	fs_block_size = -1;
-	inside_extended = busy = strict_start = false ;
-	fs_readonly = false;
-	logicals .clear() ;
+	device_path           = "";
+	partition_number      = -1;
+	type                  = TYPE_UNALLOCATED;
+	status                = STAT_REAL;
+	alignment             = ALIGN_STRICT;
+	fstype                = FS_UNALLOCATED;
+	uuid                  = "";
+	name                  = "";
+	sector_start          = -1;
+	sector_end            = -1;
+	sectors_used          = -1;
+	sectors_unused        = -1;
+	sectors_unallocated   = 0;
+	significant_threshold = 1;
+	inside_extended       = false;
+	busy                  = false;
+	fs_readonly           = false;
+	logicals.clear();
+	strict_start          = false;
+	free_space_before     = -1;
+	sector_size           = 0;
+	fs_block_size         = -1;
+	path                  = "";
 	m_flags.clear();
-	mountpoints .clear() ;
+	mountpoints.clear();
+	have_filesystem_label = false;
+	filesystem_label      = "";
+	messages.clear();
 }
 
 
