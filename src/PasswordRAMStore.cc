@@ -61,12 +61,13 @@ private:
 	char *               protected_mem;  // Block of virtual memory locked into RAM
 };
 
+
 // Example PWStore data model.  After this sequence of calls:
 //     mystore = PWStore();
-//     mystore.insert( "UUID1", "password1", 9 );
-//     mystore.insert( "UUID2", "password2", 9 );
-//     mystore.insert( "UUID3", "password3", 9 );
-//     mystore.erase( "UUID2" );
+//     mystore.insert("UUID1", "password1");
+//     mystore.insert("UUID2", "password2");
+//     mystore.insert("UUID3", "password3");
+//     mystore.erase("UUID2");
 // The data would be:
 //                   {key    , password, len}
 //     pw_entries = [{"UUID1",     PTR1, 9  },
