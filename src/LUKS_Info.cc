@@ -161,7 +161,7 @@ const LUKS_Mapping & LUKS_Info::get_cache_entry_internal( const Glib::ustring & 
 		}
 	}
 
-	static LUKS_Mapping not_found = {"", BlockSpecial(), -1LL, -1LL};
+	static LUKS_Mapping not_found;  // {"", BlockSpecial(), -1LL, -1LL, KEYLOC_KeyRing}
 	return not_found;
 }
 
