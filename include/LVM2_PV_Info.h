@@ -39,10 +39,11 @@ namespace GParted
 struct LVM2_PV
 {
 	BlockSpecial  pv_name;
-	Byte_Value    pv_size;
-	Byte_Value    pv_free;
+	Byte_Value    pv_size = -1;
+	Byte_Value    pv_free = -1;
 	Glib::ustring vg_name;
 };
+
 
 struct LVM2_VG
 {

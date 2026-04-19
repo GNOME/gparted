@@ -343,9 +343,10 @@ const LVM2_PV & LVM2_PV_Info::get_pv_cache_entry_by_name( const Glib::ustring & 
 		if ( bs_pvname == lvm2_pv_cache[i].pv_name )
 			return lvm2_pv_cache[i];
 	}
-	static LVM2_PV pv = {BlockSpecial(), -1, -1, ""};
-	return pv;
+	static LVM2_PV not_found;  // {BlockSpecial(), -1, -1, ""}
+	return not_found;
 }
+
 
 // Performs linear search of the VG cache to find the first matching vg_name.
 // Returns found cache entry or not found substitute.
@@ -356,8 +357,8 @@ const LVM2_VG & LVM2_PV_Info::get_vg_cache_entry_by_name( const Glib::ustring & 
 		if ( vgname == lvm2_vg_cache[i].vg_name )
 			return lvm2_vg_cache[i];
 	}
-	static LVM2_VG vg = {"", "", "", ""};
-	return vg;
+	static LVM2_VG not_found;  // {"", "", "", ""}
+	return not_found;
 }
 
 
