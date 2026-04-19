@@ -34,10 +34,11 @@ namespace  // unnamed
 
 struct PWEntry
 {
-	Glib::ustring key;       // Unique key identifying this password
-	char *        password;  // Pointer to the password in protected_mem
-	size_t        len;       // Number of bytes in the password
+	Glib::ustring key;                 // Unique key identifying this password
+	char*         password = nullptr;  // Pointer to the password in protected_mem
+	size_t        len      = 0;        // Number of bytes in the password
 };
+
 
 class PWStore
 {
