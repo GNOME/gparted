@@ -47,15 +47,15 @@ private:
 	                             GIOCondition condition,
 	                             gpointer data );
 
-	Glib::RefPtr<Glib::IOChannel> m_channel;             // Wrapper around fd
-	std::vector<char>             m_readbuf;             // Bytes read from IOChannel (fd)
-	size_t                        m_fill_offset;         // Filling offset into m_readbuf
-	std::vector<gunichar>         m_linevec;             // Current line stored as UCS-4 characters
-	size_t                        m_cursor;              // Cursor position index into m_linevec
-	std::string                   m_capturebuf;          // Captured output as UTF-8 characters
-	size_t                        m_line_start;          // Index into m_capturebuf where current line starts
-	Glib::ustring&                m_callerbuf;           // Reference to caller supplied buffer
-	bool                          m_callerbuf_uptodate;  // Has m_capturebuf changed since last copied to m_callerbuf?
+	Glib::RefPtr<Glib::IOChannel> m_channel;                     // Wrapper around fd
+	std::vector<char>             m_readbuf;                     // Bytes read from IOChannel (fd)
+	size_t                        m_fill_offset        = 0;      // Filling offset into m_readbuf
+	std::vector<gunichar>         m_linevec;                     // Current line stored as UCS-4 characters
+	size_t                        m_cursor             = 0;      // Cursor position index into m_linevec
+	std::string                   m_capturebuf;                  // Captured output as UTF-8 characters
+	size_t                        m_line_start         = 0;      // Index into m_capturebuf where current line starts
+	Glib::ustring&                m_callerbuf;                   // Reference to caller supplied buffer
+	bool                          m_callerbuf_uptodate = false;  // Has m_capturebuf changed since last copied to m_callerbuf?
 };
 
 

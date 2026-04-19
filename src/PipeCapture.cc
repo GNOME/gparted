@@ -111,7 +111,7 @@ static void append_unichar_vector_to_utf8(std::string& str, const std::vector<gu
 
 PipeCapture::PipeCapture(int fd, Glib::ustring& buffer)
  : m_readbuf(64*KIBIBYTE),  // Construct vector of 64K chars (and zero initialise)
-   m_fill_offset(0), m_cursor(0), m_line_start(0), m_callerbuf(buffer)
+   m_callerbuf(buffer)
 {
 	m_callerbuf.clear();
 	m_callerbuf_uptodate = true;
