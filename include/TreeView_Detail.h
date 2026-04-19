@@ -66,7 +66,7 @@ private:
 
 	Glib::RefPtr<Gtk::TreeStore>     m_treestore_detail;
 	Glib::RefPtr<Gtk::TreeSelection> m_treeselection;
-	bool                             m_block;
+	bool                             m_block            = false;
 
 	//columns for this treeview
 	struct TreeView_Detail_Columns : public Gtk::TreeModelColumnRecord

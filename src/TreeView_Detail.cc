@@ -34,7 +34,6 @@ namespace GParted
 
 
 TreeView_Detail::TreeView_Detail()
- : m_block(false)
 {
 	m_treestore_detail = Gtk::TreeStore::create(m_treeview_detail_columns);
 	set_model(m_treestore_detail);
