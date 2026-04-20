@@ -24,6 +24,7 @@
 
 #include <glibmm/miscutils.h>
 #include <gtkmm/alignment.h>
+#include <gtkmm/box.h>
 #include <gtkmm/viewport.h>
 #include <gtkmm/grid.h>
 #include <gtkmm/label.h>
@@ -79,19 +80,15 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	//display messages (if any)
 	if ( partition.have_messages() )
 	{
-		frame = Gtk::manage(new Gtk::Frame());
 
-		{
-			Gtk::Image* image = Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
+		Gtk::Image* image = Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 
-			hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-			hbox->pack_start(*image, Gtk::PACK_SHRINK);
-		}
-
+		Gtk::Box* hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+		hbox->pack_start(*image, Gtk::PACK_SHRINK);
 		hbox ->pack_start( * Utils::mk_label( "<b> " + Glib::ustring(_("Warning:") ) + " </b>" ),
 				   Gtk::PACK_SHRINK ) ;
 
-
+		frame = Gtk::manage(new Gtk::Frame());
 		frame ->set_label_widget( *hbox ) ;
 
 		// Concatenate all messages for display so that they can be selected
@@ -173,9 +170,9 @@ void Dialog_Partition_Info::init_drawingarea()
 
 	frame ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT ) ;
 	frame ->set_border_width( 10 ) ;
-	hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	hbox ->pack_start( *frame, Gtk::PACK_EXPAND_PADDING ) ;
 
+	Gtk::Box* hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	hbox->pack_start(*frame, Gtk::PACK_EXPAND_PADDING);
 	this->get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
 
 	//calculate proportional width of used, unused and unallocated
