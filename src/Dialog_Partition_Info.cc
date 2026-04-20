@@ -27,6 +27,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/viewport.h>
 #include <gtkmm/grid.h>
+#include <gtkmm/frame.h>
 #include <gtkmm/label.h>
 #include <atkmm/relation.h>
 #include <gdkmm/general.h>
@@ -88,7 +89,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		hbox ->pack_start( * Utils::mk_label( "<b> " + Glib::ustring(_("Warning:") ) + " </b>" ),
 				   Gtk::PACK_SHRINK ) ;
 
-		frame = Gtk::manage(new Gtk::Frame());
+		Gtk::Frame* frame = Gtk::manage(new Gtk::Frame());
 		frame ->set_label_widget( *hbox ) ;
 
 		// Concatenate all messages for display so that they can be selected
@@ -165,7 +166,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	drawingarea .set_size_request( 400, 60 ) ;
 	drawingarea.signal_draw().connect(sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_draw));
 
-	frame = Gtk::manage(new Gtk::Frame());
+	Gtk::Frame* frame = Gtk::manage(new Gtk::Frame());
 	frame ->add( drawingarea ) ;
 
 	frame ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT ) ;

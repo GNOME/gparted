@@ -26,7 +26,6 @@
 #include <gtkmm/box.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
-#include <gtkmm/frame.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/scrolledwindow.h>
 
@@ -53,7 +52,6 @@ private:
 	const Partition& partition;  // (Alias to element in Win_GParted::m_display_device.partitions[] vector).
 
 	Gtk::DrawingArea drawingarea ;
-	Gtk::Frame *frame ;
 	Gtk::Box info_msg_vbox;
 	Gtk::ScrolledWindow info_scrolled ;
 
