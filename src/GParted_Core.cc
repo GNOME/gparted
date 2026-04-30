@@ -1612,6 +1612,7 @@ bool GParted_Core::is_busy(const Glib::ustring& device_path, FSType fstype, cons
 				busy = BCache_Info::is_active(device_path, partition_path);
 				break;
 			case FS_JBD:
+			case FS_ZFS:
 				busy = Utils::is_dev_busy(partition_path);
 				break;
 			default:
