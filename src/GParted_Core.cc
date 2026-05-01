@@ -1550,11 +1550,14 @@ void GParted_Core::set_mountpoints( Partition & partition )
 	}
 }
 
+
 bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::ustring & path )
 {
 	Glib::ustring search_path ;
 	if (partition.fstype == FS_BTRFS)
 		search_path = btrfs::get_mount_device( path ) ;
+	else if (partition.fstype == FS_ZFS)
+		search_path = partition.get_filesystem_label();  // ZFS POOLNAME from label
 	else
 		search_path = path ;
 
