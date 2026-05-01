@@ -178,15 +178,16 @@ void Mount_Info::add_mountpoint_entry(MountMapping& map,
                                       bool readonly,
                                       const Glib::ustring& mountpoint)
 {
-	// Only add node path if mount point exists
-	if (Glib::file_test(mountpoint, Glib::FILE_TEST_EXISTS))
-	{
-		// Map::operator[] default constructs MountEntry for new keys (nodes).
-		MountEntry & mountentry = map[BlockSpecial( node )];
-		mountentry.readonly = mountentry.readonly || readonly;
-		mountentry.mountpoints.push_back( mountpoint );
-	}
+	// Don't add entry if mount point doesn't exist
+	if (! Glib::file_test(mountpoint, Glib::FILE_TEST_EXISTS))
+		return;
+
+	// Map::operator[] default constructs MountEntry for new keys (nodes).
+	MountEntry& mountentry = map[BlockSpecial(node)];
+	mountentry.readonly = mountentry.readonly || readonly;
+	mountentry.mountpoints.push_back(mountpoint);
 }
+
 
 // Parse file system mount options string into read-only boolean
 // E.g. "ro,relatime" -> true
