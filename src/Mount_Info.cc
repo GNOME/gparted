@@ -166,21 +166,34 @@ void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, Mou
 
 		Glib::ustring mountpoint = p->mnt_dir;
 
-		add_mountpoint_entry(map, node, parse_readonly_flag(p->mnt_opts), mountpoint);
+		add_mountpoint_entry(map, node, p->mnt_type, parse_readonly_flag(p->mnt_opts), mountpoint);
 	}
 
 	endmntent( fp );
 }
 
 
-void Mount_Info::add_mountpoint_entry(MountMapping& map,
-                                      const Glib::ustring& node,
-                                      bool readonly,
+void Mount_Info::add_mountpoint_entry(MountMapping&        map,
+                                      Glib::ustring        node,
+                                      const Glib::ustring& type,
+                                      bool                 readonly,
                                       const Glib::ustring& mountpoint)
 {
 	// Don't add entry if mount point doesn't exist
 	if (! Glib::file_test(mountpoint, Glib::FILE_TEST_EXISTS))
 		return;
+
+	if (type == "zfs")
+	{
+		// ZFS reports the mounted device as POOLNAME for the root dataset and
+		// POOLNAME/DATASET[/...] for nested datasets.  Shorten all mounted device
+		// names to just the POOLNAME portion.  This is so the same device name
+		// (ZFS pool name) maps to all the dataset mount points for the same ZFS
+		// pool.
+		Glib::ustring::size_type index = node.find_first_of('/');
+		if (index < node.length())
+			node = node.substr(0, index);
+	}
 
 	// Map::operator[] default constructs MountEntry for new keys (nodes).
 	MountEntry& mountentry = map[BlockSpecial(node)];
@@ -253,9 +266,10 @@ void Mount_Info::read_mountpoints_from_mount_command( MountMapping & map )
 			// Process line like "/dev/sda3 on / type ext4 (rw)"
 			Glib::ustring node = Utils::regexp_label( lines[ i ], "^([^[:blank:]]+) on " );
 			Glib::ustring mountpoint = Utils::regexp_label( lines[ i ], "^[^[:blank:]]+ on ([^[:blank:]]+) " );
+			Glib::ustring type = Utils::regexp_label(lines[i], " type ([^[:blank:]]+) ");
 			Glib::ustring mntopts = Utils::regexp_label( lines[i], " type [^[:blank:]]+ \\(([^\\)]*)\\)" );
 			if ( ! node.empty() )
-				add_mountpoint_entry(map, node, parse_readonly_flag(mntopts), mountpoint);
+				add_mountpoint_entry(map, node, type, parse_readonly_flag(mntopts), mountpoint);
 		}
 	}
 }
