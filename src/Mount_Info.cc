@@ -164,9 +164,7 @@ void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, Mou
 		if (node.empty())
 			node = p->mnt_fsname;
 
-		Glib::ustring mountpoint = p->mnt_dir;
-
-		add_mountpoint_entry(map, node, p->mnt_type, parse_readonly_flag(p->mnt_opts), mountpoint);
+		add_mountpoint_entry(map, node, p->mnt_type, parse_readonly_flag(p->mnt_opts), p->mnt_dir);
 	}
 
 	endmntent( fp );
