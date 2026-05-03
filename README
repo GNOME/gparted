@@ -148,7 +148,7 @@ b. Building from Source
    The list of graphical privilege escalation programs GParted checks
    at runtime can be configured with the --with-gksuprogs option.  The
    list is colon separated, and commands may include arguments.
-      E.g., ./configure --with-gksuprogs='pkexec --disable-internal-agent:gksudo'
+      E.g., ./configure --with-gksuprogs='pkexec --disable-internal-agent:gksudo:run0'
 
    Please note that more than one configure flag can be used:
       E.g., ./configure --disable-doc --enable-libparted-dmraid
@@ -162,10 +162,10 @@ c. Installing polkit's Action File
    polkit as their preferred authorisation mechanism.  Therefore the
    default build-time configuration makes GParted look for supported
    graphical privilege escalation programs at runtime in preference
-   order: polkit's pkexec, gksudo, gksu, kdesudo, xdg-su.  Also polkit
-   reads action files only from directory /usr/share/polkit-1/actions.
-   Therefore it is likely that a polkit action file will need to be
-   installed into this directory.
+   order: polkit's pkexec, gksudo, gksu, kdesudo, xdg-su, run0.  Also
+   polkit reads action files only from directory
+   /usr/share/polkit-1/actions.  Therefore it is likely that a polkit
+   action file will need to be installed into this directory.
 
    When GParted is configured with prefix /usr (using command
    ./configure --prefix=/usr) then make install will automatically
@@ -311,6 +311,9 @@ system.  These commands include:
                      script wrapper, alternative list can be provided
                      when gparted source is configured
    xdg-su          - used to acquire root privileges in gparted shell
+                     script wrapper, alternative list can be provided
+                     when gparted source is configured
+   run0            - used to acquire root privileges in gparted shell
                      script wrapper, alternative list can be provided
                      when gparted source is configured
    udevadm         - used to wait for udev rule execution and querying

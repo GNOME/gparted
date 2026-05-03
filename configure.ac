@@ -23,12 +23,12 @@ PKG_CHECK_EXISTS
 dnl======================
 dnl configure graphical privilege escalation programs
 dnl======================
-GKSUPROGS_DEFAULT='pkexec --disable-internal-agent:gksudo:gksu:kdesudo:xdg-su -c'
+GKSUPROGS_DEFAULT='pkexec --disable-internal-agent:gksudo:gksu:kdesudo:xdg-su -c:run0'
 AC_ARG_WITH(
 	[gksuprogs],
 	AS_HELP_STRING(
 		[--with-gksuprogs=LIST],
-		[colon-separated privilege escalation commands to try at runtime @<:@default=pkexec --disable-internal-agent:gksudo:gksu:kdesudo:xdg-su -c@:>@]),
+		[colon-separated privilege escalation commands to try at runtime @<:@default=pkexec --disable-internal-agent:gksudo:gksu:kdesudo:xdg-su -c:run0@:>@]),
 	[case "$withval" in
 		yes) GKSUPROGS=$GKSUPROGS_DEFAULT ;;
 		no)  GKSUPROGS= ;;

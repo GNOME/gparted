@@ -57,9 +57,28 @@ if test "x`id -u`" != "x0"; then
 	for CONFIGURED_GKSUPROG in $GKSUPROGS; do
 		IFS=$SAVED_IFS
 		GKSUPROG_BIN=${CONFIGURED_GKSUPROG%% *}
+		GKSUPROG_NAME=${GKSUPROG_BIN##*/}
 		test "x$GKSUPROG_BIN" = "x" && continue
 		if command -v "$GKSUPROG_BIN" 1> /dev/null 2>&1; then
-			GKSUPROG=$CONFIGURED_GKSUPROG
+			if test "$GKSUPROG_NAME" = 'run0'; then
+				RUN0_ARGS=" --unit=run-gparted"
+				if test -n "${XAUTHORITY+x}"; then
+					RUN0_ARGS="$RUN0_ARGS --setenv=XAUTHORITY"
+				fi
+				if test -n "${DISPLAY+x}"; then
+					RUN0_ARGS="$RUN0_ARGS --setenv=DISPLAY"
+				fi
+				if test -n "${WAYLAND_DISPLAY+x}" && test -n "${XDG_RUNTIME_DIR+x}" \
+				   && test -d "$XDG_RUNTIME_DIR" \
+				   && test "${WAYLAND_DISPLAY##*/}" = "$WAYLAND_DISPLAY" \
+				   && test -S "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"; then
+					RUN0_ARGS="$RUN0_ARGS --setenv=WAYLAND_DISPLAY=$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
+				fi
+				GKSUPROG_ARGS=${CONFIGURED_GKSUPROG#"$GKSUPROG_BIN"}
+				GKSUPROG=$GKSUPROG_BIN$RUN0_ARGS$GKSUPROG_ARGS
+			else
+				GKSUPROG=$CONFIGURED_GKSUPROG
+			fi
 			break
 		fi
 	done
