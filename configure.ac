@@ -21,30 +21,22 @@ PKG_CHECK_EXISTS
 
 
 dnl======================
-dnl Find graphical privilege escalation program
+dnl configure graphical privilege escalation programs
 dnl======================
-dnl Check for pkexec >= 0.102 for it's ability to run X11 apps.
-AM_CONDITIONAL([INSTALL_POLKIT_ACTIONS], false)
-PKEXEC_REQUIRED_VERSION='0.102'
-AC_MSG_CHECKING([for pkexec >= $PKEXEC_REQUIRED_VERSION])
-PKEXEC_REQUIRED_INT=`echo "$PKEXEC_REQUIRED_VERSION" | $AWK -F. '{print $1 * 10000 + $2}'`
-PKEXEC_VERSION_OUTPUT=`pkexec --version 2> /dev/null` ||
-	AC_MSG_RESULT([not found])
-if test "x$PKEXEC_VERSION_OUTPUT" != 'x'; then
-	PKEXEC_FOUND_VERSION=`echo "$PKEXEC_VERSION_OUTPUT" | head -1 | cut -d' ' -f3`
-	PKEXEC_FOUND_INT=`echo "$PKEXEC_FOUND_VERSION" | $AWK -F. '{print $1 * 10000 + $2}'`
-	AC_MSG_RESULT([$PKEXEC_FOUND_VERSION found])
-	if test "$PKEXEC_FOUND_INT" -ge "$PKEXEC_REQUIRED_INT"; then
-		GKSUPROG='pkexec --disable-internal-agent'
-		AC_SUBST([GKSUPROG])
-		AM_CONDITIONAL([INSTALL_POLKIT_ACTIONS], true)
-	fi
-fi
-
-dnl Check for alternative graphical privilege escalation programs.
-if test "x$GKSUPROG" = 'x'; then
-	AC_CHECK_PROGS([GKSUPROG], [gksudo gksu kdesudo "xdg-su -c"], [])
-fi
+GKSUPROGS_DEFAULT='pkexec --disable-internal-agent:gksudo:gksu:kdesudo:xdg-su -c'
+AC_ARG_WITH(
+	[gksuprogs],
+	AS_HELP_STRING(
+		[--with-gksuprogs=LIST],
+		[colon-separated privilege escalation commands to try at runtime @<:@default=pkexec --disable-internal-agent:gksudo:gksu:kdesudo:xdg-su -c@:>@]),
+	[case "$withval" in
+		yes) GKSUPROGS=$GKSUPROGS_DEFAULT ;;
+		no)  GKSUPROGS= ;;
+		*)   GKSUPROGS=$withval ;;
+	 esac],
+	[GKSUPROGS=$GKSUPROGS_DEFAULT]
+)
+AC_SUBST([GKSUPROGS])
 
 
 dnl======================
@@ -270,11 +262,19 @@ dnl======================
 dnl Summary
 dnl======================
 
+if test "x$GKSUPROGS" = 'x'; then
+	GKSUPROGS_SUMMARY='none'
+else
+	GKSUPROGS_SUMMARY=`echo "$GKSUPROGS" | sed 's/:/, /g'`
+fi
+
 echo ""
 echo "======================== Final configuration ==========================="
 echo "                         Installing into prefix  :  $prefix"
 echo ""
 echo "                      Build help documentation?  :  $enable_doc"
+echo ""
+echo "         Privilege escalation programs to check  :  $GKSUPROGS_SUMMARY"
 echo ""
 echo "           Use native libparted dmraid support?  :  $enable_libparted_dmraid"
 echo ""

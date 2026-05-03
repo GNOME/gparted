@@ -32,16 +32,14 @@ $(polkit_action_FILES): $(polkit_action_in_FILES)
 	$(AM_V_GEN)$(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
 
 polkit_actiondir = $(datadir)/polkit-1/actions
-if INSTALL_POLKIT_ACTIONS
-  polkit_action_DATA = $(polkit_action_FILES)
-endif
+polkit_action_DATA = $(polkit_action_FILES)
 
 bin_SCRIPTS = gparted
 CLEANFILES = $(bin_SCRIPTS) $(DESKTOP_IN_FILES) $(polkit_action_in_FILES)
 
 do_subst = sed -e 's,[@]libexecdir[@],$(libexecdir),g' \
 	-e 's,[@]bindir[@],$(bindir),g' \
-	-e 's,[@]gksuprog[@],$(GKSUPROG),g' \
+	-e 's,[@]gksuprogs[@],$(GKSUPROGS),g' \
 	-e 's,[@]enable_xhost_root[@],$(ENABLE_XHOST_ROOT),g'
 
 gparted.desktop.in:  gparted.desktop.in.in Makefile

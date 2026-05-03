@@ -145,6 +145,11 @@ b. Building from Source
    required to allow GParted to display under Wayland.
       ./configure --enable-xhost-root
 
+   The list of graphical privilege escalation programs GParted checks
+   at runtime can be configured with the --with-gksuprogs option.  The
+   list is colon separated, and commands may include arguments.
+      E.g., ./configure --with-gksuprogs='pkexec --disable-internal-agent:gksudo'
+
    Please note that more than one configure flag can be used:
       E.g., ./configure --disable-doc --enable-libparted-dmraid
 
@@ -154,26 +159,13 @@ c. Installing polkit's Action File
 
    GParted needs to run as root therefore it needs a graphical switch
    user program to allow normal users to run it.  Most desktops now use
-   polkit as their preferred authorisation mechanism.  Therefore
-   ./configure looks for polkit's pkexec as the first choice with
-   fallbacks in order being: gksudo, gksu, kdesudo and finally xdg-su.
-   Also polkit reads action files only from directory
-   /usr/share/polkit-1/actions.  Therefore it is likely that a polkit
-   action file will need to be installed into this directory.
-
-   To determine if polkit's pkexec program is being used as the
-   graphical privilege escalation program examine the output from
-   ./configure.  These lines report that pkexec is being used:
-
-      checking for pkexec >= 0.102... 0.112 found
-
-   Where as either of these lines of ./configure output report that
-   pkexec is not being used because either it was too old a version or
-   it was not found:
-
-      checking for pkexec >= 0.102... 0.96 found
-
-      checking for pkexec >= 0.102... not found
+   polkit as their preferred authorisation mechanism.  Therefore the
+   default build-time configuration makes GParted look for supported
+   graphical privilege escalation programs at runtime in preference
+   order: polkit's pkexec, gksudo, gksu, kdesudo, xdg-su.  Also polkit
+   reads action files only from directory /usr/share/polkit-1/actions.
+   Therefore it is likely that a polkit action file will need to be
+   installed into this directory.
 
    When GParted is configured with prefix /usr (using command
    ./configure --prefix=/usr) then make install will automatically
@@ -307,20 +299,20 @@ system.  These commands include:
    udisks          - used to prevent automounting of file systems
    hal-lock        - used to prevent automounting of file systems
    pkexec          - used to acquire root privileges in gparted shell
-                     script wrapper, but only if available when gparted
-                     source is configured
-   gksudo          - alternatively used to acquire root privileges in
-                     gparted shell script wrapper, second choice if
-                     available when gparted source is configured
-   gksu            - alternatively used to acquire root privileges in
-                     gparted shell script wrapper, third choice if
-                     available when gparted source is configured
-   kdesudo         - alternatively used to acquire root privileges in
-                     gparted shell script wrapper, fourth choice if
-                     available when gparted source is configured
-   xdg-su          - alternatively used to acquire root privileges in
-                     gparted shell script wrapper, last choice if
-                     available when gparted source is configured
+                     script wrapper, alternative list can be provided
+                     when gparted source is configured
+   gksudo          - used to acquire root privileges in gparted shell
+                     script wrapper, alternative list can be provided
+                     when gparted source is configured
+   gksu            - used to acquire root privileges in gparted shell
+                     script wrapper, alternative list can be provided
+                     when gparted source is configured
+   kdesudo         - used to acquire root privileges in gparted shell
+                     script wrapper, alternative list can be provided
+                     when gparted source is configured
+   xdg-su          - used to acquire root privileges in gparted shell
+                     script wrapper, alternative list can be provided
+                     when gparted source is configured
    udevadm         - used to wait for udev rule execution and querying
                      udev device properties
    yelp            - used to display help manual

@@ -46,11 +46,26 @@ BASE_CMD="@libexecdir@/gpartedbin $*"
 #
 if test "x`id -u`" != "x0"; then
 	#
-	#  If there is no configured SU program run gpartedbin as
+	#  If there is no SU program available run gpartedbin as
 	#  non-root to display the graphical error about needing root
 	#  privileges.
 	#
-	if test "x@gksuprog@" = "x"; then
+	GKSUPROGS='@gksuprogs@'
+	GKSUPROG=
+	SAVED_IFS=$IFS
+	IFS=:
+	for CONFIGURED_GKSUPROG in $GKSUPROGS; do
+		IFS=$SAVED_IFS
+		GKSUPROG_BIN=${CONFIGURED_GKSUPROG%% *}
+		test "x$GKSUPROG_BIN" = "x" && continue
+		if command -v "$GKSUPROG_BIN" 1> /dev/null 2>&1; then
+			GKSUPROG=$CONFIGURED_GKSUPROG
+			break
+		fi
+	done
+	IFS=$SAVED_IFS
+
+	if test "x$GKSUPROG" = "x"; then
 		echo "Root privileges are required for running gparted."
 		$BASE_CMD
 		exit 1
@@ -75,7 +90,7 @@ if test "x`id -u`" != "x0"; then
 	#
 	# Run gparted as root.
 	#
-	@gksuprog@ '@bindir@/gparted' "$@"
+	$GKSUPROG '@bindir@/gparted' "$@"
 	status=$?
 
 	#
