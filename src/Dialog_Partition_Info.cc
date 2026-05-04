@@ -23,9 +23,9 @@
 #include "btrfs.h"
 
 #include <glibmm/miscutils.h>
-#include <gtkmm/alignment.h>
 #include <gtkmm/box.h>
 #include <gtkmm/viewport.h>
+#include <gtkmm/enums.h>
 #include <gtkmm/grid.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/label.h>
@@ -71,9 +71,9 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	if (child_viewport)
 		child_viewport->set_shadow_type(Gtk::SHADOW_NONE);
 	//horizontally center the information scrolled window to match partition graphic
-	Gtk::Alignment* center_widget = Gtk::manage(new Gtk::Alignment(0.5, 0.5, 0.0, 1.0));
-	center_widget ->add( info_scrolled ) ;
-	this->get_content_area()->pack_start(*center_widget);
+	info_scrolled.set_halign(Gtk::ALIGN_CENTER);
+	info_scrolled.set_valign(Gtk::ALIGN_FILL);
+	this->get_content_area()->pack_start(info_scrolled);
 
 	//add label for detail and fill with relevant info
 	Display_Info() ;
