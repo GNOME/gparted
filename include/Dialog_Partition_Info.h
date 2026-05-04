@@ -63,9 +63,9 @@ private:
 	Gdk::RGBA m_color_unallocated;
 	Gdk::RGBA m_color_text;
 
-	int used        = 0;
-	int unused      = 0;
-	int unallocated = 0;
+	int m_used        = 0;
+	int m_unused      = 0;
+	int m_unallocated = 0;
 };
 
 

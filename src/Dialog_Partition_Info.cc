@@ -146,23 +146,23 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 		Gdk::Cairo::set_source_rgba(cr, m_color_used);
 		cr->rectangle(BORDER,
 		              BORDER,
-		              used,
+		              m_used,
 		              60 - 2 * BORDER);
 		cr->fill();
 
 		// Unused
 		Gdk::Cairo::set_source_rgba(cr, m_color_unused);
-		cr->rectangle(BORDER + used,
+		cr->rectangle(BORDER + m_used,
 		              BORDER,
-		              unused,
+		              m_unused,
 		              60 - 2 * BORDER);
 		cr->fill();
 
 		// Unallocated
 		Gdk::Cairo::set_source_rgba(cr, m_color_unallocated);
-		cr->rectangle(BORDER + used + unused,
+		cr->rectangle(BORDER + m_used + m_unused,
 		              BORDER,
-		              unallocated,
+		              m_unallocated,
 		              60 - 2 * BORDER);
 		cr->fill();
 	}
@@ -206,20 +206,20 @@ void Dialog_Partition_Info::init_drawingarea()
 	if (m_partition.type == TYPE_EXTENDED)
 	{
 		//Specifically show extended partitions as unallocated
-		used        = 0 ;
-		unused      = 0 ;
-		unallocated = 400 - BORDER *2 ;
+		m_used        = 0;
+		m_unused      = 0;
+		m_unallocated = 400 - BORDER * 2;
 	}
 	else if (m_partition.sector_usage_known())
 	{
-		m_partition.get_usage_triple(400 - BORDER *2, used, unused, unallocated);
+		m_partition.get_usage_triple(400 - BORDER *2, m_used, m_unused, m_unallocated);
 	}
 	else
 	{
 		//Specifically show unknown figures as unused
-		used        = 0 ;
-		unused      = 400 - BORDER *2 ;
-		unallocated = 0 ;
+		m_used        = 0;
+		m_unused      = 400 - BORDER * 2;
+		m_unallocated = 0;
 	}
 }
 
