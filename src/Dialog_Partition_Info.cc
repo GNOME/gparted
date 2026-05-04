@@ -69,11 +69,11 @@ Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 	this->get_content_area()->pack_start(m_info_scrolled);
 
 	// Place info and optional messages in scrollable window
-	// WH: this->get_content_area() / m_info_scrolled / info_msg_vbox
-	info_msg_vbox.set_orientation(Gtk::ORIENTATION_VERTICAL);
-	info_msg_vbox.set_border_width(5);
-	m_info_scrolled.add(info_msg_vbox);
-	// As Gtk::Box widget info_msg_vbox doesn't have a native scrolling capability a
+	// WH: this->get_content_area() / m_info_scrolled / m_info_msg_vbox
+	m_info_msg_vbox.set_orientation(Gtk::ORIENTATION_VERTICAL);
+	m_info_msg_vbox.set_border_width(5);
+	m_info_scrolled.add(m_info_msg_vbox);
+	// As Gtk::Box widget m_info_msg_vbox doesn't have a native scrolling capability a
 	// Gtk::Viewport is automatically created to contain it when it is added to the
 	// Gtk::ScrolledWindow widget m_info_scrolled.  The Viewport widget is created
 	// with shadow type GTK_SHADOW_IN by default.  Change to GTK_SHADOW_NONE.
@@ -82,29 +82,29 @@ Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 		child_viewport->set_shadow_type(Gtk::SHADOW_NONE);
 
 	//add label for detail and fill with relevant info
-	// WH: this->get_content_area() / m_info_scrolled / info_msg_vbox / grid
+	// WH: this->get_content_area() / m_info_scrolled / m_info_msg_vbox / grid
 	Display_Info() ;
 	
 	//display messages (if any)
 	if ( partition.have_messages() )
 	{
-		// WH: this->get_content_area() / m_info_scrolled / info_msg_vbox / frame
+		// WH: this->get_content_area() / m_info_scrolled / m_info_msg_vbox / frame
 		Gtk::Frame* frame = Gtk::manage(new Gtk::Frame());
-		info_msg_vbox.pack_start(*frame, Gtk::PACK_EXPAND_WIDGET);
+		m_info_msg_vbox.pack_start(*frame, Gtk::PACK_EXPAND_WIDGET);
 
-		// WH: ... / info_msg_vbox / frame / label_hbox
+		// WH: ... / m_info_msg_vbox / frame / label_hbox
 		Gtk::Box* label_hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 		frame->set_label_widget(*label_hbox);
 
-		// WH: ... / info_msg_vbox / frame / label_hbox / warning_icon
+		// WH: ... / m_info_msg_vbox / frame / label_hbox / warning_icon
 		Gtk::Image* warning_icon = Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 		label_hbox->pack_start(*warning_icon, Gtk::PACK_SHRINK);
 
-		// WH: ... / info_msg_vbox / frame / label_hbox / "Warning"
+		// WH: ... / m_info_msg_vbox / frame / label_hbox / "Warning"
 		label_hbox->pack_start(*Utils::mk_label("<b> " + Glib::ustring(_("Warning:")) + " </b>"),
 		                       Gtk::PACK_SHRINK);
 
-		// WH: ... / info_msg_vbox / frame / warning_vbox
+		// WH: ... / m_info_msg_vbox / frame / warning_vbox
 		Gtk::Box* warning_vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 		warning_vbox->set_border_width(5);
 		frame->add(*warning_vbox);
@@ -124,7 +124,7 @@ Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 
 			concatenated_messages += "<i>" + Utils::trim_trailing_new_line(messages[i]) + "</i>";
 		}
-		// WH: ... / info_msg_vbox / frame / warning_vbox / concatenated_messages
+		// WH: ... / m_info_msg_vbox / frame / warning_vbox / concatenated_messages
 		warning_vbox->pack_start(*Utils::mk_label(concatenated_messages, true, true, true),
 		                         Gtk::PACK_SHRINK);
 	}
@@ -254,11 +254,11 @@ void Dialog_Partition_Info::Display_Info()
 		// file system is accessible.
 		filesystem_accessible = true;
 
-	// WH: this->get_content_area() / m_info_scrolled / info_msg_vbox / grid
+	// WH: this->get_content_area() / m_info_scrolled / m_info_msg_vbox / grid
 	Gtk::Grid* grid(Gtk::manage(new Gtk::Grid()));
 	grid->set_border_width(5);
 	grid->set_column_spacing(10);
-	info_msg_vbox.pack_start(*grid, Gtk::PACK_SHRINK);
+	m_info_msg_vbox.pack_start(*grid, Gtk::PACK_SHRINK);
 
 	// FILE SYSTEM DETAIL SECTION
 	// File system headline
