@@ -20,14 +20,18 @@
 //what kind of info would one prefer to see here?
 //my guess is, it's best to keep the amount of info minimal and wait for users requests
 
-#include "Partition.h"
-#include "i18n.h"
 
+#include "Partition.h"
+
+#include <cairomm/context.h>
+#include <cairomm/refptr.h>
+#include <gdkmm/rgba.h>
+#include <glibmm/refptr.h>
 #include <gtkmm/box.h>
 #include <gtkmm/dialog.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/scrolledwindow.h>
+#include <pangomm/layout.h>
 
 
 #define BORDER 8

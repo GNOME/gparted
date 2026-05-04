@@ -15,23 +15,30 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "Dialog_Partition_Info.h"
+
 #include "LVM2_PV_Info.h"
 #include "Partition.h"
-#include "PartitionLUKS.h"
 #include "Utils.h"
 #include "btrfs.h"
 
-#include <glibmm/miscutils.h>
-#include <gtkmm/box.h>
-#include <gtkmm/viewport.h>
-#include <gtkmm/enums.h>
-#include <gtkmm/grid.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/label.h>
 #include <atkmm/relation.h>
+#include <cairomm/context.h>
+#include <cairomm/refptr.h>
 #include <gdkmm/general.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/ustring.h>
+#include <gtkmm/box.h>
+#include <gtkmm/enums.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/grid.h>
+#include <gtkmm/label.h>
+#include <gtkmm/object.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/viewport.h>
 #include <sigc++/signal.h>
+#include <vector>
 
 
 namespace GParted
