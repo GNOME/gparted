@@ -53,7 +53,7 @@ private:
 
 	Gtk::ScrolledWindow m_info_scrolled;
 	Gtk::Box            m_info_msg_vbox;
-	Gtk::DrawingArea drawingarea ;
+	Gtk::DrawingArea    m_drawingarea;
 
 	Glib::RefPtr<Pango::Layout> pango_layout;
 

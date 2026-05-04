@@ -55,7 +55,7 @@ Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 	this ->set_title( Glib::ustring::compose( _("Information about %1"), partition .get_path() ) );
 
 	// WH (Widget Hierarchy): this->get_content_area() / frame
-	// WH: this->get_content_area() / frame / drawingarea
+	// WH: this->get_content_area() / frame / m_drawingarea
 	init_drawingarea() ;
 
 	// WH: this->get_content_area() / m_info_scrolled
@@ -185,10 +185,10 @@ void Dialog_Partition_Info::init_drawingarea()
 	frame->set_halign(Gtk::ALIGN_CENTER);
 	this->get_content_area()->pack_start(*frame, Gtk::PACK_SHRINK);
 
-	// WH: this->get_content_area() / frame / drawingarea
-	drawingarea.set_size_request(400, 60);
-	drawingarea.signal_draw().connect(sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_draw));
-	frame->add(drawingarea);
+	// WH: this->get_content_area() / frame / m_drawingarea
+	m_drawingarea.set_size_request(400, 60);
+	m_drawingarea.signal_draw().connect(sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_draw));
+	frame->add(m_drawingarea);
 
 	//calculate proportional width of used, unused and unallocated
 	if (m_partition.type == TYPE_EXTENDED)
@@ -218,7 +218,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	color_partition.set(Utils::get_color(m_partition.get_filesystem_partition().fstype));
 
 	//set text of pangolayout
-	pango_layout = drawingarea .create_pango_layout( 
+	pango_layout = m_drawingarea.create_pango_layout(
 	                        m_partition.get_path() + "\n" +
 	                        Utils::format_size(m_partition.get_sector_length(), m_partition.sector_size));
 }
