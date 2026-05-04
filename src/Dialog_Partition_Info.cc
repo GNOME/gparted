@@ -58,37 +58,37 @@ Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 	// WH: this->get_content_area() / frame / drawingarea
 	init_drawingarea() ;
 
-	// WH: this->get_content_area() / info_scrolled
-	info_scrolled .set_policy( Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC ) ;
+	// WH: this->get_content_area() / m_info_scrolled
+	m_info_scrolled.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
 #if HAVE_SET_PROPAGATE_NATURAL_WIDTH
-	info_scrolled.set_propagate_natural_width(true);
+	m_info_scrolled.set_propagate_natural_width(true);
 #endif
 	// Horizontally center the information scrolled widget to match partition graphic
-	info_scrolled.set_halign(Gtk::ALIGN_CENTER);
-	info_scrolled.set_valign(Gtk::ALIGN_FILL);
-	this->get_content_area()->pack_start(info_scrolled);
+	m_info_scrolled.set_halign(Gtk::ALIGN_CENTER);
+	m_info_scrolled.set_valign(Gtk::ALIGN_FILL);
+	this->get_content_area()->pack_start(m_info_scrolled);
 
 	// Place info and optional messages in scrollable window
-	// WH: this->get_content_area() / info_scrolled / info_msg_vbox
+	// WH: this->get_content_area() / m_info_scrolled / info_msg_vbox
 	info_msg_vbox.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	info_msg_vbox.set_border_width(5);
-	info_scrolled .add( info_msg_vbox ) ;
-	//  As Gtk::Box widget info_msg_vbox doesn't have a native scrolling capability a
-	//  Gtk::Viewport is automatically created to contain it when it is added to the
-	//  Gtk::ScrolledWindow widget info_scrolled.  The Viewport widget is created with
-	//  shadow type GTK_SHADOW_IN by default.  Change to GTK_SHADOW_NONE.
-	Gtk::Viewport * child_viewport = dynamic_cast<Gtk::Viewport *>(info_scrolled.get_child());
+	m_info_scrolled.add(info_msg_vbox);
+	// As Gtk::Box widget info_msg_vbox doesn't have a native scrolling capability a
+	// Gtk::Viewport is automatically created to contain it when it is added to the
+	// Gtk::ScrolledWindow widget m_info_scrolled.  The Viewport widget is created
+	// with shadow type GTK_SHADOW_IN by default.  Change to GTK_SHADOW_NONE.
+	Gtk::Viewport * child_viewport = dynamic_cast<Gtk::Viewport *>(m_info_scrolled.get_child());
 	if (child_viewport)
 		child_viewport->set_shadow_type(Gtk::SHADOW_NONE);
 
 	//add label for detail and fill with relevant info
-	// WH: this->get_content_area() / info_scrolled / info_msg_vbox / grid
+	// WH: this->get_content_area() / m_info_scrolled / info_msg_vbox / grid
 	Display_Info() ;
 	
 	//display messages (if any)
 	if ( partition.have_messages() )
 	{
-		// WH: this->get_content_area() / info_scrolled / info_msg_vbox / frame
+		// WH: this->get_content_area() / m_info_scrolled / info_msg_vbox / frame
 		Gtk::Frame* frame = Gtk::manage(new Gtk::Frame());
 		info_msg_vbox.pack_start(*frame, Gtk::PACK_EXPAND_WIDGET);
 
@@ -254,7 +254,7 @@ void Dialog_Partition_Info::Display_Info()
 		// file system is accessible.
 		filesystem_accessible = true;
 
-	// WH: this->get_content_area() / info_scrolled / info_msg_vbox / grid
+	// WH: this->get_content_area() / m_info_scrolled / info_msg_vbox / grid
 	Gtk::Grid* grid(Gtk::manage(new Gtk::Grid()));
 	grid->set_border_width(5);
 	grid->set_column_spacing(10);
