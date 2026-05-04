@@ -57,11 +57,11 @@ private:
 
 	Glib::RefPtr<Pango::Layout> m_text_overlay;
 
-	Gdk::RGBA color_partition;
-	Gdk::RGBA color_used;
-	Gdk::RGBA color_unused;
-	Gdk::RGBA color_unallocated;
-	Gdk::RGBA color_text;
+	Gdk::RGBA m_color_partition;
+	Gdk::RGBA m_color_used;
+	Gdk::RGBA m_color_unused;
+	Gdk::RGBA m_color_unallocated;
+	Gdk::RGBA m_color_text;
 
 	int used        = 0;
 	int unused      = 0;

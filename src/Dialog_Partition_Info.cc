@@ -136,14 +136,14 @@ Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 
 bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	Gdk::Cairo::set_source_rgba(cr, color_partition);
+	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
 	cr->rectangle(0, 0, 400, 60);
 	cr->fill();
 
 	if (m_partition.fstype != FS_UNALLOCATED)
 	{
 		// Used
-		Gdk::Cairo::set_source_rgba(cr, color_used);
+		Gdk::Cairo::set_source_rgba(cr, m_color_used);
 		cr->rectangle(BORDER,
 		              BORDER,
 		              used,
@@ -151,7 +151,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 		cr->fill();
 
 		// Unused
-		Gdk::Cairo::set_source_rgba(cr, color_unused);
+		Gdk::Cairo::set_source_rgba(cr, m_color_unused);
 		cr->rectangle(BORDER + used,
 		              BORDER,
 		              unused,
@@ -159,7 +159,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 		cr->fill();
 
 		// Unallocated
-		Gdk::Cairo::set_source_rgba(cr, color_unallocated);
+		Gdk::Cairo::set_source_rgba(cr, m_color_unallocated);
 		cr->rectangle(BORDER + used + unused,
 		              BORDER,
 		              unallocated,
@@ -168,7 +168,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 	}
 
 	// Text
-	Gdk::Cairo::set_source_rgba(cr, color_text);
+	Gdk::Cairo::set_source_rgba(cr, m_color_text);
 	cr->move_to(180, BORDER + 6);
 	m_text_overlay->show_in_cairo_context(cr);
 
@@ -195,6 +195,13 @@ void Dialog_Partition_Info::init_drawingarea()
 	                        m_partition.get_path() + "\n" +
 	                        Utils::format_size(m_partition.get_sector_length(), m_partition.sector_size));
 
+	// Colors
+	m_color_partition.set(Utils::get_color(m_partition.get_filesystem_partition().fstype));
+	m_color_used.set("#F8F8BA");
+	m_color_unused.set("white");
+	m_color_unallocated.set("darkgrey");
+	m_color_text.set("black");
+
 	//calculate proportional width of used, unused and unallocated
 	if (m_partition.type == TYPE_EXTENDED)
 	{
@@ -214,13 +221,6 @@ void Dialog_Partition_Info::init_drawingarea()
 		unused      = 400 - BORDER *2 ;
 		unallocated = 0 ;
 	}
-	
-	// Colors
-	color_used.set("#F8F8BA");
-	color_unused.set("white");
-	color_unallocated.set("darkgrey");
-	color_text.set("black");
-	color_partition.set(Utils::get_color(m_partition.get_filesystem_partition().fstype));
 }
 
 
