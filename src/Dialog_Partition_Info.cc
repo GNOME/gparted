@@ -171,10 +171,9 @@ void Dialog_Partition_Info::init_drawingarea()
 
 	frame ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT ) ;
 	frame ->set_border_width( 10 ) ;
+	frame->set_halign(Gtk::ALIGN_CENTER);
 
-	Gtk::Box* hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	hbox->pack_start(*frame, Gtk::PACK_EXPAND_PADDING);
-	this->get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
+	this->get_content_area()->pack_start(*frame, Gtk::PACK_SHRINK);
 
 	//calculate proportional width of used, unused and unallocated
 	if (partition.type == TYPE_EXTENDED)
