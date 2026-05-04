@@ -55,7 +55,7 @@ private:
 	Gtk::Box            m_info_msg_vbox;
 	Gtk::DrawingArea    m_drawingarea;
 
-	Glib::RefPtr<Pango::Layout> pango_layout;
+	Glib::RefPtr<Pango::Layout> m_text_overlay;
 
 	Gdk::RGBA color_partition;
 	Gdk::RGBA color_used;

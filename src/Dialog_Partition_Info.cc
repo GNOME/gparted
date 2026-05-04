@@ -170,7 +170,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 	// Text
 	Gdk::Cairo::set_source_rgba(cr, color_text);
 	cr->move_to(180, BORDER + 6);
-	pango_layout->show_in_cairo_context(cr);
+	m_text_overlay->show_in_cairo_context(cr);
 
 	return true;
 }
@@ -189,6 +189,11 @@ void Dialog_Partition_Info::init_drawingarea()
 	m_drawingarea.set_size_request(400, 60);
 	m_drawingarea.signal_draw().connect(sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_draw));
 	frame->add(m_drawingarea);
+
+	// Set partition path and size text overlaid on the partition graphic
+	m_text_overlay = m_drawingarea.create_pango_layout(
+	                        m_partition.get_path() + "\n" +
+	                        Utils::format_size(m_partition.get_sector_length(), m_partition.sector_size));
 
 	//calculate proportional width of used, unused and unallocated
 	if (m_partition.type == TYPE_EXTENDED)
@@ -216,11 +221,6 @@ void Dialog_Partition_Info::init_drawingarea()
 	color_unallocated.set("darkgrey");
 	color_text.set("black");
 	color_partition.set(Utils::get_color(m_partition.get_filesystem_partition().fstype));
-
-	//set text of pangolayout
-	pango_layout = m_drawingarea.create_pango_layout(
-	                        m_partition.get_path() + "\n" +
-	                        Utils::format_size(m_partition.get_sector_length(), m_partition.sector_size));
 }
 
 
