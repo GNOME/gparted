@@ -38,7 +38,8 @@ namespace GParted
 {
 
 
-Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : partition( partition )
+Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
+: m_partition(partition)
 {
 	// Set minimum dialog height so it fits on an 800x600 screen without too much
 	// whitespace (~500 px max for GNOME desktop).  Allow extra space if have any
@@ -139,7 +140,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 	cr->rectangle(0, 0, 400, 60);
 	cr->fill();
 
-	if (partition.fstype != FS_UNALLOCATED)
+	if (m_partition.fstype != FS_UNALLOCATED)
 	{
 		// Used
 		Gdk::Cairo::set_source_rgba(cr, color_used);
@@ -190,16 +191,16 @@ void Dialog_Partition_Info::init_drawingarea()
 	frame->add(drawingarea);
 
 	//calculate proportional width of used, unused and unallocated
-	if (partition.type == TYPE_EXTENDED)
+	if (m_partition.type == TYPE_EXTENDED)
 	{
 		//Specifically show extended partitions as unallocated
 		used        = 0 ;
 		unused      = 0 ;
 		unallocated = 400 - BORDER *2 ;
 	}
-	else if ( partition .sector_usage_known() )
+	else if (m_partition.sector_usage_known())
 	{
-		partition .get_usage_triple( 400 - BORDER *2, used, unused, unallocated ) ;
+		m_partition.get_usage_triple(400 - BORDER *2, used, unused, unallocated);
 	}
 	else
 	{
@@ -214,12 +215,14 @@ void Dialog_Partition_Info::init_drawingarea()
 	color_unused.set("white");
 	color_unallocated.set("darkgrey");
 	color_text.set("black");
-	color_partition.set(Utils::get_color(partition.get_filesystem_partition().fstype));
+	color_partition.set(Utils::get_color(m_partition.get_filesystem_partition().fstype));
 
 	//set text of pangolayout
 	pango_layout = drawingarea .create_pango_layout( 
-		partition .get_path() + "\n" + Utils::format_size( partition .get_sector_length(), partition .sector_size ) ) ;
+	                        m_partition.get_path() + "\n" +
+	                        Utils::format_size(m_partition.get_sector_length(), m_partition.sector_size));
 }
+
 
 void Dialog_Partition_Info::Display_Info()
 {
@@ -237,16 +240,16 @@ void Dialog_Partition_Info::Display_Info()
 	// Refers to the Partition object containing the file system.  Either the same as
 	// partition, or for an open LUKS mapping, the encrypted Partition object member
 	// within containing the encrypted file system.
-	const Partition & filesystem_ptn = partition.get_filesystem_partition();
+	const Partition& filesystem_ptn = m_partition.get_filesystem_partition();
 
-	Sector ptn_sectors = partition .get_sector_length() ;
+	Sector ptn_sectors = m_partition.get_sector_length();
 
 	Glib::ustring vgname;
 	if (filesystem_ptn.fstype == FS_LVM2_PV)
 		vgname = LVM2_PV_Info::get_vg_name( filesystem_ptn.get_path() );
 
 	bool filesystem_accessible = false;
-	if (partition.fstype != FS_LUKS || partition.busy)
+	if (m_partition.fstype != FS_LUKS || m_partition.busy)
 		// As long as this is not a LUKS encrypted partition which is closed the
 		// file system is accessible.
 		filesystem_accessible = true;
@@ -495,16 +498,17 @@ void Dialog_Partition_Info::Display_Info()
 	int topright = 1;
 
 	//Right field & value pair area
-	if ( partition .sector_usage_known() )
+	if (m_partition.sector_usage_known())
 	{
 		//calculate relative diskusage
 		int percent_used, percent_unused, percent_unallocated ;
-		partition .get_usage_triple( 100, percent_used, percent_unused, percent_unallocated ) ;
+		m_partition.get_usage_triple(100, percent_used, percent_unused, percent_unallocated);
 
 		// Used
 		Gtk::Label *label_used = Utils::mk_label("<b>" + Glib::ustring(_("Used:")) + "</b>");
 		grid->attach(*label_used, 3, topright, 1, 1);
-		Gtk::Label *value_used = Utils::mk_label(Utils::format_size(partition.get_sectors_used(), partition.sector_size),
+		Gtk::Label* value_used = Utils::mk_label(Utils::format_size(m_partition.get_sectors_used(),
+		                                                            m_partition.sector_size),
 		                                         true, false, true);
 		grid->attach(*value_used, 4, topright, 1, 1);
 		grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_used) + "% )"),
@@ -514,7 +518,8 @@ void Dialog_Partition_Info::Display_Info()
 		// Unused
 		Gtk::Label *label_unused = Utils::mk_label("<b>" + Glib::ustring(_("Unused:")) + "</b>");
 		grid->attach(*label_unused, 3, topright, 1, 1);
-		Gtk::Label *value_unused = Utils::mk_label(Utils::format_size(partition.get_sectors_unused(), partition.sector_size),
+		Gtk::Label* value_unused = Utils::mk_label(Utils::format_size(m_partition.get_sectors_unused(),
+		                                                              m_partition.sector_size),
 		                                           true, false, true);
 		grid->attach(*value_unused, 4, topright, 1, 1);
 		grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_unused) + "% )"),
@@ -523,12 +528,13 @@ void Dialog_Partition_Info::Display_Info()
 		                                                 label_unused->get_accessible());
 
 		//unallocated
-		Sector sectors_unallocated = partition .get_sectors_unallocated() ;
+		Sector sectors_unallocated = m_partition.get_sectors_unallocated();
 		if ( sectors_unallocated > 0 )
 		{
 			Gtk::Label *label_unallocated = Utils::mk_label("<b>" + Glib::ustring(_("Unallocated:")) + "</b>");
 			grid->attach(*label_unallocated, 3, topright, 1, 1);
-			Gtk::Label *value_unallocated = Utils::mk_label(Utils::format_size(sectors_unallocated, partition.sector_size),
+			Gtk::Label* value_unallocated = Utils::mk_label(Utils::format_size(sectors_unallocated,
+			                                                                   m_partition.sector_size),
 			                                                true, false, true);
 			grid->attach(*value_unallocated, 4, topright, 1, 1);
 			grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_unallocated) + "% )"),
@@ -541,7 +547,7 @@ void Dialog_Partition_Info::Display_Info()
 	// Size
 	Gtk::Label *label_size = Utils::mk_label("<b>" + Glib::ustring(_("Size:")) + "</b>");
 	grid->attach(*label_size, 3, topright, 1, 1);
-	Gtk::Label *value_size = Utils::mk_label(Utils::format_size(ptn_sectors, partition.sector_size),
+	Gtk::Label* value_size = Utils::mk_label(Utils::format_size(ptn_sectors, m_partition.sector_size),
 	                                         true, false, true);
 	grid->attach(*value_size, 4, topright++, 1, 1);
 	value_size->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_size->get_accessible());
@@ -552,7 +558,7 @@ void Dialog_Partition_Info::Display_Info()
 	// One blank line
 	grid->attach(*Utils::mk_label(""), 0, top++, 6, 1);
 
-	if (partition.fstype == FS_LUKS)
+	if (m_partition.fstype == FS_LUKS)
 	{
 		// ENCRYPTION DETAIL SECTION
 		// Encryption headline
@@ -562,7 +568,7 @@ void Dialog_Partition_Info::Display_Info()
 		// Encryption
 		Gtk::Label *label_encryption = Utils::mk_label("<b>" + Glib::ustring(_("Encryption:")) + "</b>");
 		grid->attach(*label_encryption, 1, top, 1, 1);
-		Gtk::Label *value_encryption = Utils::mk_label(Utils::get_filesystem_string(partition.fstype),
+		Gtk::Label* value_encryption = Utils::mk_label(Utils::get_filesystem_string(m_partition.fstype),
 		                                               true, false, true);
 		grid->attach(*value_encryption, 2, top++, 1, 1);
 		value_encryption->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
@@ -571,8 +577,9 @@ void Dialog_Partition_Info::Display_Info()
 		// LUKS path
 		Gtk::Label *label_path = Utils::mk_label("<b>" + Glib::ustring(_("Path:")) + "</b>");
 		grid->attach(*label_path, 1, top, 1, 1);
-		if ( partition.busy ) {
-			Gtk::Label *value_path = Utils::mk_label(partition.get_mountpoint(), true, false, true);
+		if (m_partition.busy)
+		{
+			Gtk::Label* value_path = Utils::mk_label(m_partition.get_mountpoint(), true, false, true);
 			grid->attach(*value_path, 2, top, 1, 1);
 			value_path->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 			                                               label_path->get_accessible());
@@ -582,7 +589,7 @@ void Dialog_Partition_Info::Display_Info()
 		// LUKS uuid
 		Gtk::Label *label_uuid = Utils::mk_label("<b>" + Glib::ustring(_("UUID:")) + "</b>");
 		grid->attach(*label_uuid, 1, top, 1, 1);
-		Gtk::Label *value_uuid = Utils::mk_label(partition.uuid, true, false, true);
+		Gtk::Label* value_uuid = Utils::mk_label(m_partition.uuid, true, false, true);
 		grid->attach(*value_uuid, 2, top++, 1, 1);
 		value_uuid->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 		                                               label_uuid->get_accessible());
@@ -591,7 +598,7 @@ void Dialog_Partition_Info::Display_Info()
 		Gtk::Label *label_status = Utils::mk_label("<b>" + Glib::ustring(_("Status:")) + "</b>");
 		grid->attach(*label_status, 1, top, 1, 1);
 		Glib::ustring str_temp;
-		if ( partition.busy )
+		if (m_partition.busy)
 			str_temp = luks_open;
 		else
 			str_temp = luks_closed;
@@ -616,23 +623,23 @@ void Dialog_Partition_Info::Display_Info()
 	// Path
 	Gtk::Label *label_path = Utils::mk_label("<b>" + Glib::ustring(_("Path:")) + "</b>");
 	grid->attach(*label_path, 1, top, 1, 1);
-	Gtk::Label *value_path = Utils::mk_label(partition.get_path(), true, false, true);
+	Gtk::Label* value_path = Utils::mk_label(m_partition.get_path(), true, false, true);
 	grid->attach(*value_path, 2, top++, 1, 1);
 	value_path->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_path->get_accessible());
 
-	if (partition.fstype != FS_UNALLOCATED && partition.status != STAT_NEW)
+	if (m_partition.fstype != FS_UNALLOCATED && m_partition.status != STAT_NEW)
 	{
 		// Name
 		Gtk::Label *label_name = Utils::mk_label("<b>" + Glib::ustring(_("Name:")) + "</b>");
 		grid->attach(*label_name, 1, top, 1, 1);
-		Gtk::Label *value_name = Utils::mk_label(partition.name, true, false, true);
+		Gtk::Label* value_name = Utils::mk_label(m_partition.name, true, false, true);
 		grid->attach(*value_name, 2, top++, 1, 1);
 		value_name->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_name->get_accessible());
 
 		// Flags
 		Gtk::Label *label_flags = Utils::mk_label("<b>" + Glib::ustring(_("Flags:")) + "</b>");
 		grid->attach(*label_flags, 1, top, 1, 1);
-		Gtk::Label* value_flags = Utils::mk_label(Glib::build_path(", ", partition.get_flags()),
+		Gtk::Label* value_flags = Utils::mk_label(Glib::build_path(", ", m_partition.get_flags()),
 		                                          true, false, true);
 		grid->attach(*value_flags, 2, top++, 1, 1);
 		value_flags->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
@@ -643,7 +650,8 @@ void Dialog_Partition_Info::Display_Info()
 	// First sector
 	Gtk::Label *label_first_sector = Utils::mk_label("<b>" + Glib::ustring(_("First sector:")) + "</b>");
 	grid->attach(*label_first_sector, 3, topright, 1, 1);
-	Gtk::Label *value_first_sector = Utils::mk_label(Utils::num_to_str(partition.sector_start), true, false, true);
+	Gtk::Label* value_first_sector = Utils::mk_label(Utils::num_to_str(m_partition.sector_start),
+	                                                 true, false, true);
 	grid->attach(*value_first_sector, 4, topright++, 1, 1);
 	value_first_sector->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_first_sector->get_accessible());
@@ -651,7 +659,8 @@ void Dialog_Partition_Info::Display_Info()
 	// Last sector
 	Gtk::Label *label_last_sector = Utils::mk_label("<b>" + Glib::ustring(_("Last sector:")) + "</b>");
 	grid->attach(*label_last_sector, 3, topright, 1, 1);
-	Gtk::Label *value_last_sector = Utils::mk_label(Utils::num_to_str(partition.sector_end), true, false, true);
+	Gtk::Label* value_last_sector = Utils::mk_label(Utils::num_to_str(m_partition.sector_end),
+	                                                true, false, true);
 	grid->attach(*value_last_sector, 4, topright++, 1, 1);
 	value_last_sector->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                      label_last_sector->get_accessible());
