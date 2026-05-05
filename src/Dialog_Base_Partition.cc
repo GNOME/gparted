@@ -80,7 +80,7 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
-	spinbutton_before.set_width_chars(7);
+	spinbutton_before.set_width_chars(9);
 	grid_resize.attach(spinbutton_before, 1, 0, 1, 1);
 
 	// Add spinbutton_size
@@ -90,7 +90,7 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
-	spinbutton_size.set_width_chars(7);
+	spinbutton_size.set_width_chars(9);
 	grid_resize.attach(spinbutton_size, 1, 1, 1, 1);
 
 	// Add spinbutton_after
@@ -100,7 +100,7 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
-	spinbutton_after.set_width_chars(7);
+	spinbutton_after.set_width_chars(9);
 	grid_resize.attach(spinbutton_after, 1, 2, 1, 1);
 
 	if ( ! fixed_start )
