@@ -201,7 +201,7 @@ void Dialog_Partition_New::set_data(const Device&          device,
 
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
-	spinbutton_size.set_value( ceil( fs_limits.max_size / double(MEBIBYTE) ) );
+	m_spinbutton_size.set_value(ceil(fs_limits.max_size / double(MEBIBYTE)));
 	m_spinbutton_before.set_value(MIN_SPACE_BEFORE_MB);
 
 	//Disable resizing when the total area is less than two mebibytes
@@ -236,7 +236,7 @@ const Partition& Dialog_Partition_New::get_new_partition()
 	//        to the maximum value of signed 4 byte integer.
 	new_start = START + Sector(m_spinbutton_before.get_value_as_int()) *
 	                    (MEBIBYTE / m_new_partition->sector_size);
-	new_end  = new_start + Sector(spinbutton_size.get_value_as_int()) *
+	new_end  = new_start + Sector(m_spinbutton_size.get_value_as_int()) *
 	                       (MEBIBYTE / m_new_partition->sector_size)
 	                     - 1;
 
@@ -394,8 +394,8 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 		//set new spinbutton ranges
 		m_spinbutton_before.set_range(MIN_SPACE_BEFORE_MB,
 		                              TOTAL_MB - ceil(fs_limits.min_size / double(MEBIBYTE)));
-		spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
-		                           ceil( fs_limits.max_size / double(MEBIBYTE) ) );
+		m_spinbutton_size.set_range(ceil(fs_limits.min_size / double(MEBIBYTE)),
+		                            ceil(fs_limits.max_size / double(MEBIBYTE)));
 		spinbutton_after.set_range( 0,
 		                            TOTAL_MB - MIN_SPACE_BEFORE_MB
 		                            - ceil( fs_limits.min_size / double(MEBIBYTE) ) );

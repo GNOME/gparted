@@ -101,11 +101,11 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	m_spinbutton_before.set_range(MIN_SPACE_BEFORE_MB, TOTAL_MB - ceil(fs_limits.min_size / double(MEBIBYTE)));
 	m_spinbutton_before.set_value(MIN_SPACE_BEFORE_MB);
 
-	//set values of spinbutton_size
-	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
-	                           ceil( fs_limits.max_size / double(MEBIBYTE) ) );
-	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
-	
+	// Set values of m_spinbutton_size
+	m_spinbutton_size.set_range(ceil(fs_limits.min_size / double(MEBIBYTE)),
+	                            ceil(fs_limits.max_size / double(MEBIBYTE)));
+	m_spinbutton_size.set_value(COPIED_LENGTH_MB);
+
 	//set values of spinbutton_after
 	spinbutton_after.set_range( 0, TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
 	spinbutton_after .set_value( TOTAL_MB - MIN_SPACE_BEFORE_MB - COPIED_LENGTH_MB ) ; 

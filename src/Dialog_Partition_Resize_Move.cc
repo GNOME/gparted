@@ -71,7 +71,7 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 
 	//store the original values
 	ORIG_BEFORE = m_spinbutton_before.get_value_as_int();
-	ORIG_SIZE	= spinbutton_size .get_value_as_int() ;
+	ORIG_SIZE   = m_spinbutton_size.get_value_as_int();
 	ORIG_AFTER	= spinbutton_after .get_value_as_int() ;
 
 	GRIP = false ;
@@ -213,10 +213,10 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 			Utils::round(Utils::sector_to_unit(previous, m_new_partition->sector_size, UNIT_MIB)));
 	}
 
-	//set values of spinbutton_size 
-	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
-	                           ceil( fs_limits.max_size / double(MEBIBYTE) ) );
-	spinbutton_size .set_value( 
+	// Set values of m_spinbutton_size
+	m_spinbutton_size.set_range(ceil(fs_limits.min_size / double(MEBIBYTE)),
+	                            ceil(fs_limits.max_size / double(MEBIBYTE)));
+	m_spinbutton_size.set_value(
 	                Utils::round(Utils::sector_to_unit(m_new_partition->get_sector_length(),
 	                                                   m_new_partition->sector_size,
 	                                                   UNIT_MIB)));
@@ -341,12 +341,11 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	m_spinbutton_before.set_value(Utils::round(Utils::sector_to_unit(previous,
 	                                                                 m_new_partition->sector_size, UNIT_MIB)));
 
-	//set values of spinbutton_size
-	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
-	                           TOTAL_MB - MIN_SPACE_BEFORE_MB );
-
-	spinbutton_size.set_value(Utils::round(Utils::sector_to_unit(m_new_partition->get_sector_length(),
-	                                                             m_new_partition->sector_size, UNIT_MIB)));
+	// Set values of m_spinbutton_size
+	m_spinbutton_size.set_range(ceil(fs_limits.min_size / double(MEBIBYTE)),
+	                            TOTAL_MB - MIN_SPACE_BEFORE_MB);
+	m_spinbutton_size.set_value(Utils::round(Utils::sector_to_unit(m_new_partition->get_sector_length(),
+	                                                               m_new_partition->sector_size, UNIT_MIB)));
 
 	//set values of spinbutton_after
 	if ( first == 0 ) //no logicals
