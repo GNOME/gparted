@@ -200,7 +200,7 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	combo_filesystem.set_active(m_default_fs);
 
 	//set spinbuttons initial values
-	spinbutton_after .set_value( 0 ) ;
+	m_spinbutton_after.set_value(0);
 	m_spinbutton_size.set_value(ceil(fs_limits.max_size / double(MEBIBYTE)));
 	m_spinbutton_before.set_value(MIN_SPACE_BEFORE_MB);
 
@@ -396,9 +396,9 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 		                              TOTAL_MB - ceil(fs_limits.min_size / double(MEBIBYTE)));
 		m_spinbutton_size.set_range(ceil(fs_limits.min_size / double(MEBIBYTE)),
 		                            ceil(fs_limits.max_size / double(MEBIBYTE)));
-		spinbutton_after.set_range( 0,
-		                            TOTAL_MB - MIN_SPACE_BEFORE_MB
-		                            - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
+		m_spinbutton_after.set_range(0,
+		                             TOTAL_MB - MIN_SPACE_BEFORE_MB
+		                                      - ceil(fs_limits.min_size / double(MEBIBYTE)));
 
 		//set contents of label_minmax
 		Set_MinMax_Text( ceil( fs_limits.min_size / double(MEBIBYTE) ),

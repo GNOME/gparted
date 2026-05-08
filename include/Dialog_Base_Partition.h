@@ -86,7 +86,7 @@ protected:
 	Gtk::Box hbox_main;
 	Gtk::SpinButton m_spinbutton_before;
 	Gtk::SpinButton m_spinbutton_size;
-	Gtk::SpinButton spinbutton_after;
+	Gtk::SpinButton m_spinbutton_after;
 	OptionComboBox combo_alignment;
 
 	sigc::connection before_change_connection, size_change_connection, after_change_connection ;
