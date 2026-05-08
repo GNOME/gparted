@@ -84,7 +84,8 @@ protected:
 	Sector total_length = 0;  // Total amount of sectors (this can be up to 3 partitions).
 
 	Gtk::Box hbox_main;
-	Gtk::SpinButton spinbutton_before, spinbutton_size, spinbutton_after;
+	Gtk::SpinButton m_spinbutton_before;
+	Gtk::SpinButton spinbutton_size, spinbutton_after;
 	OptionComboBox combo_alignment;
 
 	sigc::connection before_change_connection, size_change_connection, after_change_connection ;

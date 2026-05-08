@@ -97,9 +97,9 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 		fs_limits.min_size = COPIED_LENGTH_MB * MEBIBYTE;
 
 	GRIP = true ;
-	//set values of spinbutton_before
-	spinbutton_before.set_range( MIN_SPACE_BEFORE_MB, TOTAL_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
-	spinbutton_before .set_value( MIN_SPACE_BEFORE_MB ) ;
+	// Set values of m_spinbutton_before
+	m_spinbutton_before.set_range(MIN_SPACE_BEFORE_MB, TOTAL_MB - ceil(fs_limits.min_size / double(MEBIBYTE)));
+	m_spinbutton_before.set_value(MIN_SPACE_BEFORE_MB);
 
 	//set values of spinbutton_size
 	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),

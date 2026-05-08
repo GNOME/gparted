@@ -202,7 +202,7 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
 	spinbutton_size.set_value( ceil( fs_limits.max_size / double(MEBIBYTE) ) );
-	spinbutton_before .set_value( MIN_SPACE_BEFORE_MB ) ;
+	m_spinbutton_before.set_value(MIN_SPACE_BEFORE_MB);
 
 	//Disable resizing when the total area is less than two mebibytes
 	if ( TOTAL_MB < 2 )
@@ -234,12 +234,12 @@ const Partition& Dialog_Partition_New::get_new_partition()
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
-	new_start = START + Sector(spinbutton_before.get_value_as_int()) *
+	new_start = START + Sector(m_spinbutton_before.get_value_as_int()) *
 	                    (MEBIBYTE / m_new_partition->sector_size);
 	new_end  = new_start + Sector(spinbutton_size.get_value_as_int()) *
 	                       (MEBIBYTE / m_new_partition->sector_size)
 	                     - 1;
-	
+
 	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
 	if (new_start < m_new_partition->sector_start)
@@ -308,7 +308,7 @@ const Partition& Dialog_Partition_New::get_new_partition()
 
 	GParted_Core::compose_partition_flags(*m_new_partition, m_device.disktype);
 
-	m_new_partition->free_space_before =   Sector(spinbutton_before.get_value_as_int())
+	m_new_partition->free_space_before =   Sector(m_spinbutton_before.get_value_as_int())
 	                                     * (MEBIBYTE / m_new_partition->sector_size);
 
 	// Create unallocated space within this new extended partition
@@ -392,8 +392,8 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 		                                      Utils::round(fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE)));
 
 		//set new spinbutton ranges
-		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
-		                             TOTAL_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
+		m_spinbutton_before.set_range(MIN_SPACE_BEFORE_MB,
+		                              TOTAL_MB - ceil(fs_limits.min_size / double(MEBIBYTE)));
 		spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
 		                           ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 		spinbutton_after.set_range( 0,

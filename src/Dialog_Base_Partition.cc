@@ -73,15 +73,16 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 	hbox_grid.set_border_width(5);
 	vbox_resize_move.pack_start(hbox_grid, Gtk::PACK_SHRINK);
 
-	// Add spinbutton_before
+	// Add m_spinbutton_before
 	Gtk::Label *label_before = Utils::mk_label(Glib::ustring(_("Free space preceding (MiB):")) + " \t");
 	grid_resize.attach(*label_before, 0, 0, 1, 1);
-	spinbutton_before.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_before->get_accessible());
+	m_spinbutton_before.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                       label_before->get_accessible());
 
-	spinbutton_before .set_numeric( true );
-	spinbutton_before .set_increments( 1, 100 );
-	spinbutton_before.set_width_chars(9);
-	grid_resize.attach(spinbutton_before, 1, 0, 1, 1);
+	m_spinbutton_before.set_numeric(true);
+	m_spinbutton_before.set_increments(1, 100);
+	m_spinbutton_before.set_width_chars(9);
+	grid_resize.attach(m_spinbutton_before, 1, 0, 1, 1);
 
 	// Add spinbutton_size
 	Gtk::Label *label_size = Utils::mk_label(_("New size (MiB):"));
@@ -104,11 +105,11 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 	grid_resize.attach(spinbutton_after, 1, 2, 1, 1);
 
 	if ( ! fixed_start )
-		before_value = spinbutton_before .get_value() ;
+		before_value = m_spinbutton_before.get_value();
 
 	//connect signalhandlers of the spinbuttons
 	if ( ! fixed_start )
-		before_change_connection = spinbutton_before .signal_value_changed() .connect(
+		before_change_connection = m_spinbutton_before.signal_value_changed().connect(
 			sigc::bind<SPINBUTTON>( 
 				sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), BEFORE ) ) ;
 	else
@@ -193,8 +194,9 @@ void Dialog_Base_Partition::prepare_new_partition()
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
-	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
-		m_new_partition->sector_start = START + Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / m_new_partition->sector_size);
+	if (ORIG_BEFORE != m_spinbutton_before.get_value_as_int())
+		m_new_partition->sector_start = START + Sector(m_spinbutton_before.get_value_as_int()) *
+		                                        (MEBIBYTE / m_new_partition->sector_size);
 
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
 		m_new_partition->sector_end =
@@ -249,11 +251,11 @@ void Dialog_Base_Partition::prepare_new_partition()
 			break;
 	}
 
-	m_new_partition->free_space_before =   Sector(spinbutton_before.get_value_as_int())
+	m_new_partition->free_space_before =   Sector(m_spinbutton_before.get_value_as_int())
 	                                     * (MEBIBYTE / m_new_partition->sector_size);
 
 	// If the original before value has not changed, then set indicator to keep start sector unchanged.
-	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
+	if (ORIG_BEFORE == m_spinbutton_before.get_value_as_int())
 		m_new_partition->strict_start = true;
 
 	snap_to_alignment(m_device, *m_new_partition);
@@ -526,19 +528,22 @@ int Dialog_Base_Partition::MB_Needed_for_Boot_Record( const Partition & partitio
 		return 0 ;
 }
 
+
 void Dialog_Base_Partition::on_signal_move( int x_start, int x_end )
 {  
 	GRIP = true ;
 
-	spinbutton_before .set_value( x_start * MB_PER_PIXEL ) ;
+	m_spinbutton_before.set_value(x_start * MB_PER_PIXEL);
 
 	if ( x_end == 500 )
 	{
 		spinbutton_after .set_value( 0 ) ;
-		spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value() ) ;
+		m_spinbutton_before.set_value(TOTAL_MB - spinbutton_size.get_value());
 	}
 	else
-		spinbutton_after .set_value( TOTAL_MB - spinbutton_before .get_value() - spinbutton_size .get_value() ) ;
+	{
+		spinbutton_after.set_value(TOTAL_MB - m_spinbutton_before.get_value() - spinbutton_size.get_value());
+	}
 
 	update_button_resize_move_sensitivity();
 
@@ -549,10 +554,10 @@ void Dialog_Base_Partition::on_signal_move( int x_start, int x_end )
 void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resizer_Base::ArrowType arrow )
 {  
 	GRIP = true ;
-		
+
 	spinbutton_size .set_value( ( x_end - x_start ) * MB_PER_PIXEL ) ;
-	
-	before_value = fixed_start ? MIN_SPACE_BEFORE_MB : spinbutton_before .get_value() ;
+
+	before_value = fixed_start ? MIN_SPACE_BEFORE_MB : m_spinbutton_before.get_value();
 
 	if ( arrow == Frame_Resizer_Base::ARROW_RIGHT ) //don't touch freespace before, leave it as it is
 	{
@@ -565,7 +570,9 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 			spinbutton_after .set_value( TOTAL_MB - before_value - spinbutton_size .get_value() ) ;
 	}
 	else if ( arrow == Frame_Resizer_Base::ARROW_LEFT ) //don't touch freespace after, leave it as it is
-		spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() ) ;
+	{
+		m_spinbutton_before.set_value(TOTAL_MB - spinbutton_size.get_value() - spinbutton_after.get_value());
+	}
 
 	update_button_resize_move_sensitivity();
 
@@ -579,8 +586,8 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 
 	if ( ! GRIP )
 	{
-		before_value = fixed_start ? MIN_SPACE_BEFORE_MB : spinbutton_before .get_value() ;
-			
+		before_value = fixed_start ? MIN_SPACE_BEFORE_MB : m_spinbutton_before.get_value();
+
 		//Balance the spinbuttons
 		switch ( spinbutton )
 		{
@@ -589,26 +596,24 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 				spinbutton_size .set_value( TOTAL_MB - before_value - spinbutton_after .get_value() ) ;
 							
 				break ;
-			case SIZE	:
+			case SIZE:
 				spinbutton_after .set_value( TOTAL_MB - before_value - spinbutton_size .get_value() );
 				if ( ! fixed_start )
-					spinbutton_before .set_value( 
+					m_spinbutton_before.set_value(
 						TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() );
-				
 				break;
-			case AFTER	:
+			case AFTER:
 				if ( ! fixed_start )
-					spinbutton_before .set_value( 
+					m_spinbutton_before.set_value(
 						TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() );
-			
+
 				spinbutton_size .set_value( TOTAL_MB - before_value - spinbutton_after .get_value() ) ;
-				
 				break;
 		}
-		
+
 		//And apply the changes to the visual view...
 		if ( ! fixed_start )
-			m_frame_resizer_base->set_x_start(Utils::round(spinbutton_before.get_value() / MB_PER_PIXEL));
+			m_frame_resizer_base->set_x_start(Utils::round(m_spinbutton_before.get_value() / MB_PER_PIXEL));
 
 		m_frame_resizer_base->set_x_end(500 - Utils::round(spinbutton_after.get_value() / MB_PER_PIXEL));
 
@@ -622,7 +627,7 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 void Dialog_Base_Partition::update_button_resize_move_sensitivity()
 {
 	button_resize_move .set_sensitive(
-		ORIG_BEFORE != spinbutton_before .get_value_as_int()	||
+		ORIG_BEFORE != m_spinbutton_before.get_value_as_int() ||
 		ORIG_SIZE   != spinbutton_size .get_value_as_int()	|| 
 		ORIG_AFTER  != spinbutton_after .get_value_as_int() ) ; 
 }

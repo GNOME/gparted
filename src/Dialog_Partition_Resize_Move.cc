@@ -70,10 +70,10 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 	m_frame_resizer_base->set_rgb_partition_color(partition_color);
 
 	//store the original values
-	ORIG_BEFORE 	= spinbutton_before .get_value_as_int() ;
+	ORIG_BEFORE = m_spinbutton_before.get_value_as_int();
 	ORIG_SIZE	= spinbutton_size .get_value_as_int() ;
 	ORIG_AFTER	= spinbutton_after .get_value_as_int() ;
-	
+
 	GRIP = false ;
 	
 	Set_Confirm_Button( RESIZE_MOVE ) ;	
@@ -111,7 +111,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 		set_title(Glib::ustring::compose(_("Resize %1"), m_new_partition->get_path()));
 		this ->fixed_start = true;
 		m_frame_resizer_base->set_fixed_start(true);
-		spinbutton_before .set_sensitive( false ) ;
+		m_spinbutton_before.set_sensitive(false);
 	}
 
 	//calculate total size in MiB's of previous, current and next partition
@@ -204,12 +204,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	else
 		fs_limits.max_size = m_new_partition->get_byte_length();
 
-	//set values of spinbutton_before
+	// Set values of m_spinbutton_before
 	if ( ! fixed_start )
 	{
-		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
-		                             TOTAL_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
-		spinbutton_before .set_value(
+		m_spinbutton_before.set_range(MIN_SPACE_BEFORE_MB,
+		                              TOTAL_MB - ceil(fs_limits.min_size / double(MEBIBYTE)));
+		m_spinbutton_before.set_value(
 			Utils::round(Utils::sector_to_unit(previous, m_new_partition->sector_size, UNIT_MIB)));
 	}
 
@@ -327,19 +327,19 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 		set_used_start( Utils::round( (first - START) / ( total_length / 500.00 ) ) ) ;
 	m_frame_resizer_base->set_used(Utils::round(used / (total_length / 500.00)));
 
-	//set values of spinbutton_before (we assume there is no fixed start.)
+	// Set values of m_spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
-		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
-		                             TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs_limits.min_size /
-		                                                                    double(MEBIBYTE) ) );
+		m_spinbutton_before.set_range(MIN_SPACE_BEFORE_MB,
+		                              TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil(fs_limits.min_size /
+		                                                                    double(MEBIBYTE)));
 	else
-		spinbutton_before.set_range(MIN_SPACE_BEFORE_MB,
-		                            Utils::round(Utils::sector_to_unit(first - START,
-		                                                               m_new_partition->sector_size,
-		                                                               UNIT_MIB)));
+		m_spinbutton_before.set_range(MIN_SPACE_BEFORE_MB,
+		                              Utils::round(Utils::sector_to_unit(first - START,
+		                                                                 m_new_partition->sector_size,
+		                                                                 UNIT_MIB)));
 
-	spinbutton_before.set_value(Utils::round(Utils::sector_to_unit(previous,
-	                                                               m_new_partition->sector_size, UNIT_MIB)));
+	m_spinbutton_before.set_value(Utils::round(Utils::sector_to_unit(previous,
+	                                                                 m_new_partition->sector_size, UNIT_MIB)));
 
 	//set values of spinbutton_size
 	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
