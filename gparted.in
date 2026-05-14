@@ -122,18 +122,13 @@ if test "x`id -u`" != "x0"; then
 fi
 
 #
-#  Search PATH to determine if systemctl program can be found
-#  and if appropriate daemon is running.
+#  Determine if systemctl command can be found and appropriate daemon is
+#  running.
 #
 HAVE_SYSTEMCTL=no
-for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
-	if test -x "$k/systemctl"; then
-		if pidof systemd 1> /dev/null; then
-			HAVE_SYSTEMCTL=yes
-			break
-		fi
-	fi
-done
+if command -v systemctl 1> /dev/null 2>&1 && pidof systemd 1> /dev/null; then
+	HAVE_SYSTEMCTL=yes
+fi
 
 #
 #  Check if udisks2-inhibit exists in a known location
@@ -152,18 +147,13 @@ for k in /usr/libexec/udisks2/udisks2-inhibit \
 done
 
 #
-#  Search PATH to determine if udisks program can be found
-#  and if appropriate daemon is running.
+#  Determine if udisks command can be found and appropriate daemon is
+#  running.
 #
 HAVE_UDISKS=no
-for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
-	if test -x "$k/udisks"; then
-		if pidof udisks-daemon 1> /dev/null; then
-			HAVE_UDISKS=yes
-			break
-		fi
-	fi
-done
+if command -v udisks 1> /dev/null 2>&1 && pidof udisks-daemon 1> /dev/null; then
+	HAVE_UDISKS=yes
+fi
 
 #
 #  Use systemctl to prevent automount by masking currently unmasked mount points
