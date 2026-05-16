@@ -1524,6 +1524,13 @@ void Win_GParted::open_operationslist()
 	{
 		m_operationslist_open = true;
 		hbox_operations .show() ;
+		// If the window was resized (e.g. maximized) while hbox_operations was
+		// hidden, vpaned_main skipped allocating it.  Showing it again does not
+		// change the paned's own allocation, so queue_resize() would not trigger
+		// child re-layout -- hbox_operations would keep its stale pre-resize
+		// allocation and never get mapped.  check_resize() forces the paned to
+		// redistribute space among its now-visible children.
+		vpaned_main.check_resize();
 
 		for ( int t = vpaned_main .get_height() ; t > ( vpaned_main .get_height() - 100 ) ; t -= 5 )
 		{
