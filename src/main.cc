@@ -30,7 +30,10 @@ int main( int argc, char *argv[] )
 
 	Gtk::Main kit( argc, argv ) ;
 
-	//Set WM_CLASS X Window property for correct naming under GNOME Shell
+	// Match the gparted.desktop filename so Gtk finds and provides the localised name
+	// and correct icon to the Wayland compositor.
+	Glib::set_prgname("gparted");
+	// Set WM_CLASS X Window property for correct naming on X11.
 	gdk_set_program_class( "GParted" ) ;
 
 	//i18n
