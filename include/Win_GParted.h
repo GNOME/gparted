@@ -305,7 +305,9 @@ private:
 
 	//usefull variables which are used by many different functions...
 	unsigned short m_new_count           = 1;  // Number of the next composed new partition, 1 upwards
-	bool           m_operationslist_open = true;
+	bool           m_operationslist_open = false;  // Must match the unchecked default of the
+	                                               // View > Pending Operations menu item, otherwise
+	                                               // open_operationslist() early-exits on first use.
 
 	GParted_Core gparted_core ;
 	std::vector<Gtk::Label *> device_info ;
