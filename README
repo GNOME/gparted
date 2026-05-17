@@ -233,93 +233,61 @@ src      - contains C++ source code
 
 DISTRIBUTION NOTES
 ------------------
-GParted uses GNU libparted to detect and manipulate devices and
-partition tables.  The blkid command is also required to detect those
-file systems which libparted doesn't detect.  (The blkid command should
-be considered a mandatory requirement).
+GParted has the following dependencies.
 
-GParted also queries and manipulates the file systems within those
-devices and partitions.  When available, it uses each file system's
-specific commands.  The following optional file system specific packages
-provide this support:
+Mandatory dependencies:
+   GNU parted (library) - Detect and manipulate devices and partition
+                          tables.  Detect file systems.
+   blkid      (command) - Detect and query file systems and software
+                          storage components.
+   pidof      (command)
 
-   bcachefs-tools
-   btrfs-progs / btrfs-tools
-   e2fsprogs
-   exfatprogs
-   f2fs-tools
-   dosfstools
-   mtools          - required to read and write FAT16/32 volume labels
-                     and UUIDs
-   hfsutils
-   hfsprogs
-   jfsutils
-   nilfs-utils / nilfs-tools
-   ntfs-3g / ntfsprogs
-   reiser4progs
-   reiserfsprogs / reiserfs-utils / reiserfs
-   udftools
-   util-linux      - required to create and check MINIX file systems
-   xfsprogs, xfsdump
+Mandatory dependency on one of the following commands in order to launch
+the GParted application as root (also see configuration option
+--with-gksuprogs discussion above):
+   pkexec  (command)
+   gksudo  (command)
+   gksu    (command)
+   kdesudo (command)
+   xdg-su  (command)
+   run0    (command)
 
+Strongly recommended dependencies:
+   udevadm (command) - Wait for udev rule execution and query udev
+                       device properties.
+   dmsetup (command) - Administrate device mapper devices.
 
-For dmraid support, the following packages are required:
+Dependencies needed to support specific software storage components:
+   mdadm      (command) - Query SWRaid (Linux Software RAID).
+   lvm        (command) - Administrate LVM2 (Logical Volume Manager).
+   cryptsetup (command) - Administrate LUKS encrypted volumes.
+   dmraid     (command) - Administrate DMRaid (Device Mapper RAID).
 
-   dmsetup         - removes /dev/mapper entries
-   dmraid          - lists dmraid devices and creates /dev/mapper
-                     entries
+Dependencies needed to support specific file systems:
+   bcachefs-tools (package) - Bcachefs
+   btrfs-progs    (package) - Btrfs
+   e2fsprogs      (package) - Ext2, Ext3, Ext4
+   exfatprogs     (package) - exFAT
+   f2fs-tools     (package) - F2FS
+   dosfstools     (package) - FAT16/32
+   mtools         (package) - FAT16/32
+   hfsutils       (package) - HFS
+   hfsprogs       (package) - HFS+
+   jfsutils       (package) - JFS
+   nilfs-utils    (package) - NILFS2
+   ntfs-3g        (package) - NTFS
+   ntfsprogs      (package) - NTFS
+   reiser4progs   (package) - Reiser4
+   reiserfsprogs  (package) - ReiserFS
+   udftools       (package) - UDF
+   util-linux     (package) - Linux swap, Minix
+   xfsprogs       (package) - XFS
+   xfsdump        (package) - XFS
 
-For GNU/Linux distribution dmraid support, the following are required:
-   - kernel built with Device Mapping and Mirroring built.  From
-     menuconfig, it is under Device Drivers -> <something> (RAID & LVM).
-   - dmraid drive arrays activated on boot (e.g., dmraid -ay).
-
-
-For LVM2 Physical Volume support the following command is required:
-   lvm             - LVM2 administration tool
-And device-mapper support in the kernel.
-
-
-For accurate detection and reporting of Linux Software RAID Arrays the
-following command is required:
-
-   mdadm           - SWRaid administration tool
-
-
-For LUKS support the following commands are required:
-   cryptsetup      - LUKS volume administration tool
-   dmsetup         - Device-mapper administration tool
-
-
-Several more commands are optionally used by GParted if found on the
-system.  These commands include:
-
-   blkid           - [mandatory requirement] used to detect file systems
-                     libparted doesn't, read UUIDs and volume labels
-   udisks          - used to prevent automounting of file systems
-   udisks2-inhibit - used to prevent automounting of file systems
-   pkexec          - used to acquire root privileges in gparted shell
-                     script wrapper, alternative list can be provided
-                     when gparted source is configured
-   gksudo          - used to acquire root privileges in gparted shell
-                     script wrapper, alternative list can be provided
-                     when gparted source is configured
-   gksu            - used to acquire root privileges in gparted shell
-                     script wrapper, alternative list can be provided
-                     when gparted source is configured
-   kdesudo         - used to acquire root privileges in gparted shell
-                     script wrapper, alternative list can be provided
-                     when gparted source is configured
-   xdg-su          - used to acquire root privileges in gparted shell
-                     script wrapper, alternative list can be provided
-                     when gparted source is configured
-   run0            - used to acquire root privileges in gparted shell
-                     script wrapper, alternative list can be provided
-                     when gparted source is configured
-   udevadm         - used to wait for udev rule execution and querying
-                     udev device properties
-   yelp            - used to display help manual
-                     (requires gvfs to be able to launch yelp)
-   xhost           - used to grant root access to the X11 server, only
-                     when configured to do so
+Other optional components:
+   udisks2-inhibit (command) - Prevent file system automounting.
+   udisks          (command) - Prevent file system automounting.
+   yelp            (command) - Display help manual.
+   xhost           (command) - Grant root access to the X11 server (only
+                               when configured to do so).
 
