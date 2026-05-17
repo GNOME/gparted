@@ -16,7 +16,7 @@ stages:
     # Extra packages only needed during the test stage.
     - apk add btrfs-progs btrfs-progs-extra e2fsprogs e2fsprogs-extra exfatprogs
               dosfstools mtools f2fs-tools jfsutils cryptsetup lvm2 udftools
-              xfsprogs xfsprogs-extra xvfb-run kmod gzip eudev
+              xfsprogs xfsprogs-extra xvfb-run kmod gzip tar eudev
 
 .rocky_image_template: &rocky_image_definition
   # Use official Rocky Linux image https://hub.docker.com/_/rockylinux/.
