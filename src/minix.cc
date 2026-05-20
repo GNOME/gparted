@@ -14,13 +14,16 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#include "minix.h"
+
 #include "FileSystem.h"
 #include "OperationDetail.h"
 #include "Partition.h"
 #include "Utils.h"
-#include "minix.h"
 
-#include <glibmm.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/shell.h>
 
 
 namespace GParted
