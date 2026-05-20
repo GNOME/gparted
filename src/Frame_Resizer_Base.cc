@@ -50,8 +50,9 @@ Frame_Resizer_Base::Frame_Resizer_Base()
 	color_background.set("darkgrey");
 	color_arrow_rectangle.set("lightgrey");
 
-	cursor_resize = Gdk::Cursor::create(Gdk::SB_H_DOUBLE_ARROW);
-	cursor_move   = Gdk::Cursor::create(Gdk::FLEUR);
+	cursor_resize = Gdk::Cursor::create(get_display(), "ew-resize");
+	cursor_move   = Gdk::Cursor::create(get_display(), "fleur");  // FIXME: Replace with "all-resize"
+	                                                              // when available on all distributions.
 
 	set_size_limits( 0, 500 ) ;
 

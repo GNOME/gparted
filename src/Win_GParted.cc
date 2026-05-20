@@ -144,7 +144,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	statusbar.set_homogeneous();
 	vbox_main .pack_start( statusbar, Gtk::PACK_SHRINK );
 
-	m_cursor_wait = Gdk::Cursor::create(Gdk::WATCH);
+	m_cursor_wait = Gdk::Cursor::create(get_display(), "wait");
 
 	this ->show_all_children();
 	

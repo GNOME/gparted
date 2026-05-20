@@ -116,7 +116,7 @@ void DialogManageFlags::load_treeview()
 
 void DialogManageFlags::on_flag_toggled( const Glib::ustring & path ) 
 {
-	get_window()->set_cursor(Gdk::Cursor::create(Gdk::WATCH));
+	get_window()->set_cursor(Gdk::Cursor::create(get_display(), "wait"));
 	set_sensitive( false ) ;
 	while ( Gtk::Main::events_pending() )
 		Gtk::Main::iteration() ;
