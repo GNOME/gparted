@@ -27,22 +27,22 @@ namespace GParted
 
 Frame_Resizer_Base::Frame_Resizer_Base()
 {
-	drawingarea .set_size_request( 500 + GRIPPER * 2 + BORDER *2, 50 );
+	m_drawingarea.set_size_request(500 + GRIPPER * 2 + BORDER * 2, 50);
 
-	drawingarea .signal_realize() .connect( 
+	m_drawingarea.signal_realize().connect(
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_realize) ) ;
-	drawingarea.signal_draw().connect(
+	m_drawingarea.signal_draw().connect(
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_draw));
-	drawingarea .signal_motion_notify_event() .connect( 
+	m_drawingarea.signal_motion_notify_event().connect(
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_mouse_motion) ) ;
-	drawingarea .signal_button_press_event() .connect( 
+	m_drawingarea.signal_button_press_event().connect(
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_button_press_event) ) ;
-	drawingarea .signal_button_release_event() .connect( 
+	m_drawingarea.signal_button_release_event().connect(
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_button_release_event) ) ;
-	drawingarea .signal_leave_notify_event() .connect( 
+	m_drawingarea.signal_leave_notify_event().connect(
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_leave_notify) ) ;
-		
-	this ->add( drawingarea ) ;
+
+	this->add(m_drawingarea);
 
 	color_used.set("#F8F8BA");
 	color_unused.set("white");
@@ -120,13 +120,15 @@ int Frame_Resizer_Base::get_x_end()
 	return X_END - GRIPPER - BORDER * 2 ;
 }
 
+
 void Frame_Resizer_Base::drawingarea_on_realize()
 {
-	drawingarea .add_events( Gdk::POINTER_MOTION_MASK );
-	drawingarea .add_events( Gdk::BUTTON_PRESS_MASK );
-	drawingarea .add_events( Gdk::BUTTON_RELEASE_MASK );
-	drawingarea .add_events( Gdk::LEAVE_NOTIFY_MASK );
+	m_drawingarea.add_events(Gdk::POINTER_MOTION_MASK);
+	m_drawingarea.add_events(Gdk::BUTTON_PRESS_MASK);
+	m_drawingarea.add_events(Gdk::BUTTON_RELEASE_MASK);
+	m_drawingarea.add_events(Gdk::LEAVE_NOTIFY_MASK);
 }
+
 
 bool Frame_Resizer_Base::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
@@ -284,25 +286,34 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		     ev ->x <= X_START &&
 		     ev ->y >= 5 &&
 		     ev ->y <= 45 )
-			drawingarea.get_parent_window()->set_cursor(cursor_resize);
+		{
+			m_drawingarea.get_parent_window()->set_cursor(cursor_resize);
+		}
 		//right grip
 		else if ( ev ->x >= X_END &&
 			  ev ->x <= X_END + GRIPPER &&
 			  ev ->y >= 5 && 
 			  ev ->y <= 45 )
-			drawingarea.get_parent_window()->set_cursor(cursor_resize);
+		{
+			m_drawingarea.get_parent_window()->set_cursor(cursor_resize);
+		}
 		//move grip
 		else if ( ! fixed_start && 
 			  ev ->x >= X_START && 
 			  ev ->x <= X_END )
-			drawingarea.get_parent_window()->set_cursor(cursor_move);
+		{
+			m_drawingarea.get_parent_window()->set_cursor(cursor_move);
+		}
 		//normal pointer 
-		else								
-			drawingarea .get_parent_window() ->set_cursor() ;		
+		else
+		{
+			m_drawingarea.get_parent_window()->set_cursor();
+		}
 	}
 
 	return true;
 }
+
 
 bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev ) 
 {
@@ -340,11 +351,12 @@ bool Frame_Resizer_Base::drawingarea_on_button_release_event( GdkEventButton *ev
 	return true;
 }
 
+
 bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 {
 	if ( ev ->mode != GDK_CROSSING_GRAB && ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE ) 
-		drawingarea .get_parent_window() ->set_cursor() ;	
-	
+		m_drawingarea.get_parent_window()->set_cursor();
+
 	return true;
 }
 
@@ -424,7 +436,7 @@ void Frame_Resizer_Base::draw_resize_grip(const Cairo::RefPtr<Cairo::Context>& c
 
 void Frame_Resizer_Base::redraw()
 {
-	drawingarea.queue_draw();
+	m_drawingarea.queue_draw();
 }
 
 

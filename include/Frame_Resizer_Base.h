@@ -85,7 +85,7 @@ protected:
 
 	void draw_resize_grip(const Cairo::RefPtr<Cairo::Context>& cr, ArrowType);
 
-	Gtk::DrawingArea drawingarea ;
+	Gtk::DrawingArea m_drawingarea;
 
 	Gdk::RGBA color_used;
 	Gdk::RGBA color_unused;
