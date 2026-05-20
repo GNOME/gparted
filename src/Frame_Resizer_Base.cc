@@ -59,10 +59,10 @@ Frame_Resizer_Base::Frame_Resizer_Base()
 	set_size_limits( 0, 500 ) ;
 
 	Gdk::Point p;
-	p .set_y( 15 ); 	arrow_points .push_back( p ) ;
-	p .set_y( 25 ); 	arrow_points .push_back( p ) ;
-	p .set_y( 35 ); 	arrow_points .push_back( p ) ;
-	
+	p.set_y(15);  m_arrow_points.push_back(p);
+	p.set_y(25);  m_arrow_points.push_back(p);
+	p.set_y(35);  m_arrow_points.push_back(p);
+
 	this ->show_all_children();
 }
 
@@ -411,15 +411,15 @@ void Frame_Resizer_Base::draw_resize_grip(const Cairo::RefPtr<Cairo::Context>& c
 {
 	if ( arrow_type == ARROW_LEFT )
 	{
-		arrow_points[ 0 ] .set_x( X_START ) ;
-		arrow_points[ 1 ] .set_x( X_START - GRIPPER ) ;
-		arrow_points[ 2 ] .set_x( X_START ) ;
+		m_arrow_points[0].set_x(X_START);
+		m_arrow_points[1].set_x(X_START - GRIPPER);
+		m_arrow_points[2].set_x(X_START);
 	}
 	else
 	{
-		arrow_points[ 0 ] .set_x( X_END )  ;
-		arrow_points[ 1 ] .set_x( X_END + GRIPPER ) ; 
-		arrow_points[ 2 ] .set_x( X_END )  ;
+		m_arrow_points[0].set_x(X_END);
+		m_arrow_points[1].set_x(X_END + GRIPPER);
+		m_arrow_points[2].set_x(X_END);
 	}
 
 	// Attach resize arrows to the partition
@@ -431,9 +431,9 @@ void Frame_Resizer_Base::draw_resize_grip(const Cairo::RefPtr<Cairo::Context>& c
 	cr->stroke();
 
 	Gdk::Cairo::set_source_rgba(cr, m_color_arrow);
-	cr->move_to(arrow_points[0].get_x(), arrow_points[0].get_y());
-	cr->line_to(arrow_points[1].get_x(), arrow_points[1].get_y());
-	cr->line_to(arrow_points[2].get_x(), arrow_points[2].get_y());
+	cr->move_to(m_arrow_points[0].get_x(), m_arrow_points[0].get_y());
+	cr->line_to(m_arrow_points[1].get_x(), m_arrow_points[1].get_y());
+	cr->line_to(m_arrow_points[2].get_x(), m_arrow_points[2].get_y());
 	cr->close_path();
 	cr->fill();
 }

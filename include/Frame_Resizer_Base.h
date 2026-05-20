@@ -94,7 +94,7 @@ protected:
 	Gdk::RGBA m_color_partition;
 	Gdk::RGBA m_color_arrow_rectangle;
 
-	std::vector<Gdk::Point> arrow_points;
+	std::vector<Gdk::Point> m_arrow_points;
 
 	Glib::RefPtr<Gdk::Cursor> cursor_resize;
 	Glib::RefPtr<Gdk::Cursor> cursor_move;
