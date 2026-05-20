@@ -52,9 +52,9 @@ Frame_Resizer_Base::Frame_Resizer_Base()
 
 	this->add(m_drawingarea);
 
-	cursor_resize = Gdk::Cursor::create(get_display(), "ew-resize");
-	cursor_move   = Gdk::Cursor::create(get_display(), "fleur");  // FIXME: Replace with "all-resize"
-	                                                              // when available on all distributions.
+	m_cursor_resize = Gdk::Cursor::create(get_display(), "ew-resize");
+	m_cursor_move   = Gdk::Cursor::create(get_display(), "fleur");  // FIXME: Replace with "all-resize"
+	                                                                // when available on all distributions.
 
 	set_size_limits( 0, 500 ) ;
 
@@ -292,7 +292,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		     ev ->y >= 5 &&
 		     ev ->y <= 45 )
 		{
-			m_drawingarea.get_parent_window()->set_cursor(cursor_resize);
+			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
 		//right grip
 		else if ( ev ->x >= X_END &&
@@ -300,14 +300,14 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			  ev ->y >= 5 && 
 			  ev ->y <= 45 )
 		{
-			m_drawingarea.get_parent_window()->set_cursor(cursor_resize);
+			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
 		//move grip
 		else if ( ! fixed_start && 
 			  ev ->x >= X_START && 
 			  ev ->x <= X_END )
 		{
-			m_drawingarea.get_parent_window()->set_cursor(cursor_move);
+			m_drawingarea.get_parent_window()->set_cursor(m_cursor_move);
 		}
 		//normal pointer 
 		else
