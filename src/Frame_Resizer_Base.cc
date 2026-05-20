@@ -99,10 +99,12 @@ void Frame_Resizer_Base::set_used( int used )
 	this ->USED = used ;
 }
 
+
 void Frame_Resizer_Base::set_fixed_start( bool fixed_start ) 
 {
-	this ->fixed_start = fixed_start ;
+	m_fixed_start = fixed_start;
 }
+
 
 void Frame_Resizer_Base::set_size_limits( int min_size, int max_size )
 {
@@ -286,11 +288,11 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{ 
 		//check if pointer is over a gripper
 		//left grip
-		if ( ! fixed_start &&
-		     ev ->x >= X_START - GRIPPER &&
-		     ev ->x <= X_START &&
-		     ev ->y >= 5 &&
-		     ev ->y <= 45 )
+		if (! m_fixed_start            &&
+		    ev->x >= X_START - GRIPPER &&
+		    ev->x <= X_START           &&
+		    ev->y >= 5                 &&
+		    ev->y <= 45                  )
 		{
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
@@ -303,9 +305,9 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
 		//move grip
-		else if ( ! fixed_start && 
-			  ev ->x >= X_START && 
-			  ev ->x <= X_END )
+		else if (! m_fixed_start  &&
+			 ev->x >= X_START &&
+			 ev->x <= X_END     )
 		{
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_move);
 		}
@@ -325,29 +327,34 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 	GRIP_LEFT = GRIP_RIGHT = GRIP_MOVE = false;
 	
 	//left grip
-	if ( ! fixed_start && 
-	     ev ->x >= X_START - GRIPPER &&
-	     ev ->x <= X_START && 
-	     ev ->y >= 5 && 
-	     ev ->y <= 45 ) 
+	if (! m_fixed_start            &&
+	    ev->x >= X_START - GRIPPER &&
+	    ev->x <= X_START           &&
+	    ev->y >= 5                 &&
+	    ev->y <= 45                  )
+	{
 		GRIP_LEFT = true ;
+	}
 	//right grip
 	else if ( ev ->x >= X_END && 
 		  ev ->x <= X_END + GRIPPER && 
 		  ev ->y >= 5 && 
 		  ev ->y <= 45 ) 
+	{
 		GRIP_RIGHT = true ;
+	}
 	//move grip
-	else if ( ! fixed_start && 
-		  ev ->x >= X_START && 
-		  ev ->x <= X_END )
+	else if (! m_fixed_start  &&
+		 ev->x >= X_START &&
+		 ev->x <= X_END     )
 	{
 		 GRIP_MOVE = true ;
 		 X_START_MOVE = static_cast<int>( ev ->x );
 	}
-	
+
 	return true;
 }
+
 
 bool Frame_Resizer_Base::drawingarea_on_button_release_event( GdkEventButton *ev ) 
 {
@@ -400,7 +407,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	cr->fill();
 
 	// Resize grips
-	if (!fixed_start)
+	if (! m_fixed_start)
 		draw_resize_grip(cr, ARROW_LEFT);
 
 	draw_resize_grip(cr, ARROW_RIGHT);

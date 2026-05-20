@@ -134,11 +134,11 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	else
 	{ 
 		//left grip
-		if ( ! fixed_start &&
-		     ev ->x >= X_START - GRIPPER &&
-		     ev ->x <= X_START &&
-		     ev ->y >= 5 &&
-		     ev ->y <= 45 ) 
+		if (! m_fixed_start            &&
+		    ev->x >= X_START - GRIPPER &&
+		    ev->x <= X_START           &&
+		    ev->y >= 5                 &&
+		    ev->y <= 45                  )
 		{
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
