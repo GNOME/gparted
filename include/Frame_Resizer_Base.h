@@ -87,12 +87,12 @@ protected:
 
 	Gtk::DrawingArea m_drawingarea;
 
-	Gdk::RGBA color_used;
-	Gdk::RGBA color_unused;
-	Gdk::RGBA color_arrow;
-	Gdk::RGBA color_background;
-	Gdk::RGBA color_partition;
-	Gdk::RGBA color_arrow_rectangle;
+	Gdk::RGBA m_color_used;
+	Gdk::RGBA m_color_unused;
+	Gdk::RGBA m_color_arrow;
+	Gdk::RGBA m_color_background;
+	Gdk::RGBA m_color_partition;
+	Gdk::RGBA m_color_arrow_rectangle;
 
 	std::vector<Gdk::Point> arrow_points;
 
