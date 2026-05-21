@@ -110,41 +110,41 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	/* TO TRANSLATORS: used as label for a list of choices.  Create as: <combo box with choices> */
 	Gtk::Label *label_type = Utils::mk_label(Glib::ustring(_("Create as:")) + "\t");
 	m_grid_create.attach(*label_type, 0, 0, 1, 1);
-	combo_type.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_type->get_accessible());
+	m_combo_type.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_type->get_accessible());
 
 	// Fill partition type combo.
-	combo_type.items().push_back(_("Primary Partition"));
-	combo_type.items().push_back(_("Logical Partition"));
-	combo_type.items().push_back(_("Extended Partition"));
+	m_combo_type.items().push_back(_("Primary Partition"));
+	m_combo_type.items().push_back(_("Logical Partition"));
+	m_combo_type.items().push_back(_("Extended Partition"));
 
 	//determine which PartitionType is allowed
 	if ( device.disktype != "msdos" && device.disktype != "dvh" )
 	{
-		combo_type.items()[1].set_sensitive(false);
-		combo_type.items()[2].set_sensitive(false);
-		combo_type.set_active(0);
+		m_combo_type.items()[1].set_sensitive(false);
+		m_combo_type.items()[2].set_sensitive(false);
+		m_combo_type.set_active(0);
 	}
 	else if ( selected_partition.inside_extended )
 	{
-		combo_type.items()[0].set_sensitive(false);
-		combo_type.items()[2].set_sensitive(false);
-		combo_type.set_active(1);
+		m_combo_type.items()[0].set_sensitive(false);
+		m_combo_type.items()[2].set_sensitive(false);
+		m_combo_type.set_active(1);
 	}
 	else
 	{
-		combo_type.items()[1].set_sensitive(false);
+		m_combo_type.items()[1].set_sensitive(false);
 		if ( any_extended )
-			combo_type.items()[2].set_sensitive(false);
-		combo_type.set_active(0);
+			m_combo_type.items()[2].set_sensitive(false);
+		m_combo_type.set_active(0);
 	}
 
 	//160 is the ideal width for this table column.
 	//(when one widget is set, the rest wil take this width as well)
-	combo_type.set_size_request(160, -1);
+	m_combo_type.set_size_request(160, -1);
 
-	combo_type.signal_changed().connect(
+	m_combo_type.signal_changed().connect(
 		sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::combobox_changed), true));
-	m_grid_create.attach(combo_type, 1, 0, 1, 1);
+	m_grid_create.attach(m_combo_type, 1, 0, 1, 1);
 
 	// Partition name
 	Gtk::Label *partition_name_label = Utils::mk_label(Glib::ustring(_("Partition name:")) + "\t");
@@ -223,7 +223,7 @@ const Partition& Dialog_Partition_New::get_new_partition()
 	PartitionType part_type ;
 	Sector new_start, new_end;
 
-	switch (combo_type.get_active_row_number())
+	switch (m_combo_type.get_active_row_number())
 	{
 		case 0:	  part_type = TYPE_PRIMARY;   break;
 		case 1:	  part_type = TYPE_LOGICAL;   break;
@@ -353,17 +353,17 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 {
 	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
-	// combo_type
+	// Partition type (m_combo_type) changed
 	if (combo_type_changed)
 	{
-		if (combo_type.get_active_row_number() == TYPE_EXTENDED      &&
+		if (m_combo_type.get_active_row_number() == TYPE_EXTENDED      &&
 		    combo_filesystem.items().size()    <  FILESYSTEMS.size()   )
 		{
 			combo_filesystem.items().push_back(Utils::get_filesystem_string(FS_EXTENDED));
 			combo_filesystem.set_active(combo_filesystem.items().back());
 			combo_filesystem.set_sensitive(false);
 		}
-		else if (combo_type.get_active_row_number() != TYPE_EXTENDED      &&
+		else if (m_combo_type.get_active_row_number() != TYPE_EXTENDED      &&
 		         combo_filesystem.items().size()    == FILESYSTEMS.size()   )
 		{
 			combo_filesystem.set_active(m_default_fs);
@@ -407,7 +407,7 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 
 	//set fitting resizer colors
 	// Background color
-	Gdk::RGBA color_temp(Utils::get_color((combo_type.get_active_row_number() == 2)
+	Gdk::RGBA color_temp(Utils::get_color((m_combo_type.get_active_row_number() == 2)
 	                                      ? FS_UNALLOCATED : FS_UNUSED));
 	m_frame_resizer_base->override_default_rgb_unused_color(color_temp);
 

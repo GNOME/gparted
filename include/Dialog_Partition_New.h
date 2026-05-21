@@ -59,7 +59,7 @@ private:
 	Byte_Value get_filesystem_min_limit( FSType fstype );
 
 	Gtk::Grid      m_grid_create;
-	OptionComboBox combo_type;
+	OptionComboBox m_combo_type;
 	OptionComboBox combo_filesystem;
 	Gtk::Entry partition_name_entry;
 	Gtk::Entry filesystem_label_entry;
