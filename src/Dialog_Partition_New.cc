@@ -149,14 +149,14 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	// Partition name
 	Gtk::Label *partition_name_label = Utils::mk_label(Glib::ustring(_("Partition name:")) + "\t");
 	m_grid_create.attach(*partition_name_label, 0, 1, 1, 1);
-	partition_name_entry.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                        partition_name_label->get_accessible());
+	m_partition_name_entry.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                          partition_name_label->get_accessible());
 	// Initialise text entry box
-	partition_name_entry.set_width_chars( 20 );
-	partition_name_entry.set_sensitive( device.partition_naming_supported() );
-	partition_name_entry.set_max_length( device.get_max_partition_name_length() );
+	m_partition_name_entry.set_width_chars(20);
+	m_partition_name_entry.set_sensitive(device.partition_naming_supported());
+	m_partition_name_entry.set_max_length(device.get_max_partition_name_length());
 	// Add entry box to table
-	m_grid_create.attach(partition_name_entry, 1, 1, 1, 1);
+	m_grid_create.attach(m_partition_name_entry, 1, 1, 1, 1);
 
 	// File systems to choose from
 	Gtk::Label *label_filesystem = Utils::mk_label(Glib::ustring(_("File system:")) + "\t");
@@ -272,7 +272,7 @@ const Partition& Dialog_Partition_New::get_new_partition()
 	m_new_partition->status = STAT_NEW;
 
 	// Retrieve partition name
-	m_new_partition->name = Utils::trim(partition_name_entry.get_text());
+	m_new_partition->name = Utils::trim(m_partition_name_entry.get_text());
 
 	//Retrieve Label info
 	m_new_partition->set_filesystem_label(Utils::trim(filesystem_label_entry.get_text()));

@@ -61,7 +61,7 @@ private:
 	Gtk::Grid      m_grid_create;
 	OptionComboBox m_combo_type;
 	OptionComboBox m_combo_filesystem;
-	Gtk::Entry partition_name_entry;
+	Gtk::Entry     m_partition_name_entry;
 	Gtk::Entry filesystem_label_entry;
 
 	std::vector<FS> FILESYSTEMS ;
