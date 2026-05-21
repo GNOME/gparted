@@ -103,13 +103,13 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
 	// Add table with selection menu's...
-	grid_create.set_border_width(10);
-	grid_create.set_row_spacing(5);
-	hbox_main.pack_start(grid_create, Gtk::PACK_SHRINK);
+	m_grid_create.set_border_width(10);
+	m_grid_create.set_row_spacing(5);
+	hbox_main.pack_start(m_grid_create, Gtk::PACK_SHRINK);
 
 	/* TO TRANSLATORS: used as label for a list of choices.  Create as: <combo box with choices> */
 	Gtk::Label *label_type = Utils::mk_label(Glib::ustring(_("Create as:")) + "\t");
-	grid_create.attach(*label_type, 0, 0, 1, 1);
+	m_grid_create.attach(*label_type, 0, 0, 1, 1);
 	combo_type.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY, label_type->get_accessible());
 
 	// Fill partition type combo.
@@ -144,11 +144,11 @@ void Dialog_Partition_New::set_data(const Device&          device,
 
 	combo_type.signal_changed().connect(
 		sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::combobox_changed), true));
-	grid_create.attach(combo_type, 1, 0, 1, 1);
+	m_grid_create.attach(combo_type, 1, 0, 1, 1);
 
 	// Partition name
 	Gtk::Label *partition_name_label = Utils::mk_label(Glib::ustring(_("Partition name:")) + "\t");
-	grid_create.attach(*partition_name_label, 0, 1, 1, 1);
+	m_grid_create.attach(*partition_name_label, 0, 1, 1, 1);
 	partition_name_entry.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                        partition_name_label->get_accessible());
 	// Initialise text entry box
@@ -156,11 +156,11 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	partition_name_entry.set_sensitive( device.partition_naming_supported() );
 	partition_name_entry.set_max_length( device.get_max_partition_name_length() );
 	// Add entry box to table
-	grid_create.attach(partition_name_entry, 1, 1, 1, 1);
+	m_grid_create.attach(partition_name_entry, 1, 1, 1, 1);
 
 	// File systems to choose from
 	Gtk::Label *label_filesystem = Utils::mk_label(Glib::ustring(_("File system:")) + "\t");
-	grid_create.attach(*label_filesystem, 0, 1, 2, 3);
+	m_grid_create.attach(*label_filesystem, 0, 1, 2, 3);
 	combo_filesystem.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                    label_filesystem->get_accessible());
 
@@ -168,20 +168,20 @@ void Dialog_Partition_New::set_data(const Device&          device,
 
 	combo_filesystem.signal_changed().connect(
 		sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::combobox_changed), false));
-	grid_create.attach(combo_filesystem, 1, 2, 1, 1);
+	m_grid_create.attach(combo_filesystem, 1, 2, 1, 1);
 
 	// Label
 	Gtk::Label *filesystem_label_label = Utils::mk_label(_("Label:"));
-	grid_create.attach(*filesystem_label_label, 0, 3, 1, 1);
+	m_grid_create.attach(*filesystem_label_label, 0, 3, 1, 1);
 	filesystem_label_entry.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                          filesystem_label_label->get_accessible());
 	//Create Text entry box
 	filesystem_label_entry.set_width_chars( 20 );
 	// Add entry box to table
-	grid_create.attach(filesystem_label_entry, 1, 3, 1, 1);
+	m_grid_create.attach(filesystem_label_entry, 1, 3, 1, 1);
 
-	// Set vexpand on all grid_create child widgets
-	std::vector<Gtk::Widget*> children = grid_create.get_children();
+	// Set vexpand on all m_grid_create child widgets
+	std::vector<Gtk::Widget*> children = m_grid_create.get_children();
 	for (std::vector<Gtk::Widget*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->set_vexpand();
 
