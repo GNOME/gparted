@@ -60,7 +60,7 @@ private:
 
 	Gtk::Grid      m_grid_create;
 	OptionComboBox m_combo_type;
-	OptionComboBox combo_filesystem;
+	OptionComboBox m_combo_filesystem;
 	Gtk::Entry partition_name_entry;
 	Gtk::Entry filesystem_label_entry;
 

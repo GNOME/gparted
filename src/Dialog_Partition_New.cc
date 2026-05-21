@@ -161,14 +161,14 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	// File systems to choose from
 	Gtk::Label *label_filesystem = Utils::mk_label(Glib::ustring(_("File system:")) + "\t");
 	m_grid_create.attach(*label_filesystem, 0, 1, 2, 3);
-	combo_filesystem.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                    label_filesystem->get_accessible());
+	m_combo_filesystem.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                      label_filesystem->get_accessible());
 
 	build_filesystems_combo(device.readonly);
 
-	combo_filesystem.signal_changed().connect(
+	m_combo_filesystem.signal_changed().connect(
 		sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::combobox_changed), false));
-	m_grid_create.attach(combo_filesystem, 1, 2, 1, 1);
+	m_grid_create.attach(m_combo_filesystem, 1, 2, 1, 1);
 
 	// Label
 	Gtk::Label *filesystem_label_label = Utils::mk_label(_("Label:"));
@@ -194,10 +194,10 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 
 	// Set default creatable file system.
-	// (As the change signal for combo_filesystem has already been connected,
+	// (As the change signal for m_combo_filesystem has already been connected,
 	// combobox_changed(false) is automatically called by setting the active
 	// selection.  This is needed to initialise everything correctly).
-	combo_filesystem.set_active(m_default_fs);
+	m_combo_filesystem.set_active(m_default_fs);
 
 	//set spinbuttons initial values
 	m_spinbutton_after.set_value(0);
@@ -263,7 +263,7 @@ const Partition& Dialog_Partition_New::get_new_partition()
 	                     Glib::ustring::compose(_("New Partition #%1"), m_new_count),
 	                     m_new_count,
 	                     part_type,
-	                     FILESYSTEMS[combo_filesystem.get_active_row_number()].fstype,
+	                     FILESYSTEMS[m_combo_filesystem.get_active_row_number()].fstype,
 	                     new_start,
 	                     new_end,
 	                     sector_size,
@@ -357,25 +357,25 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 	if (combo_type_changed)
 	{
 		if (m_combo_type.get_active_row_number() == TYPE_EXTENDED      &&
-		    combo_filesystem.items().size()    <  FILESYSTEMS.size()   )
+		    m_combo_filesystem.items().size()    <  FILESYSTEMS.size()   )
 		{
-			combo_filesystem.items().push_back(Utils::get_filesystem_string(FS_EXTENDED));
-			combo_filesystem.set_active(combo_filesystem.items().back());
-			combo_filesystem.set_sensitive(false);
+			m_combo_filesystem.items().push_back(Utils::get_filesystem_string(FS_EXTENDED));
+			m_combo_filesystem.set_active(m_combo_filesystem.items().back());
+			m_combo_filesystem.set_sensitive(false);
 		}
 		else if (m_combo_type.get_active_row_number() != TYPE_EXTENDED      &&
-		         combo_filesystem.items().size()    == FILESYSTEMS.size()   )
+		         m_combo_filesystem.items().size()    == FILESYSTEMS.size()   )
 		{
-			combo_filesystem.set_active(m_default_fs);
-			combo_filesystem.items().erase(combo_filesystem.items().back());
-			combo_filesystem.set_sensitive(true);
+			m_combo_filesystem.set_active(m_default_fs);
+			m_combo_filesystem.items().erase(m_combo_filesystem.items().back());
+			m_combo_filesystem.set_sensitive(true);
 		}
 	}
 
-	// combo_filesystem and combo_alignment
+	// File system (m_combo_filesystem) and/or alignment (combo_alignment) changed
 	if (! combo_type_changed)
 	{
-		fs = FILESYSTEMS[combo_filesystem.get_active_row_number()];
+		fs = FILESYSTEMS[m_combo_filesystem.get_active_row_number()];
 		fs_limits = GParted_Core::get_filesystem_limits(fs.fstype, *m_new_partition);
 
 		if ( fs_limits.min_size < MEBIBYTE )
@@ -426,7 +426,7 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 {
 	g_assert(m_new_partition != nullptr);  // Bug: Not initialised by constructor calling set_data()
 
-	combo_filesystem.items().clear();
+	m_combo_filesystem.items().clear();
 
 	// Fill the file system combobox
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
@@ -436,16 +436,16 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 		if (FILESYSTEMS[t].fstype == FS_EXTENDED)
 			continue ;
 
-		combo_filesystem.items().push_back(Utils::get_filesystem_string(FILESYSTEMS[t].fstype));
+		m_combo_filesystem.items().push_back(Utils::get_filesystem_string(FILESYSTEMS[t].fstype));
 
 		if (FILESYSTEMS[t].fstype == FS_UNFORMATTED)
 		{
 			// Unformatted is always available
-			combo_filesystem.items().back().set_sensitive(true);
+			m_combo_filesystem.items().back().set_sensitive(true);
 		}
 		else
 		{
-			combo_filesystem.items().back().set_sensitive(
+			m_combo_filesystem.items().back().set_sensitive(
 				! only_unformatted                                                                    &&
 				FILESYSTEMS[t].create                                                                 &&
 				m_new_partition->get_byte_length() >= get_filesystem_min_limit(FILESYSTEMS[t].fstype)   );
@@ -455,10 +455,10 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 		//(Depends on ordering in FILESYSTEMS for preference)
 		if ((FILESYSTEMS[t].fstype == FS_EXT2 ||
 		     FILESYSTEMS[t].fstype == FS_EXT3 ||
-		     FILESYSTEMS[t].fstype == FS_EXT4   )      &&
-		    combo_filesystem.items().back().sensitive()  )
+		     FILESYSTEMS[t].fstype == FS_EXT4   )         &&
+		    m_combo_filesystem.items().back().sensitive()   )
 		{
-			m_default_fs = combo_filesystem.items().size() - 1;
+			m_default_fs = m_combo_filesystem.items().size() - 1;
 		}
 	}
 
@@ -466,8 +466,8 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 	{
 		// Find and set first enabled file system as last choice default.  Note
 		// that unformatted will always be available.
-		for (unsigned int t = 0; t < combo_filesystem.items().size(); t++)
-			if (combo_filesystem.items()[t].sensitive())
+		for (unsigned int t = 0; t < m_combo_filesystem.items().size(); t++)
+			if (m_combo_filesystem.items()[t].sensitive())
 			{
 				m_default_fs = t;
 				break ;
