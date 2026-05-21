@@ -62,7 +62,7 @@ private:
 	OptionComboBox m_combo_type;
 	OptionComboBox m_combo_filesystem;
 	Gtk::Entry     m_partition_name_entry;
-	Gtk::Entry filesystem_label_entry;
+	Gtk::Entry     m_filesystem_label_entry;
 
 	std::vector<FS> FILESYSTEMS ;
 

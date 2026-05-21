@@ -173,12 +173,12 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	// Label
 	Gtk::Label *filesystem_label_label = Utils::mk_label(_("Label:"));
 	m_grid_create.attach(*filesystem_label_label, 0, 3, 1, 1);
-	filesystem_label_entry.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                          filesystem_label_label->get_accessible());
+	m_filesystem_label_entry.get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                            filesystem_label_label->get_accessible());
 	//Create Text entry box
-	filesystem_label_entry.set_width_chars( 20 );
+	m_filesystem_label_entry.set_width_chars(20);
 	// Add entry box to table
-	m_grid_create.attach(filesystem_label_entry, 1, 3, 1, 1);
+	m_grid_create.attach(m_filesystem_label_entry, 1, 3, 1, 1);
 
 	// Set vexpand on all m_grid_create child widgets
 	std::vector<Gtk::Widget*> children = m_grid_create.get_children();
@@ -275,7 +275,7 @@ const Partition& Dialog_Partition_New::get_new_partition()
 	m_new_partition->name = Utils::trim(m_partition_name_entry.get_text());
 
 	//Retrieve Label info
-	m_new_partition->set_filesystem_label(Utils::trim(filesystem_label_entry.get_text()));
+	m_new_partition->set_filesystem_label(Utils::trim(m_filesystem_label_entry.get_text()));
 
 	//set alignment
 	switch (combo_alignment.get_active_row_number())
@@ -416,7 +416,7 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 	m_frame_resizer_base->set_rgb_partition_color(color_temp);
 
 	// Maximum length of the file system label varies according to the selected file system type.
-	filesystem_label_entry.set_max_length(Utils::get_filesystem_label_maxlength(fs.fstype));
+	m_filesystem_label_entry.set_max_length(Utils::get_filesystem_label_maxlength(fs.fstype));
 
 	m_frame_resizer_base->redraw();
 }
