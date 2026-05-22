@@ -48,9 +48,9 @@ namespace GParted
 Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 : m_partition(partition),
    m_color_partition(Utils::get_color(partition.get_filesystem_partition().fstype)),
-   m_color_used("#F8F8BA"),
-   m_color_unused("white"),
-   m_color_unallocated("darkgrey"),
+   m_color_used(Utils::get_color(FS_USED)),
+   m_color_unused(Utils::get_color(FS_UNUSED)),
+   m_color_unallocated(Utils::get_color(FS_UNALLOCATED)),
    m_color_text("black")
 {
 	// Set minimum dialog height so it fits on an 800x600 screen without too much
