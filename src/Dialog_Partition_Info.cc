@@ -146,6 +146,9 @@ Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 }
 
 
+static const int BORDER = 8;  // Pixel width of m_color_partition border
+
+
 bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
 	Gdk::Cairo::set_source_rgba(cr, m_color_partition);

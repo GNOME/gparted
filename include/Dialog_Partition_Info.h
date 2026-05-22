@@ -34,9 +34,6 @@
 #include <pangomm/layout.h>
 
 
-#define BORDER 8
-
-
 namespace GParted
 {
 
