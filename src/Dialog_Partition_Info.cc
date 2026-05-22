@@ -146,13 +146,15 @@ Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
 }
 
 
-static const int BORDER = 8;  // Pixel width of m_color_partition border
+static const int WIDTH  = 400;  // Pixel width of the partition graphic
+static const int HEIGHT = 60;   // Pixel height of the partition graphic
+static const int BORDER = 8;    // Pixel width of m_color_partition border
 
 
 bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
 	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
-	cr->rectangle(0, 0, 400, 60);
+	cr->rectangle(0, 0, WIDTH, HEIGHT);
 	cr->fill();
 
 	if (m_partition.fstype != FS_UNALLOCATED)
@@ -162,7 +164,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 		cr->rectangle(BORDER,
 		              BORDER,
 		              m_used,
-		              60 - 2 * BORDER);
+		              HEIGHT - 2 * BORDER);
 		cr->fill();
 
 		// Unused
@@ -170,7 +172,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 		cr->rectangle(BORDER + m_used,
 		              BORDER,
 		              m_unused,
-		              60 - 2 * BORDER);
+		              HEIGHT - 2 * BORDER);
 		cr->fill();
 
 		// Unallocated
@@ -178,7 +180,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 		cr->rectangle(BORDER + m_used + m_unused,
 		              BORDER,
 		              m_unallocated,
-		              60 - 2 * BORDER);
+		              HEIGHT - 2 * BORDER);
 		cr->fill();
 	}
 
@@ -201,7 +203,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	this->get_content_area()->pack_start(*frame, Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / frame / m_drawingarea
-	m_drawingarea.set_size_request(400, 60);
+	m_drawingarea.set_size_request(WIDTH, HEIGHT);
 	m_drawingarea.signal_draw().connect(sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_draw));
 	frame->add(m_drawingarea);
 
@@ -216,17 +218,17 @@ void Dialog_Partition_Info::init_drawingarea()
 		//Specifically show extended partitions as unallocated
 		m_used        = 0;
 		m_unused      = 0;
-		m_unallocated = 400 - BORDER * 2;
+		m_unallocated = WIDTH - BORDER * 2;
 	}
 	else if (m_partition.sector_usage_known())
 	{
-		m_partition.get_usage_triple(400 - BORDER *2, m_used, m_unused, m_unallocated);
+		m_partition.get_usage_triple(WIDTH - BORDER * 2, m_used, m_unused, m_unallocated);
 	}
 	else
 	{
 		//Specifically show unknown figures as unused
 		m_used        = 0;
-		m_unused      = 400 - BORDER * 2;
+		m_unused      = WIDTH - BORDER * 2;
 		m_unallocated = 0;
 	}
 }
