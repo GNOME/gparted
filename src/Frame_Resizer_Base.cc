@@ -15,7 +15,10 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "Frame_Resizer_Base.h"
+
+#include "Utils.h"
 
 #include <gdkmm/general.h>
 #include <sigc++/signal.h>
@@ -26,10 +29,10 @@ namespace GParted
 
 
 Frame_Resizer_Base::Frame_Resizer_Base()
- : m_color_used("#F8F8BA"),
-   m_color_unused("white"),
+ : m_color_used(Utils::get_color(FS_USED)),
+   m_color_unused(Utils::get_color(FS_UNUSED)),
    m_color_arrow("black"),
-   m_color_background("darkgrey"),
+   m_color_background(Utils::get_color(FS_UNALLOCATED)),
    m_color_arrow_rectangle("lightgrey")
 {
 	m_drawingarea.set_size_request(500 + GRIPPER * 2 + BORDER * 2, 50);
