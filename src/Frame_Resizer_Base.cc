@@ -26,6 +26,11 @@ namespace GParted
 
 
 Frame_Resizer_Base::Frame_Resizer_Base()
+ : m_color_used("#F8F8BA"),
+   m_color_unused("white"),
+   m_color_arrow("black"),
+   m_color_background("darkgrey"),
+   m_color_arrow_rectangle("lightgrey")
 {
 	m_drawingarea.set_size_request(500 + GRIPPER * 2 + BORDER * 2, 50);
 
@@ -43,12 +48,6 @@ Frame_Resizer_Base::Frame_Resizer_Base()
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_leave_notify) ) ;
 
 	this->add(m_drawingarea);
-
-	m_color_used.set("#F8F8BA");
-	m_color_unused.set("white");
-	m_color_arrow.set("black");
-	m_color_background.set("darkgrey");
-	m_color_arrow_rectangle.set("lightgrey");
 
 	cursor_resize = Gdk::Cursor::create(get_display(), "ew-resize");
 	cursor_move   = Gdk::Cursor::create(get_display(), "fleur");  // FIXME: Replace with "all-resize"
