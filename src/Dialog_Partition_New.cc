@@ -407,7 +407,8 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 
 	//set fitting resizer colors
 	// Background color
-	Gdk::RGBA color_temp((combo_type.get_active_row_number() == 2) ? "darkgrey" : "white");
+	Gdk::RGBA color_temp(Utils::get_color((combo_type.get_active_row_number() == 2)
+	                                      ? FS_UNALLOCATED : FS_UNUSED));
 	m_frame_resizer_base->override_default_rgb_unused_color(color_temp);
 
 	// Partition color
