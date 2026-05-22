@@ -46,7 +46,12 @@ namespace GParted
 
 
 Dialog_Partition_Info::Dialog_Partition_Info(const Partition& partition)
-: m_partition(partition)
+: m_partition(partition),
+   m_color_partition(Utils::get_color(partition.get_filesystem_partition().fstype)),
+   m_color_used("#F8F8BA"),
+   m_color_unused("white"),
+   m_color_unallocated("darkgrey"),
+   m_color_text("black")
 {
 	// Set minimum dialog height so it fits on an 800x600 screen without too much
 	// whitespace (~500 px max for GNOME desktop).  Allow extra space if have any
@@ -201,13 +206,6 @@ void Dialog_Partition_Info::init_drawingarea()
 	m_text_overlay = m_drawingarea.create_pango_layout(
 	                        m_partition.get_path() + "\n" +
 	                        Utils::format_size(m_partition.get_sector_length(), m_partition.sector_size));
-
-	// Colors
-	m_color_partition.set(Utils::get_color(m_partition.get_filesystem_partition().fstype));
-	m_color_used.set("#F8F8BA");
-	m_color_unused.set("white");
-	m_color_unallocated.set("darkgrey");
-	m_color_text.set("black");
 
 	//calculate proportional width of used, unused and unallocated
 	if (m_partition.type == TYPE_EXTENDED)
