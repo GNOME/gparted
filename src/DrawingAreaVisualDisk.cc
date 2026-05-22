@@ -27,14 +27,15 @@
 #include <glib.h>
 
 
-#define MAIN_BORDER 5
-#define BORDER 4
-#define SEP 4
-#define HEIGHT 70 + 2 * MAIN_BORDER
-
-
 namespace GParted
 {
+
+
+// Pixel measurements used in the partitioned disk graphic
+static const int MAIN_BORDER = 5;
+static const int BORDER      = 4;
+static const int SEP         = 4;
+static const int HEIGHT      = 70 + 2 * MAIN_BORDER;
 
 
 DrawingAreaVisualDisk::DrawingAreaVisualDisk()
