@@ -22,6 +22,8 @@
 #include "Partition.h"
 
 #include <glibmm/ustring.h>
+#include <glibmm/refptr.h>
+#include <gdkmm/cursor.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/label.h>
@@ -55,6 +57,8 @@ private:
 	Gtk::Label    m_warning_message;
 
 	Gtk::TreeRow  m_row;
+
+	Glib::RefPtr<Gdk::Cursor> m_cursor_wait;
 
 	Glib::RefPtr<Gtk::ListStore> m_liststore_flags;
 

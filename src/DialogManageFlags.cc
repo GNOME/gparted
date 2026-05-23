@@ -94,6 +94,8 @@ DialogManageFlags::DialogManageFlags(const Partition& partition, std::map<Glib::
 
 	add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE)->grab_focus();
 
+	m_cursor_wait = Gdk::Cursor::create(get_display(), "wait");
+
 	show_all_children() ;
 
 	load_treeview();
@@ -116,7 +118,7 @@ void DialogManageFlags::load_treeview()
 
 void DialogManageFlags::on_flag_toggled( const Glib::ustring & path ) 
 {
-	get_window()->set_cursor(Gdk::Cursor::create(get_display(), "wait"));
+	get_window()->set_cursor(m_cursor_wait);
 	set_sensitive( false ) ;
 	while ( Gtk::Main::events_pending() )
 		Gtk::Main::iteration() ;
