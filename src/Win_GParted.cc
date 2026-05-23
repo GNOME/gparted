@@ -51,6 +51,7 @@
 #include "../config.h"
 
 #include <string.h>
+#include <gdkmm/cursor.h>
 #include <gtkmm/cssprovider.h>
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
@@ -142,7 +143,9 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	statusbar.pack_end(pulsebar, true, true, 10);
 	statusbar.set_homogeneous();
 	vbox_main .pack_start( statusbar, Gtk::PACK_SHRINK );
-	
+
+	m_cursor_wait = Gdk::Cursor::create(Gdk::WATCH);
+
 	this ->show_all_children();
 	
 	//make sure harddisk information is closed..
@@ -786,8 +789,11 @@ bool Win_GParted::pulsebar_pulse()
 	return true;
 }
 
+
 void Win_GParted::show_pulsebar( const Glib::ustring & status_message ) 
 {
+	get_window()->set_cursor(m_cursor_wait);
+
 	pulsebar .show();
 	statusbar .push( status_message) ;
 	
@@ -816,7 +822,10 @@ void Win_GParted::hide_pulsebar()
 	menu_partition .set_sensitive( true ) ;
 	treeview_detail .set_sensitive( true ) ;
 	drawingarea_visualdisk .set_sensitive( true ) ;
+
+	get_window()->set_cursor();  // Reset to default
 }
+
 
 void Win_GParted::Fill_Label_Device_Info( bool clear ) 
 {
@@ -3181,7 +3190,7 @@ void Win_GParted::activate_manage_flags()
 	g_assert(selected_partition_ptr != nullptr);  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	get_window()->set_cursor(Gdk::Cursor::create(Gdk::WATCH));
+	get_window()->set_cursor(m_cursor_wait);
 	while ( Gtk::Main::events_pending() )
 		Gtk::Main::iteration() ;
 

@@ -28,6 +28,8 @@
 #include "TreeView_Detail.h"
 #include "Utils.h"
 
+#include <gdkmm/cursor.h>
+#include <glibmm/refptr.h>
 #include <gtkmm/paned.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/separatortoolitem.h>
@@ -235,7 +237,9 @@ private:
 	Gtk::Statusbar statusbar;
 	Gtk::ProgressBar pulsebar ;
 	Gtk::TreeRow treerow;
-	
+
+	Glib::RefPtr<Gdk::Cursor> m_cursor_wait;
+
 	DrawingAreaVisualDisk drawingarea_visualdisk ;
 	TreeView_Detail treeview_detail;
 	HBoxOperations hbox_operations ;
