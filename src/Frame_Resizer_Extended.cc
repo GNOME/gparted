@@ -84,19 +84,19 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		}
 		else if ( GRIP_RIGHT )
 		{
-			if ( ev ->x < 500 + GRIPPER + BORDER * 2 && 
-			     ev ->x > (X_START + MIN_SIZE + BORDER * 2) &&
-			     ( ev ->x > USED_START + USED + BORDER *2 || USED == 0 ) )
+			if (ev->x < WIDTH + GRIPPER + BORDER * 2                  &&
+			    ev->x > X_START + MIN_SIZE + BORDER * 2               &&
+			    (ev->x > USED_START + USED + BORDER * 2 || USED == 0)   )
 			{
 				X_END = static_cast<int>( ev ->x ) ;
-				
+
 				signal_resize .emit( X_START - GRIPPER, X_END - GRIPPER - BORDER * 2, ARROW_RIGHT ) ; 
 			}
-			else if ( ev ->x >= 500 + GRIPPER + BORDER * 2 )
+			else if (ev->x >= WIDTH + GRIPPER + BORDER * 2)
 			{
-				if ( X_END < 500 + GRIPPER + BORDER * 2 )
+				if (X_END < WIDTH + GRIPPER + BORDER * 2)
 				{
-					X_END = 500 + GRIPPER + BORDER * 2 ;
+					X_END = WIDTH + GRIPPER + BORDER * 2;
 
 					signal_resize .emit( X_START - GRIPPER,
 							     X_END - GRIPPER - BORDER * 2,
@@ -163,28 +163,53 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 
 void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 {
+	// Extended partition resize/move widget is drawn like this:
+	//     ...     ##################################               ...
+	//     ...     ##       11111111111111         ##               ...
+	//     ...    <##       11111111111111         ##>              ...
+	//     ...   <<##       11111111111111         ##>>             ...
+	//     ...    <##       11111111111111         ##>              ...
+	//     ...     ##       11111111111111         ##               ...
+	//     ...     ##################################               ...
+	//
+	//                      |<-- USED -->|
+	//            /\       /\                       /\.
+	//             X_START  USED_START               X_END
+	// Legend:
+	//                - Unallocated space.  Shares portion of WIDTH (500 pixels).
+	//     .          - Light grey gripper landing area at each end.  GRIPPER (10)
+	//                  pixels wide.
+	//     <          - Left arrow.  GRIPPER (10 pixels) wide at start of partition.
+	//     >          - Right arrow.  GRIPPER (10 pixels) wide at end of partition.
+	//     #          - Partition border.  BORDER (8 pixels) wide around partition.
+	//     1 / USED   - Used space within partition.  USED pixels wide.  Shares
+	//                  portion of WIDTH (500 pixels).
+	//     X_START    - Pixel X-position to start of partition with widget.
+	//     USED_START - Pixel X-position to start of used space within widget.
+	//     X_END      - Pixel X-position to end of partition with widget.
+
 	// Background color
 	Gdk::Cairo::set_source_rgba(cr, m_color_background);
-	cr->rectangle(0, 0, 536, 50);
+	cr->rectangle(0, 0, WIDTH + GRIPPER * 2 + BORDER * 2, HEIGHT);
 	cr->fill();
 
 	// The two rectangles on each side of the partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_arrow_rectangle);
-	cr->rectangle(0, 0, 10, 50);
+	cr->rectangle(0, 0, GRIPPER, HEIGHT);
 	cr->fill();
-	cr->rectangle(526, 0, 10, 50);
+	cr->rectangle(WIDTH + GRIPPER + BORDER * 2, 0, GRIPPER, HEIGHT);
 	cr->fill();
 
 	// Used
 	Gdk::Cairo::set_source_rgba(cr, m_color_used);
-	cr->rectangle(USED_START + BORDER, BORDER, USED, 34);
+	cr->rectangle(USED_START + BORDER, BORDER, USED, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
 	for( short t = 0; t < 9 ; t++ )
 	{
-		cr->rectangle(X_START + t + 0.5, t + 0.5, X_END - X_START - t*2, 50 - t*2);
+		cr->rectangle(X_START + t + 0.5, t + 0.5, X_END - X_START - t*2, HEIGHT - t*2);
 		cr->stroke();
 	}
 

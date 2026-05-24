@@ -35,7 +35,7 @@ Frame_Resizer_Base::Frame_Resizer_Base()
    m_color_background(Utils::get_color(FS_UNALLOCATED)),
    m_color_arrow_rectangle("lightgrey")
 {
-	m_drawingarea.set_size_request(500 + GRIPPER * 2 + BORDER * 2, 50);
+	m_drawingarea.set_size_request(WIDTH + GRIPPER * 2 + BORDER * 2, HEIGHT);
 
 	m_drawingarea.signal_realize().connect(
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_realize) ) ;
@@ -56,7 +56,7 @@ Frame_Resizer_Base::Frame_Resizer_Base()
 	m_cursor_move   = Gdk::Cursor::create(get_display(), "fleur");  // FIXME: Replace with "all-resize"
 	                                                                // when available on all distributions.
 
-	set_size_limits( 0, 500 ) ;
+	set_size_limits(0, WIDTH);
 
 	Gdk::Point p;
 	p.set_y(15);  m_arrow_points.push_back(p);
@@ -203,9 +203,9 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 
 		else if ( GRIP_RIGHT )
 		{
-			if ( ev ->x < 500 + GRIPPER + BORDER * 2 &&
-			     (ev ->x - X_START) < MAX_SIZE &&
-			     (ev ->x - X_START) > MIN_SIZE )
+			if (ev->x           < WIDTH + GRIPPER + BORDER * 2 &&
+			    ev->x - X_START < MAX_SIZE                     &&
+			    ev->x - X_START > MIN_SIZE                       )
 			{
 				X_END = static_cast<int>( ev ->x ) ;
 			
@@ -217,21 +217,21 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 				{
 					X_END = X_START + MAX_SIZE ;
 
-					if ( X_END > 500 + GRIPPER + BORDER * 2 )
-						X_END = 500 + GRIPPER + BORDER * 2 ;
-		
+					if (X_END > WIDTH + GRIPPER + BORDER * 2)
+						X_END = WIDTH + GRIPPER + BORDER * 2;
+
 					//+1 to force the spinbutton to its min.
 					signal_resize .emit( X_START - GRIPPER,
 							     X_END - GRIPPER - BORDER * 2 +1,
 							     ARROW_RIGHT ) ;
 				}
 			}
-			else if ( ev ->x >= 500 + GRIPPER + BORDER * 2 )
+			else if (ev->x >= WIDTH + GRIPPER + BORDER * 2)
 			{
-				if ( X_END < 500 + GRIPPER + BORDER * 2 && X_END - X_START < MAX_SIZE )
+				if (X_END < WIDTH + GRIPPER + BORDER * 2 && X_END - X_START < MAX_SIZE)
 				{
-					X_END = 500 + GRIPPER + BORDER * 2 ;
-		
+					X_END = WIDTH + GRIPPER + BORDER * 2;
+
 					signal_resize .emit( X_START -GRIPPER,
 							     X_END - GRIPPER - BORDER * 2,
 							     ARROW_RIGHT ) ;
@@ -256,7 +256,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			int temp_x = X_START + static_cast<int>(ev->x - X_START_MOVE);
 			int temp_y = X_END - X_START;
 
-			if ( temp_x > (GRIPPER + X_MIN_SPACE_BEFORE) && temp_x + temp_y < 500 + GRIPPER + BORDER * 2 )
+			if (temp_x          > GRIPPER + X_MIN_SPACE_BEFORE &&
+			    temp_x + temp_y < WIDTH + GRIPPER + BORDER * 2   )
 			{
 				X_START = temp_x ;
 				X_END = X_START + temp_y ;
@@ -269,11 +270,11 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					X_END = X_START + temp_y ;
 				}
 			}
-			else if ( temp_x + temp_y >= 500 + GRIPPER + BORDER * 2 )
+			else if (temp_x + temp_y >= WIDTH + GRIPPER + BORDER * 2)
 			{
-				if ( X_END < 500 + GRIPPER + BORDER * 2 )
+				if (X_END < WIDTH + GRIPPER + BORDER * 2)
 				{
-					X_END = 500 + GRIPPER + BORDER * 2 ;
+					X_END = WIDTH + GRIPPER + BORDER * 2;
 					X_START = X_END - temp_y ;
 				}
 			}
@@ -379,31 +380,57 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	if ( UNUSED < 0 )
 		UNUSED = 0 ;
 
+	// Normal partition resize/move widget is drawn like this:
+	//     ...     ##################################               ...
+	//     ...     ##111111111111110000000000000000##               ...
+	//     ...    <##111111111111110000000000000000##>              ...
+	//     ...   <<##111111111111110000000000000000##>>             ...
+	//     ...    <##111111111111110000000000000000##>              ...
+	//     ...     ##111111111111110000000000000000##               ...
+	//     ...     ##################################               ...
+	//
+	//               |<-- USED -->||<-- UNUSED -->|
+	//            /\                                /\.
+	//             X_START                           X_END
+	// Legend:
+	//                - Unallocated space.  Shares portion of WIDTH (500 pixels).
+	//     .          - Light grey gripper landing area at each end.  GRIPPER (10)
+	//                  pixels wide.
+	//     <          - Left arrow.  GRIPPER (10 pixels) wide at start of partition.
+	//     >          - Right arrow.  GRIPPER (10 pixels) wide at end of partition.
+	//     #          - Partition border.  BORDER (8 pixels) wide around partition.
+	//     1 / USED   - Used space within partition.  USED pixels wide.  Shares
+	//                  portion of WIDTH (500 pixels).
+	//     0 / UNUSED - Unused space within partition.  UNUSED pixels wide.  Shares
+	//                  portion of WIDTH (500 pixels).
+	//     X_START    - Pixel X-position to start of partition with widget.
+	//     X_END      - Pixel X-position to end of partition with widget.
+
 	// Background color
 	Gdk::Cairo::set_source_rgba(cr, m_color_background);
-	cr->rectangle(0, 0, 536, 50);
+	cr->rectangle(0, 0, WIDTH + GRIPPER * 2 + BORDER * 2, HEIGHT);
 	cr->fill();
 
 	// The two rectangles on each side of the partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_arrow_rectangle);
-	cr->rectangle(0, 0, 10, 50);
+	cr->rectangle(0, 0, GRIPPER, HEIGHT);
 	cr->fill();
-	cr->rectangle(526, 0, 10, 50);
+	cr->rectangle(WIDTH + GRIPPER + BORDER * 2, 0, GRIPPER, HEIGHT);
 	cr->fill();
 
 	// Partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
-	cr->rectangle(X_START, 0, X_END - X_START, 50);
+	cr->rectangle(X_START, 0, X_END - X_START, HEIGHT);
 	cr->fill();
 
 	// Used
 	Gdk::Cairo::set_source_rgba(cr, m_color_used);
-	cr->rectangle(X_START + BORDER, BORDER, USED, 34);
+	cr->rectangle(X_START + BORDER, BORDER, USED, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Unused
 	Gdk::Cairo::set_source_rgba(cr, m_color_unused);
-	cr->rectangle(X_START + BORDER + USED, BORDER, UNUSED, 34);
+	cr->rectangle(X_START + BORDER + USED, BORDER, UNUSED, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Resize grips

@@ -61,19 +61,22 @@ public:
 	sigc::signal<void,int,int> signal_move;
 
 protected:
-	const int BORDER             = 8;
-	const int GRIPPER            = 10;
-	int       X_MIN_SPACE_BEFORE = 0;
-	int       X_START            = 0;
-	int       USED               = 0;
-	int       UNUSED             = 0;
-	int       X_END              = 0;
-	int       X_START_MOVE       = 0;
-	int       MIN_SIZE           = 0;
-	int       MAX_SIZE           = 0;
-	bool      GRIP_LEFT          = false;
-	bool      GRIP_RIGHT         = false;
-	bool      GRIP_MOVE          = false;
+	const int WIDTH   = 500;
+	const int HEIGHT  = 50;
+	const int BORDER  = 8;
+	const int GRIPPER = 10;
+
+	int  X_MIN_SPACE_BEFORE = 0;
+	int  X_START            = 0;
+	int  USED               = 0;
+	int  UNUSED             = 0;
+	int  X_END              = 0;
+	int  X_START_MOVE       = 0;
+	int  MIN_SIZE           = 0;
+	int  MAX_SIZE           = 0;
+	bool GRIP_LEFT          = false;
+	bool GRIP_RIGHT         = false;
+	bool GRIP_MOVE          = false;
 
 	//signal handlers
 	void drawingarea_on_realize();
