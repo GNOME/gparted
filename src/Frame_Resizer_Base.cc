@@ -458,7 +458,7 @@ void Frame_Resizer_Base::draw_resize_grip(const Cairo::RefPtr<Cairo::Context>& c
 
 	// Attach resize arrows to the partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_arrow_rectangle);
-	cr->rectangle((arrow_type == ARROW_LEFT ? X_START - GRIPPER : X_END + 1) + 0.5,
+	cr->rectangle((arrow_type == ARROW_LEFT ? X_START - GRIPPER : X_END) + 0.5,
 	              5 + 0.5,
 	              9,
 	              40);
