@@ -200,18 +200,20 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 	cr->rectangle(WIDTH + GRIPPER + BORDER * 2, 0, GRIPPER, HEIGHT);
 	cr->fill();
 
+	// Partition
+	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
+	cr->rectangle(X_START, 0, X_END - X_START, HEIGHT);
+	cr->fill();
+
+	// Unallocated space filling extended partition
+	Gdk::Cairo::set_source_rgba(cr, m_color_background);
+	cr->rectangle(X_START + BORDER, BORDER, X_END - X_START - BORDER * 2, HEIGHT - BORDER * 2);
+	cr->fill();
+
 	// Used
 	Gdk::Cairo::set_source_rgba(cr, m_color_used);
 	cr->rectangle(USED_START + BORDER, BORDER, USED, HEIGHT - BORDER * 2);
 	cr->fill();
-
-	// Partition
-	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
-	for( short t = 0; t < 9 ; t++ )
-	{
-		cr->rectangle(X_START + t + 0.5, t + 0.5, X_END - X_START - t*2, HEIGHT - t*2);
-		cr->stroke();
-	}
 
 	// Resize grips
 	draw_resize_grip(cr, ARROW_LEFT);
