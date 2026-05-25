@@ -67,7 +67,7 @@ protected:
 	const int GRIPPER = 10;
 
 	int  m_x_min_space_before = 0;
-	int  X_START            = 0;
+	int  m_x_start            = 0;
 	int  USED               = 0;
 	int  UNUSED             = 0;
 	int  X_END              = 0;

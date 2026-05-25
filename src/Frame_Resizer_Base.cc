@@ -81,7 +81,7 @@ void Frame_Resizer_Base::override_default_rgb_unused_color(const Gdk::RGBA& colo
 
 void Frame_Resizer_Base::set_x_start( int x_start ) 
 {  
-	this ->X_START = x_start + GRIPPER ;
+	m_x_start = x_start + GRIPPER;
 } 
 
 
@@ -119,10 +119,12 @@ int Frame_Resizer_Base::get_used()
 	return USED ;
 }
 
+
 int Frame_Resizer_Base::get_x_start() 
 {
-	return X_START - GRIPPER ;
+	return m_x_start - GRIPPER;
 }
+
 
 int Frame_Resizer_Base::get_x_end() 
 {
@@ -158,118 +160,122 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			if (ev->x > (GRIPPER + m_x_min_space_before)                 &&
 			    MIN_SIZE < (X_END - ev->x) && (X_END - ev->x) < MAX_SIZE   )
 			{
-				X_START = static_cast<int>( ev ->x ) ;
-			
-				signal_resize .emit( X_START - GRIPPER, X_END - GRIPPER - 2 * BORDER, ARROW_LEFT ) ; 
+				m_x_start = static_cast<int>(ev->x);
+
+				signal_resize.emit(m_x_start - GRIPPER,
+				                   X_END - GRIPPER - 2 * BORDER,
+				                   ARROW_LEFT);
 			}
 			else if ( X_END - ev ->x >= MAX_SIZE )
 			{
-				if ( X_END - X_START < MAX_SIZE )
+				if ((X_END - m_x_start) < MAX_SIZE)
 				{
-					X_START = X_END - MAX_SIZE ;
+					m_x_start = X_END - MAX_SIZE;
 
-					if (X_START < (GRIPPER + m_x_min_space_before))
-						X_START = GRIPPER + m_x_min_space_before;
+					if (m_x_start < (GRIPPER + m_x_min_space_before))
+						m_x_start = GRIPPER + m_x_min_space_before;
 
 					//-1 to force the spinbutton to its max.
-					signal_resize .emit( X_START - GRIPPER -1,
-							     X_END - GRIPPER - BORDER * 2,
-							     ARROW_LEFT ) ; 
+					signal_resize.emit(m_x_start - GRIPPER - 1,
+					                   X_END - GRIPPER - BORDER * 2,
+					                   ARROW_LEFT);
 				}
 			}
 			else if (ev->x <= (GRIPPER + m_x_min_space_before))
 			{
-				if (X_START           > (GRIPPER + m_x_min_space_before) &&
-				    (X_END - X_START) < MAX_SIZE                           )
+				if (m_x_start           > (GRIPPER + m_x_min_space_before) &&
+				    (X_END - m_x_start) < MAX_SIZE                           )
 				{
-					X_START = GRIPPER + m_x_min_space_before;
+					m_x_start = GRIPPER + m_x_min_space_before;
 
-					signal_resize .emit( X_START - GRIPPER,
-							     X_END - GRIPPER - BORDER * 2,
-							     ARROW_LEFT ) ;
+					signal_resize.emit(m_x_start - GRIPPER,
+					                   X_END - GRIPPER - BORDER * 2,
+					                   ARROW_LEFT);
 				}
 			}
 			else if ( X_END - ev ->x <= MIN_SIZE )
 			{
-				if ( X_END - X_START > MIN_SIZE )
+				if ((X_END - m_x_start) > MIN_SIZE)
 				{
-					X_START = X_END - MIN_SIZE ;
-			
+					m_x_start = X_END - MIN_SIZE;
+
 					//+1 to force the spinbutton to its min.
-					signal_resize .emit( X_START - GRIPPER +1,
-							     X_END - GRIPPER - BORDER * 2,
-							     ARROW_LEFT ) ;
+					signal_resize.emit(m_x_start - GRIPPER +1,
+					                   X_END - GRIPPER - BORDER * 2,
+					                   ARROW_LEFT);
 				}
 			}
 		}
 
 		else if ( GRIP_RIGHT )
 		{
-			if (ev->x           < WIDTH + GRIPPER + BORDER * 2 &&
-			    ev->x - X_START < MAX_SIZE                     &&
-			    ev->x - X_START > MIN_SIZE                       )
+			if (ev->x < (WIDTH + GRIPPER + BORDER * 2)                           &&
+			    MIN_SIZE < (ev->x - m_x_start) && (ev->x - m_x_start < MAX_SIZE)   )
 			{
 				X_END = static_cast<int>( ev ->x ) ;
-			
-				signal_resize .emit( X_START - GRIPPER, X_END - GRIPPER - BORDER * 2, ARROW_RIGHT ) ;
+
+				signal_resize.emit(m_x_start - GRIPPER,
+				                   X_END - GRIPPER - BORDER * 2,
+				                   ARROW_RIGHT);
 			}
-			else if ( ev ->x - X_START >= MAX_SIZE )
+			else if ((ev->x - m_x_start) >= MAX_SIZE)
 			{
-				if ( X_END - X_START < MAX_SIZE )
+				if ((X_END - m_x_start) < MAX_SIZE)
 				{
-					X_END = X_START + MAX_SIZE ;
+					X_END = m_x_start + MAX_SIZE;
 
 					if (X_END > WIDTH + GRIPPER + BORDER * 2)
 						X_END = WIDTH + GRIPPER + BORDER * 2;
 
 					//+1 to force the spinbutton to its min.
-					signal_resize .emit( X_START - GRIPPER,
-							     X_END - GRIPPER - BORDER * 2 +1,
-							     ARROW_RIGHT ) ;
+					signal_resize.emit(m_x_start - GRIPPER,
+					                   X_END - GRIPPER - BORDER * 2 + 1,
+					                   ARROW_RIGHT);
 				}
 			}
 			else if (ev->x >= WIDTH + GRIPPER + BORDER * 2)
 			{
-				if (X_END < WIDTH + GRIPPER + BORDER * 2 && X_END - X_START < MAX_SIZE)
+				if (X_END               < (WIDTH + GRIPPER + BORDER * 2) &&
+				    (X_END - m_x_start) < MAX_SIZE                         )
 				{
 					X_END = WIDTH + GRIPPER + BORDER * 2;
 
-					signal_resize .emit( X_START -GRIPPER,
-							     X_END - GRIPPER - BORDER * 2,
-							     ARROW_RIGHT ) ;
+					signal_resize.emit(m_x_start -GRIPPER,
+					                   X_END - GRIPPER - BORDER * 2,
+					                   ARROW_RIGHT);
 				}
 			}
-			else if ( ev ->x - X_START <= MIN_SIZE )
+			else if ((ev->x - m_x_start) <= MIN_SIZE)
 			{
-				if ( X_END - X_START > MIN_SIZE )
+				if ((X_END - m_x_start) > MIN_SIZE)
 				{
-					X_END = X_START + MIN_SIZE ;
-		
+					X_END = m_x_start + MIN_SIZE;
+
 					//-1 to force the spinbutton to its min.
-					signal_resize .emit( X_START - GRIPPER,
-							     X_END - GRIPPER - BORDER * 2 -1,
-							     ARROW_RIGHT ) ;
+					signal_resize.emit(m_x_start - GRIPPER,
+					                   X_END - GRIPPER - BORDER * 2 - 1,
+					                   ARROW_RIGHT);
 				}
 			}
 		}
 		
 		else if ( GRIP_MOVE )
 		{
-			int temp_x = X_START + static_cast<int>(ev->x - X_START_MOVE);
-			int temp_y = X_END - X_START;
+			int temp_x = m_x_start + static_cast<int>(ev->x - X_START_MOVE);
+			int temp_y = X_END - m_x_start;
 
 			if (temp_x            > (GRIPPER + m_x_min_space_before) &&
 			    (temp_x + temp_y) < (WIDTH + GRIPPER + BORDER * 2)     )
 			{
-				X_START = temp_x ;
-				X_END = X_START + temp_y ;
+				m_x_start = temp_x;
+				X_END = m_x_start + temp_y;
 			}
 			else if (temp_x <= (GRIPPER + m_x_min_space_before))
 			{
-				if (X_START > (GRIPPER + m_x_min_space_before))
+				if (m_x_start > (GRIPPER + m_x_min_space_before))
 				{
-					X_START = GRIPPER + m_x_min_space_before;
-					X_END = X_START + temp_y ;
+					m_x_start = GRIPPER + m_x_min_space_before;
+					X_END = m_x_start + temp_y;
 				}
 			}
 			else if (temp_x + temp_y >= WIDTH + GRIPPER + BORDER * 2)
@@ -277,12 +283,13 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 				if (X_END < WIDTH + GRIPPER + BORDER * 2)
 				{
 					X_END = WIDTH + GRIPPER + BORDER * 2;
-					X_START = X_END - temp_y ;
+					m_x_start = X_END - temp_y;
 				}
 			}
 
 			X_START_MOVE = static_cast<int>( ev ->x ) ;
-			signal_move .emit( X_START - GRIPPER, X_END - GRIPPER - BORDER * 2 ) ;
+			signal_move.emit(m_x_start - GRIPPER,
+			                 X_END - GRIPPER - BORDER * 2);
 		}
 
 		redraw();
@@ -291,11 +298,9 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{ 
 		//check if pointer is over a gripper
 		//left grip
-		if (! m_fixed_start            &&
-		    ev->x >= X_START - GRIPPER &&
-		    ev->x <= X_START           &&
-		    ev->y >= 5                 &&
-		    ev->y <= 45                  )
+		if (! m_fixed_start                                      &&
+		    (m_x_start - GRIPPER) <= ev->x && ev->x <= m_x_start &&
+		    5                     <= ev->y && ev->y <= 45          )
 		{
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
@@ -308,9 +313,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
 		//move grip
-		else if (! m_fixed_start  &&
-			 ev->x >= X_START &&
-			 ev->x <= X_END     )
+		else if (! m_fixed_start                      &&
+			 m_x_start <= ev->x && ev->x <= X_END   )
 		{
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_move);
 		}
@@ -330,11 +334,9 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 	GRIP_LEFT = GRIP_RIGHT = GRIP_MOVE = false;
 	
 	//left grip
-	if (! m_fixed_start            &&
-	    ev->x >= X_START - GRIPPER &&
-	    ev->x <= X_START           &&
-	    ev->y >= 5                 &&
-	    ev->y <= 45                  )
+	if (! m_fixed_start                                      &&
+	    (m_x_start - GRIPPER) <= ev->x && ev->x <= m_x_start &&
+	    5                     <= ev->y && ev->y <= 45          )
 	{
 		GRIP_LEFT = true ;
 	}
@@ -347,9 +349,8 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 		GRIP_RIGHT = true ;
 	}
 	//move grip
-	else if (! m_fixed_start  &&
-		 ev->x >= X_START &&
-		 ev->x <= X_END     )
+	else if (! m_fixed_start                      &&
+		 m_x_start <= ev->x && ev->x <= X_END   )
 	{
 		 GRIP_MOVE = true ;
 		 X_START_MOVE = static_cast<int>( ev ->x );
@@ -378,7 +379,7 @@ bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 
 void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	UNUSED = X_END - X_START - BORDER * 2 - USED ;
+	UNUSED = X_END - m_x_start - BORDER * 2 - USED;
 	if ( UNUSED < 0 )
 		UNUSED = 0 ;
 
@@ -393,7 +394,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	//
 	//               |<-- USED -->||<-- UNUSED -->|
 	//            /\                                /\.
-	//             X_START                           X_END
+	//             m_x_start                         X_END
 	// Legend:
 	//                - Unallocated space.  Shares portion of WIDTH (500 pixels).
 	//     .          - Light grey gripper landing area at each end.  GRIPPER (10)
@@ -405,7 +406,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	//                  portion of WIDTH (500 pixels).
 	//     0 / UNUSED - Unused space within partition.  UNUSED pixels wide.  Shares
 	//                  portion of WIDTH (500 pixels).
-	//     X_START    - Pixel X-position to start of partition with widget.
+	//     m_x_start  - Pixel X-position to start of partition with widget.
 	//     X_END      - Pixel X-position to end of partition with widget.
 
 	// Background color
@@ -422,17 +423,17 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 
 	// Partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
-	cr->rectangle(X_START, 0, X_END - X_START, HEIGHT);
+	cr->rectangle(m_x_start, 0, X_END - m_x_start, HEIGHT);
 	cr->fill();
 
 	// Used
 	Gdk::Cairo::set_source_rgba(cr, m_color_used);
-	cr->rectangle(X_START + BORDER, BORDER, USED, HEIGHT - BORDER * 2);
+	cr->rectangle(m_x_start + BORDER, BORDER, USED, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Unused
 	Gdk::Cairo::set_source_rgba(cr, m_color_unused);
-	cr->rectangle(X_START + BORDER + USED, BORDER, UNUSED, HEIGHT - BORDER * 2);
+	cr->rectangle(m_x_start + BORDER + USED, BORDER, UNUSED, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Resize grips
@@ -447,9 +448,9 @@ void Frame_Resizer_Base::draw_resize_grip(const Cairo::RefPtr<Cairo::Context>& c
 {
 	if ( arrow_type == ARROW_LEFT )
 	{
-		m_arrow_points[0].set_x(X_START);
-		m_arrow_points[1].set_x(X_START - GRIPPER);
-		m_arrow_points[2].set_x(X_START);
+		m_arrow_points[0].set_x(m_x_start);
+		m_arrow_points[1].set_x(m_x_start - GRIPPER);
+		m_arrow_points[2].set_x(m_x_start);
 	}
 	else
 	{
@@ -460,7 +461,7 @@ void Frame_Resizer_Base::draw_resize_grip(const Cairo::RefPtr<Cairo::Context>& c
 
 	// Attach resize arrows to the partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_arrow_rectangle);
-	cr->rectangle((arrow_type == ARROW_LEFT ? X_START - GRIPPER : X_END) + 0.5,
+	cr->rectangle((arrow_type == ARROW_LEFT ? m_x_start - GRIPPER : X_END) + 0.5,
 	              5 + 0.5,
 	              9,
 	              40);
