@@ -38,8 +38,8 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if ((GRIPPER + m_x_min_space_before) < ev->x && ev->x < (m_x_end - MIN_SIZE - BORDER * 2) &&
-			    (ev->x < USED_START || m_used == 0)                                                     )
+			if ((GRIPPER + m_x_min_space_before) < ev->x && ev->x < (m_x_end - m_min_size - BORDER * 2) &&
+			    (ev->x < USED_START || m_used == 0)                                                       )
 			{
 				m_x_start = static_cast<int>(ev->x);
 
@@ -70,11 +70,11 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_LEFT);
 				}
 			}
-			else if (m_used == 0 && ev->x >= (m_x_end - MIN_SIZE - BORDER * 2))
+			else if (m_used == 0 && ev->x >= (m_x_end - m_min_size - BORDER * 2))
 			{
 				if (m_x_start < (m_x_end - BORDER * 2))
 				{
-					m_x_start = m_x_end - MIN_SIZE - BORDER * 2;
+					m_x_start = m_x_end - m_min_size - BORDER * 2;
 
 					signal_resize.emit(m_x_start - GRIPPER,
 					                   m_x_end - GRIPPER - BORDER * 2,
@@ -84,8 +84,8 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		}
 		else if ( GRIP_RIGHT )
 		{
-			if ((m_x_start + MIN_SIZE + BORDER * 2) < ev->x && ev->x < (WIDTH + GRIPPER + BORDER * 2) &&
-			    (ev->x > (USED_START + m_used + BORDER * 2) || m_used == 0)                             )
+			if ((m_x_start + m_min_size + BORDER * 2) < ev->x && ev->x < (WIDTH + GRIPPER + BORDER * 2) &&
+			    (ev->x > (USED_START + m_used + BORDER * 2) || m_used == 0)                               )
 			{
 				m_x_end = static_cast<int>(ev->x);
 
@@ -116,11 +116,11 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_RIGHT);
 				}
 			}
-			else if (m_used == 0 && ev->x <= (m_x_start + MIN_SIZE + BORDER * 2))
+			else if (m_used == 0 && ev->x <= (m_x_start + m_min_size + BORDER * 2))
 			{
-				if (m_x_end > (m_x_start + MIN_SIZE + BORDER * 2))
+				if (m_x_end > (m_x_start + m_min_size + BORDER * 2))
 				{
-					m_x_end = m_x_start + MIN_SIZE + BORDER * 2;
+					m_x_end = m_x_start + m_min_size + BORDER * 2;
 
 					signal_resize.emit(m_x_start - GRIPPER,
 					                   m_x_end - GRIPPER - BORDER * 2,

@@ -72,7 +72,7 @@ protected:
 	int  m_used               = 0;
 	int  m_unused             = 0;
 	int  m_x_start_move       = 0;
-	int  MIN_SIZE           = 0;
+	int  m_min_size           = 0;
 	int  MAX_SIZE           = 0;
 	bool GRIP_LEFT          = false;
 	bool GRIP_RIGHT         = false;

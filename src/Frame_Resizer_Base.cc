@@ -111,7 +111,7 @@ void Frame_Resizer_Base::set_fixed_start( bool fixed_start )
 
 void Frame_Resizer_Base::set_size_limits( int min_size, int max_size )
 {
-	this ->MIN_SIZE = min_size + BORDER * 2 ;
+	m_min_size = min_size + BORDER * 2;
 	this ->MAX_SIZE = max_size + BORDER * 2 ;
 }
 
@@ -159,8 +159,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if (ev->x > (GRIPPER + m_x_min_space_before)                     &&
-			    MIN_SIZE < (m_x_end - ev->x) && (m_x_end - ev->x) < MAX_SIZE   )
+			if (ev->x > (GRIPPER + m_x_min_space_before)                       &&
+			    m_min_size < (m_x_end - ev->x) && (m_x_end - ev->x) < MAX_SIZE   )
 			{
 				m_x_start = static_cast<int>(ev->x);
 
@@ -195,11 +195,11 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_LEFT);
 				}
 			}
-			else if ((m_x_end - ev->x) <= MIN_SIZE)
+			else if ((m_x_end - ev->x) <= m_min_size)
 			{
-				if ((m_x_end - m_x_start) > MIN_SIZE)
+				if ((m_x_end - m_x_start) > m_min_size)
 				{
-					m_x_start = m_x_end - MIN_SIZE;
+					m_x_start = m_x_end - m_min_size;
 
 					//+1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER +1,
@@ -211,8 +211,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 
 		else if ( GRIP_RIGHT )
 		{
-			if (ev->x < (WIDTH + GRIPPER + BORDER * 2)                           &&
-			    MIN_SIZE < (ev->x - m_x_start) && (ev->x - m_x_start < MAX_SIZE)   )
+			if (ev->x < (WIDTH + GRIPPER + BORDER * 2)                             &&
+			    m_min_size < (ev->x - m_x_start) && (ev->x - m_x_start < MAX_SIZE)   )
 			{
 				m_x_end = static_cast<int>(ev->x);
 
@@ -247,11 +247,11 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_RIGHT);
 				}
 			}
-			else if ((ev->x - m_x_start) <= MIN_SIZE)
+			else if ((ev->x - m_x_start) <= m_min_size)
 			{
-				if ((m_x_end - m_x_start) > MIN_SIZE)
+				if ((m_x_end - m_x_start) > m_min_size)
 				{
-					m_x_end = m_x_start + MIN_SIZE;
+					m_x_end = m_x_start + m_min_size;
 
 					//-1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER,
