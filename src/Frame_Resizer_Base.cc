@@ -99,7 +99,7 @@ void Frame_Resizer_Base::set_x_end( int x_end )
 
 void Frame_Resizer_Base::set_used( int used )
 {   
-	this ->USED = used ;
+	m_used = used;
 }
 
 
@@ -115,9 +115,10 @@ void Frame_Resizer_Base::set_size_limits( int min_size, int max_size )
 	this ->MAX_SIZE = max_size + BORDER * 2 ;
 }
 
+
 int Frame_Resizer_Base::get_used()
 {
-	return USED ;
+	return m_used;
 }
 
 
@@ -376,7 +377,7 @@ bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 
 void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	UNUSED = m_x_end - m_x_start - BORDER * 2 - USED;
+	UNUSED = m_x_end - m_x_start - BORDER * 2 - m_used;
 	if ( UNUSED < 0 )
 		UNUSED = 0 ;
 
@@ -389,7 +390,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	//     ...     ##111111111111110000000000000000##               ...
 	//     ...     ##################################               ...
 	//
-	//               |<-- USED -->||<-- UNUSED -->|
+	//               |<- m_used ->||<-- UNUSED -->|
 	//            /\                                /\.
 	//             m_x_start                         m_x_end
 	// Legend:
@@ -399,7 +400,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	//     <          - Left arrow.  GRIPPER (10 pixels) wide at start of partition.
 	//     >          - Right arrow.  GRIPPER (10 pixels) wide at end of partition.
 	//     #          - Partition border.  BORDER (8 pixels) wide around partition.
-	//     1 / USED   - Used space within partition.  USED pixels wide.  Shares
+	//     1 / m_used - Used space within partition.  m_used pixels wide.  Shares
 	//                  portion of WIDTH (500 pixels).
 	//     0 / UNUSED - Unused space within partition.  UNUSED pixels wide.  Shares
 	//                  portion of WIDTH (500 pixels).
@@ -425,12 +426,12 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 
 	// Used
 	Gdk::Cairo::set_source_rgba(cr, m_color_used);
-	cr->rectangle(m_x_start + BORDER, BORDER, USED, HEIGHT - BORDER * 2);
+	cr->rectangle(m_x_start + BORDER, BORDER, m_used, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Unused
 	Gdk::Cairo::set_source_rgba(cr, m_color_unused);
-	cr->rectangle(m_x_start + BORDER + USED, BORDER, UNUSED, HEIGHT - BORDER * 2);
+	cr->rectangle(m_x_start + BORDER + m_used, BORDER, UNUSED, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Resize grips

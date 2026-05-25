@@ -39,7 +39,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		if ( GRIP_LEFT )
 		{
 			if ((GRIPPER + m_x_min_space_before) < ev->x && ev->x < (m_x_end - MIN_SIZE - BORDER * 2) &&
-			    (ev->x < USED_START || USED == 0)                                                       )
+			    (ev->x < USED_START || m_used == 0)                                                     )
 			{
 				m_x_start = static_cast<int>(ev->x);
 
@@ -58,7 +58,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_LEFT);
 				}
 			}
-			else if ( USED != 0 && ev ->x >= USED_START )
+			else if (m_used != 0 && ev->x >= USED_START)
 			{
 				if (m_x_start < USED_START)
 				{
@@ -70,7 +70,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_LEFT);
 				}
 			}
-			else if (USED == 0 && ev->x >= (m_x_end - MIN_SIZE - BORDER * 2))
+			else if (m_used == 0 && ev->x >= (m_x_end - MIN_SIZE - BORDER * 2))
 			{
 				if (m_x_start < (m_x_end - BORDER * 2))
 				{
@@ -85,7 +85,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		else if ( GRIP_RIGHT )
 		{
 			if ((m_x_start + MIN_SIZE + BORDER * 2) < ev->x && ev->x < (WIDTH + GRIPPER + BORDER * 2) &&
-			    (ev->x > (USED_START + USED + BORDER * 2) || USED == 0)                                 )
+			    (ev->x > (USED_START + m_used + BORDER * 2) || m_used == 0)                             )
 			{
 				m_x_end = static_cast<int>(ev->x);
 
@@ -104,11 +104,11 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_RIGHT);
 				}
 			}
-			else if ( USED != 0 && ev ->x <= USED_START + USED + BORDER *2 )
+			else if (m_used != 0 && ev->x <= (USED_START + m_used + BORDER * 2))
 			{
-				if (m_x_end > (USED_START + USED + BORDER * 2))
+				if (m_x_end > (USED_START + m_used + BORDER * 2))
 				{
-					m_x_end = USED_START + USED + BORDER * 2;
+					m_x_end = USED_START + m_used + BORDER * 2;
 
 					//-1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER,
@@ -116,7 +116,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_RIGHT);
 				}
 			}
-			else if (USED == 0 && ev->x <= (m_x_start + MIN_SIZE + BORDER * 2))
+			else if (m_used == 0 && ev->x <= (m_x_start + MIN_SIZE + BORDER * 2))
 			{
 				if (m_x_end > (m_x_start + MIN_SIZE + BORDER * 2))
 				{
@@ -170,7 +170,7 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 	//     ...     ##         11111111111111       ##               ...
 	//     ...     ##################################               ...
 	//
-	//                        |<-- USED -->|
+	//                        |<- m_used ->|
 	//            /\         /\                     /\.
 	//             m_x_start  USED_START             m_x_end
 	// Legend:
@@ -180,7 +180,7 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 	//     <          - Left arrow.  GRIPPER (10 pixels) wide at start of partition.
 	//     >          - Right arrow.  GRIPPER (10 pixels) wide at end of partition.
 	//     #          - Partition border.  BORDER (8 pixels) wide around partition.
-	//     1 / USED   - Used space within partition.  USED pixels wide.  Shares
+	//     1 / m_used - Used space within partition.  m_used pixels wide.  Shares
 	//                  portion of WIDTH (500 pixels).
 	//     m_x_start  - Pixel X-position to start of partition with widget.
 	//     USED_START - Pixel X-position to start of used space within widget.
@@ -210,7 +210,7 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 
 	// Used
 	Gdk::Cairo::set_source_rgba(cr, m_color_used);
-	cr->rectangle(USED_START + BORDER, BORDER, USED, HEIGHT - BORDER * 2);
+	cr->rectangle(USED_START + BORDER, BORDER, m_used, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Resize grips
