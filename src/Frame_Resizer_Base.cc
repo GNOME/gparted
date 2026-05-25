@@ -377,9 +377,9 @@ bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 
 void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	UNUSED = m_x_end - m_x_start - BORDER * 2 - m_used;
-	if ( UNUSED < 0 )
-		UNUSED = 0 ;
+	m_unused = m_x_end - m_x_start - BORDER * 2 - m_used;
+	if (m_unused < 0)
+		m_unused = 0;
 
 	// Normal partition resize/move widget is drawn like this:
 	//     ...     ##################################               ...
@@ -390,22 +390,22 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	//     ...     ##111111111111110000000000000000##               ...
 	//     ...     ##################################               ...
 	//
-	//               |<- m_used ->||<-- UNUSED -->|
+	//               |<- m_used ->||<- m_unused ->|
 	//            /\                                /\.
 	//             m_x_start                         m_x_end
 	// Legend:
-	//                - Unallocated space.  Shares portion of WIDTH (500 pixels).
-	//     .          - Light grey gripper landing area at each end.  GRIPPER (10)
-	//                  pixels wide.
-	//     <          - Left arrow.  GRIPPER (10 pixels) wide at start of partition.
-	//     >          - Right arrow.  GRIPPER (10 pixels) wide at end of partition.
-	//     #          - Partition border.  BORDER (8 pixels) wide around partition.
-	//     1 / m_used - Used space within partition.  m_used pixels wide.  Shares
-	//                  portion of WIDTH (500 pixels).
-	//     0 / UNUSED - Unused space within partition.  UNUSED pixels wide.  Shares
-	//                  portion of WIDTH (500 pixels).
-	//     m_x_start  - Pixel X-position to start of partition with widget.
-	//     m_x_end    - Pixel X-position to end of partition with widget.
+	//                  - Unallocated space.  Shares portion of WIDTH (500 pixels).
+	//     .            - Light grey gripper landing area at each end.  GRIPPER (10)
+	//                    pixels wide.
+	//     <            - Left arrow.  GRIPPER (10 pixels) wide at start of partition.
+	//     >            - Right arrow.  GRIPPER (10 pixels) wide at end of partition.
+	//     #            - Partition border.  BORDER (8 pixels) wide around partition.
+	//     1 / m_used   - Used space within partition.  m_used pixels wide.  Shares
+	//                    portion of WIDTH (500 pixels).
+	//     0 / m_unused - Unused space within partition.  m_unused pixels wide.
+	//                    Shares portion of WIDTH (500 pixels).
+	//     m_x_start    - Pixel X-position to start of partition with widget.
+	//     m_x_end      - Pixel X-position to end of partition with widget.
 
 	// Background color
 	Gdk::Cairo::set_source_rgba(cr, m_color_background);
@@ -431,7 +431,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 
 	// Unused
 	Gdk::Cairo::set_source_rgba(cr, m_color_unused);
-	cr->rectangle(m_x_start + BORDER + m_used, BORDER, UNUSED, HEIGHT - BORDER * 2);
+	cr->rectangle(m_x_start + BORDER + m_used, BORDER, m_unused, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Resize grips
