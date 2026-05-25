@@ -84,10 +84,12 @@ void Frame_Resizer_Base::set_x_start( int x_start )
 	this ->X_START = x_start + GRIPPER ;
 } 
 
+
 void Frame_Resizer_Base::set_x_min_space_before( int x_min_space_before ) 
 {
-	this ->X_MIN_SPACE_BEFORE = x_min_space_before ;
+	m_x_min_space_before = x_min_space_before;
 }
+
 
 void Frame_Resizer_Base::set_x_end( int x_end ) 
 { 
@@ -153,9 +155,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if ( ev ->x > (GRIPPER + X_MIN_SPACE_BEFORE) &&
-			     (X_END - ev ->x) < MAX_SIZE &&
-			     (X_END - ev ->x) > MIN_SIZE )
+			if (ev->x > (GRIPPER + m_x_min_space_before)                 &&
+			    MIN_SIZE < (X_END - ev->x) && (X_END - ev->x) < MAX_SIZE   )
 			{
 				X_START = static_cast<int>( ev ->x ) ;
 			
@@ -167,21 +168,22 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 				{
 					X_START = X_END - MAX_SIZE ;
 
-					if ( X_START < (GRIPPER + X_MIN_SPACE_BEFORE) )
-						X_START = GRIPPER + X_MIN_SPACE_BEFORE ;
-			
+					if (X_START < (GRIPPER + m_x_min_space_before))
+						X_START = GRIPPER + m_x_min_space_before;
+
 					//-1 to force the spinbutton to its max.
 					signal_resize .emit( X_START - GRIPPER -1,
 							     X_END - GRIPPER - BORDER * 2,
 							     ARROW_LEFT ) ; 
 				}
 			}
-			else if ( ev ->x <= (GRIPPER + X_MIN_SPACE_BEFORE) )
+			else if (ev->x <= (GRIPPER + m_x_min_space_before))
 			{
-				if ( X_START > (GRIPPER + X_MIN_SPACE_BEFORE) && X_END - X_START < MAX_SIZE )
+				if (X_START           > (GRIPPER + m_x_min_space_before) &&
+				    (X_END - X_START) < MAX_SIZE                           )
 				{
-					X_START = GRIPPER + X_MIN_SPACE_BEFORE ;
-				
+					X_START = GRIPPER + m_x_min_space_before;
+
 					signal_resize .emit( X_START - GRIPPER,
 							     X_END - GRIPPER - BORDER * 2,
 							     ARROW_LEFT ) ;
@@ -256,17 +258,17 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			int temp_x = X_START + static_cast<int>(ev->x - X_START_MOVE);
 			int temp_y = X_END - X_START;
 
-			if (temp_x          > GRIPPER + X_MIN_SPACE_BEFORE &&
-			    temp_x + temp_y < WIDTH + GRIPPER + BORDER * 2   )
+			if (temp_x            > (GRIPPER + m_x_min_space_before) &&
+			    (temp_x + temp_y) < (WIDTH + GRIPPER + BORDER * 2)     )
 			{
 				X_START = temp_x ;
 				X_END = X_START + temp_y ;
 			}
-			else if ( temp_x <= (GRIPPER + X_MIN_SPACE_BEFORE) )
+			else if (temp_x <= (GRIPPER + m_x_min_space_before))
 			{
-				if ( X_START > (GRIPPER + X_MIN_SPACE_BEFORE) )
+				if (X_START > (GRIPPER + m_x_min_space_before))
 				{
-					X_START = GRIPPER + X_MIN_SPACE_BEFORE;
+					X_START = GRIPPER + m_x_min_space_before;
 					X_END = X_START + temp_y ;
 				}
 			}

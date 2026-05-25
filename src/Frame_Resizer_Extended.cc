@@ -38,20 +38,18 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if (  ev ->x > (GRIPPER + X_MIN_SPACE_BEFORE) &&
-			      ev ->x < (X_END - MIN_SIZE - BORDER * 2) &&
-			      ( ev ->x < USED_START || USED == 0 )
-			   )
+			if ((GRIPPER + m_x_min_space_before) < ev->x && ev->x < (X_END - MIN_SIZE - BORDER * 2) &&
+			    (ev->x < USED_START || USED == 0)                                                     )
 			{
 				X_START = static_cast<int>( ev ->x ) ;
 				
 				signal_resize .emit( X_START - GRIPPER, X_END - GRIPPER - BORDER * 2, ARROW_LEFT ) ; 
 			}
-			else if ( ev ->x <= (GRIPPER + X_MIN_SPACE_BEFORE) )
+			else if (ev->x <= (GRIPPER + m_x_min_space_before))
 			{
-				if ( X_START > (GRIPPER + X_MIN_SPACE_BEFORE) )
+				if (X_START > (GRIPPER + m_x_min_space_before))
 				{
-					X_START = GRIPPER + X_MIN_SPACE_BEFORE ;
+					X_START = GRIPPER + m_x_min_space_before;
 
 					signal_resize .emit( X_START - GRIPPER,
 							     X_END - GRIPPER - BORDER * 2,
