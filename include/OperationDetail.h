@@ -23,6 +23,7 @@
 
 #include <ctime>
 #include <glibmm/ustring.h>
+#include <memory>
 #include <sigc++/connection.h>
 #include <sigc++/signal.h>
 #include <sigc++/slot.h>
@@ -104,8 +105,8 @@ public:
 	Glib::ustring get_elapsed_time() const ;
 	
 	void add_child( const OperationDetail & operationdetail ) ;
-	std::vector<OperationDetail*>& get_children();
-	const std::vector<OperationDetail*>& get_children() const;
+	std::vector<std::unique_ptr<OperationDetail>>& get_children();
+	const std::vector<std::unique_ptr<OperationDetail>>& get_children() const;
 	OperationDetail & get_last_child() ;
 	void run_progressbar(double progress, double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_TIME_REMAINING);
 	void stop_progressbar();
@@ -141,7 +142,7 @@ private:
 	                              // Disallow adding more children to ensure captured errors
 	                              // remain the last child of this operation detail.
 	bool                          m_no_more_children = false;
-	std::vector<OperationDetail*> m_sub_details;
+	std::vector<std::unique_ptr<OperationDetail>> m_sub_details;
 
 	sigc::connection cancelconnection;
 };

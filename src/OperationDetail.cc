@@ -33,6 +33,7 @@
 #include <glibmm/ustring.h>
 #include <gtkmm/main.h>
 #include <iostream>
+#include <memory>
 #include <sigc++/bind.h>
 #include <sigc++/connection.h>
 #include <sigc++/signal.h>
@@ -117,11 +118,7 @@ OperationDetail::OperationDetail(const Glib::ustring& description, OperationDeta
 OperationDetail::~OperationDetail()
 {
 	cancelconnection.disconnect();
-	while (m_sub_details.size())
-	{
-		delete m_sub_details.back();
-		m_sub_details.pop_back();
-	}
+	m_sub_details.clear();
 }
 
 
@@ -247,13 +244,13 @@ void OperationDetail::add_child( const OperationDetail & operationdetail )
 }
 
 
-std::vector<OperationDetail*>& OperationDetail::get_children()
+std::vector<std::unique_ptr<OperationDetail>>& OperationDetail::get_children()
 {
 	return m_sub_details;
 }
 
 
-const std::vector<OperationDetail*>& OperationDetail::get_children() const
+const std::vector<std::unique_ptr<OperationDetail>>& OperationDetail::get_children() const
 {
 	return m_sub_details;
 }
@@ -360,16 +357,30 @@ const Glib::ustring& OperationDetail::get_command_error()
 
 void OperationDetail::add_child_implement( const OperationDetail & operationdetail )
 {
-	m_sub_details.push_back(new OperationDetail(operationdetail));
+	// This function deals with 3 OperationDetail objects: *this (the parent), *child
+	// (newly created) and operationdetail (passed argument).  Shout by using "this->"
+	// when dealing with the parent.
 
-	m_sub_details.back()->set_treepath(m_treepath + ":" + Utils::num_to_str(m_sub_details.size() - 1));
-	m_sub_details.back()->signal_update.connect(sigc::mem_fun(this, &OperationDetail::on_update));
-	m_sub_details.back()->cancelconnection = signal_cancel.connect(
-				sigc::mem_fun(m_sub_details.back(), &OperationDetail::cancel));
-	if (m_cancelflag)
-		m_sub_details.back()->cancel(m_cancelflag == 2);
-	m_sub_details.back()->signal_capture_errors.connect(this->signal_capture_errors);
-	on_update(*m_sub_details.back());
+	// Create new default constructed OperationDetail object and attach as child of
+	// this object with unique_ptr.  Implicit move of unique_ptr by push_back().
+	this->m_sub_details.push_back(std::make_unique<OperationDetail>());
+
+	// Populate all necessary members of the new child OperationDetail object.
+	OperationDetail* child = this->m_sub_details.back().get();
+	child->signal_update.connect(sigc::mem_fun(this, &OperationDetail::on_update));
+	child->signal_capture_errors.connect(this->signal_capture_errors);
+	if (this->m_cancelflag)
+		child->cancel(this->m_cancelflag == 2);
+	child->m_description      = operationdetail.m_description;
+	child->m_status           = operationdetail.m_status;
+	child->m_treepath         = this->m_treepath + ":" + Utils::num_to_str(this->m_sub_details.size() - 1);
+	child->m_time_start       = operationdetail.m_time_start;
+	child->m_time_elapsed     = operationdetail.m_time_elapsed;
+	child->m_no_more_children = operationdetail.m_no_more_children;
+	child->cancelconnection   = this->signal_cancel.connect(
+	                                sigc::mem_fun(child, &OperationDetail::cancel));
+
+	on_update(*child);
 }
 
 
@@ -436,12 +447,12 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	errorcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
 	cmd_operationdetail.add_child(OperationDetail(cmd_status.output, STATUS_NONE, FONT_MONOSPACE));
 	cmd_operationdetail.add_child(OperationDetail(cmd_status.error, STATUS_NONE, FONT_MONOSPACE));
-	std::vector<OperationDetail*>& children = cmd_operationdetail.get_children();
+	std::vector<std::unique_ptr<OperationDetail>>& children = cmd_operationdetail.get_children();
 	outputcapture.signal_update.connect(sigc::bind(sigc::ptr_fun(update_command_output),
-	                                               children[children.size() - 2],
+	                                               children[children.size() - 2].get(),
 	                                               &cmd_status.output));
 	errorcapture.signal_update.connect(sigc::bind(sigc::ptr_fun(update_command_output),
-	                                              children[children.size() - 1],
+	                                              children[children.size() - 1].get(),
 	                                              &cmd_status.error));
 	sigc::connection timed_conn;
 	if (flags & EXEC_PROGRESS_STDOUT && ! stream_progress_slot.empty())
