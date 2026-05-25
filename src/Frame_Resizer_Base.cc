@@ -263,7 +263,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		
 		else if ( GRIP_MOVE )
 		{
-			int temp_x = m_x_start + static_cast<int>(ev->x - X_START_MOVE);
+			int temp_x = m_x_start + static_cast<int>(ev->x - m_x_start_move);
 			int temp_y = m_x_end - m_x_start;
 
 			if (temp_x            > (GRIPPER + m_x_min_space_before) &&
@@ -289,7 +289,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 				}
 			}
 
-			X_START_MOVE = static_cast<int>( ev ->x ) ;
+			m_x_start_move = static_cast<int>(ev->x);
 			signal_move.emit(m_x_start - GRIPPER,
 			                 m_x_end - GRIPPER - BORDER * 2);
 		}
@@ -351,7 +351,7 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 		 m_x_start <= ev->x && ev->x <= m_x_end   )
 	{
 		 GRIP_MOVE = true ;
-		 X_START_MOVE = static_cast<int>( ev ->x );
+		 m_x_start_move = static_cast<int>(ev->x);
 	}
 
 	return true;
