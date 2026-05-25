@@ -38,13 +38,13 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if ((GRIPPER + m_x_min_space_before) < ev->x && ev->x < (X_END - MIN_SIZE - BORDER * 2) &&
-			    (ev->x < USED_START || USED == 0)                                                     )
+			if ((GRIPPER + m_x_min_space_before) < ev->x && ev->x < (m_x_end - MIN_SIZE - BORDER * 2) &&
+			    (ev->x < USED_START || USED == 0)                                                       )
 			{
 				m_x_start = static_cast<int>(ev->x);
 
 				signal_resize.emit(m_x_start - GRIPPER,
-				                   X_END - GRIPPER - BORDER * 2,
+				                   m_x_end - GRIPPER - BORDER * 2,
 				                   ARROW_LEFT);
 			}
 			else if (ev->x <= (GRIPPER + m_x_min_space_before))
@@ -54,7 +54,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					m_x_start = GRIPPER + m_x_min_space_before;
 
 					signal_resize.emit(m_x_start - GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_LEFT);
 				}
 			}
@@ -66,18 +66,18 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 
 					//+1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER +1,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_LEFT);
 				}
 			}
-			else if ( USED == 0 && ev ->x >= (X_END - MIN_SIZE - BORDER * 2) )
+			else if (USED == 0 && ev->x >= (m_x_end - MIN_SIZE - BORDER * 2))
 			{
-				if (m_x_start < (X_END - BORDER * 2))
+				if (m_x_start < (m_x_end - BORDER * 2))
 				{
-					m_x_start = X_END - MIN_SIZE - BORDER * 2;
+					m_x_start = m_x_end - MIN_SIZE - BORDER * 2;
 
 					signal_resize.emit(m_x_start - GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_LEFT);
 				}
 			}
@@ -87,43 +87,43 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			if ((m_x_start + MIN_SIZE + BORDER * 2) < ev->x && ev->x < (WIDTH + GRIPPER + BORDER * 2) &&
 			    (ev->x > (USED_START + USED + BORDER * 2) || USED == 0)                                 )
 			{
-				X_END = static_cast<int>( ev ->x ) ;
+				m_x_end = static_cast<int>(ev->x);
 
 				signal_resize.emit(m_x_start - GRIPPER,
-				                   X_END - GRIPPER - BORDER * 2,
+				                   m_x_end - GRIPPER - BORDER * 2,
 				                   ARROW_RIGHT);
 			}
 			else if (ev->x >= WIDTH + GRIPPER + BORDER * 2)
 			{
-				if (X_END < WIDTH + GRIPPER + BORDER * 2)
+				if (m_x_end < (WIDTH + GRIPPER + BORDER * 2))
 				{
-					X_END = WIDTH + GRIPPER + BORDER * 2;
+					m_x_end = WIDTH + GRIPPER + BORDER * 2;
 
 					signal_resize.emit(m_x_start - GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_RIGHT);
 				}
 			}
 			else if ( USED != 0 && ev ->x <= USED_START + USED + BORDER *2 )
 			{
-				if ( X_END > USED_START + USED + BORDER *2 )
+				if (m_x_end > (USED_START + USED + BORDER * 2))
 				{
-					X_END = USED_START + USED + BORDER *2 ;
+					m_x_end = USED_START + USED + BORDER * 2;
 
 					//-1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2 - 1,
+					                   m_x_end - GRIPPER - BORDER * 2 - 1,
 					                   ARROW_RIGHT);
 				}
 			}
 			else if (USED == 0 && ev->x <= (m_x_start + MIN_SIZE + BORDER * 2))
 			{
-				if (X_END > (m_x_start + MIN_SIZE + BORDER * 2))
+				if (m_x_end > (m_x_start + MIN_SIZE + BORDER * 2))
 				{
-					X_END = m_x_start + MIN_SIZE + BORDER * 2;
+					m_x_end = m_x_start + MIN_SIZE + BORDER * 2;
 
 					signal_resize.emit(m_x_start - GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_RIGHT);
 				}
 			}
@@ -143,10 +143,8 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
 		//right grip
-		else if (  ev ->x >= X_END &&
-			   ev ->x <= X_END + GRIPPER &&
-			   ev ->y >= 5 &&
-			   ev ->y <= 45 ) 
+		else if (m_x_end <= ev->x && ev->x <= (m_x_end + GRIPPER) &&
+			 5       <= ev->y && ev->y <= 45                    )
 		{
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
@@ -174,7 +172,7 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 	//
 	//                        |<-- USED -->|
 	//            /\         /\                     /\.
-	//             m_x_start  USED_START             X_END
+	//             m_x_start  USED_START             m_x_end
 	// Legend:
 	//                - Unallocated space.  Shares portion of WIDTH (500 pixels).
 	//     .          - Light grey gripper landing area at each end.  GRIPPER (10)
@@ -186,7 +184,7 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 	//                  portion of WIDTH (500 pixels).
 	//     m_x_start  - Pixel X-position to start of partition with widget.
 	//     USED_START - Pixel X-position to start of used space within widget.
-	//     X_END      - Pixel X-position to end of partition with widget.
+	//     m_x_end    - Pixel X-position to end of partition with widget.
 
 	// Background color
 	Gdk::Cairo::set_source_rgba(cr, m_color_background);
@@ -202,12 +200,12 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 
 	// Partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
-	cr->rectangle(m_x_start, 0, X_END - m_x_start, HEIGHT);
+	cr->rectangle(m_x_start, 0, m_x_end - m_x_start, HEIGHT);
 	cr->fill();
 
 	// Unallocated space filling extended partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_background);
-	cr->rectangle(m_x_start + BORDER, BORDER, X_END - m_x_start - BORDER * 2, HEIGHT - BORDER * 2);
+	cr->rectangle(m_x_start + BORDER, BORDER, m_x_end - m_x_start - BORDER * 2, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Used

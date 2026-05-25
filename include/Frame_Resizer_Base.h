@@ -68,9 +68,9 @@ protected:
 
 	int  m_x_min_space_before = 0;
 	int  m_x_start            = 0;
+	int  m_x_end              = 0;
 	int  USED               = 0;
 	int  UNUSED             = 0;
-	int  X_END              = 0;
 	int  X_START_MOVE       = 0;
 	int  MIN_SIZE           = 0;
 	int  MAX_SIZE           = 0;

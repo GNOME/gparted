@@ -93,8 +93,9 @@ void Frame_Resizer_Base::set_x_min_space_before( int x_min_space_before )
 
 void Frame_Resizer_Base::set_x_end( int x_end ) 
 { 
-	this ->X_END = x_end + GRIPPER + BORDER * 2 ; 
+	m_x_end = x_end + GRIPPER + BORDER * 2;
 }
+
 
 void Frame_Resizer_Base::set_used( int used )
 {   
@@ -128,7 +129,7 @@ int Frame_Resizer_Base::get_x_start()
 
 int Frame_Resizer_Base::get_x_end() 
 {
-	return X_END - GRIPPER - BORDER * 2 ;
+	return m_x_end - GRIPPER - BORDER * 2;
 }
 
 
@@ -157,51 +158,51 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if (ev->x > (GRIPPER + m_x_min_space_before)                 &&
-			    MIN_SIZE < (X_END - ev->x) && (X_END - ev->x) < MAX_SIZE   )
+			if (ev->x > (GRIPPER + m_x_min_space_before)                     &&
+			    MIN_SIZE < (m_x_end - ev->x) && (m_x_end - ev->x) < MAX_SIZE   )
 			{
 				m_x_start = static_cast<int>(ev->x);
 
 				signal_resize.emit(m_x_start - GRIPPER,
-				                   X_END - GRIPPER - 2 * BORDER,
+				                   m_x_end - GRIPPER - 2 * BORDER,
 				                   ARROW_LEFT);
 			}
-			else if ( X_END - ev ->x >= MAX_SIZE )
+			else if ((m_x_end - ev ->x) >= MAX_SIZE)
 			{
-				if ((X_END - m_x_start) < MAX_SIZE)
+				if ((m_x_end - m_x_start) < MAX_SIZE)
 				{
-					m_x_start = X_END - MAX_SIZE;
+					m_x_start = m_x_end - MAX_SIZE;
 
 					if (m_x_start < (GRIPPER + m_x_min_space_before))
 						m_x_start = GRIPPER + m_x_min_space_before;
 
 					//-1 to force the spinbutton to its max.
 					signal_resize.emit(m_x_start - GRIPPER - 1,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_LEFT);
 				}
 			}
 			else if (ev->x <= (GRIPPER + m_x_min_space_before))
 			{
-				if (m_x_start           > (GRIPPER + m_x_min_space_before) &&
-				    (X_END - m_x_start) < MAX_SIZE                           )
+				if (m_x_start             > (GRIPPER + m_x_min_space_before) &&
+				    (m_x_end - m_x_start) < MAX_SIZE                           )
 				{
 					m_x_start = GRIPPER + m_x_min_space_before;
 
 					signal_resize.emit(m_x_start - GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_LEFT);
 				}
 			}
-			else if ( X_END - ev ->x <= MIN_SIZE )
+			else if ((m_x_end - ev->x) <= MIN_SIZE)
 			{
-				if ((X_END - m_x_start) > MIN_SIZE)
+				if ((m_x_end - m_x_start) > MIN_SIZE)
 				{
-					m_x_start = X_END - MIN_SIZE;
+					m_x_start = m_x_end - MIN_SIZE;
 
 					//+1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER +1,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_LEFT);
 				}
 			}
@@ -212,48 +213,48 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			if (ev->x < (WIDTH + GRIPPER + BORDER * 2)                           &&
 			    MIN_SIZE < (ev->x - m_x_start) && (ev->x - m_x_start < MAX_SIZE)   )
 			{
-				X_END = static_cast<int>( ev ->x ) ;
+				m_x_end = static_cast<int>(ev->x);
 
 				signal_resize.emit(m_x_start - GRIPPER,
-				                   X_END - GRIPPER - BORDER * 2,
+				                   m_x_end - GRIPPER - BORDER * 2,
 				                   ARROW_RIGHT);
 			}
 			else if ((ev->x - m_x_start) >= MAX_SIZE)
 			{
-				if ((X_END - m_x_start) < MAX_SIZE)
+				if ((m_x_end - m_x_start) < MAX_SIZE)
 				{
-					X_END = m_x_start + MAX_SIZE;
+					m_x_end = m_x_start + MAX_SIZE;
 
-					if (X_END > WIDTH + GRIPPER + BORDER * 2)
-						X_END = WIDTH + GRIPPER + BORDER * 2;
+					if (m_x_end > (WIDTH + GRIPPER + BORDER * 2))
+						m_x_end = WIDTH + GRIPPER + BORDER * 2;
 
 					//+1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2 + 1,
+					                   m_x_end - GRIPPER - BORDER * 2 + 1,
 					                   ARROW_RIGHT);
 				}
 			}
 			else if (ev->x >= WIDTH + GRIPPER + BORDER * 2)
 			{
-				if (X_END               < (WIDTH + GRIPPER + BORDER * 2) &&
-				    (X_END - m_x_start) < MAX_SIZE                         )
+				if (m_x_end               < (WIDTH + GRIPPER + BORDER * 2) &&
+				    (m_x_end - m_x_start) < MAX_SIZE                         )
 				{
-					X_END = WIDTH + GRIPPER + BORDER * 2;
+					m_x_end = WIDTH + GRIPPER + BORDER * 2;
 
 					signal_resize.emit(m_x_start -GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2,
+					                   m_x_end - GRIPPER - BORDER * 2,
 					                   ARROW_RIGHT);
 				}
 			}
 			else if ((ev->x - m_x_start) <= MIN_SIZE)
 			{
-				if ((X_END - m_x_start) > MIN_SIZE)
+				if ((m_x_end - m_x_start) > MIN_SIZE)
 				{
-					X_END = m_x_start + MIN_SIZE;
+					m_x_end = m_x_start + MIN_SIZE;
 
 					//-1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER,
-					                   X_END - GRIPPER - BORDER * 2 - 1,
+					                   m_x_end - GRIPPER - BORDER * 2 - 1,
 					                   ARROW_RIGHT);
 				}
 			}
@@ -262,34 +263,34 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		else if ( GRIP_MOVE )
 		{
 			int temp_x = m_x_start + static_cast<int>(ev->x - X_START_MOVE);
-			int temp_y = X_END - m_x_start;
+			int temp_y = m_x_end - m_x_start;
 
 			if (temp_x            > (GRIPPER + m_x_min_space_before) &&
 			    (temp_x + temp_y) < (WIDTH + GRIPPER + BORDER * 2)     )
 			{
 				m_x_start = temp_x;
-				X_END = m_x_start + temp_y;
+				m_x_end = m_x_start + temp_y;
 			}
 			else if (temp_x <= (GRIPPER + m_x_min_space_before))
 			{
 				if (m_x_start > (GRIPPER + m_x_min_space_before))
 				{
 					m_x_start = GRIPPER + m_x_min_space_before;
-					X_END = m_x_start + temp_y;
+					m_x_end = m_x_start + temp_y;
 				}
 			}
 			else if (temp_x + temp_y >= WIDTH + GRIPPER + BORDER * 2)
 			{
-				if (X_END < WIDTH + GRIPPER + BORDER * 2)
+				if (m_x_end < (WIDTH + GRIPPER + BORDER * 2))
 				{
-					X_END = WIDTH + GRIPPER + BORDER * 2;
-					m_x_start = X_END - temp_y;
+					m_x_end = WIDTH + GRIPPER + BORDER * 2;
+					m_x_start = m_x_end - temp_y;
 				}
 			}
 
 			X_START_MOVE = static_cast<int>( ev ->x ) ;
 			signal_move.emit(m_x_start - GRIPPER,
-			                 X_END - GRIPPER - BORDER * 2);
+			                 m_x_end - GRIPPER - BORDER * 2);
 		}
 
 		redraw();
@@ -305,16 +306,14 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
 		//right grip
-		else if ( ev ->x >= X_END &&
-			  ev ->x <= X_END + GRIPPER &&
-			  ev ->y >= 5 && 
-			  ev ->y <= 45 )
+		else if (m_x_end <= ev->x && ev->x <= (m_x_end + GRIPPER) &&
+			 5       <= ev->y && ev->y <= 45                    )
 		{
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_resize);
 		}
 		//move grip
-		else if (! m_fixed_start                      &&
-			 m_x_start <= ev->x && ev->x <= X_END   )
+		else if (! m_fixed_start                        &&
+			 m_x_start <= ev->x && ev->x <= m_x_end   )
 		{
 			m_drawingarea.get_parent_window()->set_cursor(m_cursor_move);
 		}
@@ -341,16 +340,14 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 		GRIP_LEFT = true ;
 	}
 	//right grip
-	else if ( ev ->x >= X_END && 
-		  ev ->x <= X_END + GRIPPER && 
-		  ev ->y >= 5 && 
-		  ev ->y <= 45 ) 
+	else if (m_x_end <= ev->x && ev->x <= (m_x_end + GRIPPER) &&
+		 5       <= ev->y && ev->y <= 45                    )
 	{
 		GRIP_RIGHT = true ;
 	}
 	//move grip
-	else if (! m_fixed_start                      &&
-		 m_x_start <= ev->x && ev->x <= X_END   )
+	else if (! m_fixed_start                        &&
+		 m_x_start <= ev->x && ev->x <= m_x_end   )
 	{
 		 GRIP_MOVE = true ;
 		 X_START_MOVE = static_cast<int>( ev ->x );
@@ -379,7 +376,7 @@ bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 
 void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	UNUSED = X_END - m_x_start - BORDER * 2 - USED;
+	UNUSED = m_x_end - m_x_start - BORDER * 2 - USED;
 	if ( UNUSED < 0 )
 		UNUSED = 0 ;
 
@@ -394,7 +391,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	//
 	//               |<-- USED -->||<-- UNUSED -->|
 	//            /\                                /\.
-	//             m_x_start                         X_END
+	//             m_x_start                         m_x_end
 	// Legend:
 	//                - Unallocated space.  Shares portion of WIDTH (500 pixels).
 	//     .          - Light grey gripper landing area at each end.  GRIPPER (10)
@@ -407,7 +404,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 	//     0 / UNUSED - Unused space within partition.  UNUSED pixels wide.  Shares
 	//                  portion of WIDTH (500 pixels).
 	//     m_x_start  - Pixel X-position to start of partition with widget.
-	//     X_END      - Pixel X-position to end of partition with widget.
+	//     m_x_end    - Pixel X-position to end of partition with widget.
 
 	// Background color
 	Gdk::Cairo::set_source_rgba(cr, m_color_background);
@@ -423,7 +420,7 @@ void Frame_Resizer_Base::draw_partition(const Cairo::RefPtr<Cairo::Context>& cr)
 
 	// Partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_partition);
-	cr->rectangle(m_x_start, 0, X_END - m_x_start, HEIGHT);
+	cr->rectangle(m_x_start, 0, m_x_end - m_x_start, HEIGHT);
 	cr->fill();
 
 	// Used
@@ -454,14 +451,14 @@ void Frame_Resizer_Base::draw_resize_grip(const Cairo::RefPtr<Cairo::Context>& c
 	}
 	else
 	{
-		m_arrow_points[0].set_x(X_END);
-		m_arrow_points[1].set_x(X_END + GRIPPER);
-		m_arrow_points[2].set_x(X_END);
+		m_arrow_points[0].set_x(m_x_end);
+		m_arrow_points[1].set_x(m_x_end + GRIPPER);
+		m_arrow_points[2].set_x(m_x_end);
 	}
 
 	// Attach resize arrows to the partition
 	Gdk::Cairo::set_source_rgba(cr, m_color_arrow_rectangle);
-	cr->rectangle((arrow_type == ARROW_LEFT ? m_x_start - GRIPPER : X_END) + 0.5,
+	cr->rectangle((arrow_type == ARROW_LEFT ? m_x_start - GRIPPER : m_x_end) + 0.5,
 	              5 + 0.5,
 	              9,
 	              40);
