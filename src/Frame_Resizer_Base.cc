@@ -112,7 +112,7 @@ void Frame_Resizer_Base::set_fixed_start( bool fixed_start )
 void Frame_Resizer_Base::set_size_limits( int min_size, int max_size )
 {
 	m_min_size = min_size + BORDER * 2;
-	this ->MAX_SIZE = max_size + BORDER * 2 ;
+	m_max_size = max_size + BORDER * 2;
 }
 
 
@@ -159,8 +159,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if (ev->x > (GRIPPER + m_x_min_space_before)                       &&
-			    m_min_size < (m_x_end - ev->x) && (m_x_end - ev->x) < MAX_SIZE   )
+			if (ev->x > (GRIPPER + m_x_min_space_before)                         &&
+			    m_min_size < (m_x_end - ev->x) && (m_x_end - ev->x) < m_max_size   )
 			{
 				m_x_start = static_cast<int>(ev->x);
 
@@ -168,11 +168,11 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 				                   m_x_end - GRIPPER - 2 * BORDER,
 				                   ARROW_LEFT);
 			}
-			else if ((m_x_end - ev ->x) >= MAX_SIZE)
+			else if ((m_x_end - ev ->x) >= m_max_size)
 			{
-				if ((m_x_end - m_x_start) < MAX_SIZE)
+				if ((m_x_end - m_x_start) < m_max_size)
 				{
-					m_x_start = m_x_end - MAX_SIZE;
+					m_x_start = m_x_end - m_max_size;
 
 					if (m_x_start < (GRIPPER + m_x_min_space_before))
 						m_x_start = GRIPPER + m_x_min_space_before;
@@ -186,7 +186,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			else if (ev->x <= (GRIPPER + m_x_min_space_before))
 			{
 				if (m_x_start             > (GRIPPER + m_x_min_space_before) &&
-				    (m_x_end - m_x_start) < MAX_SIZE                           )
+				    (m_x_end - m_x_start) < m_max_size                         )
 				{
 					m_x_start = GRIPPER + m_x_min_space_before;
 
@@ -211,8 +211,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 
 		else if ( GRIP_RIGHT )
 		{
-			if (ev->x < (WIDTH + GRIPPER + BORDER * 2)                             &&
-			    m_min_size < (ev->x - m_x_start) && (ev->x - m_x_start < MAX_SIZE)   )
+			if (ev->x < (WIDTH + GRIPPER + BORDER * 2)                               &&
+			    m_min_size < (ev->x - m_x_start) && (ev->x - m_x_start < m_max_size)   )
 			{
 				m_x_end = static_cast<int>(ev->x);
 
@@ -220,11 +220,11 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 				                   m_x_end - GRIPPER - BORDER * 2,
 				                   ARROW_RIGHT);
 			}
-			else if ((ev->x - m_x_start) >= MAX_SIZE)
+			else if ((ev->x - m_x_start) >= m_max_size)
 			{
-				if ((m_x_end - m_x_start) < MAX_SIZE)
+				if ((m_x_end - m_x_start) < m_max_size)
 				{
-					m_x_end = m_x_start + MAX_SIZE;
+					m_x_end = m_x_start + m_max_size;
 
 					if (m_x_end > (WIDTH + GRIPPER + BORDER * 2))
 						m_x_end = WIDTH + GRIPPER + BORDER * 2;
@@ -238,7 +238,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			else if (ev->x >= WIDTH + GRIPPER + BORDER * 2)
 			{
 				if (m_x_end               < (WIDTH + GRIPPER + BORDER * 2) &&
-				    (m_x_end - m_x_start) < MAX_SIZE                         )
+				    (m_x_end - m_x_start) < m_max_size                       )
 				{
 					m_x_end = WIDTH + GRIPPER + BORDER * 2;
 
