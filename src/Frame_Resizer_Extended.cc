@@ -27,9 +27,9 @@ namespace GParted
 void Frame_Resizer_Extended::set_used_start( int used_start ) 
 {
 	if ( used_start <= 0 )
-		USED_START = GRIPPER ;
+		m_used_start = GRIPPER;
 	else
-		USED_START = used_start + GRIPPER ;
+		m_used_start = used_start + GRIPPER;
 }
 
 bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev ) 
@@ -39,7 +39,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		if (m_grip_left)
 		{
 			if ((GRIPPER + m_x_min_space_before) < ev->x && ev->x < (m_x_end - m_min_size - BORDER * 2) &&
-			    (ev->x < USED_START || m_used == 0)                                                       )
+			    (ev->x < m_used_start || m_used == 0)                                                     )
 			{
 				m_x_start = static_cast<int>(ev->x);
 
@@ -58,11 +58,11 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_LEFT);
 				}
 			}
-			else if (m_used != 0 && ev->x >= USED_START)
+			else if (m_used != 0 && ev->x >= m_used_start)
 			{
-				if (m_x_start < USED_START)
+				if (m_x_start < m_used_start)
 				{
-					m_x_start = USED_START;
+					m_x_start = m_used_start;
 
 					//+1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER +1,
@@ -85,7 +85,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		else if (m_grip_right)
 		{
 			if ((m_x_start + m_min_size + BORDER * 2) < ev->x && ev->x < (WIDTH + GRIPPER + BORDER * 2) &&
-			    (ev->x > (USED_START + m_used + BORDER * 2) || m_used == 0)                               )
+			    (ev->x > (m_used_start + m_used + BORDER * 2) || m_used == 0)                             )
 			{
 				m_x_end = static_cast<int>(ev->x);
 
@@ -104,11 +104,11 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					                   ARROW_RIGHT);
 				}
 			}
-			else if (m_used != 0 && ev->x <= (USED_START + m_used + BORDER * 2))
+			else if (m_used != 0 && ev->x <= (m_used_start + m_used + BORDER * 2))
 			{
-				if (m_x_end > (USED_START + m_used + BORDER * 2))
+				if (m_x_end > (m_used_start + m_used + BORDER * 2))
 				{
-					m_x_end = USED_START + m_used + BORDER * 2;
+					m_x_end = m_used_start + m_used + BORDER * 2;
 
 					//-1 to force the spinbutton to its min.
 					signal_resize.emit(m_x_start - GRIPPER,
@@ -172,19 +172,19 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 	//
 	//                        |<- m_used ->|
 	//            /\         /\                     /\.
-	//             m_x_start  USED_START             m_x_end
+	//             m_x_start  m_used_start           m_x_end
 	// Legend:
-	//                - Unallocated space.  Shares portion of WIDTH (500 pixels).
-	//     .          - Light grey gripper landing area at each end.  GRIPPER (10)
-	//                  pixels wide.
-	//     <          - Left arrow.  GRIPPER (10 pixels) wide at start of partition.
-	//     >          - Right arrow.  GRIPPER (10 pixels) wide at end of partition.
-	//     #          - Partition border.  BORDER (8 pixels) wide around partition.
-	//     1 / m_used - Used space within partition.  m_used pixels wide.  Shares
-	//                  portion of WIDTH (500 pixels).
-	//     m_x_start  - Pixel X-position to start of partition with widget.
-	//     USED_START - Pixel X-position to start of used space within widget.
-	//     m_x_end    - Pixel X-position to end of partition with widget.
+	//                  - Unallocated space.  Shares portion of WIDTH (500 pixels).
+	//     .            - Light grey gripper landing area at each end.  GRIPPER (10)
+	//                    pixels wide.
+	//     <            - Left arrow.  GRIPPER (10 pixels) wide at start of partition.
+	//     >            - Right arrow.  GRIPPER (10 pixels) wide at end of partition.
+	//     #            - Partition border.  BORDER (8 pixels) wide around partition.
+	//     1 / m_used   - Used space within partition.  m_used pixels wide.  Shares
+	//                    portion of WIDTH (500 pixels).
+	//     m_x_start    - Pixel X-position to start of partition with widget.
+	//     m_used_start - Pixel X-position to start of used space within widget.
+	//     m_x_end      - Pixel X-position to end of partition with widget.
 
 	// Background color
 	Gdk::Cairo::set_source_rgba(cr, m_color_background);
@@ -210,7 +210,7 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 
 	// Used
 	Gdk::Cairo::set_source_rgba(cr, m_color_used);
-	cr->rectangle(USED_START + BORDER, BORDER, m_used, HEIGHT - BORDER * 2);
+	cr->rectangle(m_used_start + BORDER, BORDER, m_used, HEIGHT - BORDER * 2);
 	cr->fill();
 
 	// Resize grips
