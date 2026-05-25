@@ -155,9 +155,9 @@ bool Frame_Resizer_Base::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Context>
 
 bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev ) 
 {
-	if ( GRIP_LEFT || GRIP_RIGHT || GRIP_MOVE ) 
+	if (m_grip_left || m_grip_right || m_grip_move)
 	{
-		if ( GRIP_LEFT )
+		if (m_grip_left)
 		{
 			if (ev->x > (GRIPPER + m_x_min_space_before)                         &&
 			    m_min_size < (m_x_end - ev->x) && (m_x_end - ev->x) < m_max_size   )
@@ -209,7 +209,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			}
 		}
 
-		else if ( GRIP_RIGHT )
+		else if (m_grip_right)
 		{
 			if (ev->x < (WIDTH + GRIPPER + BORDER * 2)                               &&
 			    m_min_size < (ev->x - m_x_start) && (ev->x - m_x_start < m_max_size)   )
@@ -261,7 +261,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			}
 		}
 		
-		else if ( GRIP_MOVE )
+		else if (m_grip_move)
 		{
 			int temp_x = m_x_start + static_cast<int>(ev->x - m_x_start_move);
 			int temp_y = m_x_end - m_x_start;
@@ -331,26 +331,28 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 
 bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev ) 
 {
-	GRIP_LEFT = GRIP_RIGHT = GRIP_MOVE = false;
-	
+	m_grip_left  = false;
+	m_grip_right = false;
+	m_grip_move  = false;
+
 	//left grip
 	if (! m_fixed_start                                      &&
 	    (m_x_start - GRIPPER) <= ev->x && ev->x <= m_x_start &&
 	    5                     <= ev->y && ev->y <= 45          )
 	{
-		GRIP_LEFT = true ;
+		m_grip_left = true;
 	}
 	//right grip
 	else if (m_x_end <= ev->x && ev->x <= (m_x_end + GRIPPER) &&
 		 5       <= ev->y && ev->y <= 45                    )
 	{
-		GRIP_RIGHT = true ;
+		m_grip_right = true;
 	}
 	//move grip
 	else if (! m_fixed_start                        &&
 		 m_x_start <= ev->x && ev->x <= m_x_end   )
 	{
-		 GRIP_MOVE = true ;
+		 m_grip_move = true;
 		 m_x_start_move = static_cast<int>(ev->x);
 	}
 
@@ -360,15 +362,17 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 
 bool Frame_Resizer_Base::drawingarea_on_button_release_event( GdkEventButton *ev ) 
 {
-	GRIP_LEFT = GRIP_RIGHT = GRIP_MOVE = false;
-	
+	m_grip_left  = false;
+	m_grip_right = false;
+	m_grip_move  = false;
+
 	return true;
 }
 
 
 bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 {
-	if ( ev ->mode != GDK_CROSSING_GRAB && ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE ) 
+	if (ev->mode != GDK_CROSSING_GRAB && ! m_grip_left && ! m_grip_right && ! m_grip_move)
 		m_drawingarea.get_parent_window()->set_cursor();
 
 	return true;

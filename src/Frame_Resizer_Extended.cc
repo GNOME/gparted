@@ -34,9 +34,9 @@ void Frame_Resizer_Extended::set_used_start( int used_start )
 
 bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev ) 
 {
-	if ( GRIP_LEFT || GRIP_RIGHT ) 
+	if (m_grip_left || m_grip_right)
 	{
-		if ( GRIP_LEFT )
+		if (m_grip_left)
 		{
 			if ((GRIPPER + m_x_min_space_before) < ev->x && ev->x < (m_x_end - m_min_size - BORDER * 2) &&
 			    (ev->x < USED_START || m_used == 0)                                                       )
@@ -82,7 +82,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 				}
 			}
 		}
-		else if ( GRIP_RIGHT )
+		else if (m_grip_right)
 		{
 			if ((m_x_start + m_min_size + BORDER * 2) < ev->x && ev->x < (WIDTH + GRIPPER + BORDER * 2) &&
 			    (ev->x > (USED_START + m_used + BORDER * 2) || m_used == 0)                               )
