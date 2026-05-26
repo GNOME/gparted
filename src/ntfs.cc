@@ -218,11 +218,11 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 
 	// Real resize
 	operationdetail.add_child( OperationDetail( _("real resize") ) );
-	child_od = operationdetail.get_last_child();
-	success = ! child_od.execute_command(cmd + " " + Glib::shell_quote(partition_new.get_path()),
+	OperationDetail& child2_od = operationdetail.get_last_child();
+	success = ! child2_od.execute_command(cmd + " " + Glib::shell_quote(partition_new.get_path()),
 	                        EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
 	                        static_cast<StreamSlot>(sigc::mem_fun(*this, &ntfs::resize_progress)));
-	child_od.set_success_and_capture_errors(success);
+	child2_od.set_success_and_capture_errors(success);
 	return success;
 }
 
