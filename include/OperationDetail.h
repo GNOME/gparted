@@ -90,7 +90,9 @@ public:
 	OperationDetail( const Glib::ustring & description,
 			 OperationDetailStatus status = STATUS_EXECUTE,
 			 Font font = FONT_NORMAL ) ;
+	OperationDetail& operator=(const OperationDetail& other) = delete;  // Copy assignment prohibited
 	~OperationDetail();
+
 	void set_description( const Glib::ustring & description, Font font = FONT_NORMAL ) ;
 	const Glib::ustring& get_description() const;
 	const Glib::ustring& get_grandchild_cmd_output_description() const;
