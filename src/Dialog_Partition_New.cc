@@ -39,11 +39,11 @@ namespace GParted
 {
 
 
-Dialog_Partition_New::Dialog_Partition_New( const Device & device,
-                                            const Partition & selected_partition,
-                                            bool any_extended,
-                                            unsigned short new_count,
-                                            const std::vector<FS> & FILESYSTEMS )
+Dialog_Partition_New::Dialog_Partition_New(const Device&          device,
+                                           const Partition&       selected_partition,
+                                           bool                   any_extended,
+                                           unsigned short         new_count,
+                                           const std::vector<FS>& all_filesystems)
  : Dialog_Base_Partition(device), m_new_count(new_count)
 {
 	/*TO TRANSLATORS: dialogtitle */
@@ -54,7 +54,7 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
 	//set used (in pixels)...
 	m_frame_resizer_base->set_used(0);
 
-	set_data(device, selected_partition, any_extended, FILESYSTEMS);
+	set_data(device, selected_partition, any_extended, all_filesystems);
 }
 
 
@@ -65,10 +65,11 @@ Dialog_Partition_New::~Dialog_Partition_New()
 	hide();
 }
 
+
 void Dialog_Partition_New::set_data(const Device&          device,
                                     const Partition&       selected_partition,
                                     bool                   any_extended,
-                                    const std::vector<FS>& FILESYSTEMS)
+                                    const std::vector<FS>& all_filesystems)
 {
 	m_new_partition.reset(selected_partition.clone());
 
@@ -77,12 +78,12 @@ void Dialog_Partition_New::set_data(const Device&          device,
 	// the file system menu built by build_filesystems_combo().
 
 	m_creatable_filesystems.clear();
-	for ( unsigned i = 0 ; i < FILESYSTEMS.size() ; i ++ )
+	for (unsigned i = 0; i < all_filesystems.size(); i++)
 	{
-		if (GParted_Core::supported_filesystem(FILESYSTEMS[i].fstype) &&
-		    FILESYSTEMS[i].fstype != FS_LUKS                            )
+		if (GParted_Core::supported_filesystem(all_filesystems[i].fstype) &&
+		    all_filesystems[i].fstype != FS_LUKS                            )
 		{
-			m_creatable_filesystems.push_back(FILESYSTEMS[i]);
+			m_creatable_filesystems.push_back(all_filesystems[i]);
 		}
 	}
 

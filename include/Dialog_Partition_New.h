@@ -38,11 +38,11 @@ namespace GParted
 class Dialog_Partition_New : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_New(const Device & device,
-	                     const Partition & selected_partition,
-	                     bool any_extended,
-	                     unsigned short new_count,
-	                     const std::vector<FS> & FILESYSTEMS );
+	Dialog_Partition_New(const Device&          device,
+	                     const Partition&       selected_partition,
+	                     bool                   any_extended,
+	                     unsigned short         new_count,
+	                     const std::vector<FS>& all_filesystems);
 	~Dialog_Partition_New();
 
 	Dialog_Partition_New(const Dialog_Partition_New& src) = delete;             // Copy construction prohibited
@@ -54,7 +54,7 @@ private:
 	void set_data(const Device&          device,
 	              const Partition&       partition,
 	              bool                   any_extended,
-	              const std::vector<FS>& FILESYSTEMS);
+	              const std::vector<FS>& all_filesystems);
 	void build_filesystems_combo(bool only_unformatted);
 	Byte_Value get_filesystem_min_limit( FSType fstype );
 
