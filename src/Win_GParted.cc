@@ -529,7 +529,7 @@ void Win_GParted::init_partition_menu()
 //Create the Partition --> Format to --> (file system list) menu
 Gtk::Menu * Win_GParted::create_format_menu()
 {
-	const std::vector<FS> & fss = gparted_core .get_filesystems() ;
+	const std::vector<FS>& fss = gparted_core.get_all_filesystems();
 	Gtk::Menu* menu = Gtk::manage(new Gtk::Menu());
 
 	for ( unsigned int t = 0 ; t < fss .size() ; t++ )
@@ -1720,7 +1720,7 @@ void Win_GParted::menu_gparted_features()
 	DialogFeatures dialog ;
 	dialog .set_transient_for( *this ) ;
 
-	dialog.load_filesystems(gparted_core.get_filesystems());
+	dialog.load_filesystems(gparted_core.get_all_filesystems());
 	while ( dialog .run() == Gtk::RESPONSE_OK )
 	{
 		// Button [Rescan For Supported Actions] pressed in the dialog.  Rescan
@@ -1728,7 +1728,7 @@ void Win_GParted::menu_gparted_features()
 		// view accordingly in the dialog.
 		GParted_Core::find_supported_core();
 		gparted_core .find_supported_filesystems() ;
-		dialog.load_filesystems(gparted_core.get_filesystems());
+		dialog.load_filesystems(gparted_core.get_all_filesystems());
 
 		//recreate format menu...
 		partitionmenu_items[MENU_FORMAT]->unset_submenu();
@@ -2418,9 +2418,9 @@ void Win_GParted::activate_new()
 		                            *selected_partition_ptr,
 		                            any_extended,
 		                            m_new_count,
-		                            gparted_core.get_filesystems());
+		                            gparted_core.get_all_filesystems());
 		dialog .set_transient_for( *this );
-		
+
 		if ( dialog .run() == Gtk::RESPONSE_OK )
 		{
 			dialog .hide() ;

@@ -64,8 +64,8 @@ public:
 	                    bool recreate_dmraid_devs = true );
 
 	bool toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) ;
-	
-	const std::vector<FS> & get_filesystems() const ;
+
+	const std::vector<FS>& get_all_filesystems() const;
 	const FS& get_fs(FSType fstype) const;
 	static std::vector<Glib::ustring> get_disklabeltypes() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;

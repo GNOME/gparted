@@ -556,7 +556,10 @@ bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring
 }
 
 
-const std::vector<FS> & GParted_Core::get_filesystems() const 
+// Return vector of supported action set for all file systems that GParted will
+// manipulate.  This includes those which are unsupported (no interface class) but still
+// copied and moved.
+const std::vector<FS>& GParted_Core::get_all_filesystems() const
 {
 	return supported_filesystems->get_all_fs_support();
 }
