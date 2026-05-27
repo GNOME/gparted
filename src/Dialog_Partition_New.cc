@@ -72,35 +72,37 @@ void Dialog_Partition_New::set_data(const Device&          device,
 {
 	m_new_partition.reset(selected_partition.clone());
 
-	// Copy only supported file systems, excluding LUKS, from GParted_Core FILESYSTEMS
-	// vector.  Add FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This
-	// decides the order of items in the file system menu built by
-	// build_filesystems_combo().
-	this->FILESYSTEMS.clear();
+	// Copy only supported file systems, excluding LUKS.  Add FS_CLEARED,
+	// FS_UNFORMATTED and FS_EXTENDED at the end.  This decides the order of items in
+	// the file system menu built by build_filesystems_combo().
+
+	m_creatable_filesystems.clear();
 	for ( unsigned i = 0 ; i < FILESYSTEMS.size() ; i ++ )
 	{
 		if (GParted_Core::supported_filesystem(FILESYSTEMS[i].fstype) &&
 		    FILESYSTEMS[i].fstype != FS_LUKS                            )
-			this->FILESYSTEMS.push_back( FILESYSTEMS[i] );
+		{
+			m_creatable_filesystems.push_back(FILESYSTEMS[i]);
+		}
 	}
 
 	FS fs_tmp ;
 	//... add FS_CLEARED
 	fs_tmp.fstype = FS_CLEARED;
 	fs_tmp .create = FS::GPARTED ;
-	this ->FILESYSTEMS .push_back( fs_tmp ) ;
+	m_creatable_filesystems.push_back(fs_tmp);
 
 	//... add FS_UNFORMATTED
 	fs_tmp.fstype = FS_UNFORMATTED;
 	fs_tmp .create = FS::GPARTED ;
-	this ->FILESYSTEMS .push_back( fs_tmp ) ;
+	m_creatable_filesystems.push_back(fs_tmp);
 
 	// ... finally add FS_EXTENDED.  Needed so that when creating an extended
 	// partition it is identified correctly before the operation is applied.
 	fs_tmp = FS();
 	fs_tmp.fstype = FS_EXTENDED;
 	fs_tmp.create = FS::NONE;
-	this ->FILESYSTEMS .push_back( fs_tmp ) ;
+	m_creatable_filesystems.push_back(fs_tmp);
 
 	// Add table with selection menu's...
 	m_grid_create.set_border_width(10);
@@ -263,7 +265,7 @@ const Partition& Dialog_Partition_New::get_new_partition()
 	                     Glib::ustring::compose(_("New Partition #%1"), m_new_count),
 	                     m_new_count,
 	                     part_type,
-	                     FILESYSTEMS[m_combo_filesystem.get_active_row_number()].fstype,
+	                     m_creatable_filesystems[m_combo_filesystem.get_active_row_number()].fstype,
 	                     new_start,
 	                     new_end,
 	                     sector_size,
@@ -356,15 +358,15 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 	// Partition type (m_combo_type) changed
 	if (combo_type_changed)
 	{
-		if (m_combo_type.get_active_row_number() == TYPE_EXTENDED      &&
-		    m_combo_filesystem.items().size()    <  FILESYSTEMS.size()   )
+		if (m_combo_type.get_active_row_number() == TYPE_EXTENDED                  &&
+		    m_combo_filesystem.items().size()    <  m_creatable_filesystems.size()   )
 		{
 			m_combo_filesystem.items().push_back(Utils::get_filesystem_string(FS_EXTENDED));
 			m_combo_filesystem.set_active(m_combo_filesystem.items().back());
 			m_combo_filesystem.set_sensitive(false);
 		}
-		else if (m_combo_type.get_active_row_number() != TYPE_EXTENDED      &&
-		         m_combo_filesystem.items().size()    == FILESYSTEMS.size()   )
+		else if (m_combo_type.get_active_row_number() != TYPE_EXTENDED                  &&
+		         m_combo_filesystem.items().size()    == m_creatable_filesystems.size()   )
 		{
 			m_combo_filesystem.set_active(m_default_fs);
 			m_combo_filesystem.items().erase(m_combo_filesystem.items().back());
@@ -375,7 +377,7 @@ void Dialog_Partition_New::combobox_changed(bool combo_type_changed)
 	// File system (m_combo_filesystem) and/or alignment (combo_alignment) changed
 	if (! combo_type_changed)
 	{
-		fs = FILESYSTEMS[m_combo_filesystem.get_active_row_number()];
+		fs = m_creatable_filesystems[m_combo_filesystem.get_active_row_number()];
 		fs_limits = GParted_Core::get_filesystem_limits(fs.fstype, *m_new_partition);
 
 		if ( fs_limits.min_size < MEBIBYTE )
@@ -429,16 +431,16 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 	m_combo_filesystem.items().clear();
 
 	// Fill the file system combobox
-	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
+	for (unsigned int i = 0; i < m_creatable_filesystems.size(); i++)
 	{
 		// Skip extended which is only added by combobox_changed() while partition
 		// type = extended.
-		if (FILESYSTEMS[t].fstype == FS_EXTENDED)
+		if (m_creatable_filesystems[i].fstype == FS_EXTENDED)
 			continue ;
 
-		m_combo_filesystem.items().push_back(Utils::get_filesystem_string(FILESYSTEMS[t].fstype));
+		m_combo_filesystem.items().push_back(Utils::get_filesystem_string(m_creatable_filesystems[i].fstype));
 
-		if (FILESYSTEMS[t].fstype == FS_UNFORMATTED)
+		if (m_creatable_filesystems[i].fstype == FS_UNFORMATTED)
 		{
 			// Unformatted is always available
 			m_combo_filesystem.items().back().set_sensitive(true);
@@ -446,17 +448,18 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 		else
 		{
 			m_combo_filesystem.items().back().set_sensitive(
-				! only_unformatted                                                                    &&
-				FILESYSTEMS[t].create                                                                 &&
-				m_new_partition->get_byte_length() >= get_filesystem_min_limit(FILESYSTEMS[t].fstype)   );
+				! only_unformatted                                                  &&
+				m_creatable_filesystems[i].create                                   &&
+				m_new_partition->get_byte_length() >=
+					get_filesystem_min_limit(m_creatable_filesystems[i].fstype)   );
 		}
 
-		//use ext4/3/2 as first/second/third choice default file system
-		//(Depends on ordering in FILESYSTEMS for preference)
-		if ((FILESYSTEMS[t].fstype == FS_EXT2 ||
-		     FILESYSTEMS[t].fstype == FS_EXT3 ||
-		     FILESYSTEMS[t].fstype == FS_EXT4   )         &&
-		    m_combo_filesystem.items().back().sensitive()   )
+		// Use ext4/3/2 as first/second/third choice default file system.
+		// (Depends on ordering in m_creatable_filesystems for preference).
+		if ((m_creatable_filesystems[i].fstype == FS_EXT2 ||
+		     m_creatable_filesystems[i].fstype == FS_EXT3 ||
+		     m_creatable_filesystems[i].fstype == FS_EXT4   ) &&
+		    m_combo_filesystem.items().back().sensitive()       )
 		{
 			m_default_fs = m_combo_filesystem.items().size() - 1;
 		}

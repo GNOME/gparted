@@ -64,7 +64,7 @@ private:
 	Gtk::Entry     m_partition_name_entry;
 	Gtk::Entry     m_filesystem_label_entry;
 
-	std::vector<FS> FILESYSTEMS ;
+	std::vector<FS> m_creatable_filesystems;
 
 	//signal handlers
 	void combobox_changed(bool combo_type_changed);
