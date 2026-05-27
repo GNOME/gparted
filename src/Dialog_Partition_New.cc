@@ -87,21 +87,19 @@ void Dialog_Partition_New::set_data(const Device&          device,
 		}
 	}
 
-	FS fs_tmp ;
 	//... add FS_CLEARED
-	fs_tmp.fstype = FS_CLEARED;
+	FS fs_tmp = FS(FS_CLEARED);
 	fs_tmp .create = FS::GPARTED ;
 	m_creatable_filesystems.push_back(fs_tmp);
 
 	//... add FS_UNFORMATTED
-	fs_tmp.fstype = FS_UNFORMATTED;
+	fs_tmp = FS(FS_UNFORMATTED);
 	fs_tmp .create = FS::GPARTED ;
 	m_creatable_filesystems.push_back(fs_tmp);
 
 	// ... finally add FS_EXTENDED.  Needed so that when creating an extended
 	// partition it is identified correctly before the operation is applied.
-	fs_tmp = FS();
-	fs_tmp.fstype = FS_EXTENDED;
+	fs_tmp = FS(FS_EXTENDED);
 	fs_tmp.create = FS::NONE;
 	m_creatable_filesystems.push_back(fs_tmp);
 
