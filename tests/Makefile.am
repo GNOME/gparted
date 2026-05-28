@@ -14,6 +14,7 @@ check_PROGRAMS =  \
 	test_dummy                      \
 	test_BlockSpecial               \
 	test_EraseFileSystemSignatures  \
+	test_OperationDetail            \
 	test_PasswordRAMStore           \
 	test_PipeCapture                \
 	test_SupportedFileSystems
@@ -85,6 +86,11 @@ test_EraseFileSystemSignatures_LDADD =  \
 	$(gparted_core_OBJECTS)                    \
 	$(GTEST_LIBS)                              \
 	$(top_builddir)/lib/gtest/lib/libgtest.la
+
+test_OperationDetail_SOURCES = test_OperationDetail.cc
+test_OperationDetail_LDADD   =  \
+	$(gparted_core_OBJECTS)  \
+	$(LDADD)
 
 test_PasswordRAMStore_SOURCES = test_PasswordRAMStore.cc
 test_PasswordRAMStore_LDADD   =  \
