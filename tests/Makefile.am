@@ -87,10 +87,13 @@ test_EraseFileSystemSignatures_LDADD =  \
 	$(GTEST_LIBS)                              \
 	$(top_builddir)/lib/gtest/lib/libgtest.la
 
-test_OperationDetail_SOURCES = test_OperationDetail.cc
+test_OperationDetail_SOURCES =  \
+	test_OperationDetail.cc  \
+	common.cc
 test_OperationDetail_LDADD   =  \
-	$(gparted_core_OBJECTS)  \
-	$(LDADD)
+	$(gparted_core_OBJECTS)                    \
+	$(GTEST_LIBS)                              \
+	$(top_builddir)/lib/gtest/lib/libgtest.la
 
 test_PasswordRAMStore_SOURCES = test_PasswordRAMStore.cc
 test_PasswordRAMStore_LDADD   =  \

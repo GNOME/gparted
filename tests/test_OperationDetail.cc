@@ -15,9 +15,13 @@
  */
 
 
+#include "common.h"
 #include "OperationDetail.h"
 #include "Utils.h"
 #include "gtest/gtest.h"
+
+#include <gtkmm/main.h>
+#include <stdio.h>
 
 
 namespace GParted
@@ -151,4 +155,119 @@ TEST(OperationDetailTest, Hierarchy)
 }
 
 
+TEST(OperationDetailTest, CommandExecuteTrue)
+{
+	// Test command returning exit status 0 (AKA success).
+	OperationDetail od("CommandExecuteTrue");
+	int exit_status = od.execute_command("true");
+	EXPECT_EQ(exit_status, 0);
+}
+
+
+TEST(OperationDetailTest, CommandExecuteFalse)
+{
+	// Test command returning non-zero exit status (AKA failure).
+	OperationDetail od("CommandExecuteFalse");
+	int exit_status = od.execute_command("false");
+	EXPECT_NE(exit_status, 0);
+}
+
+
+TEST(OperationDetailTest, CommandExecuteExit2)
+{
+	// Test command returning exit status 2.
+	OperationDetail od("CommandExecuteExit2");
+	int exit_status = od.execute_command("sh -c 'exit 2'");
+	EXPECT_EQ(exit_status, 2);
+}
+
+
+TEST(OperationDetailTest, CommandExecuteProvideStdin)
+{
+	// Test passing data on stdin for command to read.
+	OperationDetail od("CommandExecuteProvideStdin");
+	int exit_status = od.execute_command("cat", "This is on standard input\n");
+	EXPECT_EQ(exit_status, 0);
+	EXPECT_STREQ(od.get_command_output().c_str(), "This is on standard input\n");
+	EXPECT_STREQ(od.get_command_error().c_str(), "");
+	EXPECT_EQ(od.get_last_child().get_children().size(), 2UL);
+	EXPECT_STREQ(od.get_last_child().get_children()[0]->get_description().c_str(),
+	             "<tt>This is on standard input\n</tt>");
+	EXPECT_STREQ(od.get_last_child().get_children()[1]->get_description().c_str(),
+	             "<tt></tt>");
+}
+
+
+TEST(OperationDetailTest, CommandExecuteCaptureStdout)
+{
+	// Test capturing command writing to stdout.
+	OperationDetail od("CommandExecuteCaptureStdout");
+	int exit_status = od.execute_command("echo 'This is on standard output'");
+	EXPECT_EQ(exit_status, 0);
+	EXPECT_STREQ(od.get_command_output().c_str(), "This is on standard output\n");
+	EXPECT_STREQ(od.get_command_error().c_str(), "");
+	EXPECT_EQ(od.get_last_child().get_children().size(), 2UL);
+	EXPECT_STREQ(od.get_last_child().get_children()[0]->get_description().c_str(),
+	             "<tt>This is on standard output\n</tt>");
+	EXPECT_STREQ(od.get_last_child().get_children()[1]->get_description().c_str(),
+	             "<tt></tt>");
+}
+
+
+TEST(OperationDetailTest, CommandExecuteCaptureStderr)
+{
+	// Test capturing command writing to stderr.
+	OperationDetail od("CommandExecuteCaptureStderr");
+	int exit_status = od.execute_command("sh -c \"echo 'This is on standard error' 1>&2\"");
+	EXPECT_EQ(exit_status, 0);
+	EXPECT_STREQ(od.get_command_output().c_str(), "");
+	EXPECT_STREQ(od.get_command_error().c_str(), "This is on standard error\n");
+	EXPECT_EQ(od.get_last_child().get_children().size(), 2UL);
+	EXPECT_STREQ(od.get_last_child().get_children()[0]->get_description().c_str(),
+	             "<tt></tt>");
+	EXPECT_STREQ(od.get_last_child().get_children()[1]->get_description().c_str(),
+	             "<tt>This is on standard error\n</tt>");
+}
+
+
+TEST(OperationDetailTest, CommandExecuteCheckTrue)
+{
+	// Test checked command returning exit status 0.
+	OperationDetail od("CommandExecuteCheckTrue");
+	int exit_status = od.execute_command("true", EXEC_CHECK_STATUS);
+	EXPECT_EQ(exit_status, 0);
+	EXPECT_EQ(od.get_last_child().get_status(), STATUS_SUCCESS);
+}
+
+
+TEST(OperationDetailTest, CommandExecuteCheckFalse)
+{
+	// Test check command returning non-zero exit status.
+	OperationDetail od("CommandExecuteCheckFalse");
+	int exit_status = od.execute_command("false", EXEC_CHECK_STATUS);
+	EXPECT_NE(exit_status, 0);
+	EXPECT_EQ(od.get_last_child().get_status(), STATUS_ERROR);
+}
+
+
 }  // namespace GParted
+
+
+// Custom Google Test main().
+// Reference:
+// *   GoogleTest Primer, Writing the main() function
+//     https://google.github.io/googletest/primer.html#writing-the-main-function
+int main(int argc, char** argv)
+{
+	printf("Running main() from %s\n", __FILE__);
+	GParted::ensure_x11_display(argc, argv);
+
+	// Initialise Gtk::Main to successfully use OperationDetail::execute_command().
+	// Must be before InitGoogleTest().  (Don't need to initialise
+	// GParted_Core::mainthread as nothing in OperationDetail uses it).
+	Gtk::Main gtk_main = Gtk::Main();
+
+	testing::InitGoogleTest(&argc, argv);
+
+	return RUN_ALL_TESTS();
+}
