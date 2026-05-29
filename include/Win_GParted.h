@@ -314,8 +314,13 @@ private:
 	                                               // open_operationslist() early-exits on first use.
 
 	GParted_Core gparted_core ;
+	// The Device menu's "Create Partition Table" item; disabled while a Volume
+	// Group is displayed since LVM VGs are read-only (issue #316).
+	Gtk::MenuItem*            m_create_partition_table_item = nullptr;
+	Gtk::Label*               m_device_info_title = nullptr;
 	std::vector<Gtk::Label *> device_info ;
-					
+	std::vector<Gtk::Label *> device_info_labels;
+
 	//stuff for progress overview and pulsebar
 	bool pulsebar_pulse();
 	sigc::connection pulsetimer;

@@ -60,6 +60,8 @@ struct LVM2_VGDev
 	Glib::ustring vg_name;
 	Byte_Value    pe_size  = -1;
 	Sector        total_pe = -1;
+	Sector        free_pe  = -1;
+	Glib::ustring uuid;
 };
 
 

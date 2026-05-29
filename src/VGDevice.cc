@@ -49,6 +49,10 @@ VGDevice* VGDevice::clone_without_partitions() const
 	new_vg->vg_name      = this->vg_name;
 	new_vg->pe_size      = this->pe_size;
 	new_vg->total_pe     = this->total_pe;
+	new_vg->allocated_pe = this->allocated_pe;
+	new_vg->free_pe      = this->free_pe;
+	new_vg->uuid         = this->uuid;
+	new_vg->pv_paths     = this->pv_paths;
 	new_vg->lv_paths     = this->lv_paths;
 	new_vg->exported     = this->exported;
 	new_vg->partial      = this->partial;

@@ -51,6 +51,8 @@ public:
 	bool partition_naming_supported() const;
 	int get_max_partition_name_length() const;
 
+	virtual bool is_partition_table_device() const  { return true; }
+
 	bool operator==( const Device & device ) const ;
 	bool operator!=( const Device & device ) const ;
 

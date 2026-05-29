@@ -48,6 +48,7 @@
 #include "LVM2_PV_Info.h"
 #include "LUKS_Info.h"
 #include "Utils.h"
+#include "VGDevice.h"
 #include "../config.h"
 
 #include <string.h>
@@ -254,6 +255,7 @@ void Win_GParted::init_menubar()
 		Glib::ustring(_("_Create Partition Table") ) + "...",
 		sigc::mem_fun(*this, &Win_GParted::activate_disklabel)));
 	menu->append(*item);
+	m_create_partition_table_item = item;
 
 	item = Gtk::manage(new GParted::Menu_Helpers::MenuElem(
 		_("_Device"), *menu));
@@ -573,9 +575,9 @@ void Win_GParted::init_device_info()
 	int top = 0;
 
 	//title
-	vbox_info .pack_start( 
-		* Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Device Information") ) + "</b>" ),
-		Gtk::PACK_SHRINK );
+	m_device_info_title =
+		Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Device Information")) + "</b>");
+	vbox_info.pack_start(*m_device_info_title, Gtk::PACK_SHRINK);
 
 	//GENERAL DEVICE INFO
 	Gtk::Grid* grid = Gtk::manage(new Gtk::Grid());
@@ -585,6 +587,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_model = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Model:")) + "</b>");
 	grid->attach(*label_model, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_model);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_model->get_accessible());
@@ -593,6 +596,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_serial = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Serial:")) + "</b>");
 	grid->attach(*label_serial, 0, top, 1, 1);
 	device_info.push_back( Utils::mk_label( "", true, false, true ) );
+	device_info_labels.push_back(label_serial);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_serial->get_accessible());
@@ -601,6 +605,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_size = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Size:")) + "</b>");
 	grid->attach(*label_size, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_size);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_size->get_accessible());
@@ -609,6 +614,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_path = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Path:")) + "</b>");
 	grid->attach(*label_path, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_path);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_path->get_accessible());
@@ -627,6 +633,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_disktype = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Partition table:")) + "</b>");
 	grid->attach(*label_disktype, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_disktype);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_disktype->get_accessible());
@@ -635,6 +642,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_heads = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Heads:")) + "</b>");
 	grid->attach(*label_heads, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_heads);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_heads->get_accessible());
@@ -643,6 +651,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_sectors_track = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sectors/track:")) + "</b>");
 	grid->attach(*label_sectors_track, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_sectors_track);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_sectors_track->get_accessible());
@@ -651,6 +660,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_cylinders = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Cylinders:")) + "</b>");
 	grid->attach(*label_cylinders, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_cylinders);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_cylinders->get_accessible());
@@ -659,6 +669,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_total_sectors = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Total sectors:")) + "</b>");
 	grid->attach(*label_total_sectors, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_total_sectors);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_total_sectors->get_accessible());
@@ -667,6 +678,7 @@ void Win_GParted::init_device_info()
 	Gtk::Label *label_sector_size = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sector size:")) + "</b>");
 	grid->attach(*label_sector_size, 0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	device_info_labels.push_back(label_sector_size);
 	grid->attach(*device_info.back(), 1, top++, 1, 1);
 	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 	                                                       label_sector_size->get_accessible());
@@ -829,14 +841,101 @@ void Win_GParted::hide_pulsebar()
 
 void Win_GParted::Fill_Label_Device_Info( bool clear ) 
 {
+	// LVM2 read-only support: relabel the Device and Partition menus, the
+	// View menu entry and the information panel title to reflect whether a
+	// Volume Group (shown as a VGDevice) or a disk is currently displayed.
+	bool showing_vg = (! clear                                                    &&
+	                   m_current_device            <  m_devices.size()            &&
+	                   m_devices[m_current_device] != nullptr                     &&
+	                   ! m_devices[m_current_device]->is_partition_table_device()   );
+	{
+		auto set_menu_label = [&](int menu_id, const Glib::ustring& text)
+		{
+			std::map<int, Gtk::MenuItem*>::iterator it = mainmenu_items.find(menu_id);
+			if (it != mainmenu_items.end() && it->second != nullptr)
+			{
+				Gtk::Label* lbl = dynamic_cast<Gtk::Label *>(it->second->get_child());
+				if (lbl != nullptr)
+					lbl->set_label(text);
+			}
+		};
+		set_menu_label(MENU_DEVICE,    showing_vg ? _("_Volume Group")   : _("_Device")   );
+		set_menu_label(MENU_PARTITION, showing_vg ? _("_Logical Volume") : _("_Partition"));
+		set_menu_label(MENU_DEVICE_INFORMATION,
+		                showing_vg ? _("Volume Group _Information") : _("Device _Information"));
+
+		if (m_device_info_title != nullptr)
+			m_device_info_title->set_markup(
+			    " <b>" + Glib::ustring(showing_vg ? _("Volume Group Information")
+			                                      : _("Device Information")      ) + "</b>");
+
+		// LVM Volume Groups are read-only: a partition table cannot be created
+		// on one.  Disable the menu item while a VG is displayed and re-enable
+		// it for ordinary disks.
+		if (m_create_partition_table_item != nullptr)
+			m_create_partition_table_item->set_sensitive(! showing_vg);
+	}
+
 	if ( clear )
 		for ( unsigned int t = 0 ; t < device_info .size( ) ; t++ )
 			device_info[ t ] ->set_text( "" ) ;
-		
+
+	else if (! m_devices[m_current_device]->is_partition_table_device())
+	{
+		const VGDevice* vg =
+		    dynamic_cast<const VGDevice *>(m_devices[m_current_device].get());
+
+		auto relabel = [&](unsigned int slot, const Glib::ustring& text)
+		{
+			if (slot < device_info_labels.size())
+				device_info_labels[slot]->set_markup(" <b>" + text + "</b>");
+		};
+
+		relabel(0, _("Volume Group:"));
+		device_info[0]->set_text(vg->vg_name);
+		relabel(1, _("UUID:"));
+		device_info[1]->set_text(vg->uuid);
+		relabel(2, _("Size:"));
+		device_info[2]->set_text(Utils::format_size(vg->length, vg->sector_size));
+		relabel(3, _(""));
+		device_info[3]->set_text("");
+
+		relabel(4, _("Members:"));
+		Glib::ustring members_text = Glib::build_path(", ", vg->pv_paths);
+		device_info[4]->set_text(members_text);
+		relabel(5, _("PE size:"));
+		device_info[5]->set_text(Utils::format_size(1, vg->pe_size));
+		relabel(6, _("Total PE:"));
+		device_info[6]->set_text(Utils::num_to_str(vg->total_pe));
+		relabel(7, _("Allocated PE:"));
+		device_info[7]->set_text(Utils::num_to_str(vg->allocated_pe));
+		relabel(8, _("Free PE:"));
+		device_info[8]->set_text(Utils::num_to_str(vg->free_pe));
+		relabel(9, _("LV count:"));
+		device_info[9]->set_text(Utils::num_to_str(vg->lv_paths.size()));
+	}
 	else
 	{		
+		auto relabel = [&](unsigned int slot, const Glib::ustring& text)
+		{
+			if (slot < device_info_labels.size())
+				device_info_labels[slot]->set_markup(" <b>" + text + "</b>");
+		};
+
+		relabel(0, _("Model:"));
+		relabel(1, _("Serial:"));
+		relabel(2, _("Size:"));
+		relabel(3, _("Path:"));
+
+		relabel(4, _("Partition table:"));
+		relabel(5, _("Heads:"));
+		relabel(6, _("Sectors/track:"));
+		relabel(7, _("Cylinders:"));
+		relabel(8, _("Total sectors:"));
+		relabel(9, _("Sector size:"));
+
 		short t = 0;
-		
+
 		//global info...
 		device_info[t++]->set_text(m_devices[m_current_device]->model);
 		device_info[t++]->set_text(m_devices[m_current_device]->serial_number);
@@ -1500,6 +1599,24 @@ void Win_GParted::set_valid_operations()
 		//see if we can somehow check/repair this file system....
 		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.check )
 			allow_check( true ) ;
+	}
+
+	// LVM2 read-only support: a Volume Group is presented as a Device (VGDevice)
+	// and its Logical Volumes as partitions, but GParted does not modify LVM
+	// objects.  After the normal per file system logic above has run, force every
+	// partition modifying action off when the selected device is a Volume Group.
+	// Viewing information about the selected Logical Volume remains permitted.
+	if (m_current_device < m_devices.size()                        &&
+	    m_devices[m_current_device] != nullptr                     &&
+	    ! m_devices[m_current_device]->is_partition_table_device()   )
+	{
+		allow_new(false); allow_delete(false); allow_resize(false);
+		allow_copy(false); allow_paste(false); allow_format(false);
+		allow_toggle_crypt_busy_state(false); allow_toggle_fs_busy_state(false);
+		allow_name_partition(false); allow_manage_flags(false); allow_check(false);
+		allow_label_filesystem(false); allow_change_uuid(false);
+		// allow_info() is intentionally left as set above: viewing is read-only safe.
+		partitionmenu_items[MENU_MOUNT]->hide();
 	}
 }
 
@@ -3099,8 +3216,17 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	menu_gparted_refresh_devices() ;
 }
 
+
 void Win_GParted::activate_disklabel()
 {
+	// LVM Volume Groups are read-only (issue #316): never write a partition
+	// table to one.  The menu item is disabled while a VG is displayed; this
+	// guard ensures the operation can never run on a VG even so.
+	if (m_current_device >= m_devices.size()                       ||
+	    m_devices[m_current_device] == nullptr                     ||
+	    ! m_devices[m_current_device]->is_partition_table_device()   )
+		return;
+
 	//If there are active mounted partitions on the device then warn
 	//  the user that all partitions must be unactive before creating
 	//  a new partition table

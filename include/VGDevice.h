@@ -37,12 +37,18 @@ public:
 	virtual VGDevice* clone() const;
 	virtual VGDevice* clone_without_partitions() const;
 
+	virtual bool is_partition_table_device() const  { return false; }
+
 	Glib::ustring              vg_name;
-	Byte_Value                 pe_size  = -1;
-	Sector                     total_pe = -1;
+	Byte_Value                 pe_size      = -1;
+	Sector                     total_pe     = -1;
+	Sector                     allocated_pe = -1;
+	Sector                     free_pe      = -1;
+	Glib::ustring              uuid;
+	std::vector<Glib::ustring> pv_paths;
 	std::vector<Glib::ustring> lv_paths;
-	bool                       exported = false;
-	bool                       partial  = false;
+	bool                       exported     = false;
+	bool                       partial      = false;
 };
 
 

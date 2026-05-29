@@ -71,14 +71,15 @@ enum LV_BIT
 //                         {"Test_VG5", "wz--n-", "[testpool_tmeta]", "ewi-ao----"},
 //                         {"Test_VG5", "wz--n-", ""                , ""          }
 //                        ]
-//  lvm2_vgdev_cache    - Vector storing VG fields: vg_name, vg_extent_size, vg_extent_count.
+//  lvm2_vgdev_cache    - Vector storing VG fields: vg_name, vg_extent_size, vg_extent_count,
+//                        vg_free_count, vg_uuid.
 //                        E.g.
-//                        //vg_name   , pe_size, total_pe
-//                         {"Test-VG1", 4194304,       63},
-//                         {"Test-VG4", 4194304,       63},
-//                         {"Test_VG2", 4194304,       63},
-//                         {"Test_VG3", 4194304,      126},
-//                         {"Test_VG5", 4194304,       63}
+//                        //vg_name   , pe_size, total_pe, free_pe, uuid
+//                         {"Test-VG1", 4194304,       63,      63, "iVJWzy-3qPk-I0X5-g9cR-OtFY-XUla-4z8dOl"},
+//                         {"Test-VG4", 4194304,       63,      31, "x5d38B-qnin-HIfO-Xe13-l7UI-pTXK-lmAVxH"},
+//                         {"Test_VG2", 4194304,       63,      15, "CUI33R-INVe-lO75-Khbq-jvLz-dhwR-TFkzDR"},
+//                         {"Test_VG3", 4194304,      126,      30, "mymd59-wUgj-NHbs-FgpN-zjLs-Z6lA-dAl2QW"},
+//                         {"Test_VG5", 4194304,       63,      11, "Ln1HZ2-alnX-Z1Jb-4rGr-xwm8-rpEh-vEf1YT"}
 //                        ]
 //  lvm2_lv_cache       - Vector storing LV fields
 //                        E.g.
@@ -260,6 +261,10 @@ std::vector<VGDevice *> LVM2_PV_Info::get_vg_devices()
 		vg->vg_name  = vgd.vg_name;
 		vg->pe_size  = vgd.pe_size;
 		vg->total_pe = vgd.total_pe;
+		vg->free_pe  = vgd.free_pe;
+		vg->uuid     = vgd.uuid;
+		if (vgd.total_pe >= 0 && vgd.free_pe >= 0)
+			vg->allocated_pe = vgd.total_pe - vgd.free_pe;
 
 		// Issue #316: use the bare VG name as the canonical name everywhere
 		// (lvm vgdisplay has no path property and LVM documentation almost
@@ -269,6 +274,12 @@ std::vector<VGDevice *> LVM2_PV_Info::get_vg_devices()
 		{
 			vg->length      = vgd.total_pe;
 			vg->sector_size = vgd.pe_size;
+		}
+
+		for (unsigned int j = 0; j < lvm2_pv_cache.size(); j++)
+		{
+			if (lvm2_pv_cache[j].vg_name == vgd.vg_name)
+				vg->pv_paths.push_back(lvm2_pv_cache[j].pv_name.m_name);
 		}
 
 		for (unsigned int j = 0; j < lvm2_lv_cache.size(); j++)
@@ -435,13 +446,15 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 
 		cmd = "lvm vgs --config \"log{command_names=0}\" --nosuffix "
 		      "--noheadings --separator , --units b "
-		      "-o vg_name,vg_extent_size,vg_extent_count";
+		      "-o vg_name,vg_extent_size,vg_extent_count,vg_free_count,vg_uuid";
 		enum VGDEV_FIELD
 		{
 			VGDEVFIELD_VG_NAME         = 0,
 			VGDEVFIELD_VG_EXTENT_SIZE  = 1,
 			VGDEVFIELD_VG_EXTENT_COUNT = 2,
-			VGDEVFIELD_COUNT           = 3
+			VGDEVFIELD_VG_FREE_COUNT   = 3,
+			VGDEVFIELD_VG_UUID         = 4,
+			VGDEVFIELD_COUNT           = 5
 		};
 		if (! Utils::execute_command(cmd, output, error, true))
 		{
@@ -461,6 +474,8 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 					vgd.vg_name  = fields[VGDEVFIELD_VG_NAME];
 					vgd.pe_size  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_SIZE]);
 					vgd.total_pe = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_COUNT]);
+					vgd.free_pe  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_FREE_COUNT]);
+					vgd.uuid     = fields[VGDEVFIELD_VG_UUID];
 					lvm2_vgdev_cache.push_back(vgd);
 				}
 			}

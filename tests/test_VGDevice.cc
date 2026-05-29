@@ -31,15 +31,19 @@ TEST(VGDeviceTest, DefaultValues)
 {
 	VGDevice vg;
 
-	EXPECT_EQ(vg.pe_size,     -1);
-	EXPECT_EQ(vg.total_pe,    -1);
+	EXPECT_EQ(vg.pe_size,      -1);
+	EXPECT_EQ(vg.total_pe,     -1);
+	EXPECT_EQ(vg.allocated_pe, -1);
+	EXPECT_EQ(vg.free_pe,      -1);
 	EXPECT_FALSE(vg.exported);
 	EXPECT_FALSE(vg.partial);
 	EXPECT_TRUE(vg.vg_name.empty());
+	EXPECT_TRUE(vg.uuid.empty());
+	EXPECT_TRUE(vg.pv_paths.empty());
 	EXPECT_TRUE(vg.lv_paths.empty());
-	EXPECT_EQ(vg.length,      0);
-	EXPECT_EQ(vg.sector_size, 0);
-	EXPECT_EQ(vg.cylinders,   0);
+	EXPECT_EQ(vg.length,       0);
+	EXPECT_EQ(vg.sector_size,  0);
+	EXPECT_EQ(vg.cylinders,    0);
 	EXPECT_TRUE(vg.disktype.empty());
 }
 
@@ -66,28 +70,39 @@ TEST(VGDeviceTest, ClonePreservesAllFields)
 {
 	VGDevice vg;
 	vg.set_path("Test_VG");
-	vg.vg_name     = "Test_VG";
-	vg.pe_size     = 4194304;
-	vg.total_pe    = 100;
+	vg.vg_name      = "Test_VG";
+	vg.pe_size      = 4194304;
+	vg.total_pe     = 100;
+	vg.free_pe      = 25;
+	vg.allocated_pe = 75;
+	vg.uuid         = "abc-123";
+	vg.pv_paths.push_back("/dev/sda5");
+	vg.pv_paths.push_back("/dev/sda6");
 	vg.lv_paths.push_back("/dev/Test_VG/lvol0");
-	vg.exported    = true;
-	vg.partial     = false;
-	vg.length      = 100;
-	vg.sector_size = 4194304;
+	vg.exported     = true;
+	vg.partial      = false;
+	vg.length       = 100;
+	vg.sector_size  = 4194304;
 
 	std::unique_ptr<VGDevice> vg2(vg.clone());
 	ASSERT_NE(vg2.get(), nullptr);
 
-	EXPECT_EQ(vg2->get_path(),  "Test_VG");
-	EXPECT_EQ(vg2->vg_name,     "Test_VG");
-	EXPECT_EQ(vg2->pe_size,     4194304);
-	EXPECT_EQ(vg2->total_pe,    100);
+	EXPECT_EQ(vg2->get_path(),      "Test_VG");
+	EXPECT_EQ(vg2->vg_name,         "Test_VG");
+	EXPECT_EQ(vg2->pe_size,         4194304);
+	EXPECT_EQ(vg2->total_pe,        100);
+	EXPECT_EQ(vg2->free_pe,         25);
+	EXPECT_EQ(vg2->allocated_pe,    75);
+	EXPECT_EQ(vg2->uuid,            "abc-123" );
+	ASSERT_EQ(vg2->pv_paths.size(), 2u);
+	EXPECT_EQ(vg2->pv_paths[0],     "/dev/sda5" );
+	EXPECT_EQ(vg2->pv_paths[1],     "/dev/sda6" );
 	ASSERT_EQ(vg2->lv_paths.size(), 1u);
-	EXPECT_EQ(vg2->lv_paths[0], "/dev/Test_VG/lvol0");
+	EXPECT_EQ(vg2->lv_paths[0],     "/dev/Test_VG/lvol0");
 	EXPECT_TRUE(vg2->exported);
 	EXPECT_FALSE(vg2->partial);
-	EXPECT_EQ(vg2->length,      100);
-	EXPECT_EQ(vg2->sector_size, 4194304);
+	EXPECT_EQ(vg2->length,          100);
+	EXPECT_EQ(vg2->sector_size,     4194304);
 }
 
 
@@ -156,29 +171,40 @@ TEST(VGDeviceTest, CloneWithoutPartitionsPreservesAllFields)
 {
 	VGDevice vg;
 	vg.set_path("Test_VG");
-	vg.vg_name     = "Test_VG";
-	vg.pe_size     = 4194304;
-	vg.total_pe    = 100;
+	vg.vg_name      = "Test_VG";
+	vg.pe_size      = 4194304;
+	vg.total_pe     = 100;
+	vg.free_pe      = 25;
+	vg.allocated_pe = 75;
+	vg.uuid         = "abc-123";
+	vg.pv_paths.push_back("/dev/sda5");
+	vg.pv_paths.push_back("/dev/sda6");
 	vg.lv_paths.push_back("/dev/Test_VG/lvol0");
-	vg.exported    = true;
-	vg.partial     = false;
-	vg.length      = 100;
-	vg.sector_size = 4194304;
+	vg.exported     = true;
+	vg.partial      = false;
+	vg.length       = 100;
+	vg.sector_size  = 4194304;
 	vg.partitions.push_back_adopt(new Partition());
 
 	std::unique_ptr<VGDevice> vg2(vg.clone_without_partitions());
 	ASSERT_NE(vg2.get(), nullptr);
 
-	EXPECT_EQ(vg2->get_path(),  "Test_VG");
-	EXPECT_EQ(vg2->vg_name,     "Test_VG");
-	EXPECT_EQ(vg2->pe_size,     4194304);
-	EXPECT_EQ(vg2->total_pe,    100);
-	ASSERT_EQ(vg2->lv_paths.size(), 1u);
-	EXPECT_EQ(vg2->lv_paths[0], "/dev/Test_VG/lvol0");
+	EXPECT_EQ(vg2->get_path(),        "Test_VG");
+	EXPECT_EQ(vg2->vg_name,           "Test_VG");
+	EXPECT_EQ(vg2->pe_size,           4194304);
+	EXPECT_EQ(vg2->total_pe,          100);
+	EXPECT_EQ(vg2->free_pe,           25);
+	EXPECT_EQ(vg2->allocated_pe,      75);
+	EXPECT_EQ(vg2->uuid,              "abc-123");
+	ASSERT_EQ(vg2->pv_paths.size(),   2u);
+	EXPECT_EQ(vg2->pv_paths[0],       "/dev/sda5");
+	EXPECT_EQ(vg2->pv_paths[1],       "/dev/sda6");
+	ASSERT_EQ(vg2->lv_paths.size(),   1u);
+	EXPECT_EQ(vg2->lv_paths[0],       "/dev/Test_VG/lvol0");
 	EXPECT_TRUE(vg2->exported);
 	EXPECT_FALSE(vg2->partial);
-	EXPECT_EQ(vg2->length,      100);
-	EXPECT_EQ(vg2->sector_size, 4194304);
+	EXPECT_EQ(vg2->length,            100);
+	EXPECT_EQ(vg2->sector_size,       4194304);
 	EXPECT_EQ(vg2->partitions.size(), 0u);
 }
 
@@ -203,6 +229,30 @@ TEST(VGDeviceTest, CloneWithoutPartitionsViaBasePointerNoSlicing)
 	EXPECT_EQ(vgcp->vg_name, "Test_VG");
 	EXPECT_EQ(vgcp->pe_size, 4194304);
 	EXPECT_EQ(vgcp->partitions.size(), 0u);
+}
+
+
+TEST(DeviceTest, IsPartitionTableDeviceTrueByDefault)
+{
+	Device d;
+	EXPECT_TRUE(d.is_partition_table_device());
+}
+
+
+// Verify that is_partition_table_device() dispatches virtually.  A common
+// regression is to add the override to VGDevice but forget the `virtual`
+// keyword on the Device base, in which case the base implementation wins
+// when the call is made through a Device* and the GUI ends up trying to
+// run partition table operations on a VG.
+TEST(VGDeviceTest, IsPartitionTableDeviceFalseEvenViaBasePointer)
+{
+	VGDevice vg;
+	EXPECT_FALSE(vg.is_partition_table_device());
+
+	const Device* dp = &vg;
+	EXPECT_FALSE(dp->is_partition_table_device())
+	    << "is_partition_table_device() did not dispatch virtually; the "
+	       "VGDevice override is being shadowed by the base implementation";
 }
 
 
