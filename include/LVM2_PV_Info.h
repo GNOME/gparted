@@ -63,6 +63,16 @@ struct LVM2_VGDev
 };
 
 
+struct LVM2_LV
+{
+	Glib::ustring vg_name;
+	Glib::ustring lv_path;
+	Byte_Value    lv_size = -1;
+	bool          active  = false;
+	char          segtype = '\0';
+};
+
+
 class LVM2_PV_Info
 {
 public:
@@ -75,6 +85,9 @@ public:
 	static bool is_vg_exported( const Glib::ustring & vgname );
 	static std::vector<Glib::ustring> get_vg_members( const Glib::ustring & vgname );
 	static std::vector<Glib::ustring> get_vg_lvs( const Glib::ustring & vgname );
+	static Byte_Value get_lv_size_bytes(const Glib::ustring& lv_path);
+	static bool is_lv_active(const Glib::ustring& lv_path);
+	static char get_lv_segtype(const Glib::ustring& lv_path);
 	static std::vector<VGDevice *> get_vg_devices();
 	static std::vector<Glib::ustring> get_error_messages( const Glib::ustring & path );
 
@@ -91,6 +104,7 @@ private:
 	static std::vector<LVM2_PV> lvm2_pv_cache;
 	static std::vector<LVM2_VG> lvm2_vg_cache;
 	static std::vector<LVM2_VGDev> lvm2_vgdev_cache;
+	static std::vector<LVM2_LV> lvm2_lv_cache;
 	static std::vector<Glib::ustring> error_messages ;
 };
 

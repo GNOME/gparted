@@ -259,6 +259,7 @@ Glib::ustring Utils::get_color(FSType fstype)
 		case FS_JBD:             return "#314E6C";  // Blue Shadow
 		case FS_LINUX_SWRAID:    return "#826647";  // Face Skin Shadow
 		case FS_LINUX_SWSUSPEND: return "#884631";  // Red Dark
+		case FS_LVM2_THINPOOL:   return "#A78463";  // Face Skin Medium-Dark (LVM family)
 		case FS_REFS:            return "#3EA281";  // Aquamarine Dark [*]
 		case FS_UFS:             return "#AA8F2C";  // Accent Yellow Shadow [+]
 		case FS_ZFS:             return "#984F18";  // Orange Shadow [*]
@@ -455,6 +456,7 @@ const Glib::ustring Utils::get_filesystem_string(FSType fstype)
 		case FS_JBD:             return "jbd";
 		case FS_LINUX_SWRAID:    return "linux-raid";
 		case FS_LINUX_SWSUSPEND: return "linux-suspend";
+		case FS_LVM2_THINPOOL:   return "thin-pool";
 		case FS_REFS:            return "refs";
 		case FS_UFS:             return "ufs";
 		case FS_ZFS:             return "zfs";

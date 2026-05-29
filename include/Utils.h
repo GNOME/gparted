@@ -106,13 +106,14 @@ enum FSType
 	FS_JBD             = 35,
 	FS_LINUX_SWRAID    = 36,
 	FS_LINUX_SWSUSPEND = 37,
-	FS_REFS            = 38,
-	FS_UFS             = 39,
-	FS_ZFS             = 40,
+	FS_LVM2_THINPOOL   = 38,  // LVM2 thin pool LV (read-only: displayed as a flat LV)
+	FS_REFS            = 39,
+	FS_UFS             = 40,
+	FS_ZFS             = 41,
 
 	// Partition space usage colours
-	FS_USED            = 41,
-	FS_UNUSED          = 42
+	FS_USED            = 42,
+	FS_UNUSED          = 43
 } ;
 
 enum SIZE_UNIT

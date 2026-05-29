@@ -80,6 +80,14 @@ enum LV_BIT
 //                         {"Test_VG3", 4194304,      126},
 //                         {"Test_VG5", 4194304,       63}
 //                        ]
+//  lvm2_lv_cache       - Vector storing LV fields
+//                        E.g.
+//                        //vg_name   , lv_path                 , lv_size   , active, segtype
+//                         {"Test_VG2", "/dev/Test_VG2/lvol0"   ,  134217728, false , '-'    },
+//                         {"Test_VG2", "/dev/Test_VG2/lvol1"   ,   67108864, false , '-'    },
+//                         {"Test_VG3", "/dev/Test_VG3/lvol0"   ,  402653184, true  , '-'    },
+//                         {"Test_VG5", "/dev/Test_VG5/thinvol0", 1073741824, true  , 'V'    }
+//                        ]
 //  error_messages      - String vector storing whole cache error messages.
 
 
@@ -89,6 +97,7 @@ bool LVM2_PV_Info::lvm_found = false ;
 std::vector<LVM2_PV> LVM2_PV_Info::lvm2_pv_cache;
 std::vector<LVM2_VG> LVM2_PV_Info::lvm2_vg_cache;
 std::vector<LVM2_VGDev> LVM2_PV_Info::lvm2_vgdev_cache;
+std::vector<LVM2_LV> LVM2_PV_Info::lvm2_lv_cache;
 std::vector<Glib::ustring> LVM2_PV_Info::error_messages ;
 
 bool LVM2_PV_Info::is_lvm2_pv_supported()
@@ -102,6 +111,7 @@ void LVM2_PV_Info::clear_cache()
 	lvm2_pv_cache.clear();
 	lvm2_vg_cache.clear();
 	lvm2_vgdev_cache.clear();
+	lvm2_lv_cache.clear();
 	lvm2_pv_info_cache_initialized = false;
 }
 
@@ -198,6 +208,45 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_vg_lvs( const Glib::ustring & vgnam
 }
 
 
+Byte_Value LVM2_PV_Info::get_lv_size_bytes(const Glib::ustring& lv_path)
+{
+	initialize_if_required();
+	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
+	{
+		if (lvm2_lv_cache[i].lv_path == lv_path)
+			return lvm2_lv_cache[i].lv_size;
+	}
+	return -1;
+}
+
+
+bool LVM2_PV_Info::is_lv_active(const Glib::ustring& lv_path)
+{
+	initialize_if_required();
+	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
+	{
+		if (lvm2_lv_cache[i].lv_path == lv_path)
+			return lvm2_lv_cache[i].active;
+	}
+	return false;
+}
+
+
+// Returns the lvm segment type code: 'C' = cache, 'M' = mirror,
+// 'r' = raid, 's' = snapshot, 't' = thin, 'T' = thin pool, 'V' = thin volume,
+// '\0' if unknown or LV not in cache.  See lvs(8) "lv_attr" first letter.
+char LVM2_PV_Info::get_lv_segtype(const Glib::ustring& lv_path)
+{
+	initialize_if_required();
+	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
+	{
+		if (lvm2_lv_cache[i].lv_path == lv_path)
+			return lvm2_lv_cache[i].segtype;
+	}
+	return '\0';
+}
+
+
 std::vector<VGDevice *> LVM2_PV_Info::get_vg_devices()
 {
 	initialize_if_required();
@@ -220,6 +269,12 @@ std::vector<VGDevice *> LVM2_PV_Info::get_vg_devices()
 		{
 			vg->length      = vgd.total_pe;
 			vg->sector_size = vgd.pe_size;
+		}
+
+		for (unsigned int j = 0; j < lvm2_lv_cache.size(); j++)
+		{
+			if (lvm2_lv_cache[j].vg_name == vgd.vg_name)
+				vg->lv_paths.push_back(lvm2_lv_cache[j].lv_path);
 		}
 
 		const LVM2_VG& vg_cache_entry = get_vg_cache_entry_by_name(vgd.vg_name);
@@ -284,6 +339,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 	lvm2_pv_cache .clear() ;
 	lvm2_vg_cache .clear() ;
 	lvm2_vgdev_cache.clear();
+	lvm2_lv_cache.clear();
 	error_messages .clear() ;
 	if ( lvm_found )
 	{
@@ -406,6 +462,53 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 					vgd.pe_size  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_SIZE]);
 					vgd.total_pe = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_COUNT]);
 					lvm2_vgdev_cache.push_back(vgd);
+				}
+			}
+		}
+		else
+		{
+			error_messages.push_back(cmd);
+			if (! output.empty())
+				error_messages.push_back(output);
+			if (! error.empty())
+				error_messages.push_back(error);
+		}
+
+		cmd = "lvm lvs --config \"log{command_names=0}\" --nosuffix "
+		      "--noheadings --separator , --units b "
+		      "-o vg_name,lv_path,lv_size,lv_attr";
+		enum LV_FIELD
+		{
+			LVFIELD_VG_NAME = 0,
+			LVFIELD_LV_PATH = 1,
+			LVFIELD_LV_SIZE = 2,
+			LVFIELD_LV_ATTR = 3,
+			LVFIELD_COUNT   = 4
+		};
+		if (! Utils::execute_command(cmd, output, error, true))
+		{
+			if (output != "")
+			{
+				std::vector<Glib::ustring> lines;
+				Utils::tokenize(output, lines, "\n");
+				for (i = 0; i < lines.size(); i++)
+				{
+					std::vector<Glib::ustring> fields;
+					Utils::split(Utils::trim(lines[i] ), fields, ",");
+					if (fields.size() < LVFIELD_COUNT)
+						continue;  // Not enough fields
+					if (fields[LVFIELD_VG_NAME] == "" || fields[LVFIELD_LV_PATH] == "")
+						continue;
+					LVM2_LV lv;
+					lv.vg_name = fields[LVFIELD_VG_NAME];
+					lv.lv_path = fields[LVFIELD_LV_PATH];
+					lv.lv_size = lvm2_pv_size_to_num(fields[LVFIELD_LV_SIZE]);
+					lv.active  = (fields[LVFIELD_LV_ATTR].size() >= 5   &&
+					              fields[LVFIELD_LV_ATTR][4]     == 'a'   );
+					lv.segtype = (fields[LVFIELD_LV_ATTR].size() >= 1)
+					             ? static_cast<char>(fields[LVFIELD_LV_ATTR][0])
+					             : '\0';
+					lvm2_lv_cache.push_back(lv);
 				}
 			}
 		}

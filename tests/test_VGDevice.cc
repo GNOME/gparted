@@ -36,6 +36,7 @@ TEST(VGDeviceTest, DefaultValues)
 	EXPECT_FALSE(vg.exported);
 	EXPECT_FALSE(vg.partial);
 	EXPECT_TRUE(vg.vg_name.empty());
+	EXPECT_TRUE(vg.lv_paths.empty());
 	EXPECT_EQ(vg.length,      0);
 	EXPECT_EQ(vg.sector_size, 0);
 	EXPECT_EQ(vg.cylinders,   0);
@@ -68,6 +69,7 @@ TEST(VGDeviceTest, ClonePreservesAllFields)
 	vg.vg_name     = "Test_VG";
 	vg.pe_size     = 4194304;
 	vg.total_pe    = 100;
+	vg.lv_paths.push_back("/dev/Test_VG/lvol0");
 	vg.exported    = true;
 	vg.partial     = false;
 	vg.length      = 100;
@@ -80,6 +82,8 @@ TEST(VGDeviceTest, ClonePreservesAllFields)
 	EXPECT_EQ(vg2->vg_name,     "Test_VG");
 	EXPECT_EQ(vg2->pe_size,     4194304);
 	EXPECT_EQ(vg2->total_pe,    100);
+	ASSERT_EQ(vg2->lv_paths.size(), 1u);
+	EXPECT_EQ(vg2->lv_paths[0], "/dev/Test_VG/lvol0");
 	EXPECT_TRUE(vg2->exported);
 	EXPECT_FALSE(vg2->partial);
 	EXPECT_EQ(vg2->length,      100);
@@ -155,6 +159,7 @@ TEST(VGDeviceTest, CloneWithoutPartitionsPreservesAllFields)
 	vg.vg_name     = "Test_VG";
 	vg.pe_size     = 4194304;
 	vg.total_pe    = 100;
+	vg.lv_paths.push_back("/dev/Test_VG/lvol0");
 	vg.exported    = true;
 	vg.partial     = false;
 	vg.length      = 100;
@@ -168,6 +173,8 @@ TEST(VGDeviceTest, CloneWithoutPartitionsPreservesAllFields)
 	EXPECT_EQ(vg2->vg_name,     "Test_VG");
 	EXPECT_EQ(vg2->pe_size,     4194304);
 	EXPECT_EQ(vg2->total_pe,    100);
+	ASSERT_EQ(vg2->lv_paths.size(), 1u);
+	EXPECT_EQ(vg2->lv_paths[0], "/dev/Test_VG/lvol0");
 	EXPECT_TRUE(vg2->exported);
 	EXPECT_FALSE(vg2->partial);
 	EXPECT_EQ(vg2->length,      100);

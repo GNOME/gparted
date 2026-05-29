@@ -23,6 +23,7 @@
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
+#include <vector>
 
 
 namespace GParted
@@ -36,11 +37,12 @@ public:
 	virtual VGDevice* clone() const;
 	virtual VGDevice* clone_without_partitions() const;
 
-	Glib::ustring vg_name;
-	Byte_Value    pe_size  = -1;
-	Sector        total_pe = -1;
-	bool          exported = false;
-	bool          partial  = false;
+	Glib::ustring              vg_name;
+	Byte_Value                 pe_size  = -1;
+	Sector                     total_pe = -1;
+	std::vector<Glib::ustring> lv_paths;
+	bool                       exported = false;
+	bool                       partial  = false;
 };
 
 

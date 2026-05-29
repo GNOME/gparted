@@ -97,11 +97,13 @@ private:
 	void set_device_one_partition( Device & device, PedDevice * lp_device, FSType fstype,
 	                               std::vector<Glib::ustring> & messages );
 	void populate_vgdevice_partitions(VGDevice& vg_device);
+	Partition* make_lv_partition(const VGDevice& vg_device, const Glib::ustring& lv_path);
 	void set_luks_partition( PartitionLUKS & partition );
 	void set_partition_label_and_uuid( Partition & partition );
 	static FSType detect_filesystem_in_encryption_mapping(const Glib::ustring& path,
 	                                                      std::vector<Glib::ustring>& messages);
 	static FSType detect_filesystem_internal(const Glib::ustring& path, Byte_Value sector_size);
+	static FSType fstype_from_fsname(const Glib::ustring& fsname);
 	static FSType detect_filesystem(const PedDevice *lp_device, const PedPartition *lp_partition,
 	                                std::vector<Glib::ustring> &messages);
 	void read_label( Partition & partition ) ;

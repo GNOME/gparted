@@ -1034,15 +1034,132 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 }
 
 
-// Populate a Volume Group's partition list.  Logical Volumes are added in a
-// later change; for now the whole Volume Group is shown as unallocated space
-// so that it appears in the device list like a disk.
+// Build the partition vector for a VGDevice from its Logical Volumes.  Each
+// displayed LV becomes a Partition packed sequentially at the start of the
+// Volume Group; any remaining free extents are shown as unallocated space at
+// the end.  Offsets are expressed in Volume Group extents (the VGDevice
+// "sector"); a VG is not backed by a real disk and these values are used only
+// for ordering and length, never for I/O.
 void GParted_Core::populate_vgdevice_partitions(VGDevice& vg_device)
 {
 	vg_device.partitions.clear();
-	if (vg_device.length > 0)
-		insert_unallocated(vg_device.get_path(), vg_device.partitions,
-		                   0, vg_device.length - 1, vg_device.sector_size, false);
+	if (vg_device.pe_size <= 0)
+		return;
+
+	// LVs are listed in lvm's default order (vg_name, then lv_name), giving a
+	// stable ordering across refreshes; vg_device.lv_paths preserves it.
+	Sector running_pe = 0;
+	for (unsigned int i = 0; i < vg_device.lv_paths.size(); i++)
+	{
+		const Glib::ustring& lv_path = vg_device.lv_paths[i];
+		char segtype = LVM2_PV_Info::get_lv_segtype(lv_path);
+
+		// Thin volumes live inside a thin pool and are not displayed as
+		// separate Logical Volumes; only the (thick-provisioned) thin pool
+		// itself is shown.  'V' = thin volume, 'T' = thin-pool data,
+		// 'e' = pool metadata (the latter two are internal sub-LVs that lvm's
+		// lvs without '-a' does not list anyway; checked here defensively).
+		if (segtype == 'V' || segtype == 'T' || segtype == 'e')
+			continue;
+
+		Partition* partition_temp = make_lv_partition(vg_device, lv_path);
+
+		// Number LVs 1 upwards within the VGDevice, matching how partitions are
+		// numbered.
+		partition_temp->partition_number = i + 1;
+
+		// Give each LV a position within the VGDevice (measured in PEs) for
+		// placement within the disk graphic.
+		Sector lv_extents = partition_temp->get_sector_length();
+		partition_temp->sector_start = running_pe;
+		partition_temp->sector_end   = running_pe + lv_extents - 1;
+
+		// Mirror set_device_from_disk() / set_device_one_partition(): highest_busy
+		// tracks the highest busy partition number.
+		if (partition_temp->busy && partition_temp->partition_number > vg_device.highest_busy)
+			vg_device.highest_busy = partition_temp->partition_number;
+
+		vg_device.partitions.push_back_adopt(partition_temp);
+		running_pe += lv_extents;
+	}
+
+	insert_unallocated(vg_device.get_path(), vg_device.partitions,
+	                   0, vg_device.length - 1, vg_device.sector_size, false);
+}
+
+
+// Build a Partition object describing a single Logical Volume.  An LV is
+// presented like a partition: it has a path, a length (in Volume Group
+// extents, treated here as the device "sector"), and usually a file system on
+// top.  Thin pool LVs are thick provisioned but hold no directly mountable
+// file system, so they are shown with the dedicated "thin-pool" content type
+// and file system probing is skipped for them.
+Partition* GParted_Core::make_lv_partition(const VGDevice& vg_device, const Glib::ustring& lv_path)
+{
+	bool active  = LVM2_PV_Info::is_lv_active(lv_path);
+	char segtype = LVM2_PV_Info::get_lv_segtype(lv_path);
+	bool is_thin_pool = (segtype == 't');
+
+	FSType fstype = FS_UNKNOWN;
+	if (is_thin_pool)
+	{
+		fstype = FS_LVM2_THINPOOL;
+	}
+	else if (active)
+	{
+		// Detect the file system on the active Logical Volume.  This mirrors the
+		// path based portion of detect_filesystem(): (Q1) RAID member detection,
+		// (Q2) blkid via the shared fstype_from_fsname() mapping, then (Q4)
+		// GParted's internal signature scan.  The libparted query (Q3) used by
+		// detect_filesystem() applies only to partition table partitions.
+		if (SWRaid_Info::is_member(lv_path))
+			fstype = SWRaid_Info::get_fstype(lv_path);
+		else if (DMRaid::is_member(lv_path))
+			fstype = FS_ATARAID;
+		else
+		{
+			fstype = fstype_from_fsname(FS_Info::get_fs_type(lv_path));
+			if (fstype == FS_UNKNOWN)
+				fstype = detect_filesystem_internal(lv_path, vg_device.sector_size);
+		}
+	}
+
+	Partition* partition_temp = nullptr;
+	if (fstype == FS_LUKS)
+		partition_temp = new PartitionLUKS();
+	else
+		partition_temp = new Partition();
+
+	Byte_Value lv_bytes   = LVM2_PV_Info::get_lv_size_bytes(lv_path);
+	Sector     lv_extents = (lv_bytes > 0 && vg_device.pe_size > 0)
+	                        ? lv_bytes / vg_device.pe_size : 0;
+	bool partition_is_busy = active && ! is_thin_pool &&
+	                         is_busy(vg_device.get_path(), fstype, lv_path);
+
+	partition_temp->Set(vg_device.get_path(),
+	                    lv_path,
+	                    0,                      // partition_number
+	                    TYPE_PRIMARY,
+	                    fstype,
+	                    0,                      // sector_start
+	                    lv_extents - 1,         // sector_end
+	                    vg_device.sector_size,
+	                    false,                  // inside_extended
+	                    partition_is_busy);
+	// partition_number, sector_start and sector_end are updated afterwards by
+	// populate_vgdevice_partitions().
+
+	if (fstype == FS_LUKS)
+		set_luks_partition(*dynamic_cast<PartitionLUKS*>(partition_temp));
+
+	if (active && ! is_thin_pool)
+	{
+		set_partition_label_and_uuid(*partition_temp);
+		set_mountpoints(*partition_temp);
+		set_used_sectors(*partition_temp, nullptr);
+	}
+
+	return partition_temp;
 }
 
 
@@ -1250,6 +1367,65 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 }
 
 
+// Map a blkid / libparted reported file system name to a GParted FSType.  Returns
+// FS_UNKNOWN when the name is empty or not recognised.
+FSType GParted_Core::fstype_from_fsname(const Glib::ustring& fsname)
+{
+	if      (fsname.empty())                                return FS_UNKNOWN;
+	else if (fsname == "extended")                          return FS_EXTENDED;
+	else if (fsname == "bcachefs")                          return FS_BCACHEFS;
+	else if (fsname == "btrfs")                             return FS_BTRFS;
+	else if (fsname == "exfat")                             return FS_EXFAT;
+	else if (fsname == "ext2")                              return FS_EXT2;
+	else if (fsname == "ext3")                              return FS_EXT3;
+	else if (fsname == "ext4"    ||
+	         fsname == "ext4dev"   )                        return FS_EXT4;
+	else if (fsname == "linux-swap(v0)" ||
+	         fsname == "linux-swap(v1)" ||
+	         fsname == "swap"             )                 return FS_LINUX_SWAP;
+	else if (fsname == "crypto_LUKS")                       return FS_LUKS;
+	else if (fsname == "LVM2_member")                       return FS_LVM2_PV;
+	else if (fsname == "f2fs")                              return FS_F2FS;
+	else if (fsname == "fat16")                             return FS_FAT16;
+	else if (fsname == "fat32")                             return FS_FAT32;
+	else if (fsname == "minix")                             return FS_MINIX;
+	else if (fsname == "nilfs2")                            return FS_NILFS2;
+	else if (fsname == "ntfs")                              return FS_NTFS;
+	else if (fsname == "reiserfs")                          return FS_REISERFS;
+	else if (fsname == "xfs")                               return FS_XFS;
+	else if (fsname == "jfs")                               return FS_JFS;
+	else if (fsname == "hfs")                               return FS_HFS;
+	else if (fsname == "hfs+"    ||
+	         fsname == "hfsx"    ||
+	         fsname == "hfsplus"   )                        return FS_HFSPLUS;
+	else if (fsname == "udf")                               return FS_UDF;
+	else if (fsname == "ufs")                               return FS_UFS;
+	else if (fsname == "apfs")                              return FS_APFS;
+	else if (fsname == "bcache")                            return FS_BCACHE;
+	else if (fsname == "BitLocker")                         return FS_BITLOCKER;
+	else if (fsname == "iso9660")                           return FS_ISO9660;
+	else if (fsname == "jbd")                               return FS_JBD;
+	else if (fsname == "linux_raid_member")                 return FS_LINUX_SWRAID;
+	else if (fsname == "swsusp"    ||
+	         fsname == "swsuspend"   )                      return FS_LINUX_SWSUSPEND;
+	else if (fsname == "ReFS")                              return FS_REFS;
+	else if (fsname == "zfs_member")                        return FS_ZFS;
+	else if (fsname == "adaptec_raid_member"           ||
+	         fsname == "ddf_raid_member"               ||
+	         fsname == "hpt45x_raid_member"            ||
+	         fsname == "hpt37x_raid_member"            ||
+	         fsname == "isw_raid_member"               ||
+	         fsname == "jmicron_raid_member"           ||
+	         fsname == "lsi_mega_raid_member"          ||
+	         fsname == "nvidia_raid_member"            ||
+	         fsname == "promise_fasttrack_raid_member" ||
+	         fsname == "silicon_medley_raid_member"    ||
+	         fsname == "via_raid_member"                 )  return FS_ATARAID;
+
+	return FS_UNKNOWN;
+}
+
+
 FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPartition *lp_partition,
                                        std::vector<Glib::ustring> &messages)
 {
@@ -1286,88 +1462,9 @@ FSType GParted_Core::detect_filesystem(const PedDevice *lp_device, const PedPart
 
 	if ( ! fsname.empty() )
 	{
-		if ( fsname == "extended" )
-			return FS_EXTENDED;
-		else if (fsname == "bcachefs")
-			return FS_BCACHEFS;
-		else if ( fsname == "btrfs" )
-			return FS_BTRFS;
-		else if ( fsname == "exfat" )
-			return FS_EXFAT;
-		else if ( fsname == "ext2" )
-			return FS_EXT2;
-		else if ( fsname == "ext3" )
-			return FS_EXT3;
-		else if ( fsname == "ext4"    ||
-		          fsname == "ext4dev"    )
-			return FS_EXT4;
-		else if (fsname == "linux-swap(v0)" ||
-		         fsname == "linux-swap(v1)" ||
-		         fsname == "swap"             )
-			return FS_LINUX_SWAP;
-		else if ( fsname == "crypto_LUKS" )
-			return FS_LUKS;
-		else if ( fsname == "LVM2_member" )
-			return FS_LVM2_PV;
-		else if ( fsname == "f2fs" )
-			return FS_F2FS;
-		else if ( fsname == "fat16" )
-			return FS_FAT16;
-		else if ( fsname == "fat32" )
-			return FS_FAT32;
-		else if ( fsname == "minix" )
-			return FS_MINIX;
-		else if ( fsname == "nilfs2" )
-			return FS_NILFS2;
-		else if ( fsname == "ntfs" )
-			return FS_NTFS;
-		else if ( fsname == "reiserfs" )
-			return FS_REISERFS;
-		else if ( fsname == "xfs" )
-			return FS_XFS;
-		else if ( fsname == "jfs" )
-			return FS_JFS;
-		else if ( fsname == "hfs" )
-			return FS_HFS;
-		else if ( fsname == "hfs+"    ||
-		          fsname == "hfsx"    ||
-		          fsname == "hfsplus"    )
-			return FS_HFSPLUS;
-		else if ( fsname == "udf" )
-			return FS_UDF;
-		else if ( fsname == "ufs" )
-			return FS_UFS;
-		else if ( fsname == "apfs" )
-			return FS_APFS;
-		else if (fsname == "bcache")
-			return FS_BCACHE;
-		else if ( fsname == "BitLocker" )
-			return FS_BITLOCKER;
-		else if ( fsname == "iso9660" )
-			return FS_ISO9660;
-		else if ( fsname == "jbd" )
-			return FS_JBD;
-		else if ( fsname == "linux_raid_member" )
-			return FS_LINUX_SWRAID ;
-		else if ( fsname == "swsusp"    ||
-		          fsname == "swsuspend"    )
-			return FS_LINUX_SWSUSPEND ;
-		else if ( fsname == "ReFS" )
-			return FS_REFS;
-		else if ( fsname == "zfs_member" )
-			return FS_ZFS;
-		else if (fsname == "adaptec_raid_member"           ||
-		         fsname == "ddf_raid_member"               ||
-		         fsname == "hpt45x_raid_member"            ||
-		         fsname == "hpt37x_raid_member"            ||
-		         fsname == "isw_raid_member"               ||
-		         fsname == "jmicron_raid_member"           ||
-		         fsname == "lsi_mega_raid_member"          ||
-		         fsname == "nvidia_raid_member"            ||
-		         fsname == "promise_fasttrack_raid_member" ||
-		         fsname == "silicon_medley_raid_member"    ||
-		         fsname == "via_raid_member"                 )
-			return FS_ATARAID;
+		FSType fstype = fstype_from_fsname(fsname);
+		if (fstype != FS_UNKNOWN)
+			return fstype;
 	}
 
 	// (Q4) Fallback to GParted simple internal file system detection
