@@ -30,6 +30,12 @@ Device::Device()
 }
 
 
+Device* Device::clone() const
+{
+	return new Device(*this);
+}
+
+
 void Device::Reset()
 {
 	partitions.clear();
@@ -50,24 +56,31 @@ void Device::Reset()
 }
 
 
-Device Device::get_copy_without_partitions() const
+Device* Device::clone_without_partitions() const
 {
-	Device new_device;                                    // (1) Construct new Device object.
-	new_device.length                    = this->length;  // (2) Copy all members except partitions.
-	new_device.heads                     = this->heads;
-	new_device.sectors                   = this->sectors;
-	new_device.cylinders                 = this->cylinders;
-	new_device.cylsize                   = this->cylsize;
-	new_device.model                     = this->model;
-	new_device.disktype                  = this->disktype;
-	new_device.sector_size               = this->sector_size;
-	new_device.max_prims                 = this->max_prims;
-	new_device.highest_busy              = this->highest_busy;
-	new_device.readonly                  = this->readonly;
-	new_device.path                      = this->path;
-	new_device.max_partition_name_length = this->max_partition_name_length;
-	return new_device;                                    // (3) Return by value.
+	Device* new_device = new Device();
+	copy_fields_without_partitions(*new_device);
+	return new_device;
 }
+
+
+void Device::copy_fields_without_partitions(Device& dest) const
+{
+	dest.length                    = this->length;
+	dest.heads                     = this->heads;
+	dest.sectors                   = this->sectors;
+	dest.cylinders                 = this->cylinders;
+	dest.cylsize                   = this->cylsize;
+	dest.model                     = this->model;
+	dest.disktype                  = this->disktype;
+	dest.sector_size               = this->sector_size;
+	dest.max_prims                 = this->max_prims;
+	dest.highest_busy              = this->highest_busy;
+	dest.readonly                  = this->readonly;
+	dest.path                      = this->path;
+	dest.max_partition_name_length = this->max_partition_name_length;
+}
+
 
 void Device::set_path( const Glib::ustring & path )
 {

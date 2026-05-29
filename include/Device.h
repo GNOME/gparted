@@ -33,10 +33,18 @@ class Device
 {
 public:
 	Device() ;
+	virtual ~Device() = default;
+	virtual Device* clone() const;
 
 	void Reset();
 
-	Device get_copy_without_partitions() const;
+	Device& operator=(Device& rhs) = delete;
+	// clone() copies a Device via its copy constructor.  Declare it explicitly
+	// so it is not deprecated by the user-declared destructor and deleted
+	// copy assignment operator above (silences -Wdeprecated-copy).
+	Device(const Device&) = default;
+
+	virtual Device* clone_without_partitions() const;
 	void set_path( const Glib::ustring & path );
 	const Glib::ustring& get_path() const;
 	void enable_partition_naming( int length );  // > 0 => enable partition naming support
@@ -61,6 +69,9 @@ public:
 	bool readonly;  // Must changes to the partition table be prevented because the OS
 	                // can't be informed of the changes while other partitions are
 			// busy.
+
+protected:
+	void copy_fields_without_partitions(Device& dest) const;
 
 private:
 	Glib::ustring path;

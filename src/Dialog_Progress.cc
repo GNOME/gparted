@@ -30,6 +30,7 @@
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
+#include <memory>
 #include <sigc++/signal.h>
 #include <vector>
 #include <algorithm>
@@ -39,7 +40,7 @@ namespace GParted
 {
 
 
-Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const OperationVector& operations)
+Dialog_Progress::Dialog_Progress(const std::vector<std::unique_ptr<Device>>& devices, const OperationVector& operations)
    // Create some icons here, instead of recreating them every time
  : m_icon_execute(Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE,        Gtk::ICON_SIZE_LARGE_TOOLBAR)),
    m_icon_success(Utils::mk_pixbuf(*this, Gtk::Stock::APPLY,          Gtk::ICON_SIZE_LARGE_TOOLBAR)),
@@ -420,7 +421,7 @@ void Dialog_Progress::on_save()
 			for (unsigned int i = 0; i < m_devices.size(); i++)
 			{
 				out << "<p>========================================</p>" << std::endl;
-				write_device_details(m_devices[i], out);
+				write_device_details(*m_devices[i], out);
 			}
 
 			//Write out each operation

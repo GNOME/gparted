@@ -77,7 +77,7 @@ void OperationDelete::apply_to_visual( PartitionVector & partitions )
 				insert_unallocated(partitions[index_extended].logicals,
 				                   partitions[index_extended].sector_start,
 				                   partitions[index_extended].sector_end,
-				                   m_device.sector_size,
+				                   m_device->sector_size,
 				                   true);
 
 				// If deleted partition was logical we have to decrease
@@ -100,7 +100,7 @@ void OperationDelete::apply_to_visual( PartitionVector & partitions )
 		{
 			remove_original_and_adjacent_unallocated( partitions, index ) ;
 			
-			insert_unallocated(partitions, 0, m_device.length -1, m_device.sector_size, false);
+			insert_unallocated(partitions, 0, m_device->length -1, m_device->sector_size, false);
 		}
 	}
 }

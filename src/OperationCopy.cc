@@ -82,7 +82,7 @@ void OperationCopy::create_description()
 		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
 		m_description = Glib::ustring::compose(_("Copy %1 to %2 (start at %3)"),
 		                                m_partition_copied->get_path(),
-		                                m_device.get_path(),
+		                                m_device->get_path(),
 		                                Utils::format_size(m_partition_new->sector_start,
 		                                                   m_partition_new->sector_size));
 	}

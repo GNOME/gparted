@@ -53,8 +53,8 @@ public:
 	static void find_supported_core();
 	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
-	void set_devices( std::vector<Device> & devices ) ;
-	void set_devices_thread( std::vector<Device> * pdevices );
+	void set_devices(std::vector<std::unique_ptr<Device>>& devices);
+	void set_devices_thread(std::vector<std::unique_ptr<Device>>* pdevices);
 
 	bool valid_partition(const Device& device, Partition& partition, Glib::ustring& error);
 	bool apply_operation_to_disk( Operation * operation );

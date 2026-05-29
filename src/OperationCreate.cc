@@ -72,7 +72,7 @@ void OperationCreate::create_description()
 	                                m_partition_new->get_filesystem_string(),
 	                                Utils::format_size(m_partition_new->get_sector_length(),
 	                                                   m_partition_new->sector_size),
-	                                m_device.get_path());
+	                                m_device->get_path());
 }
 
 

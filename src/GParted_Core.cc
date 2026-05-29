@@ -56,6 +56,7 @@
 #include <sigc++/bind.h>
 #include <sigc++/signal.h>
 #include <memory>
+#include <utility>
 #include <vector>
 
 
@@ -136,7 +137,7 @@ void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_dev
 }
 
 
-void GParted_Core::set_devices( std::vector<Device> & devices )
+void GParted_Core::set_devices(std::vector<std::unique_ptr<Device>>& devices)
 {
 	Glib::Thread::create( sigc::bind(
 				sigc::mem_fun( *this, &GParted_Core::set_devices_thread ),
@@ -151,9 +152,10 @@ static bool _mainquit( void *dummy )
 	return false;
 }
 
-void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
+
+void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdevices)
 {
-	std::vector<Device> &devices = *pdevices;
+	std::vector<std::unique_ptr<Device>>& devices = *pdevices;
 	devices .clear() ;
 
 	// Initialise and load caches needed for device discovery.
@@ -271,9 +273,9 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	{
 		/*TO TRANSLATORS: looks like Searching /dev/sda partitions */ 
 		set_thread_status_message(Glib::ustring::compose(_("Searching %1 partitions"), m_device_paths[t]));
-		Device temp_device;
-		set_device_from_disk(temp_device, m_device_paths[t]);
-		devices.push_back( temp_device );
+		std::unique_ptr<Device> temp_device = std::make_unique<Device>();
+		set_device_from_disk(*temp_device, m_device_paths[t]);
+		devices.push_back(std::move(temp_device));
 	}
 
 	set_thread_status_message("") ;

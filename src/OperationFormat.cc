@@ -51,11 +51,11 @@ void OperationFormat::apply_to_visual( PartitionVector & partitions )
 		partitions.clear();
 
 		Partition * temp_partition = new Partition();
-		temp_partition->set_unpartitioned(m_device.get_path(),
+		temp_partition->set_unpartitioned(m_device->get_path(),
 		                                  "",  // Overridden with "unallocated"
 		                                  FS_UNALLOCATED,
-		                                  m_device.length,
-		                                  m_device.sector_size,
+		                                  m_device->length,
+		                                  m_device->sector_size,
 		                                  false);
 		partitions.push_back_adopt( temp_partition );
 	}

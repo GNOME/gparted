@@ -32,14 +32,14 @@ namespace GParted
 
 
 Operation::Operation(OperationType type, const Device& device, const Partition& partition_orig)
- : m_type(type), m_device(device.get_copy_without_partitions()), m_partition_original(partition_orig.clone())
+ : m_type(type), m_device(device.clone_without_partitions()), m_partition_original(partition_orig.clone())
 {
 }
 
 
 Operation::Operation(OperationType type, const Device& device, const Partition& partition_orig,
                                                                const Partition& partition_new)
- : m_type(type), m_device(device.get_copy_without_partitions()), m_partition_original(partition_orig.clone()),
+ : m_type(type), m_device(device.clone_without_partitions()), m_partition_original(partition_orig.clone()),
                                                                  m_partition_new(partition_new.clone())
 {
 }
@@ -108,7 +108,7 @@ int Operation::find_index_new( const PartitionVector & partitions )
 void Operation::insert_unallocated( PartitionVector & partitions,
                                     Sector start, Sector end, Byte_Value sector_size, bool inside_extended )
 {
-	GParted_Core::insert_unallocated(m_device.get_path(), partitions,
+	GParted_Core::insert_unallocated(m_device->get_path(), partitions,
 	                                 start, end, sector_size, inside_extended);
 }
 
@@ -174,7 +174,7 @@ void Operation::insert_new( PartitionVector & partitions )
 				insert_unallocated(partitions[index_extended].logicals,
 				                   partitions[index_extended].sector_start,
 				                   partitions[index_extended].sector_end,
-				                   m_device.sector_size,
+				                   m_device->sector_size,
 				                   true);
 			}
 		}
@@ -186,7 +186,7 @@ void Operation::insert_new( PartitionVector & partitions )
 		{
 			partitions.replace_at(index, m_partition_new.get());
 
-			insert_unallocated(partitions, 0, m_device.length-1, m_device.sector_size, false);
+			insert_unallocated(partitions, 0, m_device->length-1, m_device->sector_size, false);
 		}
 	}
 }

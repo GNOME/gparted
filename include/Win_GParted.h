@@ -215,8 +215,8 @@ private:
 
 	// private variables
 	unsigned int        m_current_device = 0;
-	std::vector<Device> m_devices;
-	Device              m_display_device;                  // Copy of m_devices[m_current_device] with pending
+	std::vector<std::unique_ptr<Device>> m_devices;
+	std::unique_ptr<Device> m_display_device;              // Copy of m_devices[m_current_device] with pending
 	                                                       // operations applied to partitions for displaying in
 	                                                       // the UI.
 	const Partition*    selected_partition_ptr = nullptr;  // Pointer to the selected partition.  (Alias to element

@@ -30,6 +30,7 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/expander.h>
+#include <memory>
 #include <sigc++/connection.h>
 #include <sigc++/signal.h>
 #include <fstream>
@@ -43,7 +44,7 @@ namespace GParted
 class Dialog_Progress : public Gtk::Dialog
 {
 public:
-	Dialog_Progress(const std::vector<Device>& devices, const OperationVector& operations);
+	Dialog_Progress(const std::vector<std::unique_ptr<Device>>& devices, const OperationVector& operations);
 	~Dialog_Progress();
 
 	sigc::signal< bool, Operation * > signal_apply_operation ;
@@ -97,7 +98,7 @@ private:
 	Glib::RefPtr<Gdk::Pixbuf> m_icon_info;
 	Glib::RefPtr<Gdk::Pixbuf> m_icon_warning;
 
-	const std::vector<Device>& m_devices;
+	const std::vector<std::unique_ptr<Device>>& m_devices;
 	const OperationVector&     m_operations;
 	const double               m_fraction               = 1.0;
 	bool                       m_success                = true;
