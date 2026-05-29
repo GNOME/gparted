@@ -17,7 +17,8 @@ check_PROGRAMS =  \
 	test_OperationDetail            \
 	test_PasswordRAMStore           \
 	test_PipeCapture                \
-	test_SupportedFileSystems
+	test_SupportedFileSystems       \
+	test_VGDevice
 
 # Test cases to be run by "make check"
 TESTS = $(check_PROGRAMS)
@@ -51,6 +52,7 @@ gparted_core_OBJECTS =  \
 	$(top_builddir)/src/SupportedFileSystems.$(OBJEXT)  \
 	$(top_builddir)/src/SWRaid_Info.$(OBJEXT)           \
 	$(top_builddir)/src/Utils.$(OBJEXT)                 \
+	$(top_builddir)/src/VGDevice.$(OBJEXT)              \
 	$(top_builddir)/src/bcachefs.$(OBJEXT)              \
 	$(top_builddir)/src/btrfs.$(OBJEXT)                 \
 	$(top_builddir)/src/exfat.$(OBJEXT)                 \
@@ -115,3 +117,8 @@ test_SupportedFileSystems_LDADD   =  \
 	$(gparted_core_OBJECTS)                    \
 	$(GTEST_LIBS)                              \
 	$(top_builddir)/lib/gtest/lib/libgtest.la
+
+test_VGDevice_SOURCES = test_VGDevice.cc
+test_VGDevice_LDADD   =  \
+	$(gparted_core_OBJECTS)  \
+	$(LDADD)

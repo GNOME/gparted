@@ -36,6 +36,7 @@
 #include "SupportedFileSystems.h"
 #include "SWRaid_Info.h"
 #include "Utils.h"
+#include "VGDevice.h"
 #include "../config.h"
 #include "btrfs.h"
 
@@ -56,6 +57,7 @@
 #include <sigc++/bind.h>
 #include <sigc++/signal.h>
 #include <memory>
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -157,6 +159,15 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 {
 	std::vector<std::unique_ptr<Device>>& devices = *pdevices;
 	devices .clear() ;
+
+	// Snapshot the device/VG names requested on the command line (if any) before
+	// the disk confirmation loop below prunes non-disk entries such as Volume
+	// Group paths.  Used further down to decide which Volume Groups to include:
+	// with no command-line arguments every VG is shown; when names are given
+	// only the named VGs (and disks) are shown.
+	std::set<Glib::ustring> user_named_paths;
+	if (! m_probe_devices)
+		user_named_paths.insert(m_device_paths.begin(), m_device_paths.end());
 
 	// Initialise and load caches needed for device discovery.
 	BlockSpecial::clear_cache();            // MUST BE FIRST.  Cache of name to major, minor
@@ -276,6 +287,40 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 		std::unique_ptr<Device> temp_device = std::make_unique<Device>();
 		set_device_from_disk(*temp_device, m_device_paths[t]);
 		devices.push_back(std::move(temp_device));
+	}
+
+	// LVM2 read-only support: enumerate Volume Groups and add each one to the
+	// device list as a VGDevice.  A VG is shown like a disk and its Logical
+	// Volumes like partitions; GParted does not modify LVM objects here.  VGs
+	// are appended after the disks in lvm's default (vg_name) order, which is
+	// stable across refreshes.
+	std::vector<VGDevice *> vg_devices = LVM2_PV_Info::get_vg_devices();
+	for (unsigned int i = 0; i < vg_devices.size(); i++)
+	{
+		std::unique_ptr<VGDevice> temp_vg(vg_devices[i]);
+
+		// Skip any Volume Group without usable geometry (no physical extents or
+		// an unreported extent size).  It has nothing meaningful to display and
+		// this guards the visual disk rendering against a divide-by-zero on the
+		// device length.
+		if (temp_vg->pe_size <= 0 || temp_vg->total_pe <= 0)
+			continue;
+
+		// When specific devices/VGs were named on the command line, include only
+		// the Volume Groups that were named.  A VG's canonical name is its bare
+		// name, which is what get_path() returns; vg_name is checked too so the
+		// match is robust.  With no arguments, include every VG.
+		if (! m_probe_devices                                &&
+		    user_named_paths.count(temp_vg->get_path()) == 0 &&
+		    user_named_paths.count(temp_vg->vg_name)    == 0   )
+			continue;
+
+		/* TO TRANSLATORS: looks like   Searching rootvg logical volumes */
+		set_thread_status_message(Glib::ustring::compose(_("Searching %1 logical volumes"),
+		                                                 temp_vg->get_path()));
+		populate_vgdevice_partitions(*temp_vg);
+		temp_vg->readonly = temp_vg->exported || temp_vg->partial;
+		devices.push_back(std::move(temp_vg));
 	}
 
 	set_thread_status_message("") ;
@@ -987,6 +1032,19 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 
 	device.partitions.push_back_adopt( partition_temp );
 }
+
+
+// Populate a Volume Group's partition list.  Logical Volumes are added in a
+// later change; for now the whole Volume Group is shown as unallocated space
+// so that it appears in the device list like a disk.
+void GParted_Core::populate_vgdevice_partitions(VGDevice& vg_device)
+{
+	vg_device.partitions.clear();
+	if (vg_device.length > 0)
+		insert_unallocated(vg_device.get_path(), vg_device.partitions,
+		                   0, vg_device.length - 1, vg_device.sector_size, false);
+}
+
 
 void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 {

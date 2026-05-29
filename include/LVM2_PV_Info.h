@@ -27,6 +27,7 @@
 
 #include "BlockSpecial.h"
 #include "Utils.h"
+#include "VGDevice.h"
 
 #include <glibmm/ustring.h>
 #include <vector>
@@ -53,6 +54,15 @@ struct LVM2_VG
 	Glib::ustring lv_attr;
 };
 
+
+struct LVM2_VGDev
+{
+	Glib::ustring vg_name;
+	Byte_Value    pe_size  = -1;
+	Sector        total_pe = -1;
+};
+
+
 class LVM2_PV_Info
 {
 public:
@@ -65,7 +75,9 @@ public:
 	static bool is_vg_exported( const Glib::ustring & vgname );
 	static std::vector<Glib::ustring> get_vg_members( const Glib::ustring & vgname );
 	static std::vector<Glib::ustring> get_vg_lvs( const Glib::ustring & vgname );
+	static std::vector<VGDevice *> get_vg_devices();
 	static std::vector<Glib::ustring> get_error_messages( const Glib::ustring & path );
+
 private:
 	static void initialize_if_required();
 	static void set_command_found();
@@ -78,6 +90,7 @@ private:
 	static bool lvm_found ;
 	static std::vector<LVM2_PV> lvm2_pv_cache;
 	static std::vector<LVM2_VG> lvm2_vg_cache;
+	static std::vector<LVM2_VGDev> lvm2_vgdev_cache;
 	static std::vector<Glib::ustring> error_messages ;
 };
 

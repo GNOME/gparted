@@ -52,6 +52,7 @@ noinst_HEADERS = \
 	SWRaid_Info.h			\
 	TreeView_Detail.h		\
 	Utils.h				\
+	VGDevice.h			\
 	Win_GParted.h			\
 	bcachefs.h			\
 	btrfs.h				\

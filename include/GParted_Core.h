@@ -40,6 +40,9 @@ namespace GParted
 {
 
 
+class VGDevice;
+
+
 class GParted_Core
 {
 friend class EraseFileSystemSignaturesTest;  // To allow unit testing to call private
@@ -93,6 +96,7 @@ private:
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
 	void set_device_one_partition( Device & device, PedDevice * lp_device, FSType fstype,
 	                               std::vector<Glib::ustring> & messages );
+	void populate_vgdevice_partitions(VGDevice& vg_device);
 	void set_luks_partition( PartitionLUKS & partition );
 	void set_partition_label_and_uuid( Partition & partition );
 	static FSType detect_filesystem_in_encryption_mapping(const Glib::ustring& path,

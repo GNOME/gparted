@@ -62,6 +62,7 @@ gpartedbin_SOURCES = \
 	SWRaid_Info.cc			\
 	TreeView_Detail.cc		\
 	Utils.cc			\
+	VGDevice.cc			\
 	Win_GParted.cc			\
 	bcachefs.cc			\
 	btrfs.cc			\

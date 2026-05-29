@@ -16,6 +16,7 @@
 
 #include "LVM2_PV_Info.h"
 #include "BlockSpecial.h"
+#include "VGDevice.h"
 
 #include <glibmm/miscutils.h>
 
@@ -42,28 +43,42 @@ enum LV_BIT
 //  lvm_found           - Is the "lvm" command available?
 //  lvm2_pv_cache       - Vector of PV fields: pv_name, pv_size, pv_free, vg_name.
 //                        E.g.
-//                        //pv_name                   , pv_size   , pv_free   , vg_name
-//                        [{BlockSpecial("/dev/sda10"), 1073741824, 1073741824, ""        },
-//                         {BlockSpecial("/dev/sda11"), 1069547520, 1069547520, "Test-VG1"},
-//                         {BlockSpecial("/dev/sda12"), 1069547520,  335544320, "Test_VG2"},
-//                         {BlockSpecial("/dev/sda13"), 1069547520,          0, "Test_VG3"},
-//                         {BlockSpecial("/dev/sda14"), 1069547520,  566231040, "Test_VG3"},
-//                         {BlockSpecial("/dev/sda15"), 1069547520,  545259520, "Test-VG4"}
+//                        //pv_name                   , pv_size  , pv_free  , vg_name
+//                        [{BlockSpecial("/dev/sdb12"), 268435456, 268435456, ""        },  // Empty PV
+//                         {BlockSpecial("/dev/sdb13"), 264241152, 264241152, "Test-VG1"},
+//                         {BlockSpecial("/dev/sdb14"), 264241152,  62914560, "Test_VG2"},
+//                         {BlockSpecial("/dev/sdb15"), 264241152,         0, "Test_VG3"},
+//                         {BlockSpecial("/dev/sdb16"), 264241152, 125829120, "Test_VG3"},
+//                         {BlockSpecial("/dev/sdb17"), 264241152, 130023424, "Test-VG4"},
+//                         {BlockSpecial("/dev/sdb18"), 264241152,  46137344, "Test_VG5"}
 //                        ]
 //  lvm2_vg_cache       - Vector storing VG fields: vg_name, vg_attr, lv_name, lv_attr.
 //                        See vgs(8) and lvs(8) for details of vg_attr and lv_attr respectively.
 //                        E.g.
-//                        //vg_name   , vg_attr , lv_name, lv_attr
-//                        [{""        , "r-----", ""     , ""      },  // (from empty PV)
-//                         {"Test-VG1", "wz--n-", ""     , ""      },  // Empty VG
-//                         {"Test_VG2", "wz--n-", "lvol0", "-wi---"},  // Inactive VG
-//                         {"Test_VG2", "wz--n-", "lvol1", "-wi---"},
-//                         {"Test_VG2", "wz--n-", ""     , ""      },
-//                         {"Test_VG3", "wz--n-", "lvol0", "-wi-a-"},  // Active VG
-//                         {"Test_VG3", "wz--n-", "lvol0", "-wi-a-"},
-//                         {"Test_VG3", "wz--n-", ""     , ""      },
-//                         {"Test-VG4", "wzx-n-", "lvol0", "-wi---"},  // Exported VG
-//                         {"Test-VG4", "wzx-n-", ""     , ""      }
+//                        //vg_name   , vg_attr , lv_name           , lv_attr
+//                        [{""        , "r-----", ""                , ""          },  // (from empty PV)
+//                         {"Test-VG1", "wz--n-", ""                , ""          },  // Empty VG
+//                         {"Test_VG2", "wz--n-", "lvol0"           , "-wi-------"},  // Inactive VG
+//                         {"Test_VG2", "wz--n-", "lvol1"           , "-wi-------"},
+//                         {"Test_VG2", "wz--n-", ""                , ""          },
+//                         {"Test_VG3", "wz--n-", "lvol0"           , "-wi-a-----"},  // Active VG
+//                         {"Test_VG3", "wz--n-", "lvol0"           , "-wi-a-----"},
+//                         {"Test_VG3", "wz--n-", ""                , ""          },
+//                         {"Test-VG4", "wzx-n-", "lvol0"           , "-wi-------"},  // Exported VG
+//                         {"Test-VG4", "wzx-n-", ""                , ""          },
+//                         {"Test_VG5", "wz--n-", "[lvol0_pmspare]" , "ewi-------"},  // VG with thin-pool LV
+//                         {"Test_VG5", "wz--n-", "[testpool_tdata]", "Twi-ao----"},
+//                         {"Test_VG5", "wz--n-", "[testpool_tmeta]", "ewi-ao----"},
+//                         {"Test_VG5", "wz--n-", ""                , ""          }
+//                        ]
+//  lvm2_vgdev_cache    - Vector storing VG fields: vg_name, vg_extent_size, vg_extent_count.
+//                        E.g.
+//                        //vg_name   , pe_size, total_pe
+//                         {"Test-VG1", 4194304,       63},
+//                         {"Test-VG4", 4194304,       63},
+//                         {"Test_VG2", 4194304,       63},
+//                         {"Test_VG3", 4194304,      126},
+//                         {"Test_VG5", 4194304,       63}
 //                        ]
 //  error_messages      - String vector storing whole cache error messages.
 
@@ -73,6 +88,7 @@ bool LVM2_PV_Info::lvm2_pv_info_cache_initialized = false ;
 bool LVM2_PV_Info::lvm_found = false ;
 std::vector<LVM2_PV> LVM2_PV_Info::lvm2_pv_cache;
 std::vector<LVM2_VG> LVM2_PV_Info::lvm2_vg_cache;
+std::vector<LVM2_VGDev> LVM2_PV_Info::lvm2_vgdev_cache;
 std::vector<Glib::ustring> LVM2_PV_Info::error_messages ;
 
 bool LVM2_PV_Info::is_lvm2_pv_supported()
@@ -85,6 +101,7 @@ void LVM2_PV_Info::clear_cache()
 {
 	lvm2_pv_cache.clear();
 	lvm2_vg_cache.clear();
+	lvm2_vgdev_cache.clear();
 	lvm2_pv_info_cache_initialized = false;
 }
 
@@ -180,6 +197,45 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_vg_lvs( const Glib::ustring & vgnam
 	return lvs;
 }
 
+
+std::vector<VGDevice *> LVM2_PV_Info::get_vg_devices()
+{
+	initialize_if_required();
+	std::vector<VGDevice *> vg_devices;
+
+	for (unsigned int i = 0; i < lvm2_vgdev_cache.size(); i++)
+	{
+		const LVM2_VGDev& vgd = lvm2_vgdev_cache[i];
+		VGDevice* vg = new VGDevice();
+
+		vg->vg_name  = vgd.vg_name;
+		vg->pe_size  = vgd.pe_size;
+		vg->total_pe = vgd.total_pe;
+
+		// Issue #316: use the bare VG name as the canonical name everywhere
+		// (lvm vgdisplay has no path property and LVM documentation almost
+		// universally refers to a VG by its bare name, not /dev/<vgname>).
+		vg->set_path(vgd.vg_name);
+		if (vgd.total_pe > 0 && vgd.pe_size > 0)
+		{
+			vg->length      = vgd.total_pe;
+			vg->sector_size = vgd.pe_size;
+		}
+
+		const LVM2_VG& vg_cache_entry = get_vg_cache_entry_by_name(vgd.vg_name);
+		if (vg_cache_entry.vg_name == vgd.vg_name)
+		{
+			vg->exported = bit_set(vg_cache_entry.vg_attr, VGBIT_EXPORTED);
+			vg->partial  = bit_set(vg_cache_entry.vg_attr, VGBIT_PARTIAL);
+		}
+
+		vg_devices.push_back(vg);
+	}
+
+	return vg_devices;
+}
+
+
 std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring & path )
 {
 	initialize_if_required() ;
@@ -227,6 +283,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 
 	lvm2_pv_cache .clear() ;
 	lvm2_vg_cache .clear() ;
+	lvm2_vgdev_cache.clear();
 	error_messages .clear() ;
 	if ( lvm_found )
 	{
@@ -318,6 +375,47 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 				error_messages .push_back ( output ) ;
 			if ( ! error .empty() )
 				error_messages .push_back ( error ) ;
+		}
+
+		cmd = "lvm vgs --config \"log{command_names=0}\" --nosuffix "
+		      "--noheadings --separator , --units b "
+		      "-o vg_name,vg_extent_size,vg_extent_count";
+		enum VGDEV_FIELD
+		{
+			VGDEVFIELD_VG_NAME         = 0,
+			VGDEVFIELD_VG_EXTENT_SIZE  = 1,
+			VGDEVFIELD_VG_EXTENT_COUNT = 2,
+			VGDEVFIELD_COUNT           = 3
+		};
+		if (! Utils::execute_command(cmd, output, error, true))
+		{
+			if (output != "")
+			{
+				std::vector<Glib::ustring> lines;
+				Utils::tokenize(output, lines, "\n");
+				for (i = 0; i < lines.size(); i++)
+				{
+					std::vector<Glib::ustring> fields;
+					Utils::split(Utils::trim(lines[i]), fields, ",");
+					if (fields.size() < VGDEVFIELD_COUNT)
+						continue;  // Not enough fields
+					if (fields[VGDEVFIELD_VG_NAME] == "")
+						continue;
+					LVM2_VGDev vgd;
+					vgd.vg_name  = fields[VGDEVFIELD_VG_NAME];
+					vgd.pe_size  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_SIZE]);
+					vgd.total_pe = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_COUNT]);
+					lvm2_vgdev_cache.push_back(vgd);
+				}
+			}
+		}
+		else
+		{
+			error_messages.push_back(cmd);
+			if (! output.empty())
+				error_messages.push_back(output);
+			if (! error.empty())
+				error_messages.push_back(error);
 		}
 
 		if ( ! error_messages .empty() )
