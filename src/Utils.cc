@@ -654,16 +654,16 @@ Glib::ustring Utils::format_time( std::time_t seconds )
 		seconds = -seconds;
 	}
 
-	int unit = static_cast<int>( seconds / 3600 ) ;
-	if ( unit < 10 )
+	int hours = static_cast<int>(seconds / 3600);
+	if (hours < 10)
 		time += "0" ;
-	time += num_to_str( unit ) + ":" ;
+	time += num_to_str(hours) + ":";
 	seconds %= 3600 ;
 
-	unit = static_cast<int>( seconds / 60 ) ;
-	if ( unit < 10 )
+	int minutes = static_cast<int>(seconds / 60);
+	if (minutes < 10)
 		time += "0" ;
-	time += num_to_str( unit ) + ":" ;
+	time += num_to_str(minutes) + ":";
 	seconds %= 60 ;
 
 	if ( seconds < 10 )
