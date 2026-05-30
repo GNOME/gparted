@@ -434,8 +434,8 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	PipeCapture errorcapture(err, cmd_status.error);
 	outputcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
 	errorcapture.signal_eof.connect(sigc::ptr_fun(execute_command_eof));
-	cmd_operationdetail.add_child(OperationDetail(cmd_status.output, STATUS_NONE, FONT_ITALIC));
-	cmd_operationdetail.add_child(OperationDetail(cmd_status.error, STATUS_NONE, FONT_ITALIC));
+	cmd_operationdetail.add_child(OperationDetail(cmd_status.output, STATUS_NONE, FONT_MONOSPACE));
+	cmd_operationdetail.add_child(OperationDetail(cmd_status.error, STATUS_NONE, FONT_MONOSPACE));
 	std::vector<OperationDetail*>& children = cmd_operationdetail.get_children();
 	outputcapture.signal_update.connect(sigc::bind(sigc::ptr_fun(update_command_output),
 	                                               children[children.size() - 2],
