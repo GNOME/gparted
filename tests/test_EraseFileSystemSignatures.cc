@@ -248,8 +248,8 @@ TEST_F(EraseFileSystemSignaturesTest, PromiseFastTrackRAIDUnaligned)
 
 // Custom Google Test main().
 // Reference:
-// *   Google Test, Primer, Writing the main() function
-//     https://github.com/google/googletest/blob/master/googletest/docs/primer.md#writing-the-main-function
+// *   GoogleTest Primer, Writing the main() function
+//     https://google.github.io/googletest/primer.html#writing-the-main-function
 int main(int argc, char** argv)
 {
 	printf("Running main() from %s\n", __FILE__);

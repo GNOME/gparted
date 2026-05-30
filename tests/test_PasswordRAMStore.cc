@@ -30,8 +30,8 @@
  * fixture completes.
  *
  * Reference:
- *     Google Test, Advanced Guide, Sharing Resources Between Tests in the Same Test Case
- *     https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md#sharing-resources-between-tests-in-the-same-test-case
+ *     Advanced GoogleTest Topics, Sharing Resources Between Tests in the Same Test Suite
+ *     https://google.github.io/googletest/advanced.html#sharing-resources-between-tests-in-the-same-test-suite
  */
 
 #include "PasswordRAMStore.h"

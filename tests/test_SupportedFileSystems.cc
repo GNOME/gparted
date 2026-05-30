@@ -78,10 +78,10 @@ std::ostream& operator<<(std::ostream& out, const Partition& partition)
 // Printable file system type which meets the requirements for a Google Test name.
 // Use GParted's file system names except when they contains any non-alphabetic chars.
 // Reference:
-// *   Specifying Names for Value-Parameterized Test Parameters
-//     https://github.com/google/googletest/blob/v1.8.x/googletest/docs/advanced.md#specifying-names-for-value-parameterized-test-parameters
-//         "NOTE: test names must be non-empty, unique, and may only contain ASCII
-//         alphanumeric characters.  In particular, they should not contain underscores."
+// *   Advanced GoogleTest Topics, Specifying Names for Value-Parameterized Test Parameters
+//     https://google.github.io/googletest/advanced.html#specifying-names-for-value-parameterized-test-parameters
+//         NOTE: test names must be non-empty, unique, and may only contain ASCII
+//         alphanumeric characters.  In particular, they should not contain underscores.
 const std::string test_fsname(FSType fstype)
 {
 	switch (fstype)
@@ -633,8 +633,8 @@ TEST_P(SupportedFileSystemsTest, CreateAndShrink)
 
 // Instantiate the test case so every test is run for the specified file system types.
 // Reference:
-// *   Google Test, Advanced googletest Topics, How to Write Value-Parameterized Tests
-//     https://github.com/google/googletest/blob/v1.10.x/googletest/docs/advanced.md#how-to-write-value-parameterized-tests
+// *   Advanced GoogleTest Topics, How to Write Value-Parameterized Tests
+//     https://google.github.io/googletest/advanced.html#how-to-write-value-parameterized-tests
 INSTANTIATE_TEST_SUITE_P(My,
                          SupportedFileSystemsTest,
                          ::testing::ValuesIn(SupportedFileSystemsTest::get_supported_fstypes()),
@@ -646,8 +646,8 @@ INSTANTIATE_TEST_SUITE_P(My,
 
 // Custom Google Test main().
 // Reference:
-// *   Google Test, Primer, Writing the main() function
-//     https://github.com/google/googletest/blob/master/googletest/docs/primer.md#writing-the-main-function
+// *   GoogleTest Primer, Writing the main() function
+//     https://google.github.io/googletest/primer.html#writing-the-main-function
 int main(int argc, char** argv)
 {
 	printf("Running main() from %s\n", __FILE__);
