@@ -278,7 +278,7 @@ void ntfs::clone_progress( OperationDetail *operationdetail )
 {
 	const Glib::ustring& output = operationdetail->get_command_output();
 	Glib::ustring line = Utils::last_line( output );
-	// Text progress on the LAST LINE looks like " 15.24 progress completed"
+	// Text progress on the LAST LINE looks like " 15.24 percent completed"
 	float percent;
 	if ( line.find( "percent completed" ) != line.npos && sscanf( line.c_str(), "%f", &percent ) == 1 )
 	{
