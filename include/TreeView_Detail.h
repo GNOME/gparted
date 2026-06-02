@@ -37,6 +37,7 @@ class TreeView_Detail : public Gtk::TreeView
 public:
 	TreeView_Detail();
 	void load_partitions( const PartitionVector & partitions );
+	void set_partition_column_title(const Glib::ustring& title);
 	void set_selected( const Partition * partition_ptr );
 	void clear() ;
 

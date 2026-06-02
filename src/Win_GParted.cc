@@ -864,6 +864,9 @@ void Win_GParted::Fill_Label_Device_Info( bool clear )
 		set_menu_label(MENU_DEVICE_INFORMATION,
 		                showing_vg ? _("Volume Group _Information") : _("Device _Information"));
 
+		// Relabel the first column header in the partition/LV list to match.
+		treeview_detail.set_partition_column_title(showing_vg ? _("Logical Volume") : _("Partition"));
+
 		if (m_device_info_title != nullptr)
 			m_device_info_title->set_markup(
 			    " <b>" + Glib::ustring(showing_vg ? _("Volume Group Information")

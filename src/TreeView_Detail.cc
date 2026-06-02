@@ -138,6 +138,15 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions,
 }
 
 
+// Relabel the first column header.  Used to set "Partition" / "Logical Volume"
+// depending on whether a disk device or a Volume Group is being displayed.
+void TreeView_Detail::set_partition_column_title(const Glib::ustring& title)
+{
+	if (get_column(0) != nullptr)
+		get_column(0)->set_title(title);
+}
+
+
 bool TreeView_Detail::set_selected_by_ptn(Gtk::TreeModel::Children rows,
                                           const Partition* partition_ptr, bool inside_extended)
 {

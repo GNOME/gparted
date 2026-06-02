@@ -622,8 +622,13 @@ void Dialog_Partition_Info::Display_Info()
 	}
 
 	// PARTITION DETAIL SECTION
+	// LVM2 read-only support: when this Partition is a Logical Volume (its
+	// containing "device" is a Volume Group), relabel the section "Logical
+	// Volume" and present LE (Logical Extent) information further down instead
+	// of disk sector offsets, which are not meaningful for a Volume Group.
+	bool showing_lv = LVM2_PV_Info::is_vg_name(m_partition.device_path);
 	// Partition headline
-	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Partition")) + "</b>"),
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(showing_lv ? _("Logical Volume") : _("Partition")) + "</b>"),
 	             0, top++, 6, 1);
 
 	//use current left row tracker position as anchor for right
@@ -657,31 +662,56 @@ void Dialog_Partition_Info::Display_Info()
 	}
 
 	// Right field & value pair area
-	// First sector
-	Gtk::Label *label_first_sector = Utils::mk_label("<b>" + Glib::ustring(_("First sector:")) + "</b>");
-	grid->attach(*label_first_sector, 3, topright, 1, 1);
-	Gtk::Label* value_first_sector = Utils::mk_label(Utils::num_to_str(m_partition.sector_start),
-	                                                 true, false, true);
-	grid->attach(*value_first_sector, 4, topright++, 1, 1);
-	value_first_sector->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_first_sector->get_accessible());
+	if (! showing_lv)
+	{
+		// First sector
+		Gtk::Label* label_first_sector = Utils::mk_label("<b>" + Glib::ustring(_("First sector:")) + "</b>");
+		grid->attach(*label_first_sector, 3, topright, 1, 1);
+		Gtk::Label* value_first_sector = Utils::mk_label(Utils::num_to_str(m_partition.sector_start),
+		                                                 true, false, true);
+		grid->attach(*value_first_sector, 4, topright++, 1, 1);
+		value_first_sector->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                       label_first_sector->get_accessible());
 
-	// Last sector
-	Gtk::Label *label_last_sector = Utils::mk_label("<b>" + Glib::ustring(_("Last sector:")) + "</b>");
-	grid->attach(*label_last_sector, 3, topright, 1, 1);
-	Gtk::Label* value_last_sector = Utils::mk_label(Utils::num_to_str(m_partition.sector_end),
-	                                                true, false, true);
-	grid->attach(*value_last_sector, 4, topright++, 1, 1);
-	value_last_sector->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                      label_last_sector->get_accessible());
+		// Last sector
+		Gtk::Label* label_last_sector = Utils::mk_label("<b>" + Glib::ustring(_("Last sector:")) + "</b>");
+		grid->attach(*label_last_sector, 3, topright, 1, 1);
+		Gtk::Label* value_last_sector = Utils::mk_label(Utils::num_to_str(m_partition.sector_end),
+		                                                true, false, true);
+		grid->attach(*value_last_sector, 4, topright++, 1, 1);
+		value_last_sector->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                      label_last_sector->get_accessible());
 
-	// Total sectors
-	Gtk::Label *label_total_sectors = Utils::mk_label("<b>" + Glib::ustring(_("Total sectors:")) + "</b>");
-	grid->attach(*label_total_sectors, 3, topright, 1, 1);
-	Gtk::Label *value_total_sectors = Utils::mk_label(Utils::num_to_str(ptn_sectors), true, false, true);
-	grid->attach(*value_total_sectors, 4, topright++, 1, 1);
-	value_total_sectors->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                        label_total_sectors->get_accessible());
+		// Total sectors
+		Gtk::Label* label_total_sectors = Utils::mk_label("<b>" + Glib::ustring(_("Total sectors:")) + "</b>");
+		grid->attach(*label_total_sectors, 3, topright, 1, 1);
+		Gtk::Label* value_total_sectors = Utils::mk_label(Utils::num_to_str(ptn_sectors), true, false, true);
+		grid->attach(*value_total_sectors, 4, topright++, 1, 1);
+		value_total_sectors->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                        label_total_sectors->get_accessible());
+	}
+	else
+	{
+		// A Logical Volume is measured in Volume Group extents, so its
+		// sectors are extents: show the logical extent (LE) size and count
+		// rather than first/last sector offsets.
+		// LE size
+		Gtk::Label* label_le_size = Utils::mk_label("<b>" + Glib::ustring(_("LE size:")) + "</b>");
+		grid->attach(*label_le_size, 3, topright, 1, 1);
+		Gtk::Label* value_le_size = Utils::mk_label(Utils::format_size(1, m_partition.sector_size),
+		                                            true, false, true);
+		grid->attach(*value_le_size, 4, topright++, 1, 1);
+		value_le_size->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                  label_le_size->get_accessible());
+
+		// Total LE
+		Gtk::Label* label_total_le = Utils::mk_label("<b>" + Glib::ustring(_("Total LE:")) + "</b>");
+		grid->attach(*label_total_le, 3, topright, 1, 1);
+		Gtk::Label* value_total_le = Utils::mk_label(Utils::num_to_str(ptn_sectors), true, false, true);
+		grid->attach(*value_total_le, 4, topright++, 1, 1);
+		value_total_le->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                                   label_total_le->get_accessible());
+	}
 }
 
 
