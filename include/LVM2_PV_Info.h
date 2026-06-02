@@ -50,14 +50,6 @@ struct LVM2_VG
 {
 	Glib::ustring vg_name;
 	Glib::ustring vg_attr;
-	Glib::ustring lv_name;
-	Glib::ustring lv_attr;
-};
-
-
-struct LVM2_VGDev
-{
-	Glib::ustring vg_name;
 	Byte_Value    pe_size  = -1;
 	Sector        total_pe = -1;
 	Sector        free_pe  = -1;
@@ -68,6 +60,7 @@ struct LVM2_VGDev
 struct LVM2_LV
 {
 	Glib::ustring vg_name;
+	Glib::ustring lv_name;
 	Glib::ustring lv_path;
 	Byte_Value    lv_size = -1;
 	bool          active  = false;
@@ -105,7 +98,6 @@ private:
 	static bool lvm_found ;
 	static std::vector<LVM2_PV> lvm2_pv_cache;
 	static std::vector<LVM2_VG> lvm2_vg_cache;
-	static std::vector<LVM2_VGDev> lvm2_vgdev_cache;
 	static std::vector<LVM2_LV> lvm2_lv_cache;
 	static std::vector<Glib::ustring> error_messages ;
 };

@@ -52,42 +52,23 @@ enum LV_BIT
 //                         {BlockSpecial("/dev/sdb17"), 264241152, 130023424, "Test-VG4"},
 //                         {BlockSpecial("/dev/sdb18"), 264241152,  46137344, "Test_VG5"}
 //                        ]
-//  lvm2_vg_cache       - Vector storing VG fields: vg_name, vg_attr, lv_name, lv_attr.
-//                        See vgs(8) and lvs(8) for details of vg_attr and lv_attr respectively.
+//  lvm2_vg_cache       - Vector of VG fields.
 //                        E.g.
-//                        //vg_name   , vg_attr , lv_name           , lv_attr
-//                        [{""        , "r-----", ""                , ""          },  // (from empty PV)
-//                         {"Test-VG1", "wz--n-", ""                , ""          },  // Empty VG
-//                         {"Test_VG2", "wz--n-", "lvol0"           , "-wi-------"},  // Inactive VG
-//                         {"Test_VG2", "wz--n-", "lvol1"           , "-wi-------"},
-//                         {"Test_VG2", "wz--n-", ""                , ""          },
-//                         {"Test_VG3", "wz--n-", "lvol0"           , "-wi-a-----"},  // Active VG
-//                         {"Test_VG3", "wz--n-", "lvol0"           , "-wi-a-----"},
-//                         {"Test_VG3", "wz--n-", ""                , ""          },
-//                         {"Test-VG4", "wzx-n-", "lvol0"           , "-wi-------"},  // Exported VG
-//                         {"Test-VG4", "wzx-n-", ""                , ""          },
-//                         {"Test_VG5", "wz--n-", "[lvol0_pmspare]" , "ewi-------"},  // VG with thin-pool LV
-//                         {"Test_VG5", "wz--n-", "[testpool_tdata]", "Twi-ao----"},
-//                         {"Test_VG5", "wz--n-", "[testpool_tmeta]", "ewi-ao----"},
-//                         {"Test_VG5", "wz--n-", ""                , ""          }
+//                        //vg_name   , vg_attr , pe_size, total_pe, free_pe, uuid
+//                        [{"Test-VG1", "wz--n-", 4194304,       63,      63, ... },  // Empty VG
+//                         {"Test-VG4", "wzx-n-", 4194304,       63,      31, ... },  // Exported VG
+//                         {"Test_VG2", "wz--n-", 4194304,       63,      15, ... },  // Inactive VG
+//                         {"Test_VG3", "wz--n-", 4194304,      126,      30, ... },  // Active VG
+//                         {"Test_VG5", "wz--n-", 4194304,       63,      11, ... }   // VG with thin-pool LV
 //                        ]
-//  lvm2_vgdev_cache    - Vector storing VG fields: vg_name, vg_extent_size, vg_extent_count,
-//                        vg_free_count, vg_uuid.
+//  lvm_lv_cache        - Vector of LV fields.
 //                        E.g.
-//                        //vg_name   , pe_size, total_pe, free_pe, uuid
-//                         {"Test-VG1", 4194304,       63,      63, "iVJWzy-3qPk-I0X5-g9cR-OtFY-XUla-4z8dOl"},
-//                         {"Test-VG4", 4194304,       63,      31, "x5d38B-qnin-HIfO-Xe13-l7UI-pTXK-lmAVxH"},
-//                         {"Test_VG2", 4194304,       63,      15, "CUI33R-INVe-lO75-Khbq-jvLz-dhwR-TFkzDR"},
-//                         {"Test_VG3", 4194304,      126,      30, "mymd59-wUgj-NHbs-FgpN-zjLs-Z6lA-dAl2QW"},
-//                         {"Test_VG5", 4194304,       63,      11, "Ln1HZ2-alnX-Z1Jb-4rGr-xwm8-rpEh-vEf1YT"}
-//                        ]
-//  lvm2_lv_cache       - Vector storing LV fields
-//                        E.g.
-//                        //vg_name   , lv_path                 , lv_size   , active, segtype
-//                         {"Test_VG2", "/dev/Test_VG2/lvol0"   ,  134217728, false , '-'    },
-//                         {"Test_VG2", "/dev/Test_VG2/lvol1"   ,   67108864, false , '-'    },
-//                         {"Test_VG3", "/dev/Test_VG3/lvol0"   ,  402653184, true  , '-'    },
-//                         {"Test_VG5", "/dev/Test_VG5/thinvol0", 1073741824, true  , 'V'    }
+//                        //vg_name   , lv_name   , lv_path                 , lv_size   , active, segtype
+//                        [{"Test_VG2", "lvol0"   , "/dev/Test_VG2/lvol0"   ,  134217728, false , '-'    },
+//                         {"Test_VG2", "lvol1"   , "/dev/Test_VG2/lvol1"   ,   67108864, false , '-'    },
+//                         {"Test_VG3", "lvol0"   , "/dev/Test_VG3/lvol0"   ,  402653184, true  , '-'    },
+//                         {"Test_VG5", "testpool", "/dev/Test_VG5/testpool",  209715200, true  , 't'    },
+//                         {"Test_VG5", "thinvol0", "/dev/Test_VG5/thinvol0", 1073741824, true  , 'V'    }
 //                        ]
 //  error_messages      - String vector storing whole cache error messages.
 
@@ -97,7 +78,6 @@ bool LVM2_PV_Info::lvm2_pv_info_cache_initialized = false ;
 bool LVM2_PV_Info::lvm_found = false ;
 std::vector<LVM2_PV> LVM2_PV_Info::lvm2_pv_cache;
 std::vector<LVM2_VG> LVM2_PV_Info::lvm2_vg_cache;
-std::vector<LVM2_VGDev> LVM2_PV_Info::lvm2_vgdev_cache;
 std::vector<LVM2_LV> LVM2_PV_Info::lvm2_lv_cache;
 std::vector<Glib::ustring> LVM2_PV_Info::error_messages ;
 
@@ -111,7 +91,6 @@ void LVM2_PV_Info::clear_cache()
 {
 	lvm2_pv_cache.clear();
 	lvm2_vg_cache.clear();
-	lvm2_vgdev_cache.clear();
 	lvm2_lv_cache.clear();
 	lvm2_pv_info_cache_initialized = false;
 }
@@ -149,17 +128,15 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 		// PV not yet included in any VG or PV not found in cache
 		return false ;
 
-	for ( unsigned int i = 0 ; i < lvm2_vg_cache .size() ; i ++ )
+	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
 	{
-		if ( pv.vg_name == lvm2_vg_cache[i].vg_name )
-		{
-			if ( bit_set( lvm2_vg_cache[i].lv_attr, LVBIT_STATE ) )
-				//LV in VG is active
-				return true ;
-		}
+		if (pv.vg_name == lvm2_lv_cache[i].vg_name && lvm2_lv_cache[i].active)
+			// LV in VG is active
+			return true;
 	}
 	return false ;
 }
+
 
 //Report if the VG is exported.
 bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
@@ -195,13 +172,13 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_vg_lvs( const Glib::ustring & vgnam
 	if ( vgname == "" )
 		return lvs;
 
-	for ( unsigned int i = 0 ; i < lvm2_vg_cache.size() ; i ++ )
+	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
 	{
-		if ( vgname == lvm2_vg_cache[i].vg_name && lvm2_vg_cache[i].lv_name != "" )
+		if (vgname == lvm2_lv_cache[i].vg_name && lvm2_lv_cache[i].lv_name != "")
 		{
 			// Only append lv_name if not already in lvs
-			if ( std::find( lvs.begin(), lvs.end(), lvm2_vg_cache[i].lv_name ) == lvs.end() )
-				lvs.push_back( lvm2_vg_cache[i].lv_name );
+			if (std::find(lvs.begin(), lvs.end(), lvm2_lv_cache[i].lv_name) == lvs.end())
+				lvs.push_back(lvm2_lv_cache[i].lv_name);
 		}
 	}
 
@@ -253,49 +230,45 @@ std::vector<VGDevice *> LVM2_PV_Info::get_vg_devices()
 	initialize_if_required();
 	std::vector<VGDevice *> vg_devices;
 
-	for (unsigned int i = 0; i < lvm2_vgdev_cache.size(); i++)
+	for (unsigned int i = 0; i < lvm2_vg_cache.size(); i++)
 	{
-		const LVM2_VGDev& vgd = lvm2_vgdev_cache[i];
-		VGDevice* vg = new VGDevice();
+		const LVM2_VG& vg = lvm2_vg_cache[i];
+		VGDevice* vgdev = new VGDevice();
 
-		vg->vg_name  = vgd.vg_name;
-		vg->pe_size  = vgd.pe_size;
-		vg->total_pe = vgd.total_pe;
-		vg->free_pe  = vgd.free_pe;
-		vg->uuid     = vgd.uuid;
-		if (vgd.total_pe >= 0 && vgd.free_pe >= 0)
-			vg->allocated_pe = vgd.total_pe - vgd.free_pe;
+		vgdev->vg_name  = vg.vg_name;
+		vgdev->pe_size  = vg.pe_size;
+		vgdev->total_pe = vg.total_pe;
+		vgdev->free_pe  = vg.free_pe;
+		vgdev->uuid     = vg.uuid;
+		if (vg.total_pe >= 0 && vg.free_pe >= 0)
+			vgdev->allocated_pe = vg.total_pe - vg.free_pe;
 
 		// Issue #316: use the bare VG name as the canonical name everywhere
 		// (lvm vgdisplay has no path property and LVM documentation almost
 		// universally refers to a VG by its bare name, not /dev/<vgname>).
-		vg->set_path(vgd.vg_name);
-		if (vgd.total_pe > 0 && vgd.pe_size > 0)
+		vgdev->set_path(vg.vg_name);
+		if (vg.total_pe > 0 && vg.pe_size > 0)
 		{
-			vg->length      = vgd.total_pe;
-			vg->sector_size = vgd.pe_size;
+			vgdev->length      = vg.total_pe;
+			vgdev->sector_size = vg.pe_size;
 		}
 
 		for (unsigned int j = 0; j < lvm2_pv_cache.size(); j++)
 		{
-			if (lvm2_pv_cache[j].vg_name == vgd.vg_name)
-				vg->pv_paths.push_back(lvm2_pv_cache[j].pv_name.m_name);
+			if (lvm2_pv_cache[j].vg_name == vg.vg_name)
+				vgdev->pv_paths.push_back(lvm2_pv_cache[j].pv_name.m_name);
 		}
 
 		for (unsigned int j = 0; j < lvm2_lv_cache.size(); j++)
 		{
-			if (lvm2_lv_cache[j].vg_name == vgd.vg_name)
-				vg->lv_paths.push_back(lvm2_lv_cache[j].lv_path);
+			if (lvm2_lv_cache[j].vg_name == vg.vg_name)
+				vgdev->lv_paths.push_back(lvm2_lv_cache[j].lv_path);
 		}
 
-		const LVM2_VG& vg_cache_entry = get_vg_cache_entry_by_name(vgd.vg_name);
-		if (vg_cache_entry.vg_name == vgd.vg_name)
-		{
-			vg->exported = bit_set(vg_cache_entry.vg_attr, VGBIT_EXPORTED);
-			vg->partial  = bit_set(vg_cache_entry.vg_attr, VGBIT_PARTIAL);
-		}
+		vgdev->exported = bit_set(vg.vg_attr, VGBIT_EXPORTED);
+		vgdev->partial  = bit_set(vg.vg_attr, VGBIT_PARTIAL);
 
-		vg_devices.push_back(vg);
+		vg_devices.push_back(vgdev);
 	}
 
 	return vg_devices;
@@ -348,8 +321,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 	unsigned int i ;
 
 	lvm2_pv_cache .clear() ;
-	lvm2_vg_cache .clear() ;
-	lvm2_vgdev_cache.clear();
+	lvm2_vg_cache.clear();
 	lvm2_lv_cache.clear();
 	error_messages .clear() ;
 	if ( lvm_found )
@@ -402,59 +374,18 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 				error_messages .push_back ( error ) ;
 		}
 
-		// Load LVM2 VG cache.  Output VG and LV values in VG_FIELD order.
-		cmd = "lvm pvs --config \"log{command_names=0}\" --nosuffix "
-		      "--noheadings --separator , --units b -o vg_name,vg_attr,lv_name,lv_attr" ;
-		enum VG_FIELD
-		{
-			VGFIELD_VG_NAME = 0,
-			VGFIELD_VG_ATTR = 1,
-			VGFIELD_LV_NAME = 2,
-			VGFIELD_LV_ATTR = 3,
-			VGFIELD_COUNT   = 4
-		};
-		if ( ! Utils::execute_command( cmd, output, error, true ) )
-		{
-			if ( output != "" )
-			{
-				std::vector<Glib::ustring> lines;
-				Utils::tokenize( output, lines, "\n" );
-				for ( i = 0 ; i < lines.size() ; i ++ )
-				{
-					std::vector<Glib::ustring> fields;
-					Utils::split( Utils::trim( lines[i] ), fields, "," );
-					if ( fields.size() < VGFIELD_COUNT )
-						continue;  // Not enough fields
-					LVM2_VG vg;
-					// VG name may be empty.  See data model example above.
-					vg.vg_name = fields[VGFIELD_VG_NAME];
-					vg.vg_attr = fields[VGFIELD_VG_ATTR];
-					vg.lv_name = fields[VGFIELD_LV_NAME];
-					vg.lv_attr = fields[VGFIELD_LV_ATTR];
-					lvm2_vg_cache.push_back( vg );
-				}
-			}
-		}
-		else
-		{
-			error_messages .push_back( cmd ) ;
-			if ( ! output .empty() )
-				error_messages .push_back ( output ) ;
-			if ( ! error .empty() )
-				error_messages .push_back ( error ) ;
-		}
-
 		cmd = "lvm vgs --config \"log{command_names=0}\" --nosuffix "
 		      "--noheadings --separator , --units b "
-		      "-o vg_name,vg_extent_size,vg_extent_count,vg_free_count,vg_uuid";
+		      "-o vg_name,vg_attr,vg_extent_size,vg_extent_count,vg_free_count,vg_uuid";
 		enum VGDEV_FIELD
 		{
 			VGDEVFIELD_VG_NAME         = 0,
-			VGDEVFIELD_VG_EXTENT_SIZE  = 1,
-			VGDEVFIELD_VG_EXTENT_COUNT = 2,
-			VGDEVFIELD_VG_FREE_COUNT   = 3,
-			VGDEVFIELD_VG_UUID         = 4,
-			VGDEVFIELD_COUNT           = 5
+			VGDEVFIELD_VG_ATTR         = 1,
+			VGDEVFIELD_VG_EXTENT_SIZE  = 2,
+			VGDEVFIELD_VG_EXTENT_COUNT = 3,
+			VGDEVFIELD_VG_FREE_COUNT   = 4,
+			VGDEVFIELD_VG_UUID         = 5,
+			VGDEVFIELD_COUNT           = 6
 		};
 		if (! Utils::execute_command(cmd, output, error, true))
 		{
@@ -470,13 +401,14 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 						continue;  // Not enough fields
 					if (fields[VGDEVFIELD_VG_NAME] == "")
 						continue;
-					LVM2_VGDev vgd;
-					vgd.vg_name  = fields[VGDEVFIELD_VG_NAME];
-					vgd.pe_size  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_SIZE]);
-					vgd.total_pe = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_COUNT]);
-					vgd.free_pe  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_FREE_COUNT]);
-					vgd.uuid     = fields[VGDEVFIELD_VG_UUID];
-					lvm2_vgdev_cache.push_back(vgd);
+					LVM2_VG vg;
+					vg.vg_name  = fields[VGDEVFIELD_VG_NAME];
+					vg.vg_attr  = fields[VGDEVFIELD_VG_ATTR];
+					vg.pe_size  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_SIZE]);
+					vg.total_pe = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_COUNT]);
+					vg.free_pe  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_FREE_COUNT]);
+					vg.uuid     = fields[VGDEVFIELD_VG_UUID];
+					lvm2_vg_cache.push_back(vg);
 				}
 			}
 		}
@@ -491,14 +423,15 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 
 		cmd = "lvm lvs --config \"log{command_names=0}\" --nosuffix "
 		      "--noheadings --separator , --units b "
-		      "-o vg_name,lv_path,lv_size,lv_attr";
+		      "-o vg_name,lv_name,lv_path,lv_size,lv_attr";
 		enum LV_FIELD
 		{
 			LVFIELD_VG_NAME = 0,
-			LVFIELD_LV_PATH = 1,
-			LVFIELD_LV_SIZE = 2,
-			LVFIELD_LV_ATTR = 3,
-			LVFIELD_COUNT   = 4
+			LVFIELD_LV_NAME = 1,
+			LVFIELD_LV_PATH = 2,
+			LVFIELD_LV_SIZE = 3,
+			LVFIELD_LV_ATTR = 4,
+			LVFIELD_COUNT   = 5
 		};
 		if (! Utils::execute_command(cmd, output, error, true))
 		{
@@ -512,11 +445,18 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 					Utils::split(Utils::trim(lines[i] ), fields, ",");
 					if (fields.size() < LVFIELD_COUNT)
 						continue;  // Not enough fields
-					if (fields[LVFIELD_VG_NAME] == "" || fields[LVFIELD_LV_PATH] == "")
+					// Thin-pool LVs have an empty lv_path (LVM does not give them
+					// that property), so skip on an empty lv_name instead.  A
+					// thin pool can still be queried via its full path, which is
+					// synthesised below.
+					if (fields[LVFIELD_VG_NAME] == "" || fields[LVFIELD_LV_NAME] == "")
 						continue;
 					LVM2_LV lv;
 					lv.vg_name = fields[LVFIELD_VG_NAME];
+					lv.lv_name = fields[LVFIELD_LV_NAME];
 					lv.lv_path = fields[LVFIELD_LV_PATH];
+					if (lv.lv_path == "")
+						lv.lv_path = "/dev/" + lv.vg_name + "/" + lv.lv_name;
 					lv.lv_size = lvm2_pv_size_to_num(fields[LVFIELD_LV_SIZE]);
 					lv.active  = (fields[LVFIELD_LV_ATTR].size() >= 5   &&
 					              fields[LVFIELD_LV_ATTR][4]     == 'a'   );
@@ -573,7 +513,7 @@ const LVM2_VG & LVM2_PV_Info::get_vg_cache_entry_by_name( const Glib::ustring & 
 		if ( vgname == lvm2_vg_cache[i].vg_name )
 			return lvm2_vg_cache[i];
 	}
-	static LVM2_VG not_found;  // {"", "", "", ""}
+	static LVM2_VG not_found;  // {"", "", -1, -1, -1, ""}
 	return not_found;
 }
 
