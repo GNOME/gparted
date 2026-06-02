@@ -146,6 +146,18 @@ bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
 	return bit_set( vg.vg_attr, VGBIT_EXPORTED );
 }
 
+
+// Report whether name is the name of an LVM2 Volume Group.  Used to keep Volume Group
+// names (which may be passed on the command line) out of the libparted device scan, which
+// would otherwise raise a "could not stat device" error for them.
+bool LVM2_PV_Info::is_vg_name(const Glib::ustring& vgname)
+{
+	initialize_if_required();
+	const LVM2_VG& vg = get_vg_cache_entry_by_name(vgname);
+	return vgname == vg.vg_name;
+}
+
+
 //Return vector of PVs which are members of the VG.  Passing "" returns all empty PVs.
 std::vector<Glib::ustring> LVM2_PV_Info::get_vg_members( const Glib::ustring & vgname )
 {

@@ -246,6 +246,18 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 		std::sort(m_device_paths.begin(), m_device_paths.end());
 		m_device_paths.erase(std::unique(m_device_paths.begin(), m_device_paths.end()), m_device_paths.end());
 
+		// Volume Group names may be passed on the command line (e.g. "rootvg").
+		// They are not block devices, so remove them before the libparted
+		// confirmation loop below; otherwise ped_device_get() raises a
+		// "could not stat device" error for them.  They remain in
+		// user_named_paths (snapshotted above) and are matched against the
+		// enumerated Volume Groups further down.
+		for (unsigned int i = 0; i < m_device_paths.size(); i++)
+		{
+			if (LVM2_PV_Info::is_vg_name(m_device_paths[i]))
+				m_device_paths.erase(m_device_paths.begin() + i--);
+		}
+
 		for (unsigned int t = 0; t < m_device_paths.size(); t++)
 		{
 			set_thread_status_message(Glib::ustring::compose(_("Confirming %1"), m_device_paths[t]));
@@ -1118,6 +1130,13 @@ Partition* GParted_Core::make_lv_partition(const VGDevice& vg_device, const Glib
 			fstype = FS_ATARAID;
 		else
 		{
+			// Logical Volumes are not part of the disk device scan, so they are
+			// absent from the blkid cache populated by
+			// load_cache_for_device_and_partition_names().  Load blkid for this
+			// one Logical Volume, mirroring how encryption mappings are handled,
+			// so that the file system type (and hence reported usage, e.g. for
+			// swap) is detected.
+			FS_Info::load_cache_for_one_device_name(lv_path);
 			fstype = fstype_from_fsname(FS_Info::get_fs_type(lv_path));
 			if (fstype == FS_UNKNOWN)
 				fstype = detect_filesystem_internal(lv_path, vg_device.sector_size);

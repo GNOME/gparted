@@ -78,6 +78,7 @@ public:
 	static Byte_Value get_free_bytes( const Glib::ustring & path );
 	static bool has_active_lvs( const Glib::ustring & path );
 	static bool is_vg_exported( const Glib::ustring & vgname );
+	static bool is_vg_name(const Glib::ustring& vgname);
 	static std::vector<Glib::ustring> get_vg_members( const Glib::ustring & vgname );
 	static std::vector<Glib::ustring> get_vg_lvs( const Glib::ustring & vgname );
 	static Byte_Value get_lv_size_bytes(const Glib::ustring& lv_path);
