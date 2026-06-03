@@ -188,7 +188,6 @@ TEST_F(OperationDetailTest, Hierarchy)
 	EXPECT_EQ(parent.get_children().size(), 2UL);
 	EXPECT_STREQ(parent.get_children()[0]->get_description().c_str(), "Hierarchy: child 0");
 	EXPECT_STREQ(parent.get_children()[0]->get_treepath().c_str(), "0:0:0");
-	EXPECT_STREQ(grandparent.get_grandchild_cmd_output_description().c_str(), "Hierarchy: child 0");
 
 	EXPECT_STREQ(grandparent.get_last_child().get_children()[1]->get_description().c_str(), "Hierarchy: child 1");
 	EXPECT_STREQ(grandparent.get_last_child().get_children()[1]->get_treepath().c_str(), "0:0:1");

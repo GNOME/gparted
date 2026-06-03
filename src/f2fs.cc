@@ -160,7 +160,7 @@ bool f2fs::check_repair(const Partition & partition, OperationDetail & operation
 		return false;
 
 	// Search fsck output for the unclean unmount message.
-	const Glib::ustring& fsck_output = operationdetail.get_grandchild_cmd_output_description();
+	const Glib::ustring& fsck_output = operationdetail.get_command_output();
 	Glib::ustring poweroff_line = Utils::regexp_label(fsck_output,
 	                                                  "^(Info: checkpoint state = [^\n]*sudden-power-off)$");
 	if (poweroff_line.size() == 0)
