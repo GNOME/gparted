@@ -76,8 +76,9 @@ inline ExecFlags operator&(ExecFlags lhs, ExecFlags rhs)
 
 
 class OperationDetail;
-typedef sigc::slot<void, OperationDetail*> StreamSlot;
-typedef sigc::slot<bool, OperationDetail*> TimedSlot;
+typedef sigc::slot<void, OperationDetail*>            StreamSlot;
+typedef sigc::slot<bool, OperationDetail*>            TimedSlot;
+typedef std::vector<std::unique_ptr<OperationDetail>> OperationDetailVector;
 
 
 class OperationDetail
@@ -105,8 +106,8 @@ public:
 	Glib::ustring get_elapsed_time() const ;
 	
 	void add_child( const OperationDetail & operationdetail ) ;
-	std::vector<std::unique_ptr<OperationDetail>>& get_children();
-	const std::vector<std::unique_ptr<OperationDetail>>& get_children() const;
+	OperationDetailVector& get_children();
+	const OperationDetailVector& get_children() const;
 	OperationDetail & get_last_child() ;
 	void run_progressbar(double progress, double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_TIME_REMAINING);
 	void stop_progressbar();
@@ -133,16 +134,16 @@ private:
 	                             StreamSlot stream_progress_slot,
 	                             TimedSlot timed_progress_slot);
 
-	Glib::ustring                 m_description;
-	OperationDetailStatus         m_status           = STATUS_NONE;
-	Glib::ustring                 m_treepath;
-	std::time_t                   m_time_start       = -1;
-	std::time_t                   m_time_elapsed     = -1;
+	Glib::ustring         m_description;
+	OperationDetailStatus m_status           = STATUS_NONE;
+	Glib::ustring         m_treepath;
+	std::time_t           m_time_start       = -1;
+	std::time_t           m_time_elapsed     = -1;
 
-	                              // Disallow adding more children to ensure captured errors
-	                              // remain the last child of this operation detail.
-	bool                          m_no_more_children = false;
-	std::vector<std::unique_ptr<OperationDetail>> m_sub_details;
+	                      // Disallow adding more children to ensure captured errors
+	                      // remain the last child of this operation detail.
+	bool                  m_no_more_children = false;
+	OperationDetailVector m_sub_details;
 
 	sigc::connection cancelconnection;
 };
