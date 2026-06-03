@@ -1182,8 +1182,8 @@ bool Win_GParted::Quit_Check_Operations()
 	
 		dialog .add_button( Gtk::Stock::QUIT, Gtk::RESPONSE_CLOSE );
 		dialog .add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
-		
-		if ( dialog .run() == Gtk::RESPONSE_CANCEL )
+
+		if (dialog.run() != Gtk::RESPONSE_CLOSE)
 			return false;//don't close GParted
 	}
 
