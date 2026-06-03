@@ -125,7 +125,6 @@ public:
 	char m_cancelflag = 0;
 
 private:
-	void add_child_implement( const OperationDetail & operationdetail );
 	void on_update( const OperationDetail & operationdetail ) ;
 	void cancel( bool force );
 	const ProgressBar& get_progressbar() const;
@@ -140,8 +139,9 @@ private:
 	std::time_t           m_time_start       = -1;
 	std::time_t           m_time_elapsed     = -1;
 
-	                      // Disallow adding more children to ensure captured errors
-	                      // remain the last child of this operation detail.
+	                      // Flag to indicate no more children should be added after
+	                      // errors have been captured.  See
+	                      // set_success_and_capture_errors() and add_child().
 	bool                  m_no_more_children = false;
 	OperationDetailVector m_sub_details;
 

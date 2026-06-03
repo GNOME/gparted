@@ -191,6 +191,9 @@ void OperationDetail::set_success_and_capture_errors( bool success )
 {
 	set_status( success ? STATUS_SUCCESS : STATUS_ERROR );
 	signal_capture_errors.emit( *this, success );
+
+	// No more operation detail children should be added to this parent after any
+	// errors have been captured so those errors remain its last children.
 	m_no_more_children = true;
 }
 
@@ -224,23 +227,34 @@ Glib::ustring OperationDetail::get_elapsed_time() const
 
 void OperationDetail::add_child( const OperationDetail & operationdetail )
 {
-	if (m_no_more_children)
-		// Adding a child after this OperationDetail has been set to prevent it is
-		// a programming bug.  However the best way to report it is by adding yet
-		// another child containing the bug report, and allowing the child to be
-		// added anyway.
-		add_child_implement( OperationDetail( Glib::ustring( _("GParted Bug") ) + ": " +
-		                                      /* TO TRANSLATORS:
-		                                       * means that GParted has encountered a programming bug.  More
-		                                       * information about a step is being added after the step was
-		                                       * marked as complete.  This bug description as well as the
-		                                       * information being added will be visible in the details of the
-		                                       * applied operations.
-		                                       */
-		                                      _("Adding more information to the results of this step after it "
-		                                        "has been marked as completed"),
-		                                      STATUS_WARNING, FONT_ITALIC ) );
-	add_child_implement( operationdetail );
+	// This function deals with 3 OperationDetail objects: *this (the parent), *child
+	// (newly created) and operationdetail (passed argument).  Shout by using "this->"
+	// when dealing with the parent.
+
+	if (this->m_no_more_children)
+		std::cerr << "GParted Bug: Adding child operation detail when m_no_more_children is true" << std::endl;
+		// But carry on regardless.
+
+	// Create new default constructed OperationDetail object and attach as child of
+	// this object with unique_ptr.  Implicit move of unique_ptr by push_back().
+	this->m_sub_details.push_back(std::make_unique<OperationDetail>());
+
+	// Populate all necessary members of the new child OperationDetail object.
+	OperationDetail* child = this->m_sub_details.back().get();
+	child->signal_update.connect(this->signal_update);
+	child->signal_capture_errors.connect(this->signal_capture_errors);
+	if (this->m_cancelflag)
+		child->cancel(this->m_cancelflag == 2);
+	child->m_description      = operationdetail.m_description;
+	child->m_status           = operationdetail.m_status;
+	child->m_treepath         = this->m_treepath + ":" + Utils::num_to_str(this->m_sub_details.size() - 1);
+	child->m_time_start       = operationdetail.m_time_start;
+	child->m_time_elapsed     = operationdetail.m_time_elapsed;
+	child->m_no_more_children = operationdetail.m_no_more_children;
+	child->cancelconnection   = this->signal_cancel.connect(
+	                                sigc::mem_fun(child, &OperationDetail::cancel));
+
+	on_update(*child);
 }
 
 
@@ -354,35 +368,6 @@ const Glib::ustring& OperationDetail::get_command_error()
 
 
 // Private methods
-
-void OperationDetail::add_child_implement( const OperationDetail & operationdetail )
-{
-	// This function deals with 3 OperationDetail objects: *this (the parent), *child
-	// (newly created) and operationdetail (passed argument).  Shout by using "this->"
-	// when dealing with the parent.
-
-	// Create new default constructed OperationDetail object and attach as child of
-	// this object with unique_ptr.  Implicit move of unique_ptr by push_back().
-	this->m_sub_details.push_back(std::make_unique<OperationDetail>());
-
-	// Populate all necessary members of the new child OperationDetail object.
-	OperationDetail* child = this->m_sub_details.back().get();
-	child->signal_update.connect(this->signal_update);
-	child->signal_capture_errors.connect(this->signal_capture_errors);
-	if (this->m_cancelflag)
-		child->cancel(this->m_cancelflag == 2);
-	child->m_description      = operationdetail.m_description;
-	child->m_status           = operationdetail.m_status;
-	child->m_treepath         = this->m_treepath + ":" + Utils::num_to_str(this->m_sub_details.size() - 1);
-	child->m_time_start       = operationdetail.m_time_start;
-	child->m_time_elapsed     = operationdetail.m_time_elapsed;
-	child->m_no_more_children = operationdetail.m_no_more_children;
-	child->cancelconnection   = this->signal_cancel.connect(
-	                                sigc::mem_fun(child, &OperationDetail::cancel));
-
-	on_update(*child);
-}
-
 
 void OperationDetail::on_update( const OperationDetail & operationdetail ) 
 {
