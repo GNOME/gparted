@@ -367,7 +367,7 @@ void OperationDetail::add_child_implement( const OperationDetail & operationdeta
 
 	// Populate all necessary members of the new child OperationDetail object.
 	OperationDetail* child = this->m_sub_details.back().get();
-	child->signal_update.connect(sigc::mem_fun(this, &OperationDetail::on_update));
+	child->signal_update.connect(this->signal_update);
 	child->signal_capture_errors.connect(this->signal_capture_errors);
 	if (this->m_cancelflag)
 		child->cancel(this->m_cancelflag == 2);
