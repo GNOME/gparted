@@ -117,6 +117,8 @@ OperationDetail::OperationDetail(const Glib::ustring& description, OperationDeta
 
 OperationDetail::~OperationDetail()
 {
+	// Disconnect parent's connection calling back to this->cancel() because this is
+	// being destructed.
 	cancelconnection.disconnect();
 	m_sub_details.clear();
 }
@@ -256,6 +258,57 @@ void OperationDetail::add_child( const OperationDetail & operationdetail )
 
 	on_update(*child);
 }
+// What each OperationDetail callback signal is for and how it works
+//
+// Signal:  signal_update
+//     Used so that changes made to each OperationDetail object in the tree hierarchy are
+//     updated in the Applying pending operations view of those operations in real time.
+//
+//     Callback:          Dialog_Progress::on_signal_update()
+//     Connection style:  direct
+//         All OperationDetail objects have the same callback.  Each individual object
+//         object directly calls back to Dialog_Progress::on_signal_update() when it is
+//         updated.
+//
+// Signal:  signal_capture_errors
+//     Used so that any libparted errors which occur, can be added as children of the
+//     current OperationDetail object representing that libparted action which failed.
+//
+//     Callback:          GParted_Core::capture_libparted_errors()
+//     Connection style:  direct
+//         All OperationDetail objects have the same callback.  Each individual object
+//         directly calls back to GParted_Core::capture_libparted_errors() when
+//         set_success_and_capture_errors() is called.
+//
+// Signal:  signal_cancel
+//     Used to cancel the currently being applied operation.
+//
+//     Member variable:  m_cancelflag
+//     Values:
+//         0  Not cancelled
+//         1  Cancel safe operations only
+//         2  Force cancel - Cancel all operations, including cancel unsafe ones
+//
+//     Callback:          OperationDetail::cancel()
+//     Connection style:  tree wide depth first traversal
+//         All parent OperationDetail objects have a callback registered to each of their
+//         children.  When called, each object:
+//         1.  Sets its own m_cancelflag according to whether the cancel is being forced
+//             or not.
+//         2.  Emits the callback for each of its own children, resulting in a tree wide
+//             depth first traversal.
+//
+//     Callback:          cancel_command()
+//     Connection style:  direct
+//         Only for the OperationDetail object which is executing the external command; it
+//         has this second callback registered.  When emitted, via the above tree wide
+//         mechanism, cancel_command() is called which sends a signal to kill the command.
+//
+//     Callback:          CopyBlocks::set_cancel()
+//     Connection style:  direct
+//         Only for the OperationDetail object which is performing an internal block copy;
+//         it has this second callback registered.  When emitted, via the above tree wide
+//         mechanism, CopyBlocks::set_cancel() marks the block copy to be cancelled.
 
 
 OperationDetailVector& OperationDetail::get_children()
