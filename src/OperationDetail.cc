@@ -505,9 +505,10 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
-	cmd_operationdetail.signal_cancel.connect(sigc::bind(sigc::ptr_fun(cancel_command),
-	                                                     pid,
-	                                                     flags & EXEC_CANCEL_SAFE));
+	sigc::connection connection_command_cancel = cmd_operationdetail.signal_cancel.connect(
+				sigc::bind(sigc::ptr_fun(cancel_command),
+				           pid,
+				           flags & EXEC_CANCEL_SAFE));
 
 	if (input != nullptr && in != -1)
 	{
@@ -531,6 +532,7 @@ int OperationDetail::execute_command_internal(const Glib::ustring& command, cons
 		cmd_operationdetail.set_success_and_capture_errors(cmd_status.exit_status == 0);
 	close(out);
 	close(err);
+	connection_command_cancel.disconnect();
 	if (timed_conn.connected())
 		timed_conn.disconnect();
 	cmd_operationdetail.stop_progressbar();
