@@ -119,7 +119,7 @@ OperationDetail::~OperationDetail()
 {
 	// Disconnect parent's connection calling back to this->cancel() because this is
 	// being destructed.
-	cancelconnection.disconnect();
+	m_connection_cancel.disconnect();
 	m_sub_details.clear();
 }
 
@@ -247,13 +247,13 @@ void OperationDetail::add_child( const OperationDetail & operationdetail )
 	child->signal_capture_errors.connect(this->signal_capture_errors);
 	if (this->m_cancelflag)
 		child->cancel(this->m_cancelflag == 2);
-	child->m_description      = operationdetail.m_description;
-	child->m_status           = operationdetail.m_status;
-	child->m_treepath         = this->m_treepath + ":" + Utils::num_to_str(this->m_sub_details.size() - 1);
-	child->m_time_start       = operationdetail.m_time_start;
-	child->m_time_elapsed     = operationdetail.m_time_elapsed;
-	child->m_no_more_children = operationdetail.m_no_more_children;
-	child->cancelconnection   = this->signal_cancel.connect(
+	child->m_description       = operationdetail.m_description;
+	child->m_status            = operationdetail.m_status;
+	child->m_treepath          = this->m_treepath + ":" + Utils::num_to_str(this->m_sub_details.size() - 1);
+	child->m_time_start        = operationdetail.m_time_start;
+	child->m_time_elapsed      = operationdetail.m_time_elapsed;
+	child->m_no_more_children  = operationdetail.m_no_more_children;
+	child->m_connection_cancel = this->signal_cancel.connect(
 	                                sigc::mem_fun(child, &OperationDetail::cancel));
 
 	on_update(*child);

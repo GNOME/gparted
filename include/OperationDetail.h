@@ -144,7 +144,7 @@ private:
 	bool                  m_no_more_children = false;
 	OperationDetailVector m_sub_details;
 
-	sigc::connection cancelconnection;
+	sigc::connection      m_connection_cancel;
 };
 
 
