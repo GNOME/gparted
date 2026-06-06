@@ -346,38 +346,53 @@ bool Dialog_Progress::cancel_timeout()
 	return true;
 }
 
+
 void Dialog_Progress::on_cancel()
 {
-	Gtk::MessageDialog dialog( *this,
-				   _("Are you sure you want to cancel the current operation?"),
-				   false,
-				   Gtk::MESSAGE_QUESTION,
-				   Gtk::BUTTONS_NONE,
-				   true ) ;
-		
-	dialog .set_secondary_text( _("Canceling an operation might cause SEVERE file system damage.") ) ;
-
-	dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
-	dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;
-	
-	if (! m_cancel || dialog.run() == Gtk::RESPONSE_CANCEL)
+	if (m_cancel == false)
 	{
-		m_cancelbutton->set_sensitive(false);
-		if (! m_cancel)
-		{
-			m_cancel_countdown = 5;
-			/*TO TRANSLATORS: looks like  Force Cancel (5)
-			 *  where the number represents a count down in seconds until the button is enabled */
-			m_cancelbutton->set_label(Glib::ustring::compose(_("Force Cancel (%1)"), m_cancel_countdown));
-			canceltimer = Glib::signal_timeout().connect(
-				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
-		}
-		else
-		{
-			m_cancelbutton->set_label(_("Force Cancel"));
-		}
-		m_operations[m_curr_op]->m_operation_detail.signal_cancel.emit(m_cancel);
+		// First time.  The pressed button was labelled [Cancel].
+		// (Cancel will only succeed in ending the operation early if the current
+		// action is cancel safe).
+		m_operations[m_curr_op]->m_operation_detail.signal_cancel.emit(false);
 		m_cancel = true;
+
+		// signal_cancel.emit() doesn't report success or failure.  In case the
+		// cancel doesn't succeed, relabel the button to [Force Cancel (5)] and
+		// start a 5 second countdown.  cancel_timeout() updates the countdown and
+		// finally relabels the button to [Force Cancel] and re-enables the
+		// button.  If the cancel did succeed and signal_apply_operation.emit()
+		// returned immediately back to on_signal_show() then it will have
+		// replaced the [Force Cancel (5)] button with the [Close] button without
+		// the former ever having been drawn for the user to see.
+		m_cancelbutton->set_sensitive(false);
+		m_cancel_countdown = 5;
+		/* TO TRANSLATORS: looks like   Force Cancel (5)
+		 * where the number represents a count down in seconds until the button is enabled */
+		m_cancelbutton->set_label(Glib::ustring::compose(_("Force Cancel (%1)"), m_cancel_countdown));
+		canceltimer = Glib::signal_timeout().connect(
+				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000);
+	}
+	else
+	{
+		// Subsequent times.  The pressed button was labelled [Force Cancel].
+		// Get confirmation ...
+		Gtk::MessageDialog dialog(*this,
+		                          _("Are you sure you want to cancel the current operation?"),
+		                          false,
+		                          Gtk::MESSAGE_QUESTION,
+		                          Gtk::BUTTONS_NONE,
+		                          true);
+		dialog.set_secondary_text(_("Canceling an operation might cause SEVERE file system damage."));
+		dialog.add_button(_("Continue Operation"), Gtk::RESPONSE_NONE);
+		dialog.add_button(_("Cancel Operation"), Gtk::RESPONSE_CANCEL);
+
+		if (dialog.run() == Gtk::RESPONSE_CANCEL)
+		{
+			// Force cancel confirmed.  Do it.
+			m_cancelbutton->set_sensitive(false);
+			m_operations[m_curr_op]->m_operation_detail.signal_cancel.emit(true);
+		}
 	}
 }
 
