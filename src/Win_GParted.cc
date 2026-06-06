@@ -1355,6 +1355,20 @@ void Win_GParted::set_valid_operations()
 		}
 	}
 
+	// LVM2 read-only support: a Volume Group's Logical Volumes are displayed but
+	// never modified.  Permit viewing information only and leave every other action
+	// disabled (as initialised at the top of this function), whether or not the
+	// Logical Volume is busy and whether a Logical Volume or unallocated space within
+	// the Volume Group is selected.  Returning here also prevents the early returns
+	// in the busy and unallocated paths below from leaving an action such as New,
+	// swapoff or unmount enabled on a Volume Group.
+	if (m_current_device            <  m_devices.size()            &&
+	    m_devices[m_current_device] != nullptr                     &&
+	    ! m_devices[m_current_device]->is_partition_table_device()   )
+	{
+		return;
+	}
+
 	// Only permit encryption open/close when available
 	if (selected_partition_ptr->status == STAT_REAL &&
 	    selected_partition_ptr->fstype == FS_LUKS   &&
@@ -1602,24 +1616,6 @@ void Win_GParted::set_valid_operations()
 		//see if we can somehow check/repair this file system....
 		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.check )
 			allow_check( true ) ;
-	}
-
-	// LVM2 read-only support: a Volume Group is presented as a Device (VGDevice)
-	// and its Logical Volumes as partitions, but GParted does not modify LVM
-	// objects.  After the normal per file system logic above has run, force every
-	// partition modifying action off when the selected device is a Volume Group.
-	// Viewing information about the selected Logical Volume remains permitted.
-	if (m_current_device < m_devices.size()                        &&
-	    m_devices[m_current_device] != nullptr                     &&
-	    ! m_devices[m_current_device]->is_partition_table_device()   )
-	{
-		allow_new(false); allow_delete(false); allow_resize(false);
-		allow_copy(false); allow_paste(false); allow_format(false);
-		allow_toggle_crypt_busy_state(false); allow_toggle_fs_busy_state(false);
-		allow_name_partition(false); allow_manage_flags(false); allow_check(false);
-		allow_label_filesystem(false); allow_change_uuid(false);
-		// allow_info() is intentionally left as set above: viewing is read-only safe.
-		partitionmenu_items[MENU_MOUNT]->hide();
 	}
 }
 
