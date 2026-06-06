@@ -135,6 +135,7 @@ void GParted_Core::find_supported_filesystems()
 void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
 {
 	m_device_paths = user_devices;
+	m_user_device_paths = user_devices;
 	m_probe_devices = user_devices.empty();
 }
 
@@ -159,6 +160,13 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 {
 	std::vector<std::unique_ptr<Device>>& devices = *pdevices;
 	devices .clear() ;
+
+	// Restore the originally requested device/VG list.  The command line case
+	// prunes non-disk entries (such as Volume Group names) from m_device_paths
+	// below; without restoring it first, a refresh (Refresh Devices / Ctrl-R)
+	// would progressively lose those entries and drop the Volume Groups.
+	if (! m_probe_devices)
+		m_device_paths = m_user_device_paths;
 
 	// Snapshot the device/VG names requested on the command line (if any) before
 	// the disk confirmation loop below prunes non-disk entries such as Volume
