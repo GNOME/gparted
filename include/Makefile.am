@@ -25,7 +25,7 @@ noinst_HEADERS = \
 	Frame_Resizer_Extended.h	\
 	GParted_Core.h			\
 	HBoxOperations.h		\
-	LVM2_PV_Info.h			\
+	LVM2_Info.h			\
 	LUKS_Info.h			\
 	MenuHelpers.h			\
 	Mount_Info.h			\

@@ -24,7 +24,7 @@
 #include "DMRaid.h"
 #include "FileSystem.h"
 #include "FS_Info.h"
-#include "LVM2_PV_Info.h"
+#include "LVM2_Info.h"
 #include "LUKS_Info.h"
 #include "Mount_Info.h"
 #include "Operation.h"
@@ -262,7 +262,7 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 		// enumerated Volume Groups further down.
 		for (unsigned int i = 0; i < m_device_paths.size(); i++)
 		{
-			if (LVM2_PV_Info::is_vg_name(m_device_paths[i]))
+			if (LVM2_Info::is_vg_name(m_device_paths[i]))
 				m_device_paths.erase(m_device_paths.begin() + i--);
 		}
 
@@ -295,7 +295,7 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	                Proc_Partitions_Info::get_device_and_partition_names_for(m_device_paths);
 	FS_Info::load_cache_for_device_and_partition_names(dev_ptn_names);
 	Mount_Info::load_cache();
-	LVM2_PV_Info::clear_cache();
+	LVM2_Info::clear_cache();
 	btrfs::clear_cache();
 	SWRaid_Info::load_cache();
 	LUKS_Info::clear_cache();
@@ -314,7 +314,7 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	// Volumes like partitions; GParted does not modify LVM objects here.  VGs
 	// are appended after the disks in lvm's default (vg_name) order, which is
 	// stable across refreshes.
-	std::vector<VGDevice *> vg_devices = LVM2_PV_Info::get_vg_devices();
+	std::vector<VGDevice *> vg_devices = LVM2_Info::get_vg_devices();
 	for (unsigned int i = 0; i < vg_devices.size(); i++)
 	{
 		std::unique_ptr<VGDevice> temp_vg(vg_devices[i]);
@@ -1072,7 +1072,7 @@ void GParted_Core::populate_vgdevice_partitions(VGDevice& vg_device)
 	for (unsigned int i = 0; i < vg_device.lv_paths.size(); i++)
 	{
 		const Glib::ustring& lv_path = vg_device.lv_paths[i];
-		char segtype = LVM2_PV_Info::get_lv_segtype(lv_path);
+		char segtype = LVM2_Info::get_lv_segtype(lv_path);
 
 		// Thin volumes live inside a thin pool and are not displayed as
 		// separate Logical Volumes; only the (thick-provisioned) thin pool
@@ -1116,8 +1116,8 @@ void GParted_Core::populate_vgdevice_partitions(VGDevice& vg_device)
 // and file system probing is skipped for them.
 Partition* GParted_Core::make_lv_partition(const VGDevice& vg_device, const Glib::ustring& lv_path)
 {
-	bool active  = LVM2_PV_Info::is_lv_active(lv_path);
-	char segtype = LVM2_PV_Info::get_lv_segtype(lv_path);
+	bool active  = LVM2_Info::is_lv_active(lv_path);
+	char segtype = LVM2_Info::get_lv_segtype(lv_path);
 	bool is_thin_pool = (segtype == 't');
 
 	FSType fstype = FS_UNKNOWN;
@@ -1157,7 +1157,7 @@ Partition* GParted_Core::make_lv_partition(const VGDevice& vg_device, const Glib
 	else
 		partition_temp = new Partition();
 
-	Byte_Value lv_bytes   = LVM2_PV_Info::get_lv_size_bytes(lv_path);
+	Byte_Value lv_bytes   = LVM2_Info::get_lv_size_bytes(lv_path);
 	Sector     lv_extents = (lv_bytes > 0 && vg_device.pe_size > 0)
 	                        ? lv_bytes / vg_device.pe_size : 0;
 	bool partition_is_busy = active && ! is_thin_pool &&
@@ -1662,7 +1662,7 @@ void GParted_Core::set_mountpoints( Partition & partition )
 {
 	if (partition.fstype == FS_LVM2_PV)
 	{
-		const Glib::ustring& vgname = LVM2_PV_Info::get_vg_name(partition.get_path());
+		const Glib::ustring& vgname = LVM2_Info::get_vg_name(partition.get_path());
 		if ( ! vgname.empty() )
 			partition.add_mountpoint( vgname );
 	}
@@ -3983,10 +3983,10 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 	if (partition.fstype == FS_LVM2_PV)
 	{
 		//The LVM2 PV can't be resized when it's a member of an export VG
-		const Glib::ustring& vgname = LVM2_PV_Info::get_vg_name(partition.get_path());
+		const Glib::ustring& vgname = LVM2_Info::get_vg_name(partition.get_path());
 		if ( vgname .empty() )
 			return false ;
-		return LVM2_PV_Info::is_vg_exported( vgname );
+		return LVM2_Info::is_vg_exported(vgname);
 	}
 	return false ;
 }

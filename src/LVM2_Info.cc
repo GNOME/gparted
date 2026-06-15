@@ -14,7 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "LVM2_PV_Info.h"
+
+#include "LVM2_Info.h"
+
 #include "BlockSpecial.h"
 #include "VGDevice.h"
 
@@ -38,7 +40,7 @@ enum LV_BIT
 } ;
 
 //Data model:
-//  lvm2_pv_info_cache_initialized
+//  lvm2_info_cache_initialized
 //                      - Has the cache been loaded yet?
 //  lvm_found           - Is the "lvm" command available?
 //  lvm2_pv_cache       - Vector of PV fields: pv_name, pv_size, pv_free, vg_name.
@@ -74,53 +76,58 @@ enum LV_BIT
 
 
 //Initialize static data elements
-bool LVM2_PV_Info::lvm2_pv_info_cache_initialized = false ;
-bool LVM2_PV_Info::lvm_found = false ;
-std::vector<LVM2_PV> LVM2_PV_Info::lvm2_pv_cache;
-std::vector<LVM2_VG> LVM2_PV_Info::lvm2_vg_cache;
-std::vector<LVM2_LV> LVM2_PV_Info::lvm2_lv_cache;
-std::vector<Glib::ustring> LVM2_PV_Info::error_messages ;
+bool LVM2_Info::lvm2_info_cache_initialized = false;
+bool LVM2_Info::lvm_found = false;
+std::vector<LVM2_PV> LVM2_Info::lvm2_pv_cache;
+std::vector<LVM2_VG> LVM2_Info::lvm2_vg_cache;
+std::vector<LVM2_LV> LVM2_Info::lvm2_lv_cache;
+std::vector<Glib::ustring> LVM2_Info::error_messages;
 
-bool LVM2_PV_Info::is_lvm2_pv_supported()
+
+bool LVM2_Info::is_lvm2_supported()
 {
 	set_command_found() ;
 	return ( lvm_found ) ;
 }
 
-void LVM2_PV_Info::clear_cache()
+
+void LVM2_Info::clear_cache()
 {
 	lvm2_pv_cache.clear();
 	lvm2_vg_cache.clear();
 	lvm2_lv_cache.clear();
-	lvm2_pv_info_cache_initialized = false;
+	lvm2_info_cache_initialized = false;
 }
 
 
-const Glib::ustring& LVM2_PV_Info::get_vg_name(const Glib::ustring& path)
+const Glib::ustring& LVM2_Info::get_vg_name(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
 	return pv.vg_name;
 }
 
+
 //Return PV size in bytes, or -1 for error.
-Byte_Value LVM2_PV_Info::get_size_bytes( const Glib::ustring & path )
+Byte_Value LVM2_Info::get_size_bytes(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
 	return pv.pv_size;
 }
 
+
 //Return number of free bytes in the PV, or -1 for error.
-Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
+Byte_Value LVM2_Info::get_free_bytes(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
 	return pv.pv_free;
 }
 
+
 //Report if any LVs are active in the VG stored in the PV.
-bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
+bool LVM2_Info::has_active_lvs(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
@@ -139,7 +146,7 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 
 
 //Report if the VG is exported.
-bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
+bool LVM2_Info::is_vg_exported(const Glib::ustring& vgname)
 {
 	initialize_if_required() ;
 	const LVM2_VG& vg = get_vg_cache_entry_by_name(vgname);
@@ -150,7 +157,7 @@ bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
 // Report whether name is the name of an LVM2 Volume Group.  Used to keep Volume Group
 // names (which may be passed on the command line) out of the libparted device scan, which
 // would otherwise raise a "could not stat device" error for them.
-bool LVM2_PV_Info::is_vg_name(const Glib::ustring& vgname)
+bool LVM2_Info::is_vg_name(const Glib::ustring& vgname)
 {
 	initialize_if_required();
 	const LVM2_VG& vg = get_vg_cache_entry_by_name(vgname);
@@ -159,7 +166,7 @@ bool LVM2_PV_Info::is_vg_name(const Glib::ustring& vgname)
 
 
 //Return vector of PVs which are members of the VG.  Passing "" returns all empty PVs.
-std::vector<Glib::ustring> LVM2_PV_Info::get_vg_members( const Glib::ustring & vgname )
+std::vector<Glib::ustring> LVM2_Info::get_vg_members(const Glib::ustring& vgname)
 {
 	initialize_if_required() ;
 	std::vector<Glib::ustring> members ;
@@ -175,8 +182,9 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_vg_members( const Glib::ustring & v
 	return members ;
 }
 
+
 // Return vector of LVs in the VG.
-std::vector<Glib::ustring> LVM2_PV_Info::get_vg_lvs( const Glib::ustring & vgname )
+std::vector<Glib::ustring> LVM2_Info::get_vg_lvs(const Glib::ustring& vgname)
 {
 	initialize_if_required();
 	std::vector<Glib::ustring> lvs;
@@ -198,7 +206,7 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_vg_lvs( const Glib::ustring & vgnam
 }
 
 
-Byte_Value LVM2_PV_Info::get_lv_size_bytes(const Glib::ustring& lv_path)
+Byte_Value LVM2_Info::get_lv_size_bytes(const Glib::ustring& lv_path)
 {
 	initialize_if_required();
 	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
@@ -210,7 +218,7 @@ Byte_Value LVM2_PV_Info::get_lv_size_bytes(const Glib::ustring& lv_path)
 }
 
 
-bool LVM2_PV_Info::is_lv_active(const Glib::ustring& lv_path)
+bool LVM2_Info::is_lv_active(const Glib::ustring& lv_path)
 {
 	initialize_if_required();
 	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
@@ -225,7 +233,7 @@ bool LVM2_PV_Info::is_lv_active(const Glib::ustring& lv_path)
 // Returns the lvm segment type code: 'C' = cache, 'M' = mirror,
 // 'r' = raid, 's' = snapshot, 't' = thin, 'T' = thin pool, 'V' = thin volume,
 // '\0' if unknown or LV not in cache.  See lvs(8) "lv_attr" first letter.
-char LVM2_PV_Info::get_lv_segtype(const Glib::ustring& lv_path)
+char LVM2_Info::get_lv_segtype(const Glib::ustring& lv_path)
 {
 	initialize_if_required();
 	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
@@ -237,7 +245,7 @@ char LVM2_PV_Info::get_lv_segtype(const Glib::ustring& lv_path)
 }
 
 
-std::vector<VGDevice *> LVM2_PV_Info::get_vg_devices()
+std::vector<VGDevice *> LVM2_Info::get_vg_devices()
 {
 	initialize_if_required();
 	std::vector<VGDevice *> vg_devices;
@@ -287,7 +295,7 @@ std::vector<VGDevice *> LVM2_PV_Info::get_vg_devices()
 }
 
 
-std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring & path )
+std::vector<Glib::ustring> LVM2_Info::get_error_messages(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	if ( ! error_messages .empty() )
@@ -309,25 +317,28 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring
 	return partition_specific_messages ;
 }
 
+
 //Private methods
 
-void LVM2_PV_Info::initialize_if_required()
+void LVM2_Info::initialize_if_required()
 {
-	if ( ! lvm2_pv_info_cache_initialized )
+	if (! lvm2_info_cache_initialized)
 	{
 		set_command_found() ;
-		load_lvm2_pv_info_cache() ;
-		lvm2_pv_info_cache_initialized = true ;
+		load_lvm2_info_cache();
+		lvm2_info_cache_initialized = true;
 	}
 }
 
-void LVM2_PV_Info::set_command_found()
+
+void LVM2_Info::set_command_found()
 {
 	//Set status of command found
 	lvm_found = ( ! Glib::find_program_in_path( "lvm" ) .empty() ) ;
 }
 
-void LVM2_PV_Info::load_lvm2_pv_info_cache()
+
+void LVM2_Info::load_lvm2_info_cache()
 {
 	Glib::ustring output, error ;
 	unsigned int i ;
@@ -370,8 +381,8 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 						continue;  // Empty PV name
 					LVM2_PV pv;
 					pv.pv_name = BlockSpecial( fields[PVFIELD_PV_NAME] );
-					pv.pv_size = lvm2_pv_size_to_num( fields[PVFIELD_PV_SIZE] );
-					pv.pv_free = lvm2_pv_size_to_num( fields[PVFIELD_PV_FREE] );
+					pv.pv_size = lvm2_size_to_num(fields[PVFIELD_PV_SIZE]);
+					pv.pv_free = lvm2_size_to_num(fields[PVFIELD_PV_FREE]);
 					pv.vg_name = fields[PVFIELD_VG_NAME];
 					lvm2_pv_cache.push_back( pv );
 				}
@@ -416,9 +427,9 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 					LVM2_VG vg;
 					vg.vg_name  = fields[VGDEVFIELD_VG_NAME];
 					vg.vg_attr  = fields[VGDEVFIELD_VG_ATTR];
-					vg.pe_size  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_SIZE]);
-					vg.total_pe = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_EXTENT_COUNT]);
-					vg.free_pe  = lvm2_pv_size_to_num(fields[VGDEVFIELD_VG_FREE_COUNT]);
+					vg.pe_size  = lvm2_size_to_num(fields[VGDEVFIELD_VG_EXTENT_SIZE]);
+					vg.total_pe = lvm2_size_to_num(fields[VGDEVFIELD_VG_EXTENT_COUNT]);
+					vg.free_pe  = lvm2_size_to_num(fields[VGDEVFIELD_VG_FREE_COUNT]);
 					vg.uuid     = fields[VGDEVFIELD_VG_UUID];
 					lvm2_vg_cache.push_back(vg);
 				}
@@ -469,7 +480,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 					lv.lv_path = fields[LVFIELD_LV_PATH];
 					if (lv.lv_path == "")
 						lv.lv_path = "/dev/" + lv.vg_name + "/" + lv.lv_name;
-					lv.lv_size = lvm2_pv_size_to_num(fields[LVFIELD_LV_SIZE]);
+					lv.lv_size = lvm2_size_to_num(fields[LVFIELD_LV_SIZE]);
 					lv.active  = (fields[LVFIELD_LV_ATTR].size() >= 5   &&
 					              fields[LVFIELD_LV_ATTR][4]     == 'a'   );
 					lv.segtype = (fields[LVFIELD_LV_ATTR].size() >= 1)
@@ -501,9 +512,10 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 	}
 }
 
+
 // Performs linear search of the PV cache to find the first matching pv_name.
 // Returns found cache entry or not found substitute.
-const LVM2_PV & LVM2_PV_Info::get_pv_cache_entry_by_name( const Glib::ustring & pvname )
+const LVM2_PV& LVM2_Info::get_pv_cache_entry_by_name(const Glib::ustring& pvname)
 {
 	BlockSpecial bs_pvname( pvname );
 	for ( unsigned int i = 0 ; i < lvm2_pv_cache.size() ; i ++ )
@@ -518,7 +530,7 @@ const LVM2_PV & LVM2_PV_Info::get_pv_cache_entry_by_name( const Glib::ustring & 
 
 // Performs linear search of the VG cache to find the first matching vg_name.
 // Returns found cache entry or not found substitute.
-const LVM2_VG & LVM2_PV_Info::get_vg_cache_entry_by_name( const Glib::ustring & vgname )
+const LVM2_VG& LVM2_Info::get_vg_cache_entry_by_name(const Glib::ustring& vgname)
 {
 	for ( unsigned int i = 0 ; i < lvm2_vg_cache.size() ; i ++ )
 	{
@@ -532,7 +544,7 @@ const LVM2_VG & LVM2_PV_Info::get_vg_cache_entry_by_name( const Glib::ustring & 
 
 // Return string converted to a number, or -1 for error.
 // Used to convert PVs size or free bytes.
-Byte_Value LVM2_PV_Info::lvm2_pv_size_to_num(const Glib::ustring& str)
+Byte_Value LVM2_Info::lvm2_size_to_num(const Glib::ustring& str)
 {
 	Byte_Value num = -1 ;
 	if ( str != "" )
@@ -546,10 +558,11 @@ Byte_Value LVM2_PV_Info::lvm2_pv_size_to_num(const Glib::ustring& str)
 	return num ;
 }
 
+
 //Test if the bit is set in either VG or LV "bits" attribute string
 //  E.g.  bit_set( "wz--n-", VGBIT_EXPORTED ) -> false
 //        bit_set( "wzx-n-", VGBIT_EXPORTED ) -> true
-bool LVM2_PV_Info::bit_set( const Glib::ustring & attr, unsigned int bit )
+bool LVM2_Info::bit_set(const Glib::ustring& attr, unsigned int bit)
 {
 	//NOTE:
 	//  This code treats hyphen '-' as unset and everything else as set.

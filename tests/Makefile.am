@@ -37,7 +37,7 @@ gparted_core_OBJECTS =  \
 	$(top_builddir)/src/FileSystem.$(OBJEXT)            \
 	$(top_builddir)/src/GParted_Core.$(OBJEXT)          \
 	$(top_builddir)/src/LUKS_Info.$(OBJEXT)             \
-	$(top_builddir)/src/LVM2_PV_Info.$(OBJEXT)          \
+	$(top_builddir)/src/LVM2_Info.$(OBJEXT)             \
 	$(top_builddir)/src/Mount_Info.$(OBJEXT)            \
 	$(top_builddir)/src/Operation.$(OBJEXT)             \
 	$(top_builddir)/src/OperationCopy.$(OBJEXT)         \

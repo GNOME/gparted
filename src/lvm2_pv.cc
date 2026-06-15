@@ -18,7 +18,7 @@
 #include "lvm2_pv.h"
 
 #include "FileSystem.h"
-#include "LVM2_PV_Info.h"
+#include "LVM2_Info.h"
 #include "OperationDetail.h"
 #include "Partition.h"
 #include "Utils.h"
@@ -55,11 +55,12 @@ const Glib::ustring & lvm2_pv::get_custom_text( CUSTOM_TEXT ttype, int index ) c
 	}
 }
 
+
 FS lvm2_pv::get_filesystem_support()
 {
 	FS fs( FS_LVM2_PV );
 
-	if ( LVM2_PV_Info::is_lvm2_pv_supported() )
+	if (LVM2_Info::is_lvm2_supported())
 	{
 		fs .busy   = FS::EXTERNAL ;
 		fs .read   = FS::EXTERNAL ;
@@ -80,16 +81,17 @@ FS lvm2_pv::get_filesystem_support()
 	return fs ;
 }
 
+
 bool lvm2_pv::is_busy( const Glib::ustring & path )
 {
-	return LVM2_PV_Info::has_active_lvs( path );
+	return LVM2_Info::has_active_lvs(path);
 }
 
 
 void lvm2_pv::set_used_sectors( Partition & partition )
 {
-	Byte_Value size_bytes = LVM2_PV_Info::get_size_bytes(partition.get_path());
-	Byte_Value free_bytes = LVM2_PV_Info::get_free_bytes(partition.get_path());
+	Byte_Value size_bytes = LVM2_Info::get_size_bytes(partition.get_path());
+	Byte_Value free_bytes = LVM2_Info::get_free_bytes(partition.get_path());
 	if (size_bytes > -1 && free_bytes > -1)
 	{
 		Sector fs_size = size_bytes / partition.sector_size;
@@ -97,7 +99,7 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 		partition.set_sector_usage(fs_size, fs_free);
 	}
 
-	std::vector<Glib::ustring> error_messages = LVM2_PV_Info::get_error_messages( partition.get_path() );
+	std::vector<Glib::ustring> error_messages = LVM2_Info::get_error_messages(partition.get_path());
 	partition.append_messages( error_messages );
 }
 
@@ -130,7 +132,7 @@ bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & opera
 
 bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
 {
-	const Glib::ustring& vgname = LVM2_PV_Info::get_vg_name(partition.get_path());
+	const Glib::ustring& vgname = LVM2_Info::get_vg_name(partition.get_path());
 	Glib::ustring cmd ;
 	if ( vgname .empty() )
 		cmd = "lvm pvremove " + Glib::shell_quote( partition.get_path() );

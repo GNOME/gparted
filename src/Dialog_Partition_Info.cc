@@ -18,7 +18,7 @@
 
 #include "Dialog_Partition_Info.h"
 
-#include "LVM2_PV_Info.h"
+#include "LVM2_Info.h"
 #include "Partition.h"
 #include "Utils.h"
 #include "btrfs.h"
@@ -256,7 +256,7 @@ void Dialog_Partition_Info::Display_Info()
 
 	Glib::ustring vgname;
 	if (filesystem_ptn.fstype == FS_LVM2_PV)
-		vgname = LVM2_PV_Info::get_vg_name( filesystem_ptn.get_path() );
+		vgname = LVM2_Info::get_vg_name(filesystem_ptn.get_path());
 
 	bool filesystem_accessible = false;
 	if (m_partition.fstype != FS_LUKS || m_partition.busy)
@@ -420,7 +420,7 @@ void Dialog_Partition_Info::Display_Info()
 				 * the operating system.
 				 */
 				str_temp = _("Not active (Not a member of any volume group)") ;
-			else if ( LVM2_PV_Info::is_vg_exported( vgname ) )
+			else if (LVM2_Info::is_vg_exported(vgname))
 				/* TO TRANSLATORS:  Not active and exported
 				 * means that the partition is a member of an LVM volume group but
 				 * the volume group is not active and not being used by the operating system.
@@ -478,7 +478,7 @@ void Dialog_Partition_Info::Display_Info()
 				break ;
 			case FS_LVM2_PV:
 				if ( ! vgname .empty() )
-					members = LVM2_PV_Info::get_vg_members( vgname );
+					members = LVM2_Info::get_vg_members(vgname);
 				break ;
 			default:
 				break ;
@@ -497,7 +497,7 @@ void Dialog_Partition_Info::Display_Info()
 		                                                    true, false, false, Gtk::ALIGN_START);
 		grid->attach(*label_logical_volumes, 1, top, 1, 1);
 
-		std::vector<Glib::ustring> lvs = LVM2_PV_Info::get_vg_lvs( vgname );
+		std::vector<Glib::ustring> lvs = LVM2_Info::get_vg_lvs(vgname);
 		Gtk::Label *value_logical_volumes = Utils::mk_label(Glib::build_path("\n", lvs), true, false, true);
 		grid->attach(*value_logical_volumes, 2, top++, 1, 1);
 		value_logical_volumes->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
@@ -626,7 +626,7 @@ void Dialog_Partition_Info::Display_Info()
 	// containing "device" is a Volume Group), relabel the section "Logical
 	// Volume" and present LE (Logical Extent) information further down instead
 	// of disk sector offsets, which are not meaningful for a Volume Group.
-	bool showing_lv = LVM2_PV_Info::is_vg_name(m_partition.device_path);
+	bool showing_lv = LVM2_Info::is_vg_name(m_partition.device_path);
 	// Partition headline
 	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(showing_lv ? _("Logical Volume") : _("Partition")) + "</b>"),
 	             0, top++, 6, 1);

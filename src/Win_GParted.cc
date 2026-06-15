@@ -45,7 +45,7 @@
 #include "Partition.h"
 #include "PartitionVector.h"
 #include "PasswordRAMStore.h"
-#include "LVM2_PV_Info.h"
+#include "LVM2_Info.h"
 #include "LUKS_Info.h"
 #include "Utils.h"
 #include "VGDevice.h"
@@ -3651,10 +3651,10 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	tmp_msg += "\n\n" ;
 	tmp_msg += _( "Do you want to continue to forcibly delete the Physical Volume?" ) ;
 
-	const Glib::ustring& vgname = LVM2_PV_Info::get_vg_name(selected_partition_ptr->get_path());
+	const Glib::ustring& vgname = LVM2_Info::get_vg_name(selected_partition_ptr->get_path());
 	std::vector<Glib::ustring> members ;
 	if ( ! vgname .empty() )
-		members = LVM2_PV_Info::get_vg_members( vgname );
+		members = LVM2_Info::get_vg_members(vgname);
 
 	//Single copy of each string for translation purposes
 	const Glib::ustring vgname_label  = _( "Volume Group:" ) ;

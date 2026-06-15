@@ -35,7 +35,7 @@ gpartedbin_SOURCES = \
 	Frame_Resizer_Extended.cc	\
 	GParted_Core.cc			\
 	HBoxOperations.cc		\
-	LVM2_PV_Info.cc			\
+	LVM2_Info.cc			\
 	LUKS_Info.cc			\
 	MenuHelpers.cc			\
 	Mount_Info.cc			\

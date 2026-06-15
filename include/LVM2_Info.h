@@ -15,15 +15,15 @@
  */
 
 
-/* LVM2_PV_Info
+/* LVM2_Info
  *
- * A persistent cache of information about LVM2 PVs that helps to
- * minimize the number of executions of lvm commands used to query
- * their attributes.
+ * A persistent cache of information about LVM2 PVs, VGs and LVs that
+ * helps to minimize the number of executions of lvm commands used to
+ * query their attributes.
  */
 
-#ifndef GPARTED_LVM2_PV_INFO_H
-#define GPARTED_LVM2_PV_INFO_H
+#ifndef GPARTED_LVM2_INFO_H
+#define GPARTED_LVM2_INFO_H
 
 #include "BlockSpecial.h"
 #include "Utils.h"
@@ -68,10 +68,10 @@ struct LVM2_LV
 };
 
 
-class LVM2_PV_Info
+class LVM2_Info
 {
 public:
-	static bool is_lvm2_pv_supported();
+	static bool is_lvm2_supported();
 	static void clear_cache();
 	static const Glib::ustring& get_vg_name(const Glib::ustring& path);
 	static Byte_Value get_size_bytes( const Glib::ustring & path );
@@ -90,12 +90,12 @@ public:
 private:
 	static void initialize_if_required();
 	static void set_command_found();
-	static void load_lvm2_pv_info_cache();
+	static void load_lvm2_info_cache();
 	static const LVM2_PV & get_pv_cache_entry_by_name( const Glib::ustring & pvname );
 	static const LVM2_VG & get_vg_cache_entry_by_name( const Glib::ustring & vgname );
-	static Byte_Value lvm2_pv_size_to_num(const Glib::ustring& str);
+	static Byte_Value lvm2_size_to_num(const Glib::ustring& str);
 	static bool bit_set( const Glib::ustring & attr, unsigned int bit ) ;
-	static bool lvm2_pv_info_cache_initialized ;
+	static bool lvm2_info_cache_initialized;
 	static bool lvm_found ;
 	static std::vector<LVM2_PV> lvm2_pv_cache;
 	static std::vector<LVM2_VG> lvm2_vg_cache;
@@ -107,4 +107,4 @@ private:
 }  // namespace GParted
 
 
-#endif /* GPARTED_LVM2_PV_INFO_H */
+#endif /* GPARTED_LVM2_INFO_H */
