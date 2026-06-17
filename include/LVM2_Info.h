@@ -73,10 +73,10 @@ class LVM2_Info
 public:
 	static bool is_lvm2_supported();
 	static void clear_cache();
-	static const Glib::ustring& get_vg_name(const Glib::ustring& path);
-	static Byte_Value get_size_bytes( const Glib::ustring & path );
-	static Byte_Value get_free_bytes( const Glib::ustring & path );
-	static bool has_active_lvs( const Glib::ustring & path );
+	static const Glib::ustring& get_vg_name_for_pv(const Glib::ustring& path);
+	static Byte_Value get_pv_size_bytes(const Glib::ustring& path);
+	static Byte_Value get_pv_free_bytes(const Glib::ustring& path);
+	static bool pv_has_active_lvs(const Glib::ustring& path);
 	static bool is_vg_exported( const Glib::ustring & vgname );
 	static bool is_vg_name(const Glib::ustring& vgname);
 	static std::vector<Glib::ustring> get_vg_members( const Glib::ustring & vgname );

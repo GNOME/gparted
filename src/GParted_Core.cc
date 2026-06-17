@@ -1662,7 +1662,7 @@ void GParted_Core::set_mountpoints( Partition & partition )
 {
 	if (partition.fstype == FS_LVM2_PV)
 	{
-		const Glib::ustring& vgname = LVM2_Info::get_vg_name(partition.get_path());
+		const Glib::ustring& vgname = LVM2_Info::get_vg_name_for_pv(partition.get_path());
 		if ( ! vgname.empty() )
 			partition.add_mountpoint( vgname );
 	}
@@ -3983,7 +3983,7 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 	if (partition.fstype == FS_LVM2_PV)
 	{
 		//The LVM2 PV can't be resized when it's a member of an export VG
-		const Glib::ustring& vgname = LVM2_Info::get_vg_name(partition.get_path());
+		const Glib::ustring& vgname = LVM2_Info::get_vg_name_for_pv(partition.get_path());
 		if ( vgname .empty() )
 			return false ;
 		return LVM2_Info::is_vg_exported(vgname);

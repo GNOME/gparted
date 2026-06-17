@@ -100,7 +100,7 @@ void LVM2_Info::clear_cache()
 }
 
 
-const Glib::ustring& LVM2_Info::get_vg_name(const Glib::ustring& path)
+const Glib::ustring& LVM2_Info::get_vg_name_for_pv(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
@@ -109,7 +109,7 @@ const Glib::ustring& LVM2_Info::get_vg_name(const Glib::ustring& path)
 
 
 //Return PV size in bytes, or -1 for error.
-Byte_Value LVM2_Info::get_size_bytes(const Glib::ustring& path)
+Byte_Value LVM2_Info::get_pv_size_bytes(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
@@ -118,7 +118,7 @@ Byte_Value LVM2_Info::get_size_bytes(const Glib::ustring& path)
 
 
 //Return number of free bytes in the PV, or -1 for error.
-Byte_Value LVM2_Info::get_free_bytes(const Glib::ustring& path)
+Byte_Value LVM2_Info::get_pv_free_bytes(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);
@@ -127,7 +127,7 @@ Byte_Value LVM2_Info::get_free_bytes(const Glib::ustring& path)
 
 
 //Report if any LVs are active in the VG stored in the PV.
-bool LVM2_Info::has_active_lvs(const Glib::ustring& path)
+bool LVM2_Info::pv_has_active_lvs(const Glib::ustring& path)
 {
 	initialize_if_required() ;
 	const LVM2_PV& pv = get_pv_cache_entry_by_name(path);

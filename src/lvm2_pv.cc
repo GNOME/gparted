@@ -84,14 +84,14 @@ FS lvm2_pv::get_filesystem_support()
 
 bool lvm2_pv::is_busy( const Glib::ustring & path )
 {
-	return LVM2_Info::has_active_lvs(path);
+	return LVM2_Info::pv_has_active_lvs(path);
 }
 
 
 void lvm2_pv::set_used_sectors( Partition & partition )
 {
-	Byte_Value size_bytes = LVM2_Info::get_size_bytes(partition.get_path());
-	Byte_Value free_bytes = LVM2_Info::get_free_bytes(partition.get_path());
+	Byte_Value size_bytes = LVM2_Info::get_pv_size_bytes(partition.get_path());
+	Byte_Value free_bytes = LVM2_Info::get_pv_free_bytes(partition.get_path());
 	if (size_bytes > -1 && free_bytes > -1)
 	{
 		Sector fs_size = size_bytes / partition.sector_size;
@@ -132,7 +132,7 @@ bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & opera
 
 bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
 {
-	const Glib::ustring& vgname = LVM2_Info::get_vg_name(partition.get_path());
+	const Glib::ustring& vgname = LVM2_Info::get_vg_name_for_pv(partition.get_path());
 	Glib::ustring cmd ;
 	if ( vgname .empty() )
 		cmd = "lvm pvremove " + Glib::shell_quote( partition.get_path() );

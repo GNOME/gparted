@@ -256,7 +256,7 @@ void Dialog_Partition_Info::Display_Info()
 
 	Glib::ustring vgname;
 	if (filesystem_ptn.fstype == FS_LVM2_PV)
-		vgname = LVM2_Info::get_vg_name(filesystem_ptn.get_path());
+		vgname = LVM2_Info::get_vg_name_for_pv(filesystem_ptn.get_path());
 
 	bool filesystem_accessible = false;
 	if (m_partition.fstype != FS_LUKS || m_partition.busy)
