@@ -71,6 +71,7 @@ private:
 	void refresh_combo_devices() ;
 	void show_pulsebar( const Glib::ustring & status_message ) ;
 	void hide_pulsebar();
+	void set_device_type_ui();
 	void Fill_Label_Device_Info( bool clear = false );
 
 	void add_operation(const Device& device, std::unique_ptr<Operation> operation);

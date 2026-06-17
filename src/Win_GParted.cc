@@ -839,45 +839,54 @@ void Win_GParted::hide_pulsebar()
 }
 
 
-void Win_GParted::Fill_Label_Device_Info( bool clear ) 
+void Win_GParted::set_device_type_ui()
 {
-	// LVM2 read-only support: relabel the Device and Partition menus, the
-	// View menu entry and the information panel title to reflect whether a
-	// Volume Group (shown as a VGDevice) or a disk is currently displayed.
+	// Switch the Device and Partition menus, the View menu's information entry,
+	// the partition list column header and the create partition table action
+	// between their disk and Volume Group variants according to whether the
+	// currently displayed device is an LVM Volume Group (a VGDevice).  Volume
+	// Groups are read-only, so creating a partition table is disabled for them.
+	bool showing_vg = (m_current_device            <  m_devices.size()            &&
+	                   m_devices[m_current_device] != nullptr                     &&
+	                   ! m_devices[m_current_device]->is_partition_table_device()   );
+
+	auto set_menu_label = [&](int menu_id, const Glib::ustring& text)
+	{
+		std::map<int, Gtk::MenuItem*>::iterator it = mainmenu_items.find(menu_id);
+		if (it != mainmenu_items.end() && it->second != nullptr)
+		{
+			Gtk::Label* lbl = dynamic_cast<Gtk::Label *>(it->second->get_child());
+			if (lbl != nullptr)
+				lbl->set_label(text);
+		}
+	};
+
+	set_menu_label(MENU_DEVICE,    showing_vg ? _("_Volume Group")   : _("_Device")   );
+	set_menu_label(MENU_PARTITION, showing_vg ? _("_Logical Volume") : _("_Partition"));
+	set_menu_label(MENU_DEVICE_INFORMATION,
+	                showing_vg ? _("Volume Group _Information") : _("Device _Information"));
+
+	// Relabel the first column header in the partition/LV list to match.
+	treeview_detail.set_partition_column_title(showing_vg ? _("Logical Volume") : _("Partition"));
+
+	if (m_create_partition_table_item != nullptr)
+		m_create_partition_table_item->set_sensitive(! showing_vg);
+}
+
+
+void Win_GParted::Fill_Label_Device_Info( bool clear )
+{
+	// Populate the Device Information panel as required when displaying blank,
+	// disk device or Volume Group information.
 	bool showing_vg = (! clear                                                    &&
 	                   m_current_device            <  m_devices.size()            &&
 	                   m_devices[m_current_device] != nullptr                     &&
 	                   ! m_devices[m_current_device]->is_partition_table_device()   );
-	{
-		auto set_menu_label = [&](int menu_id, const Glib::ustring& text)
-		{
-			std::map<int, Gtk::MenuItem*>::iterator it = mainmenu_items.find(menu_id);
-			if (it != mainmenu_items.end() && it->second != nullptr)
-			{
-				Gtk::Label* lbl = dynamic_cast<Gtk::Label *>(it->second->get_child());
-				if (lbl != nullptr)
-					lbl->set_label(text);
-			}
-		};
-		set_menu_label(MENU_DEVICE,    showing_vg ? _("_Volume Group")   : _("_Device")   );
-		set_menu_label(MENU_PARTITION, showing_vg ? _("_Logical Volume") : _("_Partition"));
-		set_menu_label(MENU_DEVICE_INFORMATION,
-		                showing_vg ? _("Volume Group _Information") : _("Device _Information"));
 
-		// Relabel the first column header in the partition/LV list to match.
-		treeview_detail.set_partition_column_title(showing_vg ? _("Logical Volume") : _("Partition"));
-
-		if (m_device_info_title != nullptr)
-			m_device_info_title->set_markup(
-			    " <b>" + Glib::ustring(showing_vg ? _("Volume Group Information")
-			                                      : _("Device Information")      ) + "</b>");
-
-		// LVM Volume Groups are read-only: a partition table cannot be created
-		// on one.  Disable the menu item while a VG is displayed and re-enable
-		// it for ordinary disks.
-		if (m_create_partition_table_item != nullptr)
-			m_create_partition_table_item->set_sensitive(! showing_vg);
-	}
+	if (m_device_info_title != nullptr)
+		m_device_info_title->set_markup(
+			" <b>" + Glib::ustring(showing_vg ? _("Volume Group Information")
+			                                  : _("Device Information")      ) + "</b>");
 
 	if ( clear )
 		for ( unsigned int t = 0 ; t < device_info .size( ) ; t++ )
@@ -1711,6 +1720,9 @@ void Win_GParted::combo_devices_changed()
 	if (m_current_device >= m_devices.size())
 		m_current_device = 0;
 	set_title(Glib::ustring::compose(_("%1 - GParted"), m_devices[m_current_device]->get_path()));
+
+	// Switch the menus and column header between disk device and Volume Group variants.
+	set_device_type_ui();
 
 	//refresh label_device_info
 	Fill_Label_Device_Info();
