@@ -874,7 +874,7 @@ void Win_GParted::set_device_type_ui()
 }
 
 
-void Win_GParted::Fill_Label_Device_Info( bool clear )
+void Win_GParted::fill_device_info(bool clear)
 {
 	// Populate the Device Information panel as required when displaying blank,
 	// disk device or Volume Group information.
@@ -1725,8 +1725,8 @@ void Win_GParted::combo_devices_changed()
 	set_device_type_ui();
 
 	//refresh label_device_info
-	Fill_Label_Device_Info();
-	
+	fill_device_info();
+
 	//rebuild visualdisk and treeview
 	Refresh_Visual();
 	
@@ -1812,8 +1812,8 @@ void Win_GParted::menu_gparted_refresh_devices()
 		drawingarea_visualdisk .set_sensitive( false ) ;
 		treeview_detail .set_sensitive( false ) ;
 
-		Fill_Label_Device_Info( true ) ;
-		
+		fill_device_info(true);
+
 		drawingarea_visualdisk .clear() ;
 		treeview_detail .clear() ;
 		
