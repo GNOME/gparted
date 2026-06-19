@@ -834,29 +834,21 @@ void Win_GParted::fill_device_info(bool clear)
 
 	if ( clear )
 	{
-		for (unsigned int i = 0; i < m_device_info_pairs.size(); i++)
-			m_device_info_pairs[i].value->set_text("");
-	}
-	else if (! m_devices[m_current_device]->is_partition_table_device())
-	{
-		const VGDevice* vg =
-		    dynamic_cast<const VGDevice *>(m_devices[m_current_device].get());
-
 		// GENERAL DEVICE INFO
-		set_pair(0, _("Volume Group:"), vg->vg_name);
-		set_pair(1, _("UUID:")        , vg->uuid);
-		set_pair(2, _("Size:")        , Utils::format_size(vg->length, vg->sector_size));
-		set_pair(3, ""                , "");
+		set_pair(0, _("Model:")          , "");
+		set_pair(1, _("Serial:")         , "");
+		set_pair(2, _("Size:")           , "");
+		set_pair(3, _("Path:")           , "");
 
 		// DETAILED DEVICE INFO
-		set_pair(4, _("Members:")     , Glib::build_path(", ", vg->pv_paths));
-		set_pair(5, _("PE size:")     , Utils::format_size(1, vg->pe_size));
-		set_pair(6, _("Total PE:")    , Utils::num_to_str(vg->total_pe));
-		set_pair(7, _("Allocated PE:"), Utils::num_to_str(vg->allocated_pe));
-		set_pair(8, _("Free PE:")     , Utils::num_to_str(vg->free_pe));
-		set_pair(9, _("LV count:")    , Utils::num_to_str(vg->lv_paths.size()));
+		set_pair(4, _("Partition table:"), "");
+		set_pair(5, _("Heads:")          , "");
+		set_pair(6, _("Sectors/track:")  , "");
+		set_pair(7, _("Cylinders:")      , "");
+		set_pair(8, _("Total sectors:")  , "");
+		set_pair(9, _("Sector size:")    , "");
 	}
-	else
+	else if (m_devices[m_current_device]->is_partition_table_device())
 	{
 		const Device* dev = dynamic_cast<const Device *>(m_devices[m_current_device].get());
 
@@ -873,6 +865,24 @@ void Win_GParted::fill_device_info(bool clear)
 		set_pair(7, _("Cylinders:")      , Utils::num_to_str(dev->cylinders));
 		set_pair(8, _("Total sectors:")  , Utils::num_to_str(dev->length));
 		set_pair(9, _("Sector size:")    , Utils::num_to_str(dev->sector_size));
+	}
+	else  // Volume Group
+	{
+		const VGDevice* vg = dynamic_cast<const VGDevice *>(m_devices[m_current_device].get());
+
+		// GENERAL DEVICE INFO
+		set_pair(0, _("Volume Group:"), vg->vg_name);
+		set_pair(1, _("UUID:")        , vg->uuid);
+		set_pair(2, _("Size:")        , Utils::format_size(vg->length, vg->sector_size));
+		set_pair(3, ""                , "");
+
+		// DETAILED DEVICE INFO
+		set_pair(4, _("Members:")     , Glib::build_path(", ", vg->pv_paths));
+		set_pair(5, _("PE size:")     , Utils::format_size(1, vg->pe_size));
+		set_pair(6, _("Total PE:")    , Utils::num_to_str(vg->total_pe));
+		set_pair(7, _("Allocated PE:"), Utils::num_to_str(vg->allocated_pe));
+		set_pair(8, _("Free PE:")     , Utils::num_to_str(vg->free_pe));
+		set_pair(9, _("LV count:")    , Utils::num_to_str(vg->lv_paths.size()));
 	}
 }
 
