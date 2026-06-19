@@ -575,14 +575,13 @@ void Win_GParted::init_device_info()
 	int top = 0;
 
 	//title
-	m_device_info_title =
-		Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Device Information")) + "</b>");
+	m_device_info_title = Utils::mk_label("");  // Device Information
 	vbox_info.pack_start(*m_device_info_title, Gtk::PACK_SHRINK);
 
-	auto add_pair = [&](Gtk::Grid* grid, const int top, const Glib::ustring& name)
+	auto add_pair = [&](Gtk::Grid* grid, const int top)
 	{
 		WidgetLabelPair pair;
-		pair.name  = Utils::mk_label(" <b>" + name + "</b>");
+		pair.name  = Utils::mk_label("");
 		pair.value = Utils::mk_label("", true, false, true);
 		pair.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
 		                                               pair.name->get_accessible());
@@ -595,10 +594,10 @@ void Win_GParted::init_device_info()
 	Gtk::Grid* grid = Gtk::manage(new Gtk::Grid());
 	grid->set_column_spacing(10);
 
-	add_pair(grid, top++, _("Model:"));
-	add_pair(grid, top++, _("Serial:"));
-	add_pair(grid, top++, _("Size:"));
-	add_pair(grid, top++, _("Path:"));
+	add_pair(grid, top++);  // Model:
+	add_pair(grid, top++);  // Serial:
+	add_pair(grid, top++);  // Size:
+	add_pair(grid, top++);  // Path:
 
 	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 
@@ -610,12 +609,12 @@ void Win_GParted::init_device_info()
 	// One blank line
 	grid->attach(*Utils::mk_label(""), 1, top++, 1, 1);
 
-	add_pair(grid, top++, _("Partition table:"));
-	add_pair(grid, top++, _("Heads:"));
-	add_pair(grid, top++, _("Sectors/track:"));
-	add_pair(grid, top++, _("Cylinders:"));
-	add_pair(grid, top++, _("Total sectors:"));
-	add_pair(grid, top++, _("Sector size:"));
+	add_pair(grid, top++);  // Partition table:
+	add_pair(grid, top++);  // Heads:
+	add_pair(grid, top++);  // Sectors/track:
+	add_pair(grid, top++);  // Cylinders:
+	add_pair(grid, top++);  // Total sectors:
+	add_pair(grid, top++);  // Sector size:
 
 	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 }
