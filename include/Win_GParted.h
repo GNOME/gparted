@@ -319,8 +319,12 @@ private:
 	// Group is displayed since LVM VGs are read-only (issue #316).
 	Gtk::MenuItem*            m_create_partition_table_item = nullptr;
 	Gtk::Label*               m_device_info_title = nullptr;
-	std::vector<Gtk::Label *> device_info ;
-	std::vector<Gtk::Label *> device_info_labels;
+	struct WidgetLabelPair
+	{
+		Gtk::Label* name  = nullptr;
+		Gtk::Label* value = nullptr;
+	};
+	std::vector<WidgetLabelPair> m_device_info_pairs;
 
 	//stuff for progress overview and pulsebar
 	bool pulsebar_pulse();

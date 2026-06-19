@@ -584,40 +584,44 @@ void Win_GParted::init_device_info()
 	grid->set_column_spacing(10);
 
 	// Model
-	Gtk::Label *label_model = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Model:")) + "</b>");
-	grid->attach(*label_model, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_model);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_model->get_accessible());
+	WidgetLabelPair model;
+	model.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Model:")) + "</b>");
+	model.value = Utils::mk_label("", true, false, true);
+	model.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                model.name->get_accessible());
+	grid->attach(*model.name,  0, top  , 1, 1);
+	grid->attach(*model.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(model);
 
 	// Serial number
-	Gtk::Label *label_serial = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Serial:")) + "</b>");
-	grid->attach(*label_serial, 0, top, 1, 1);
-	device_info.push_back( Utils::mk_label( "", true, false, true ) );
-	device_info_labels.push_back(label_serial);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_serial->get_accessible());
+	WidgetLabelPair serial;
+	serial.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Serial:")) + "</b>");
+	serial.value = Utils::mk_label("", true, false, true);
+	serial.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                 serial.name->get_accessible());
+	grid->attach(*serial.name , 0, top  , 1, 1);
+	grid->attach(*serial.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(serial);
 
 	// Size
-	Gtk::Label *label_size = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Size:")) + "</b>");
-	grid->attach(*label_size, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_size);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_size->get_accessible());
+	WidgetLabelPair size;
+	size.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Size:")) + "</b>");
+	size.value = Utils::mk_label("", true, false, true);
+	size.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                               size.name->get_accessible());
+	grid->attach(*size.name , 0, top  , 1, 1);
+	grid->attach(*size.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(size);
 
 	// Path
-	Gtk::Label *label_path = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Path:")) + "</b>");
-	grid->attach(*label_path, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_path);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_path->get_accessible());
+	WidgetLabelPair path;
+	path.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Path:")) + "</b>");
+	path.value = Utils::mk_label("", true, false, true);
+	path.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                               path.name->get_accessible());
+	grid->attach(*path.name , 0, top  , 1, 1);
+	grid->attach(*path.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(path);
 
 	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 
@@ -630,61 +634,68 @@ void Win_GParted::init_device_info()
 	grid->attach(*Utils::mk_label(""), 1, top++, 1, 1);
 
 	// Disktype
-	Gtk::Label *label_disktype = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Partition table:")) + "</b>");
-	grid->attach(*label_disktype, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_disktype);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_disktype->get_accessible());
+	WidgetLabelPair disktype;
+	disktype.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Partition table:")) + "</b>");
+	disktype.value = Utils::mk_label("", true, false, true);
+	disktype.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                   disktype.name->get_accessible());
+	grid->attach(*disktype.name , 0, top  , 1, 1);
+	grid->attach(*disktype.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(disktype);
 
 	// Heads
-	Gtk::Label *label_heads = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Heads:")) + "</b>");
-	grid->attach(*label_heads, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_heads);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_heads->get_accessible());
+	WidgetLabelPair heads;
+	heads.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Heads:")) + "</b>");
+	heads.value = Utils::mk_label("", true, false, true);
+	heads.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                heads.name->get_accessible());
+	grid->attach(*heads.name , 0, top  , 1, 1);
+	grid->attach(*heads.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(heads);
 
 	// Sectors / track
-	Gtk::Label *label_sectors_track = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sectors/track:")) + "</b>");
-	grid->attach(*label_sectors_track, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_sectors_track);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_sectors_track->get_accessible());
+	WidgetLabelPair sectors_track;
+	sectors_track.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sectors/track:")) + "</b>");
+	sectors_track.value = Utils::mk_label("", true, false, true);
+	sectors_track.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                        sectors_track.name->get_accessible());
+	grid->attach(*sectors_track.name , 0, top  , 1, 1);
+	grid->attach(*sectors_track.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(sectors_track);
 
 	// Cylinders
-	Gtk::Label *label_cylinders = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Cylinders:")) + "</b>");
-	grid->attach(*label_cylinders, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_cylinders);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_cylinders->get_accessible());
+	WidgetLabelPair cylinders;
+	cylinders.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Cylinders:")) + "</b>");
+	cylinders.value = Utils::mk_label("", true, false, true);
+	cylinders.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                    cylinders.name->get_accessible());
+	grid->attach(*cylinders.name , 0, top  , 1, 1);
+	grid->attach(*cylinders.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(cylinders);
 
 	// Total sectors
-	Gtk::Label *label_total_sectors = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Total sectors:")) + "</b>");
-	grid->attach(*label_total_sectors, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_total_sectors);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_total_sectors->get_accessible());
+	WidgetLabelPair total_sectors;
+	total_sectors.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Total sectors:")) + "</b>");
+	total_sectors.value = Utils::mk_label("", true, false, true);
+	total_sectors.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                        total_sectors.name->get_accessible());
+	grid->attach(*total_sectors.name , 0, top  , 1, 1);
+	grid->attach(*total_sectors.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(total_sectors);
 
 	// Sector size
-	Gtk::Label *label_sector_size = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sector size:")) + "</b>");
-	grid->attach(*label_sector_size, 0, top, 1, 1);
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	device_info_labels.push_back(label_sector_size);
-	grid->attach(*device_info.back(), 1, top++, 1, 1);
-	device_info.back()->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                       label_sector_size->get_accessible());
+	WidgetLabelPair sector_size;
+	sector_size.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sector size:")) + "</b>");
+	sector_size.value = Utils::mk_label("", true, false, true);
+	sector_size.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+	                                                      sector_size.name->get_accessible());
+	grid->attach(*sector_size.name , 0, top  , 1, 1);
+	grid->attach(*sector_size.value, 1, top++, 1, 1);
+	m_device_info_pairs.push_back(sector_size);
 
 	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 }
+
 
 void Win_GParted::init_hpaned_main() 
 {
@@ -888,80 +899,56 @@ void Win_GParted::fill_device_info(bool clear)
 			" <b>" + Glib::ustring(showing_vg ? _("Volume Group Information")
 			                                  : _("Device Information")      ) + "</b>");
 
-	if ( clear )
-		for ( unsigned int t = 0 ; t < device_info .size( ) ; t++ )
-			device_info[ t ] ->set_text( "" ) ;
+	auto set_pair = [&](unsigned int index, const Glib::ustring& name, const Glib::ustring& value)
+	{
+		if (index < m_device_info_pairs.size())
+		{
+			m_device_info_pairs[index].name->set_markup(" <b>" + name + "</b>");
+			m_device_info_pairs[index].value->set_text(value);
+		}
+	};
 
+	if ( clear )
+	{
+		for (unsigned int i = 0; i < m_device_info_pairs.size(); i++)
+			m_device_info_pairs[i].value->set_text("");
+	}
 	else if (! m_devices[m_current_device]->is_partition_table_device())
 	{
 		const VGDevice* vg =
 		    dynamic_cast<const VGDevice *>(m_devices[m_current_device].get());
 
-		auto relabel = [&](unsigned int slot, const Glib::ustring& text)
-		{
-			if (slot < device_info_labels.size())
-				device_info_labels[slot]->set_markup(" <b>" + text + "</b>");
-		};
+		// GENERAL DEVICE INFO
+		set_pair(0, _("Volume Group:"), vg->vg_name);
+		set_pair(1, _("UUID:")        , vg->uuid);
+		set_pair(2, _("Size:")        , Utils::format_size(vg->length, vg->sector_size));
+		set_pair(3, ""                , "");
 
-		relabel(0, _("Volume Group:"));
-		device_info[0]->set_text(vg->vg_name);
-		relabel(1, _("UUID:"));
-		device_info[1]->set_text(vg->uuid);
-		relabel(2, _("Size:"));
-		device_info[2]->set_text(Utils::format_size(vg->length, vg->sector_size));
-		relabel(3, _(""));
-		device_info[3]->set_text("");
-
-		relabel(4, _("Members:"));
-		Glib::ustring members_text = Glib::build_path(", ", vg->pv_paths);
-		device_info[4]->set_text(members_text);
-		relabel(5, _("PE size:"));
-		device_info[5]->set_text(Utils::format_size(1, vg->pe_size));
-		relabel(6, _("Total PE:"));
-		device_info[6]->set_text(Utils::num_to_str(vg->total_pe));
-		relabel(7, _("Allocated PE:"));
-		device_info[7]->set_text(Utils::num_to_str(vg->allocated_pe));
-		relabel(8, _("Free PE:"));
-		device_info[8]->set_text(Utils::num_to_str(vg->free_pe));
-		relabel(9, _("LV count:"));
-		device_info[9]->set_text(Utils::num_to_str(vg->lv_paths.size()));
+		// DETAILED DEVICE INFO
+		set_pair(4, _("Members:")     , Glib::build_path(", ", vg->pv_paths));
+		set_pair(5, _("PE size:")     , Utils::format_size(1, vg->pe_size));
+		set_pair(6, _("Total PE:")    , Utils::num_to_str(vg->total_pe));
+		set_pair(7, _("Allocated PE:"), Utils::num_to_str(vg->allocated_pe));
+		set_pair(8, _("Free PE:")     , Utils::num_to_str(vg->free_pe));
+		set_pair(9, _("LV count:")    , Utils::num_to_str(vg->lv_paths.size()));
 	}
 	else
-	{		
-		auto relabel = [&](unsigned int slot, const Glib::ustring& text)
-		{
-			if (slot < device_info_labels.size())
-				device_info_labels[slot]->set_markup(" <b>" + text + "</b>");
-		};
+	{
+		const Device* dev = dynamic_cast<const Device *>(m_devices[m_current_device].get());
 
-		relabel(0, _("Model:"));
-		relabel(1, _("Serial:"));
-		relabel(2, _("Size:"));
-		relabel(3, _("Path:"));
+		// GENERAL DEVICE INFO
+		set_pair(0, _("Model:")          , dev->model);
+		set_pair(1, _("Serial:")         , dev->serial_number);
+		set_pair(2, _("Size:")           , Utils::format_size(dev->length, dev->sector_size));
+		set_pair(3, _("Path:")           , dev->get_path());
 
-		relabel(4, _("Partition table:"));
-		relabel(5, _("Heads:"));
-		relabel(6, _("Sectors/track:"));
-		relabel(7, _("Cylinders:"));
-		relabel(8, _("Total sectors:"));
-		relabel(9, _("Sector size:"));
-
-		short t = 0;
-
-		//global info...
-		device_info[t++]->set_text(m_devices[m_current_device]->model);
-		device_info[t++]->set_text(m_devices[m_current_device]->serial_number);
-		device_info[t++]->set_text(Utils::format_size(m_devices[m_current_device]->length,
-		                                              m_devices[m_current_device]->sector_size));
-		device_info[t++]->set_text(m_devices[m_current_device]->get_path());
-
-		//detailed info
-		device_info[t++]->set_text(m_devices[m_current_device]->disktype);
-		device_info[t++]->set_text(Utils::num_to_str(m_devices[m_current_device]->heads));
-		device_info[t++]->set_text(Utils::num_to_str(m_devices[m_current_device]->sectors));
-		device_info[t++]->set_text(Utils::num_to_str(m_devices[m_current_device]->cylinders));
-		device_info[t++]->set_text(Utils::num_to_str(m_devices[m_current_device]->length));
-		device_info[t++]->set_text(Utils::num_to_str(m_devices[m_current_device]->sector_size));
+		// DETAILED DEVICE INFO
+		set_pair(4, _("Partition table:"), dev->disktype);
+		set_pair(5, _("Heads:")          , Utils::num_to_str(dev->heads));
+		set_pair(6, _("Sectors/track:")  , Utils::num_to_str(dev->sectors));
+		set_pair(7, _("Cylinders:")      , Utils::num_to_str(dev->cylinders));
+		set_pair(8, _("Total sectors:")  , Utils::num_to_str(dev->length));
+		set_pair(9, _("Sector size:")    , Utils::num_to_str(dev->sector_size));
 	}
 }
 
