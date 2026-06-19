@@ -579,49 +579,26 @@ void Win_GParted::init_device_info()
 		Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Device Information")) + "</b>");
 	vbox_info.pack_start(*m_device_info_title, Gtk::PACK_SHRINK);
 
+	auto add_pair = [&](Gtk::Grid* grid, const int top, const Glib::ustring& name)
+	{
+		WidgetLabelPair pair;
+		pair.name  = Utils::mk_label(" <b>" + name + "</b>");
+		pair.value = Utils::mk_label("", true, false, true);
+		pair.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
+		                                               pair.name->get_accessible());
+		grid->attach(*pair.name,  0, top, 1, 1);
+		grid->attach(*pair.value, 1, top, 1, 1);
+		m_device_info_pairs.push_back(pair);
+	};
+
 	//GENERAL DEVICE INFO
 	Gtk::Grid* grid = Gtk::manage(new Gtk::Grid());
 	grid->set_column_spacing(10);
 
-	// Model
-	WidgetLabelPair model;
-	model.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Model:")) + "</b>");
-	model.value = Utils::mk_label("", true, false, true);
-	model.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                model.name->get_accessible());
-	grid->attach(*model.name,  0, top  , 1, 1);
-	grid->attach(*model.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(model);
-
-	// Serial number
-	WidgetLabelPair serial;
-	serial.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Serial:")) + "</b>");
-	serial.value = Utils::mk_label("", true, false, true);
-	serial.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                 serial.name->get_accessible());
-	grid->attach(*serial.name , 0, top  , 1, 1);
-	grid->attach(*serial.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(serial);
-
-	// Size
-	WidgetLabelPair size;
-	size.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Size:")) + "</b>");
-	size.value = Utils::mk_label("", true, false, true);
-	size.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                               size.name->get_accessible());
-	grid->attach(*size.name , 0, top  , 1, 1);
-	grid->attach(*size.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(size);
-
-	// Path
-	WidgetLabelPair path;
-	path.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Path:")) + "</b>");
-	path.value = Utils::mk_label("", true, false, true);
-	path.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                               path.name->get_accessible());
-	grid->attach(*path.name , 0, top  , 1, 1);
-	grid->attach(*path.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(path);
+	add_pair(grid, top++, _("Model:"));
+	add_pair(grid, top++, _("Serial:"));
+	add_pair(grid, top++, _("Size:"));
+	add_pair(grid, top++, _("Path:"));
 
 	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 
@@ -633,65 +610,12 @@ void Win_GParted::init_device_info()
 	// One blank line
 	grid->attach(*Utils::mk_label(""), 1, top++, 1, 1);
 
-	// Disktype
-	WidgetLabelPair disktype;
-	disktype.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Partition table:")) + "</b>");
-	disktype.value = Utils::mk_label("", true, false, true);
-	disktype.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                   disktype.name->get_accessible());
-	grid->attach(*disktype.name , 0, top  , 1, 1);
-	grid->attach(*disktype.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(disktype);
-
-	// Heads
-	WidgetLabelPair heads;
-	heads.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Heads:")) + "</b>");
-	heads.value = Utils::mk_label("", true, false, true);
-	heads.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                heads.name->get_accessible());
-	grid->attach(*heads.name , 0, top  , 1, 1);
-	grid->attach(*heads.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(heads);
-
-	// Sectors / track
-	WidgetLabelPair sectors_track;
-	sectors_track.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sectors/track:")) + "</b>");
-	sectors_track.value = Utils::mk_label("", true, false, true);
-	sectors_track.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                        sectors_track.name->get_accessible());
-	grid->attach(*sectors_track.name , 0, top  , 1, 1);
-	grid->attach(*sectors_track.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(sectors_track);
-
-	// Cylinders
-	WidgetLabelPair cylinders;
-	cylinders.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Cylinders:")) + "</b>");
-	cylinders.value = Utils::mk_label("", true, false, true);
-	cylinders.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                    cylinders.name->get_accessible());
-	grid->attach(*cylinders.name , 0, top  , 1, 1);
-	grid->attach(*cylinders.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(cylinders);
-
-	// Total sectors
-	WidgetLabelPair total_sectors;
-	total_sectors.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Total sectors:")) + "</b>");
-	total_sectors.value = Utils::mk_label("", true, false, true);
-	total_sectors.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                        total_sectors.name->get_accessible());
-	grid->attach(*total_sectors.name , 0, top  , 1, 1);
-	grid->attach(*total_sectors.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(total_sectors);
-
-	// Sector size
-	WidgetLabelPair sector_size;
-	sector_size.name  = Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sector size:")) + "</b>");
-	sector_size.value = Utils::mk_label("", true, false, true);
-	sector_size.value->get_accessible()->add_relationship(Atk::RELATION_LABELLED_BY,
-	                                                      sector_size.name->get_accessible());
-	grid->attach(*sector_size.name , 0, top  , 1, 1);
-	grid->attach(*sector_size.value, 1, top++, 1, 1);
-	m_device_info_pairs.push_back(sector_size);
+	add_pair(grid, top++, _("Partition table:"));
+	add_pair(grid, top++, _("Heads:"));
+	add_pair(grid, top++, _("Sectors/track:"));
+	add_pair(grid, top++, _("Cylinders:"));
+	add_pair(grid, top++, _("Total sectors:"));
+	add_pair(grid, top++, _("Sector size:"));
 
 	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 }
