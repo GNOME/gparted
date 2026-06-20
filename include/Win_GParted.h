@@ -72,7 +72,12 @@ private:
 	void show_pulsebar( const Glib::ustring & status_message ) ;
 	void hide_pulsebar();
 	void set_device_type_ui();
-	void fill_device_info(bool clear = false);
+	enum DeviceInfoValuesType
+	{
+		VALUES_BLANK,
+		VALUES_SHOWN
+	};
+	void fill_device_info(DeviceInfoValuesType show_values);
 
 	void add_operation(const Device& device, std::unique_ptr<Operation> operation);
 	bool merge_operation(const Operation& candidate);

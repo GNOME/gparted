@@ -808,7 +808,7 @@ void Win_GParted::set_device_type_ui()
 }
 
 
-void Win_GParted::fill_device_info(bool clear)
+void Win_GParted::fill_device_info(DeviceInfoValuesType show_values)
 {
 	// Populate the Device Information panel as required when displaying blank,
 	// disk device or Volume Group information.
@@ -822,7 +822,7 @@ void Win_GParted::fill_device_info(bool clear)
 		}
 	};
 
-	if ( clear )
+	if (show_values == VALUES_BLANK)
 	{
 		if (m_device_info_title != nullptr)
 			m_device_info_title->set_markup(" <b>" + Glib::ustring(_("Device Information")) + "</b>");
@@ -1645,7 +1645,7 @@ void Win_GParted::combo_devices_changed()
 	set_device_type_ui();
 
 	//refresh label_device_info
-	fill_device_info();
+	fill_device_info(VALUES_SHOWN);
 
 	//rebuild visualdisk and treeview
 	Refresh_Visual();
@@ -1735,7 +1735,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 		// Switch the menus and column header to disk device variants.
 		set_device_type_ui();
 
-		fill_device_info(true);
+		fill_device_info(VALUES_BLANK);
 
 		drawingarea_visualdisk .clear() ;
 		treeview_detail .clear() ;
