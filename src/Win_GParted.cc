@@ -813,15 +813,6 @@ void Win_GParted::fill_device_info(bool clear)
 {
 	// Populate the Device Information panel as required when displaying blank,
 	// disk device or Volume Group information.
-	bool showing_vg = (! clear                                                    &&
-	                   m_current_device            <  m_devices.size()            &&
-	                   m_devices[m_current_device] != nullptr                     &&
-	                   ! m_devices[m_current_device]->is_partition_table_device()   );
-
-	if (m_device_info_title != nullptr)
-		m_device_info_title->set_markup(
-			" <b>" + Glib::ustring(showing_vg ? _("Volume Group Information")
-			                                  : _("Device Information")      ) + "</b>");
 
 	auto set_pair = [&](unsigned int index, const Glib::ustring& name, const Glib::ustring& value)
 	{
@@ -834,6 +825,9 @@ void Win_GParted::fill_device_info(bool clear)
 
 	if ( clear )
 	{
+		if (m_device_info_title != nullptr)
+			m_device_info_title->set_markup(" <b>" + Glib::ustring(_("Device Information")) + "</b>");
+
 		// GENERAL DEVICE INFO
 		set_pair(0, _("Model:")          , "");
 		set_pair(1, _("Serial:")         , "");
@@ -850,6 +844,9 @@ void Win_GParted::fill_device_info(bool clear)
 	}
 	else if (m_devices[m_current_device]->is_partition_table_device())
 	{
+		if (m_device_info_title != nullptr)
+			m_device_info_title->set_markup(" <b>" + Glib::ustring(_("Device Information")) + "</b>");
+
 		const Device* dev = dynamic_cast<const Device *>(m_devices[m_current_device].get());
 
 		// GENERAL DEVICE INFO
@@ -868,6 +865,9 @@ void Win_GParted::fill_device_info(bool clear)
 	}
 	else  // Volume Group
 	{
+		if (m_device_info_title != nullptr)
+			m_device_info_title->set_markup(" <b>" + Glib::ustring(_("Volume Group Information")) + "</b>");
+
 		const VGDevice* vg = dynamic_cast<const VGDevice *>(m_devices[m_current_device].get());
 
 		// GENERAL DEVICE INFO
