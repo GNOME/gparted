@@ -1733,6 +1733,9 @@ void Win_GParted::menu_gparted_refresh_devices()
 		drawingarea_visualdisk .set_sensitive( false ) ;
 		treeview_detail .set_sensitive( false ) ;
 
+		// Switch the menus and column header to disk device variants.
+		set_device_type_ui();
+
 		fill_device_info(true);
 
 		drawingarea_visualdisk .clear() ;
