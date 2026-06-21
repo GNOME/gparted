@@ -184,6 +184,7 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	Proc_Partitions_Info::load_cache();     // SHOULD BE SECOND.  Caches /proc/partitions and
 	                                        // pre-populates BlockSpecial cache.
 	DMRaid::load_cache();
+	LVM2_Info::clear_cache();
 
 	//only probe if no devices were specified as arguments..
 	if (m_probe_devices)
@@ -295,7 +296,6 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	                Proc_Partitions_Info::get_device_and_partition_names_for(m_device_paths);
 	FS_Info::load_cache_for_device_and_partition_names(dev_ptn_names);
 	Mount_Info::load_cache();
-	LVM2_Info::clear_cache();
 	btrfs::clear_cache();
 	SWRaid_Info::load_cache();
 	LUKS_Info::clear_cache();
