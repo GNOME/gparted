@@ -145,6 +145,28 @@ bool LVM2_Info::pv_has_active_lvs(const Glib::ustring& path)
 }
 
 
+// Get vector of all Volume Group names.
+std::vector<Glib::ustring> LVM2_Info::get_vgnames()
+{
+	initialize_if_required();
+	std::vector<Glib::ustring> vgs;
+	for (unsigned int i = 0; i < lvm2_vg_cache.size(); i++)
+	{
+		vgs.push_back(lvm2_vg_cache[i].vg_name);
+	}
+	return vgs;
+}
+
+
+// Confirm whether the named Volume Group is useable.
+bool LVM2_Info::is_useable_vg(const Glib::ustring& vgname)
+{
+	initialize_if_required();
+	const LVM2_VG& vg = get_vg_cache_entry_by_name(vgname);
+	return (vg.pe_size > 0 && vg.total_pe > 0);
+}
+
+
 //Report if the VG is exported.
 bool LVM2_Info::is_vg_exported(const Glib::ustring& vgname)
 {

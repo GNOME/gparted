@@ -134,8 +134,7 @@ void GParted_Core::find_supported_filesystems()
 
 void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
 {
-	m_device_paths = user_devices;
-	m_user_device_paths = user_devices;
+	m_user_devices = user_devices;
 	m_probe_devices = user_devices.empty();
 }
 
@@ -161,22 +160,6 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	std::vector<std::unique_ptr<Device>>& devices = *pdevices;
 	devices .clear() ;
 
-	// Restore the originally requested device/VG list.  The command line case
-	// prunes non-disk entries (such as Volume Group names) from m_device_paths
-	// below; without restoring it first, a refresh (Refresh Devices / Ctrl-R)
-	// would progressively lose those entries and drop the Volume Groups.
-	if (! m_probe_devices)
-		m_device_paths = m_user_device_paths;
-
-	// Snapshot the device/VG names requested on the command line (if any) before
-	// the disk confirmation loop below prunes non-disk entries such as Volume
-	// Group paths.  Used further down to decide which Volume Groups to include:
-	// with no command-line arguments every VG is shown; when names are given
-	// only the named VGs (and disks) are shown.
-	std::set<Glib::ustring> user_named_paths;
-	if (! m_probe_devices)
-		user_named_paths.insert(m_device_paths.begin(), m_device_paths.end());
-
 	// Initialise and load caches needed for device discovery.
 	BlockSpecial::clear_cache();            // MUST BE FIRST.  Cache of name to major, minor
 	                                        // numbers incrementally loaded when BlockSpecial
@@ -186,11 +169,14 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	DMRaid::load_cache();
 	LVM2_Info::clear_cache();
 
+	// Vectors of sorted, useable device and Volume Group names either probed or named
+	// on the command line.
+	std::vector<Glib::ustring> device_names;
+	std::vector<Glib::ustring> vg_names;
+
 	//only probe if no devices were specified as arguments..
 	if (m_probe_devices)
 	{
-		m_device_paths.clear();
-
 		//FIXME:  When libparted bug 194 is fixed, remove code to read:
 		//           /proc/partitions
 		//        This was a problem with no floppy drive yet BIOS indicated one existed.
@@ -236,76 +222,83 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 
 			//only add this device if we can read the first sector (which means it's a real device)
 			if ( useable_device( lp_device ) )
-				m_device_paths.push_back(lp_device->path);
+				device_names.push_back(lp_device->path);
 
 			lp_device = ped_device_get_next( lp_device ) ;
 		}
 
-		std::sort(m_device_paths.begin(), m_device_paths.end());
+		std::sort(device_names.begin(), device_names.end());
+
+		// Get useable Volume Group names
+		vg_names = LVM2_Info::get_vgnames();
+		for (unsigned int i = 0; i < vg_names.size(); i++)
+		{
+			if (! LVM2_Info::is_useable_vg(vg_names[i]))
+				vg_names.erase(vg_names.begin() + i--);
+		}
+		std::sort(vg_names.begin(), vg_names.end());
 	}
 	else
 	{
-		//Device paths were passed in on the command line.
-
-		// Sort name device paths and remove duplicates.  Avoids repeated scanning
-		// the same device and showing it multiple times in the UI.
+		// Disk devices and Volume Groups were named on the command line.
+		// Sort them and remove duplicates to avoid repeated scanning and showing
+		// the same name multiple times in the UI.
 		// Reference:
 		//     What's the most efficient way to erase duplicates and sort a vector?
 		//     http://stackoverflow.com/questions/1041620/whats-the-most-efficient-way-to-erase-duplicates-and-sort-a-vector
-		std::sort(m_device_paths.begin(), m_device_paths.end());
-		m_device_paths.erase(std::unique(m_device_paths.begin(), m_device_paths.end()), m_device_paths.end());
+		std::sort(m_user_devices.begin(), m_user_devices.end());
+		m_user_devices.erase(std::unique(m_user_devices.begin(), m_user_devices.end()), m_user_devices.end());
 
-		// Volume Group names may be passed on the command line (e.g. "rootvg").
-		// They are not block devices, so remove them before the libparted
-		// confirmation loop below; otherwise ped_device_get() raises a
-		// "could not stat device" error for them.  They remain in
-		// user_named_paths (snapshotted above) and are matched against the
-		// enumerated Volume Groups further down.
-		for (unsigned int i = 0; i < m_device_paths.size(); i++)
+		for (unsigned int i = 0; i < m_user_devices.size(); i++)
 		{
-			if (LVM2_Info::is_vg_name(m_device_paths[i]))
-				m_device_paths.erase(m_device_paths.begin() + i--);
-		}
+			if (LVM2_Info::is_vg_name(m_user_devices[i]))
+			{
+				if (LVM2_Info::is_useable_vg(m_user_devices[i]))
+					vg_names.push_back(m_user_devices[i]);
+				else
+					// Permanently remove unuseable VG name.
+					m_user_devices.erase(m_user_devices.begin() + i--);
 
-		for (unsigned int t = 0; t < m_device_paths.size(); t++)
-		{
-			set_thread_status_message(Glib::ustring::compose(_("Confirming %1"), m_device_paths[t]));
+				continue;
+			}
+
+			set_thread_status_message(Glib::ustring::compose(_("Confirming %1"), m_user_devices[i]));
 
 #ifndef USE_LIBPARTED_DMRAID
 			// Ensure that dmraid device entries are created
 			if (DMRaid::is_dmraid_supported()               &&
-			    DMRaid::is_dmraid_device(m_device_paths[t])   )
+			    DMRaid::is_dmraid_device(m_user_devices[i])   )
 			{
-				DMRaid::create_dev_map_entries(DMRaid::get_dmraid_name(m_device_paths[t]));
+				DMRaid::create_dev_map_entries(DMRaid::get_dmraid_name(m_user_devices[i]));
 				settle_device( SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
 			}
 #endif
 
-			PedDevice* lp_device = ped_device_get(m_device_paths[t].c_str());
-			if (lp_device == nullptr || ! useable_device(lp_device))
-			{
-				// Remove this disk device which isn't useable
-				m_device_paths.erase(m_device_paths.begin() + t--);
-			}
+			PedDevice* lp_device = ped_device_get(m_user_devices[i].c_str());
+			if (lp_device != nullptr && useable_device(lp_device))
+				device_names.push_back(m_user_devices[i]);
+			else
+				// Permanently remove unuseable disk device name.
+				m_user_devices.erase(m_user_devices.begin() + i--);
 		}
 	}
 
 	// Initialise and load caches needed for content discovery.
 	FS_Info::clear_cache();
 	const std::vector<DeviceAndPartitionNames> dev_ptn_names =
-	                Proc_Partitions_Info::get_device_and_partition_names_for(m_device_paths);
+	                Proc_Partitions_Info::get_device_and_partition_names_for(device_names);
 	FS_Info::load_cache_for_device_and_partition_names(dev_ptn_names);
 	Mount_Info::load_cache();
 	btrfs::clear_cache();
 	SWRaid_Info::load_cache();
 	LUKS_Info::clear_cache();
 
-	for (unsigned int t = 0; t < m_device_paths.size(); t++)
+	for (unsigned int i = 0; i < device_names.size(); i++)
 	{
 		/*TO TRANSLATORS: looks like Searching /dev/sda partitions */ 
-		set_thread_status_message(Glib::ustring::compose(_("Searching %1 partitions"), m_device_paths[t]));
+		set_thread_status_message(Glib::ustring::compose(_("Searching %1 partitions"), device_names[i]));
 		std::unique_ptr<Device> temp_device = std::make_unique<Device>();
-		set_device_from_disk(*temp_device, m_device_paths[t]);
+		set_device_from_disk(*temp_device, device_names[i]);
 		devices.push_back(std::move(temp_device));
 	}
 
@@ -319,20 +312,9 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	{
 		std::unique_ptr<VGDevice> temp_vg(vg_devices[i]);
 
-		// Skip any Volume Group without usable geometry (no physical extents or
-		// an unreported extent size).  It has nothing meaningful to display and
-		// this guards the visual disk rendering against a divide-by-zero on the
-		// device length.
-		if (temp_vg->pe_size <= 0 || temp_vg->total_pe <= 0)
-			continue;
-
-		// When specific devices/VGs were named on the command line, include only
-		// the Volume Groups that were named.  A VG's canonical name is its bare
-		// name, which is what get_path() returns; vg_name is checked too so the
-		// match is robust.  With no arguments, include every VG.
-		if (! m_probe_devices                                &&
-		    user_named_paths.count(temp_vg->get_path()) == 0 &&
-		    user_named_paths.count(temp_vg->vg_name)    == 0   )
+		// Only include Volume Group names found above.  (Those are either
+		// all useable VGs or useable VGs named on the command line).
+		if (std::find(vg_names.begin(), vg_names.end(), temp_vg->vg_name) == vg_names.end())
 			continue;
 
 		/* TO TRANSLATORS: looks like   Searching rootvg logical volumes */
