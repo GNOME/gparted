@@ -267,53 +267,50 @@ char LVM2_Info::get_lv_segtype(const Glib::ustring& lv_path)
 }
 
 
-std::vector<VGDevice *> LVM2_Info::get_vg_devices()
+std::unique_ptr<VGDevice> LVM2_Info::make_vgdevice(const Glib::ustring& vgname)
 {
 	initialize_if_required();
-	std::vector<VGDevice *> vg_devices;
+	const LVM2_VG& vg = get_vg_cache_entry_by_name(vgname);
+	if (vg.vg_name == "")
+		// VG name not found in cache.
+		return std::unique_ptr<VGDevice>(nullptr);
 
-	for (unsigned int i = 0; i < lvm2_vg_cache.size(); i++)
+	std::unique_ptr<VGDevice> vgdev = std::make_unique<VGDevice>();
+
+	vgdev->vg_name  = vg.vg_name;
+	vgdev->pe_size  = vg.pe_size;
+	vgdev->total_pe = vg.total_pe;
+	vgdev->free_pe  = vg.free_pe;
+	vgdev->uuid     = vg.uuid;
+	if (vg.total_pe >= 0 && vg.free_pe >= 0)
+		vgdev->allocated_pe = vg.total_pe - vg.free_pe;
+
+	// Issue #316: use the bare VG name as the canonical name everywhere
+	// (lvm vgdisplay has no path property and LVM documentation almost
+	// universally refers to a VG by its bare name, not /dev/<vgname>).
+	vgdev->set_path(vg.vg_name);
+	if (vg.total_pe > 0 && vg.pe_size > 0)
 	{
-		const LVM2_VG& vg = lvm2_vg_cache[i];
-		VGDevice* vgdev = new VGDevice();
-
-		vgdev->vg_name  = vg.vg_name;
-		vgdev->pe_size  = vg.pe_size;
-		vgdev->total_pe = vg.total_pe;
-		vgdev->free_pe  = vg.free_pe;
-		vgdev->uuid     = vg.uuid;
-		if (vg.total_pe >= 0 && vg.free_pe >= 0)
-			vgdev->allocated_pe = vg.total_pe - vg.free_pe;
-
-		// Issue #316: use the bare VG name as the canonical name everywhere
-		// (lvm vgdisplay has no path property and LVM documentation almost
-		// universally refers to a VG by its bare name, not /dev/<vgname>).
-		vgdev->set_path(vg.vg_name);
-		if (vg.total_pe > 0 && vg.pe_size > 0)
-		{
-			vgdev->length      = vg.total_pe;
-			vgdev->sector_size = vg.pe_size;
-		}
-
-		for (unsigned int j = 0; j < lvm2_pv_cache.size(); j++)
-		{
-			if (lvm2_pv_cache[j].vg_name == vg.vg_name)
-				vgdev->pv_paths.push_back(lvm2_pv_cache[j].pv_name.m_name);
-		}
-
-		for (unsigned int j = 0; j < lvm2_lv_cache.size(); j++)
-		{
-			if (lvm2_lv_cache[j].vg_name == vg.vg_name)
-				vgdev->lv_paths.push_back(lvm2_lv_cache[j].lv_path);
-		}
-
-		vgdev->exported = bit_set(vg.vg_attr, VGBIT_EXPORTED);
-		vgdev->partial  = bit_set(vg.vg_attr, VGBIT_PARTIAL);
-
-		vg_devices.push_back(vgdev);
+		vgdev->length      = vg.total_pe;
+		vgdev->sector_size = vg.pe_size;
 	}
 
-	return vg_devices;
+	for (unsigned int j = 0; j < lvm2_pv_cache.size(); j++)
+	{
+		if (lvm2_pv_cache[j].vg_name == vg.vg_name)
+			vgdev->pv_paths.push_back(lvm2_pv_cache[j].pv_name.m_name);
+	}
+
+	for (unsigned int j = 0; j < lvm2_lv_cache.size(); j++)
+	{
+		if (lvm2_lv_cache[j].vg_name == vg.vg_name)
+			vgdev->lv_paths.push_back(lvm2_lv_cache[j].lv_path);
+	}
+
+	vgdev->exported = bit_set(vg.vg_attr, VGBIT_EXPORTED);
+	vgdev->partial  = bit_set(vg.vg_attr, VGBIT_PARTIAL);
+
+	return vgdev;
 }
 
 

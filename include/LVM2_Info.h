@@ -30,6 +30,7 @@
 #include "VGDevice.h"
 
 #include <glibmm/ustring.h>
+#include <memory>
 #include <vector>
 
 
@@ -86,7 +87,7 @@ public:
 	static Byte_Value get_lv_size_bytes(const Glib::ustring& lv_path);
 	static bool is_lv_active(const Glib::ustring& lv_path);
 	static char get_lv_segtype(const Glib::ustring& lv_path);
-	static std::vector<VGDevice *> get_vg_devices();
+	static std::unique_ptr<VGDevice> make_vgdevice(const Glib::ustring& vgname);
 	static std::vector<Glib::ustring> get_error_messages( const Glib::ustring & path );
 
 private:

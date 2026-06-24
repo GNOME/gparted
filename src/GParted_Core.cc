@@ -304,17 +304,12 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 
 	// LVM2 read-only support: enumerate Volume Groups and add each one to the
 	// device list as a VGDevice.  A VG is shown like a disk and its Logical
-	// Volumes like partitions; GParted does not modify LVM objects here.  VGs
-	// are appended after the disks in lvm's default (vg_name) order, which is
-	// stable across refreshes.
-	std::vector<VGDevice *> vg_devices = LVM2_Info::get_vg_devices();
-	for (unsigned int i = 0; i < vg_devices.size(); i++)
+	// Volumes like partitions.  GParted does not modify LVM objects here.  VGs
+	// are appended after the disk devices.
+	for (unsigned int i = 0; i < vg_names.size(); i++)
 	{
-		std::unique_ptr<VGDevice> temp_vg(vg_devices[i]);
-
-		// Only include Volume Group names found above.  (Those are either
-		// all useable VGs or useable VGs named on the command line).
-		if (std::find(vg_names.begin(), vg_names.end(), temp_vg->vg_name) == vg_names.end())
+		std::unique_ptr<VGDevice> temp_vg(LVM2_Info::make_vgdevice(vg_names[i]));
+		if (temp_vg == nullptr)
 			continue;
 
 		/* TO TRANSLATORS: looks like   Searching rootvg logical volumes */
