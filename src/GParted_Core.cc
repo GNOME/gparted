@@ -177,41 +177,30 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	//only probe if no devices were specified as arguments..
 	if (m_probe_devices)
 	{
-		//FIXME:  When libparted bug 194 is fixed, remove code to read:
-		//           /proc/partitions
-		//        This was a problem with no floppy drive yet BIOS indicated one existed.
-		//        http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/194
-		//
-		//try to find all available devices if devices exist in /proc/partitions
-		std::vector<Glib::ustring> temp_devices = Proc_Partitions_Info::get_device_paths();
-		if ( ! temp_devices .empty() )
+		// Get devices from /proc/partitions
+		std::vector<Glib::ustring> proc_device_names = Proc_Partitions_Info::get_device_paths();
+		for (unsigned int i = 0; i < proc_device_names.size(); i++)
 		{
-			//Try to find all devices in /proc/partitions
-			for (unsigned int k=0; k < temp_devices .size(); k++)
-			{
-				/*TO TRANSLATORS: looks like Scanning /dev/sda */
-				set_thread_status_message( Glib::ustring::compose( _("Scanning %1"), temp_devices[ k ] ) ) ;
-				ped_device_get( temp_devices[ k ] .c_str() ) ;
-			}
-
-			//Try to find all dmraid devices
-			if (DMRaid::is_dmraid_supported())
-			{
-				std::vector<Glib::ustring> dmraid_devices = DMRaid::get_devices();
-				for ( unsigned int k=0; k < dmraid_devices .size(); k++ ) {
-					set_thread_status_message( Glib::ustring::compose( _("Scanning %1"), dmraid_devices[k] ) ) ;
-#ifndef USE_LIBPARTED_DMRAID
-					DMRaid::create_dev_map_entries(dmraid_devices[k]);
-					settle_device( SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
-#endif
-					ped_device_get( dmraid_devices[k] .c_str() ) ;
-				}
-			}
+			/* TO TRANSLATORS: looks like   Scanning /dev/sda */
+			set_thread_status_message(Glib::ustring::compose(_("Scanning %1"),
+			                                                 proc_device_names[i]));
+			ped_device_get(proc_device_names[i].c_str());
 		}
-		else
+
+		// Also get DMRaid devices
+		if (DMRaid::is_dmraid_supported())
 		{
-			//No devices found in /proc/partitions so use libparted to probe devices
-			ped_device_probe_all();
+			std::vector<Glib::ustring> dmraid_device_names = DMRaid::get_devices();
+			for (unsigned int i = 0; i < dmraid_device_names.size(); i++)
+			{
+				set_thread_status_message(Glib::ustring::compose(_("Scanning %1"),
+				                                                 dmraid_device_names[i]));
+#ifndef USE_LIBPARTED_DMRAID
+				DMRaid::create_dev_map_entries(dmraid_device_names[i]);
+				settle_device(SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
+#endif
+				ped_device_get(dmraid_device_names[i].c_str());
+			}
 		}
 
 		PedDevice* lp_device = ped_device_get_next(nullptr);
