@@ -1135,6 +1135,16 @@ Partition* GParted_Core::make_lv_partition(const VGDevice& vg_device, const Glib
 		partition_temp = new Partition();
 
 	Byte_Value lv_bytes   = LVM2_Info::get_lv_size_bytes(lv_path);
+	// A thin pool's reported size (lv_size) is its data area (tdata) only, but
+	// it also consumes metadata (tmeta) extents in the Volume Group.  Include
+	// the metadata size so the pool's footprint matches the extents LVM
+	// actually allocates to it.
+	if (is_thin_pool)
+	{
+		Byte_Value meta_bytes = LVM2_Info::get_lv_metadata_size_bytes(lv_path);
+		if (meta_bytes > 0)
+			lv_bytes += meta_bytes;
+	}
 	Sector     lv_extents = (lv_bytes > 0 && vg_device.pe_size > 0)
 	                        ? lv_bytes / vg_device.pe_size : 0;
 	bool partition_is_busy = active && ! is_thin_pool &&

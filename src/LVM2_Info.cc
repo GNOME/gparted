@@ -65,12 +65,12 @@ enum LV_BIT
 //                        ]
 //  lvm_lv_cache        - Vector of LV fields.
 //                        E.g.
-//                        //vg_name   , lv_name   , lv_path                 , lv_size   , active, segtype
-//                        [{"Test_VG2", "lvol0"   , "/dev/Test_VG2/lvol0"   ,  134217728, false , '-'    },
-//                         {"Test_VG2", "lvol1"   , "/dev/Test_VG2/lvol1"   ,   67108864, false , '-'    },
-//                         {"Test_VG3", "lvol0"   , "/dev/Test_VG3/lvol0"   ,  402653184, true  , '-'    },
-//                         {"Test_VG5", "testpool", "/dev/Test_VG5/testpool",  209715200, true  , 't'    },
-//                         {"Test_VG5", "thinvol0", "/dev/Test_VG5/thinvol0", 1073741824, true  , 'V'    }
+//                        //vg_name   , lv_name   , lv_path                 , lv_size   , lv_metadata_size, active, segtype
+//                        [{"Test_VG2", "lvol0"   , "/dev/Test_VG2/lvol0"   ,  134217728,               -1, false , '-'    },
+//                         {"Test_VG2", "lvol1"   , "/dev/Test_VG2/lvol1"   ,   67108864,               -1, false , '-'    },
+//                         {"Test_VG3", "lvol0"   , "/dev/Test_VG3/lvol0"   ,  402653184,               -1, true  , '-'    },
+//                         {"Test_VG5", "testpool", "/dev/Test_VG5/testpool",  209715200,          4194304, true  , 't'    },
+//                         {"Test_VG5", "thinvol0", "/dev/Test_VG5/thinvol0", 1073741824,               -1, true  , 'V'    }
 //                        ]
 //  error_messages      - String vector storing whole cache error messages.
 
@@ -235,6 +235,18 @@ Byte_Value LVM2_Info::get_lv_size_bytes(const Glib::ustring& lv_path)
 	{
 		if (lvm2_lv_cache[i].lv_path == lv_path)
 			return lvm2_lv_cache[i].lv_size;
+	}
+	return -1;
+}
+
+
+Byte_Value LVM2_Info::get_lv_metadata_size_bytes(const Glib::ustring& lv_path)
+{
+	initialize_if_required();
+	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
+	{
+		if (lvm2_lv_cache[i].lv_path == lv_path)
+			return lvm2_lv_cache[i].lv_metadata_size;
 	}
 	return -1;
 }
@@ -465,15 +477,16 @@ void LVM2_Info::load_lvm2_info_cache()
 
 		cmd = "lvm lvs --config \"log{command_names=0}\" --nosuffix "
 		      "--noheadings --separator , --units b "
-		      "-o vg_name,lv_name,lv_path,lv_size,lv_attr";
+		      "-o vg_name,lv_name,lv_path,lv_size,lv_metadata_size,lv_attr";
 		enum LV_FIELD
 		{
-			LVFIELD_VG_NAME = 0,
-			LVFIELD_LV_NAME = 1,
-			LVFIELD_LV_PATH = 2,
-			LVFIELD_LV_SIZE = 3,
-			LVFIELD_LV_ATTR = 4,
-			LVFIELD_COUNT   = 5
+			LVFIELD_VG_NAME          = 0,
+			LVFIELD_LV_NAME          = 1,
+			LVFIELD_LV_PATH          = 2,
+			LVFIELD_LV_SIZE          = 3,
+			LVFIELD_LV_METADATA_SIZE = 4,
+			LVFIELD_LV_ATTR          = 5,
+			LVFIELD_COUNT            = 6
 		};
 		if (! Utils::execute_command(cmd, output, error, true))
 		{
@@ -500,6 +513,9 @@ void LVM2_Info::load_lvm2_info_cache()
 					if (lv.lv_path == "")
 						lv.lv_path = "/dev/" + lv.vg_name + "/" + lv.lv_name;
 					lv.lv_size = lvm2_size_to_num(fields[LVFIELD_LV_SIZE]);
+					// Thin pools report a metadata (tmeta) size; other LVs
+					// leave this column empty, parsing to -1.
+					lv.lv_metadata_size = lvm2_size_to_num(fields[LVFIELD_LV_METADATA_SIZE]);
 					lv.active  = (fields[LVFIELD_LV_ATTR].size() >= 5   &&
 					              fields[LVFIELD_LV_ATTR][4]     == 'a'   );
 					lv.segtype = (fields[LVFIELD_LV_ATTR].size() >= 1)

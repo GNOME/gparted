@@ -64,6 +64,7 @@ struct LVM2_LV
 	Glib::ustring lv_name;
 	Glib::ustring lv_path;
 	Byte_Value    lv_size = -1;
+	Byte_Value    lv_metadata_size = -1;  // Thin-pool metadata (tmeta) size; -1 if not a thin pool.
 	bool          active  = false;
 	char          segtype = '\0';
 };
@@ -85,6 +86,7 @@ public:
 	static std::vector<Glib::ustring> get_vg_members( const Glib::ustring & vgname );
 	static std::vector<Glib::ustring> get_vg_lvs( const Glib::ustring & vgname );
 	static Byte_Value get_lv_size_bytes(const Glib::ustring& lv_path);
+	static Byte_Value get_lv_metadata_size_bytes(const Glib::ustring& lv_path);
 	static bool is_lv_active(const Glib::ustring& lv_path);
 	static char get_lv_segtype(const Glib::ustring& lv_path);
 	static std::unique_ptr<VGDevice> make_vgdevice(const Glib::ustring& vgname);
