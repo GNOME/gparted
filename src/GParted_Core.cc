@@ -1080,6 +1080,33 @@ void GParted_Core::populate_vgdevice_partitions(VGDevice& vg_device)
 		running_pe += lv_extents;
 	}
 
+	// LVM allocates Volume Group extents that are not attributed to any
+	// displayed Logical Volume: thin-pool metadata (tmeta, already folded into
+	// each pool's footprint by make_lv_partition()) and a single per-VG pool
+	// metadata spare ([pmspare], reserved for "lvconvert --repair").
+	// allocated_pe is authoritative, so any shortfall between it and the
+	// extents placed above is this remaining hidden overhead - the pmspare.
+	// Attribute it to the first thin pool, which the spare exists to service,
+	// so the unallocated region added below equals the free extent count LVM
+	// reports rather than reading high by these hidden extents.
+	if (vg_device.allocated_pe > running_pe)
+	{
+		Sector residual = vg_device.allocated_pe - running_pe;
+		for (unsigned int i = 0; i < vg_device.partitions.size(); i++)
+		{
+			if (vg_device.partitions[i].fstype != FS_LVM2_THINPOOL)
+				continue;
+			vg_device.partitions[i].sector_end += residual;
+			for (unsigned int j = i + 1; j < vg_device.partitions.size(); j++)
+			{
+				vg_device.partitions[j].sector_start += residual;
+				vg_device.partitions[j].sector_end   += residual;
+			}
+			running_pe += residual;
+			break;
+		}
+	}
+
 	insert_unallocated(vg_device.get_path(), vg_device.partitions,
 	                   0, vg_device.length - 1, vg_device.sector_size, false);
 }
