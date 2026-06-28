@@ -231,36 +231,24 @@ std::vector<Glib::ustring> LVM2_Info::get_vg_lvs(const Glib::ustring& vgname)
 Byte_Value LVM2_Info::get_lv_size_bytes(const Glib::ustring& lv_path)
 {
 	initialize_if_required();
-	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
-	{
-		if (lvm2_lv_cache[i].lv_path == lv_path)
-			return lvm2_lv_cache[i].lv_size;
-	}
-	return -1;
+	const LVM2_LV& lv = get_lv_cache_entry_by_path(lv_path);
+	return lv.lv_size;
 }
 
 
 Byte_Value LVM2_Info::get_lv_metadata_size_bytes(const Glib::ustring& lv_path)
 {
 	initialize_if_required();
-	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
-	{
-		if (lvm2_lv_cache[i].lv_path == lv_path)
-			return lvm2_lv_cache[i].lv_metadata_size;
-	}
-	return -1;
+	const LVM2_LV& lv = get_lv_cache_entry_by_path(lv_path);
+	return lv.lv_metadata_size;
 }
 
 
 bool LVM2_Info::is_lv_active(const Glib::ustring& lv_path)
 {
 	initialize_if_required();
-	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
-	{
-		if (lvm2_lv_cache[i].lv_path == lv_path)
-			return lvm2_lv_cache[i].active;
-	}
-	return false;
+	const LVM2_LV& lv = get_lv_cache_entry_by_path(lv_path);
+	return lv.active;
 }
 
 
@@ -270,12 +258,8 @@ bool LVM2_Info::is_lv_active(const Glib::ustring& lv_path)
 char LVM2_Info::get_lv_segtype(const Glib::ustring& lv_path)
 {
 	initialize_if_required();
-	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
-	{
-		if (lvm2_lv_cache[i].lv_path == lv_path)
-			return lvm2_lv_cache[i].segtype;
-	}
-	return '\0';
+	const LVM2_LV& lv = get_lv_cache_entry_by_path(lv_path);
+	return lv.segtype;
 }
 
 
@@ -573,6 +557,19 @@ const LVM2_VG& LVM2_Info::get_vg_cache_entry_by_name(const Glib::ustring& vgname
 			return lvm2_vg_cache[i];
 	}
 	static LVM2_VG not_found;  // {"", "", -1, -1, -1, ""}
+	return not_found;
+}
+
+
+const LVM2_LV& LVM2_Info::get_lv_cache_entry_by_path(const Glib::ustring& lv_path)
+{
+	initialize_if_required();
+	for (unsigned int i = 0; i < lvm2_lv_cache.size(); i++)
+	{
+		if (lvm2_lv_cache[i].lv_path == lv_path)
+			return lvm2_lv_cache[i];
+	}
+	static LVM2_LV not_found;  // {"", "", "", -1, -1, false, '\0'}
 	return not_found;
 }
 
