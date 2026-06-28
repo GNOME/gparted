@@ -65,7 +65,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<std::unique_ptr<Device>>& dev
 	vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / vbox / m_label_current
-	m_label_current.set_alignment(Gtk::ALIGN_START);
+	m_label_current.set_xalign(0.0);
 	vbox->pack_start(m_label_current, Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / vbox / m_progressbar_current
@@ -74,7 +74,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<std::unique_ptr<Device>>& dev
 	vbox->pack_start(m_progressbar_current, Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / vbox / m_label_current_sub
-	m_label_current_sub.set_alignment(Gtk::ALIGN_START);
+	m_label_current_sub.set_xalign(0.0);
 	vbox->pack_start(m_label_current_sub, Gtk::PACK_SHRINK);
 
 	// WH: this->get_content_area() / vbox / "Completed Operations:"
