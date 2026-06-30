@@ -60,6 +60,7 @@ TreeView_Detail::TreeView_Detail()
 	get_column(2)->pack_start(m_treeview_detail_columns.fsname, true);
 	// Color pixbuf cell is left aligned.
 	get_column(2)->get_first_cell()->property_xalign() = 0.0;
+	get_column(2)->set_spacing(2);
 	// File system text cell is left aligned.
 	std::vector<Gtk::CellRenderer *> renderers = get_column(2)->get_cells();
 	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers.back() );
