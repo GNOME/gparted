@@ -41,47 +41,66 @@ TreeView_Detail::TreeView_Detail()
 	m_treeselection = get_selection();
 	m_treeselection->signal_changed().connect(sigc::mem_fun(*this, &TreeView_Detail::on_selection_changed));
 
-	//append columns
+	// Add column 0: Partition
 	append_column(_("Partition"), m_treeview_detail_columns.path);
-	append_column(_("Name"), m_treeview_detail_columns.name);
-	append_column(_("File System"), m_treeview_detail_columns.color);
-	append_column(_("Mount Point"), m_treeview_detail_columns.mountpoint);
-	append_column(_("Label"), m_treeview_detail_columns.label);
-	append_column(_("Size"), m_treeview_detail_columns.size);
-	append_column(_("Used"), m_treeview_detail_columns.used);
-	append_column(_("Unused"), m_treeview_detail_columns.unused);
-	append_column(_("Flags"), m_treeview_detail_columns.flags);
-
-	// Tree view column "Partition"; add icon cells.
+	// Add icon cells.
 	get_column(0)->pack_start(m_treeview_detail_columns.icon2, false);
 	get_column(0)->pack_start(m_treeview_detail_columns.icon1, false);
 
-	// Tree view column "File System"; add file system text cell.
-	get_column(2)->pack_start(m_treeview_detail_columns.fsname, true);
+	// Add column 1: Name
+	append_column(_("Name"), m_treeview_detail_columns.name);
+
+	// Add column 2: File System
+	append_column(_("File System"), m_treeview_detail_columns.color);
+	get_column(2)->set_spacing(2);
 	// Color pixbuf cell is left aligned.
 	get_column(2)->get_first_cell()->property_xalign() = 0.0;
-	get_column(2)->set_spacing(2);
+	// Add file system text cell.
+	get_column(2)->pack_start(m_treeview_detail_columns.fsname, true);
 	// File system text cell is left aligned.
 	std::vector<Gtk::CellRenderer *> renderers = get_column(2)->get_cells();
 	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers.back() );
 	cell_renderer_text->property_xalign() = 0.0;
 
-	// Tree view column "Mount Point", make column resizable and show too wide text
-	// with ellipsis.
-	get_column( 3 )->set_resizable( true );
+	// Add column 3: Mount Point
+	append_column(_("Mount Point"), m_treeview_detail_columns.mountpoint);
+	// Make column resizable and show too wide text with ellipsis.
+	get_column(3)->set_resizable(true);
 	cell_renderer_text = dynamic_cast<Gtk::CellRendererText *>(get_column(3)->get_first_cell());
 	cell_renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
 
-	//set alignment of numeric columns to right
-	for( short t = 5 ; t < 8 ; t++ )
-		get_column_cell_renderer( t ) ->property_xalign() = 1 ;
+	// Add column 4: Label
+	append_column(_("Label"), m_treeview_detail_columns.label);
 
-	//expand columns and centeralign the headertext
-	for( short t = 5 ; t < 9 ; t++ )
-	{
-		get_column( t ) ->set_expand( true ) ;
-		get_column( t ) ->set_alignment( 0.5 ) ;
-	}
+	// Add column 5: Size
+	append_column(_("Size"), m_treeview_detail_columns.size);
+	// Make column expanding and centre align the header text.
+	get_column(5)->set_expand(true);
+	get_column(5)->set_alignment(0.5);
+	// Set right alignment for numeric column data.
+	get_column_cell_renderer(5)->property_xalign() = 1.0;
+
+	// Add column 6: Used
+	append_column(_("Used"), m_treeview_detail_columns.used);
+	// Make column expanding and centre align the header text.
+	get_column(6)->set_expand(true);
+	get_column(6)->set_alignment(0.5);
+	// Set right alignment for numeric column data.
+	get_column_cell_renderer(6)->property_xalign() = 1.0;
+
+	// Add column 7: Unused
+	append_column(_("Unused"), m_treeview_detail_columns.unused);
+	// Make column expanding and centre align the header text.
+	get_column(7)->set_expand(true);
+	get_column(7)->set_alignment(0.5);
+	// Set right alignment for numeric column data.
+	get_column_cell_renderer(7)->property_xalign() = 1.0;
+
+	// Add column 8: Unused
+	append_column(_("Flags"), m_treeview_detail_columns.flags);
+	// Make column expanding and centre align the header text.
+	get_column(8)->set_expand(true);
+	get_column(8)->set_alignment(0.5);
 }
 
 
