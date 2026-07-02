@@ -50,17 +50,26 @@ TreeView_Detail::TreeView_Detail()
 	// Add column 1: Name
 	append_column(_("Name"), m_treeview_detail_columns.name);
 
-	// Add column 2: File System
-	append_column(_("File System"), m_treeview_detail_columns.color);
-	get_column(2)->set_spacing(2);
-	// Color pixbuf cell is left aligned.
-	get_column(2)->get_first_cell()->property_xalign() = 0.0;
-	// Add file system text cell.
-	get_column(2)->pack_start(m_treeview_detail_columns.fsname, true);
-	// File system text cell is left aligned.
-	std::vector<Gtk::CellRenderer *> renderers = get_column(2)->get_cells();
-	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers.back() );
+	// Create "File System" column object
+	Gtk::TreeViewColumn* col = Gtk::manage(new Gtk::TreeViewColumn(_("File System")));
+	// Create cell renderer object for the pixbuf.
+	Gtk::CellRendererPixbuf* cell_renderer_pixbuf = Gtk::manage(new Gtk::CellRendererPixbuf());
+	// Color pixbuf cell is left aligned and packed without expanding.
+	cell_renderer_pixbuf->property_xalign() = 0.0;
+	col->pack_start(*cell_renderer_pixbuf, false);
+	// Bind color data model column to the packed pixbuf renderer.
+	col->add_attribute(cell_renderer_pixbuf->property_pixbuf(), m_treeview_detail_columns.color);
+	// Create cell renderer object for the text.
+	Gtk::CellRendererText* cell_renderer_text = Gtk::manage(new Gtk::CellRendererText());
+	// File system text cell is left aligned and packed with expanding to fill the available width.
 	cell_renderer_text->property_xalign() = 0.0;
+	col->pack_start(*cell_renderer_text, true);
+	// Bind file system data model column to the packed text renderer.
+	col->add_attribute(cell_renderer_text->property_text(), m_treeview_detail_columns.fsname);
+	// Set spacing between the two cells in the same column.
+	col->set_spacing(2);
+	// Add column 2: File System
+	append_column(*col);
 
 	// Add column 3: Mount Point
 	append_column(_("Mount Point"), m_treeview_detail_columns.mountpoint);
