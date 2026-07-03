@@ -15,18 +15,32 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "TreeView_Detail.h"
+
 #include "Partition.h"
-#include "PartitionLUKS.h"
 #include "PartitionVector.h"
 #include "Utils.h"
 
-#include <vector>
-#include <gtkmm/cellrenderer.h>
-#include <gtkmm/cellrenderertext.h>
-#include <pangomm/layout.h>
+#include <gdk/gdkevents.h>
+#include <gdkmm/pixbuf.h>
 #include <glibmm/miscutils.h>
+#include <glibmm/refptr.h>
 #include <glibmm/ustring.h>
+#include <gtkmm/object.h>
+#include <gtkmm/enums.h>
+#include <gtkmm/cellrendererpixbuf.h>
+#include <gtkmm/cellrenderertext.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/treeiter.h>
+#include <gtkmm/treemodel.h>
+#include <gtkmm/treepath.h>
+#include <gtkmm/treestore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/treeviewcolumn.h>
+#include <pangomm/layout.h>
+#include <sigc++/functors/mem_fun.h>
+#include <vector>
 
 
 namespace GParted

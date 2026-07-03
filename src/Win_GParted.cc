@@ -65,6 +65,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/menu.h>
 #include <gtkmm/scrolledwindow.h>
+#include <gtkmm/stock.h>
 #include <gtkmm/toolbutton.h>
 #include <atkmm/relation.h>
 #include <glibmm/ustring.h>

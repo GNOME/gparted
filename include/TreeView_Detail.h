@@ -17,14 +17,21 @@
 #ifndef GPARTED_TREEVIEW_DETAIL_H
 #define GPARTED_TREEVIEW_DETAIL_H
 
+
 #include "Partition.h"
 #include "PartitionVector.h"
 
-#include <gtkmm/treeview.h>
-#include <gtkmm/treestore.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/stock.h>
+#include <gdk/gdkevents.h>
 #include <gdkmm/pixbuf.h>
+#include <glibmm/refptr.h>
+#include <glibmm/ustring.h>
+#include <gtkmm/treeiter.h>
+#include <gtkmm/treemodel.h>
+#include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/treeselection.h>
+#include <gtkmm/treestore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/treeviewcolumn.h>
 #include <sigc++/signal.h>
 
 
