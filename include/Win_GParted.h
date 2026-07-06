@@ -165,7 +165,7 @@ private:
 	bool on_delete_event( GdkEventAny* ) ;
 	void on_show() ;
 
-	static gboolean initial_device_refresh( gpointer data );
+	bool initial_device_refresh();
 	void menu_gparted_refresh_devices();
 	void menu_gparted_features();
 	void menu_gparted_quit();
