@@ -219,6 +219,7 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 		std::sort(device_names.begin(), device_names.end());
 
 		// Get useable Volume Group names
+		set_thread_status_message(_("Scanning LVM"));
 		vg_names = LVM2_Info::get_vgnames();
 		for (unsigned int i = 0; i < vg_names.size(); i++)
 		{
@@ -240,6 +241,8 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 
 		for (unsigned int i = 0; i < m_user_devices.size(); i++)
 		{
+			if (i == 0)
+				set_thread_status_message(_("Scanning LVM"));
 			if (LVM2_Info::is_vg_name(m_user_devices[i]))
 			{
 				if (LVM2_Info::is_useable_vg(m_user_devices[i]))
