@@ -271,6 +271,10 @@ void FS_Info::run_blkid_load_cache(const std::vector<Glib::ustring>& paths)
 	if (! blkid_found)
 		return;
 
+	if (paths.size() == 0)
+		// No paths requested, nothing to do.
+		return;
+
 	Glib::ustring cmd = "blkid";
 	for (unsigned int i = 0; i < paths.size(); i++)
 		cmd.append(" " + Glib::shell_quote(paths[i]));
