@@ -131,7 +131,11 @@ void CopyBlocks::copy_thread()
 		copy_block();
 		if ( timer_progress_timeout .elapsed() >= 0.5 )
 		{
+			// Cross thread registration of callback (this copy_thread() is
+			// not GParted_Core::mainthread where the Glib/Gtk main loop
+			// runs the callback).  Must use thread-safe C/Glib g_idle_add().
 			g_idle_add( _set_progress_info, this );
+
 			timer_progress_timeout.reset();
 		}
 	}
@@ -146,6 +150,9 @@ void CopyBlocks::copy_thread()
 		ped_device_destroy( lp_device_dst );
 	}
 
+	// Cross thread registration of callbacks.  Must use thread-safe C/Glib
+	// g_idle_add().
+	//
 	//set progress bar current info on completion
 	g_idle_add( _set_progress_info, this );
 	g_idle_add( (GSourceFunc)mainquit, this );

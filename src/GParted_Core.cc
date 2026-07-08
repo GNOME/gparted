@@ -310,6 +310,10 @@ void GParted_Core::set_devices_thread(std::vector<std::unique_ptr<Device>>* pdev
 	}
 
 	set_thread_status_message("") ;
+
+	// Cross thread registration of callback (this set_devices_thread() is not
+	// GParted_Core::mainthread where the Glib/Gtk main loop runs the callback).
+	// Must use thread-safe C/Glib g_idle_add().
 	g_idle_add((GSourceFunc)_mainquit, nullptr);
 }
 
@@ -2643,6 +2647,10 @@ void GParted_Core::thread_lp_ped_file_system_resize( PedFileSystem * fs,
                                                      bool * return_value )
 {
 	*return_value = ped_file_system_resize(fs, lp_geom, nullptr);
+
+	// Cross thread registration of callback (this thread_lp_ped_file_system_resize()
+	// is not GParted_Core::mainthread where the Glib/Gtk main loop runs the callback).
+	// Must use thread-safe C/Glib g_idle_add().
 	g_idle_add((GSourceFunc)_mainquit, nullptr);
 }
 
@@ -4578,7 +4586,12 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 	ctx.e = e;
 	if (Glib::Thread::self() != GParted_Core::mainthread) {
 		ctx.mutex.lock();
+
+		// Cross thread registration of callback (this thread is not
+		// GParted_Core::mainthread where the Glib/Gtk main loop runs the
+		// callback).  Must use thread-safe C/Glib g_idle_add().
 		g_idle_add( (GSourceFunc)_ped_exception_handler, &ctx );
+
 		ctx.cond.wait( ctx.mutex );
 		ctx.mutex.unlock();
 	} else _ped_exception_handler( &ctx );
