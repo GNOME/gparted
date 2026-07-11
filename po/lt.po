@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2026-06-03 18:03+0000\n"
-"PO-Revision-Date: 2026-06-06 22:05+0300\n"
+"POT-Creation-Date: 2026-07-09 08:39+0000\n"
+"PO-Revision-Date: 2026-07-11 18:24+0300\n"
 "Last-Translator: Aurimas Černius <aurimas.cernius@mailo.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -64,8 +64,8 @@ msgid "The GParted Project"
 msgstr "GParted projektas"
 
 #. ==== GUI =========================
-#: gparted.desktop.in.in:2 src/Win_GParted.cc:89 src/Win_GParted.cc:1675
-#: src/Win_GParted.cc:1904
+#: gparted.desktop.in.in:2 src/Win_GParted.cc:91 src/Win_GParted.cc:1724
+#: src/Win_GParted.cc:1956
 msgid "GParted"
 msgstr "GParted"
 
@@ -168,7 +168,7 @@ msgstr "Niekuo"
 msgid "Resize"
 msgstr "Keisti dydį"
 
-#: src/Dialog_Base_Partition.cc:496 src/Win_GParted.cc:322
+#: src/Dialog_Base_Partition.cc:496 src/Win_GParted.cc:325
 msgid "Resize/Move"
 msgstr "Keisti dydį / perkelti"
 
@@ -224,8 +224,9 @@ msgstr "Įspėjimas:"
 
 #. FILE SYSTEM DETAIL SECTION
 #. File system headline
-#: src/Dialog_Partition_Info.cc:275 src/Dialog_Progress.cc:476
-#: src/DialogFeatures.cc:60 src/TreeView_Detail.cc:47
+#. Create "File System" column object
+#: src/Dialog_Partition_Info.cc:275 src/Dialog_Progress.cc:492
+#: src/DialogFeatures.cc:60 src/TreeView_Detail.cc:68
 msgid "File System"
 msgstr "Failų sistema"
 
@@ -238,6 +239,7 @@ msgstr "Failų sistema:"
 
 #. LUKS uuid
 #: src/Dialog_Partition_Info.cc:313 src/Dialog_Partition_Info.cc:600
+#: src/Win_GParted.cc:875
 msgid "UUID:"
 msgstr "UUID:"
 
@@ -336,13 +338,17 @@ msgid "Not mounted"
 msgstr "Neprijungtas"
 
 #. Volume Group
+#. GENERAL DEVICE INFO
 #. Single copy of each string for translation purposes
-#: src/Dialog_Partition_Info.cc:456 src/Win_GParted.cc:3535
+#: src/Dialog_Partition_Info.cc:456 src/Win_GParted.cc:874
+#: src/Win_GParted.cc:3597
 msgid "Volume Group:"
 msgstr "Tomų grupė:"
 
 #. Members
-#: src/Dialog_Partition_Info.cc:469 src/Win_GParted.cc:3536
+#. DETAILED DEVICE INFO
+#: src/Dialog_Partition_Info.cc:469 src/Win_GParted.cc:880
+#: src/Win_GParted.cc:3598
 msgid "Members:"
 msgstr "Nariai:"
 
@@ -366,7 +372,8 @@ msgid "Unallocated:"
 msgstr "Nepaskirstyta:"
 
 #. Size
-#: src/Dialog_Partition_Info.cc:558 src/Win_GParted.cc:601
+#: src/Dialog_Partition_Info.cc:558 src/Win_GParted.cc:834
+#: src/Win_GParted.cc:855 src/Win_GParted.cc:876
 msgid "Size:"
 msgstr "Dydis:"
 
@@ -384,46 +391,62 @@ msgstr "Šifravimas:"
 #. LUKS path
 #. Left field & value pair area
 #. Path
-#: src/Dialog_Partition_Info.cc:588 src/Dialog_Partition_Info.cc:634
-#: src/Win_GParted.cc:609
+#: src/Dialog_Partition_Info.cc:588 src/Dialog_Partition_Info.cc:639
+#: src/Win_GParted.cc:835 src/Win_GParted.cc:856
 msgid "Path:"
 msgstr "Kelias:"
 
-#. PARTITION DETAIL SECTION
 #. Partition headline
-#. append columns
-#: src/Dialog_Partition_Info.cc:626 src/Dialog_Progress.cc:470
-#: src/TreeView_Detail.cc:45
+#. Relabel the first column header in the partition/LV list to match.
+#: src/Dialog_Partition_Info.cc:631 src/Win_GParted.cc:805
+msgid "Logical Volume"
+msgstr "Loginis tomas"
+
+#. Add column 0: Partition
+#: src/Dialog_Partition_Info.cc:631 src/Dialog_Progress.cc:486
+#: src/TreeView_Detail.cc:59 src/Win_GParted.cc:805
 msgid "Partition"
 msgstr "Skaidinys"
 
 #. Name
 #. Only line: "Name: [EXISTINGNAME  ]"
-#: src/Dialog_Partition_Info.cc:643 src/Dialog_Partition_Name.cc:47
+#: src/Dialog_Partition_Info.cc:648 src/Dialog_Partition_Name.cc:47
 msgid "Name:"
 msgstr "Pavadinimas:"
 
 #. Flags
-#: src/Dialog_Partition_Info.cc:650
+#: src/Dialog_Partition_Info.cc:655
 msgid "Flags:"
 msgstr "Žymės:"
 
-#. Right field & value pair area
 #. First sector
-#: src/Dialog_Partition_Info.cc:661
+#: src/Dialog_Partition_Info.cc:668
 msgid "First sector:"
 msgstr "Pirmas sektorius:"
 
 #. Last sector
-#: src/Dialog_Partition_Info.cc:670
+#: src/Dialog_Partition_Info.cc:677
 msgid "Last sector:"
 msgstr "Paskutinis sektorius:"
 
 #. Total sectors
-#: src/Dialog_Partition_Info.cc:679 src/Dialog_Progress.cc:450
-#: src/Win_GParted.cc:659
+#: src/Dialog_Partition_Info.cc:686 src/Dialog_Progress.cc:466
+#: src/Win_GParted.cc:842 src/Win_GParted.cc:863
 msgid "Total sectors:"
 msgstr "Iš viso sektorių:"
+
+#. A Logical Volume is measured in Volume Group extents, so its
+#. sectors are extents: show the logical extent (LE) size and count
+#. rather than first/last sector offsets.
+#. LE size
+#: src/Dialog_Partition_Info.cc:699
+msgid "LE size:"
+msgstr "LE dydis:"
+
+#. Total LE
+#: src/Dialog_Partition_Info.cc:708
+msgid "Total LE:"
+msgstr "Iš viso LE:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
 #: src/Dialog_Partition_Name.cc:38
@@ -473,12 +496,12 @@ msgstr "Keisti dydį / perkelti %1"
 msgid "Resize %1"
 msgstr "Keisti dydį %1"
 
-#: src/Dialog_Progress.cc:52
+#: src/Dialog_Progress.cc:53
 msgid "Applying pending operations"
 msgstr "Vykdomos operacijos eilėje"
 
 #. WH: this->get_content_area() / vbox / "Depending on the number..."
-#: src/Dialog_Progress.cc:62
+#: src/Dialog_Progress.cc:63
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr ""
@@ -486,163 +509,163 @@ msgstr ""
 "užtrukti."
 
 #. WH: this->get_content_area() / vbox / "Completed Operations:"
-#: src/Dialog_Progress.cc:80
+#: src/Dialog_Progress.cc:81
 msgid "Completed Operations:"
 msgstr "Įvykdytos operacijos:"
 
 #. WH: this->get_content_area() / vbox / m_expander_details
-#: src/Dialog_Progress.cc:88
+#: src/Dialog_Progress.cc:89
 msgid "Details"
 msgstr "Informacija"
 
-#: src/Dialog_Progress.cc:235
+#: src/Dialog_Progress.cc:236
 msgid "%1 of %2 operations completed"
 msgstr "%1 iš %2 operacijų įvykdyta"
 
 #. add save button
-#: src/Dialog_Progress.cc:253
+#: src/Dialog_Progress.cc:254
 msgid "_Save Details"
 msgstr "Į_rašyti informaciją"
 
-#: src/Dialog_Progress.cc:265
+#: src/Dialog_Progress.cc:266
 msgid "Operation cancelled"
 msgstr "Operacija nutraukta"
 
-#: src/Dialog_Progress.cc:279
+#: src/Dialog_Progress.cc:280
 msgid "All operations successfully completed"
 msgstr "Visos operacijos sėkmingai įvykdytos"
 
-#: src/Dialog_Progress.cc:284
+#: src/Dialog_Progress.cc:285
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "%1 įspėjimas"
 msgstr[1] "%1 įspėjimai"
 msgstr[2] "%1 įspėjimų"
 
-#: src/Dialog_Progress.cc:299
+#: src/Dialog_Progress.cc:300
 msgid "An error occurred while applying the operations"
 msgstr "Vykdant operacijas įvyko klaida"
 
-#: src/Dialog_Progress.cc:304
+#: src/Dialog_Progress.cc:305
 msgid "See the details for more information."
 msgstr "Daugiau sužinosite peržiūrėję išsamesnę informaciją."
 
-#: src/Dialog_Progress.cc:306
+#: src/Dialog_Progress.cc:307
 msgid "IMPORTANT"
 msgstr "SVARBU"
 
-#: src/Dialog_Progress.cc:307
+#: src/Dialog_Progress.cc:308
 msgid "If you want support, you need to provide the saved details!"
 msgstr "Jei norite pagalbos, turite pridėti įrašytą išsamesnę informaciją!"
 
 #. TO TRANSLATORS: looks like
 #. * See https://gparted.org/save-details.htm for more information.
 #.
-#: src/Dialog_Progress.cc:313
+#: src/Dialog_Progress.cc:314
 msgid "See %1 for more information."
 msgstr "Daugiau informacijos rasite %1."
 
 #. TO TRANSLATORS: looks like  Force Cancel (5)
 #. *  where the number represents a count down in seconds until the button is enabled
-#: src/Dialog_Progress.cc:336 src/Dialog_Progress.cc:370
+#. TO TRANSLATORS: looks like   Force Cancel (5)
+#. * where the number represents a count down in seconds until the button is enabled
+#: src/Dialog_Progress.cc:337 src/Dialog_Progress.cc:372
 msgid "Force Cancel (%1)"
 msgstr "Priverstinai nutraukti (%1)"
 
-#: src/Dialog_Progress.cc:340 src/Dialog_Progress.cc:376
+#: src/Dialog_Progress.cc:341
 msgid "Force Cancel"
 msgstr "Priverstinai nutraukti"
 
-#: src/Dialog_Progress.cc:351
+#: src/Dialog_Progress.cc:381
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Ar tikrai norite nutraukti šią operaciją?"
 
-#: src/Dialog_Progress.cc:357
+#: src/Dialog_Progress.cc:386
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr "Nutraukus operaciją gali būti VISIŠKAI sugadinta failų sistema."
 
-#: src/Dialog_Progress.cc:359
+#: src/Dialog_Progress.cc:387
 msgid "Continue Operation"
 msgstr "Tęsti operaciją"
 
-#: src/Dialog_Progress.cc:360
+#: src/Dialog_Progress.cc:388
 msgid "Cancel Operation"
 msgstr "Nutraukti operaciją"
 
-#: src/Dialog_Progress.cc:386
+#: src/Dialog_Progress.cc:402
 msgid "Save Details"
 msgstr "Įrašyti informaciją"
 
-#: src/Dialog_Progress.cc:405
+#: src/Dialog_Progress.cc:421
 msgid "GParted Details"
 msgstr "GParted informacija"
 
 #. Device overview information
-#: src/Dialog_Progress.cc:446
+#: src/Dialog_Progress.cc:462
 msgid "Device:"
 msgstr "Įrenginys:"
 
-#. Model
-#: src/Dialog_Progress.cc:447 src/Win_GParted.cc:585
+#. GENERAL DEVICE INFO
+#: src/Dialog_Progress.cc:463 src/Win_GParted.cc:832 src/Win_GParted.cc:853
 msgid "Model:"
 msgstr "Modelis:"
 
-#. Serial number
-#: src/Dialog_Progress.cc:448 src/Win_GParted.cc:593
+#: src/Dialog_Progress.cc:464 src/Win_GParted.cc:833 src/Win_GParted.cc:854
 msgid "Serial:"
 msgstr "Serija:"
 
-#. Sector size
-#: src/Dialog_Progress.cc:449 src/Win_GParted.cc:667
+#: src/Dialog_Progress.cc:465 src/Win_GParted.cc:843 src/Win_GParted.cc:864
 msgid "Sector size:"
 msgstr "Sektoriaus dydis:"
 
-#. Heads
-#: src/Dialog_Progress.cc:454 src/Win_GParted.cc:635
+#: src/Dialog_Progress.cc:470 src/Win_GParted.cc:839 src/Win_GParted.cc:860
 msgid "Heads:"
 msgstr "Galvučių:"
 
-#. Sectors / track
-#: src/Dialog_Progress.cc:455 src/Win_GParted.cc:643
+#: src/Dialog_Progress.cc:471 src/Win_GParted.cc:840 src/Win_GParted.cc:861
 msgid "Sectors/track:"
 msgstr "Sektoriai/takelis:"
 
-#. Cylinders
-#: src/Dialog_Progress.cc:456 src/Win_GParted.cc:651
+#: src/Dialog_Progress.cc:472 src/Win_GParted.cc:841 src/Win_GParted.cc:862
 msgid "Cylinders:"
 msgstr "Cilindrų:"
 
 #. Partition table type
-#. Disktype
-#: src/Dialog_Progress.cc:461 src/Win_GParted.cc:627
+#. DETAILED DEVICE INFO
+#: src/Dialog_Progress.cc:477 src/Win_GParted.cc:838 src/Win_GParted.cc:859
 msgid "Partition table:"
 msgstr "Skaidinių lentelė:"
 
-#: src/Dialog_Progress.cc:471
+#: src/Dialog_Progress.cc:487
 msgid "Type"
 msgstr "Tipas"
 
-#: src/Dialog_Progress.cc:472
+#: src/Dialog_Progress.cc:488
 msgid "Start"
 msgstr "Pradžia"
 
-#: src/Dialog_Progress.cc:473
+#: src/Dialog_Progress.cc:489
 msgid "End"
 msgstr "Pabaiga"
 
-#: src/Dialog_Progress.cc:474 src/TreeView_Detail.cc:53
+#. Add column 8: Unused
+#: src/Dialog_Progress.cc:490 src/TreeView_Detail.cc:123
 msgid "Flags"
 msgstr "Žymės"
 
-#: src/Dialog_Progress.cc:475
+#: src/Dialog_Progress.cc:491
 msgid "Partition Name"
 msgstr "Skaidinio pavadinimas"
 
-#: src/Dialog_Progress.cc:477 src/DialogFeatures.cc:73
-#: src/TreeView_Detail.cc:49
+#. Add column 4: Label
+#: src/Dialog_Progress.cc:493 src/DialogFeatures.cc:73
+#: src/TreeView_Detail.cc:96
 msgid "Label"
 msgstr "Antraštė"
 
-#: src/Dialog_Progress.cc:478 src/TreeView_Detail.cc:48
+#. Add column 3: Mount Point
+#: src/Dialog_Progress.cc:494 src/TreeView_Detail.cc:89
 msgid "Mount Point"
 msgstr "Prijungimo vieta"
 
@@ -650,7 +673,7 @@ msgstr "Prijungimo vieta"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: src/Dialog_Progress.cc:544
+#: src/Dialog_Progress.cc:560
 msgid "EXECUTING"
 msgstr "VYKDOMA"
 
@@ -658,7 +681,7 @@ msgstr "VYKDOMA"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: src/Dialog_Progress.cc:552
+#: src/Dialog_Progress.cc:568
 msgid "SUCCESS"
 msgstr "SĖKMINGA"
 
@@ -666,7 +689,7 @@ msgstr "SĖKMINGA"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: src/Dialog_Progress.cc:560
+#: src/Dialog_Progress.cc:576
 msgid "ERROR"
 msgstr "KLAIDA"
 
@@ -675,7 +698,7 @@ msgstr "KLAIDA"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: src/Dialog_Progress.cc:569
+#: src/Dialog_Progress.cc:585
 msgid "INFO"
 msgstr "INFORMACIJA"
 
@@ -686,7 +709,7 @@ msgstr "INFORMACIJA"
 #. * partition, or the operation failed but it does
 #. * not matter that it failed.
 #.
-#: src/Dialog_Progress.cc:580
+#: src/Dialog_Progress.cc:596
 msgid "WARNING"
 msgstr "ĮSPĖJIMAS"
 
@@ -817,48 +840,49 @@ msgstr "_Atjungti"
 msgid "Removed directory %1"
 msgstr "Pašalintas aplankas %1"
 
-#. Adding a child after this OperationDetail has been set to prevent it is
-#. a programming bug.  However the best way to report it is by adding yet
-#. another child containing the bug report, and allowing the child to be
-#. added anyway.
-#: src/GParted_Core.cc:74 src/OperationDetail.cc:235
+#: src/GParted_Core.cc:77
 msgid "GParted Bug"
 msgstr "GParted klaida"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: src/GParted_Core.cc:185 src/GParted_Core.cc:194
+#: src/GParted_Core.cc:193 src/GParted_Core.cc:202
 msgid "Scanning %1"
 msgstr "Peržvelgiamas %1"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: src/GParted_Core.cc:213 src/GParted_Core.cc:238
+#: src/GParted_Core.cc:221 src/GParted_Core.cc:265
 msgid "Confirming %1"
 msgstr "Patvirtinamas %1"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: src/GParted_Core.cc:273
+#: src/GParted_Core.cc:299
 msgid "Searching %1 partitions"
 msgstr "Ieškoma %1 skaidinių"
 
+#. TO TRANSLATORS: looks like   Searching rootvg logical volumes
+#: src/GParted_Core.cc:316
+msgid "Searching %1 logical volumes"
+msgstr "Ieškoma %1 loginių tomų"
+
 #. TO TRANSLATORS: looks like   A partition cannot start (-2048)
 #. * before the start of the device
-#: src/GParted_Core.cc:306
+#: src/GParted_Core.cc:350
 msgid "A partition cannot start (%1) before the start of the device"
 msgstr "Skaidinys negali prasidėti (%1) prieš įrenginio pradžią"
 
 #. TO TRANSLATORS: looks like   A partition cannot end (2099199)
 #. * after the end of the device (2097151)
-#: src/GParted_Core.cc:316
+#: src/GParted_Core.cc:360
 msgid "A partition cannot end (%1) after the end of the device (%2)"
 msgstr "Skaidinys negali baigtis (%1) ppo įrenginio pabaigos (%2)"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: src/GParted_Core.cc:328
+#: src/GParted_Core.cc:372
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Skaidinys negali būti %1 sektorių ilgio"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: src/GParted_Core.cc:339
+#: src/GParted_Core.cc:383
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
@@ -868,36 +892,36 @@ msgstr ""
 #. * means that the partition table for this disk device is unknown
 #. * or not recognized.
 #.
-#: src/GParted_Core.cc:703
+#: src/GParted_Core.cc:747
 msgid "unrecognized"
 msgstr "neatpažinta"
 
 #. no file system found....
-#: src/GParted_Core.cc:1319
+#: src/GParted_Core.cc:1517
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Nepavyko aptikti failų sistemos! Galimos priežastys:"
 
-#: src/GParted_Core.cc:1321
+#: src/GParted_Core.cc:1519
 msgid "The file system is damaged"
 msgstr "Failų sistema apgadinta"
 
-#: src/GParted_Core.cc:1323
+#: src/GParted_Core.cc:1521
 msgid "The file system is unknown to GParted"
 msgstr "Failų sistema nežinoma GParted"
 
-#: src/GParted_Core.cc:1325
+#: src/GParted_Core.cc:1523
 msgid "There is no file system available (unformatted)"
 msgstr "Nėra failų sistemų (nesuženklinta)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: src/GParted_Core.cc:1328
+#: src/GParted_Core.cc:1526
 msgid "The device entry %1 is missing"
 msgstr "Trūksta įrenginio įrašo %1"
 
 #. TO TRANSLATORS: "logical" refers to a logical partition within an
 #. * extended partition on an MSDOS / MBR partition table.
 #.
-#: src/GParted_Core.cc:1429
+#: src/GParted_Core.cc:1632
 msgid ""
 "UEFI firmware does not support booting from a logical EFI System Partition "
 "(ESP)"
@@ -905,31 +929,31 @@ msgstr ""
 "UEFI aparatinė programinė įranga nepalaiko įkėlimo iš loginio EFI sisteminio "
 "skaidinio (ESP)"
 
-#: src/GParted_Core.cc:1547
+#: src/GParted_Core.cc:1750
 msgid "Unable to find mount point"
 msgstr "Nepavyko rasti prijungimo vietos"
 
-#: src/GParted_Core.cc:1685
+#: src/GParted_Core.cc:1888
 msgid "Unable to read the contents of this file system!"
 msgstr "Nepavyko perskaityti šios failų sistemos turinio!"
 
-#: src/GParted_Core.cc:1687
+#: src/GParted_Core.cc:1890
 msgid "Because of this some operations may be unavailable."
 msgstr "Kai kurios operacijos gali būti neprieinamos."
 
-#: src/GParted_Core.cc:1691
+#: src/GParted_Core.cc:1894
 msgid "The cause might be a missing software package."
 msgstr "To priežastimi gali būti trūkstamas programinės įrangos paketas."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: src/GParted_Core.cc:1694
+#: src/GParted_Core.cc:1897
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr "Reikalingi šie paketai %1 failų sistemos palaikymui:  %2."
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: src/GParted_Core.cc:1704
+#: src/GParted_Core.cc:1907
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 nepaskirstytos vietos skaidinyje."
 
@@ -937,7 +961,7 @@ msgstr "%1 nepaskirstytos vietos skaidinyje."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: src/GParted_Core.cc:1714
+#: src/GParted_Core.cc:1917
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -945,11 +969,11 @@ msgstr ""
 "Norėdami padidinti failų sistemą skaidiniui užpildyti, pasirinkite skaidinį "
 "ir pasirinkite meniu punktą:"
 
-#: src/GParted_Core.cc:1716
+#: src/GParted_Core.cc:1919
 msgid "Partition --> Check."
 msgstr "Skaidinys --> Patikrinti."
 
-#: src/GParted_Core.cc:1837
+#: src/GParted_Core.cc:2040
 msgid "create empty partition"
 msgstr "kurti tuščią skaidinį"
 
@@ -963,59 +987,59 @@ msgstr "kurti tuščią skaidinį"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: src/GParted_Core.cc:1913 src/GParted_Core.cc:3645
+#: src/GParted_Core.cc:2116 src/GParted_Core.cc:3848
 msgid "path: %1 (%2)"
 msgstr "kelias: %1 (%2)"
 
-#: src/GParted_Core.cc:1914 src/GParted_Core.cc:3649
+#: src/GParted_Core.cc:2117 src/GParted_Core.cc:3852
 msgid "partition"
 msgstr "skaidinys"
 
-#: src/GParted_Core.cc:1915 src/GParted_Core.cc:3650
+#: src/GParted_Core.cc:2118 src/GParted_Core.cc:3853
 msgid "start: %1"
 msgstr "pradžia: %1"
 
-#: src/GParted_Core.cc:1916 src/GParted_Core.cc:3651
+#: src/GParted_Core.cc:2119 src/GParted_Core.cc:3854
 msgid "end: %1"
 msgstr "pabaiga: %1"
 
-#: src/GParted_Core.cc:1917 src/GParted_Core.cc:3652
+#: src/GParted_Core.cc:2120 src/GParted_Core.cc:3855
 msgid "size: %1 (%2)"
 msgstr "dydis: %1 (%2)"
 
-#: src/GParted_Core.cc:1949
+#: src/GParted_Core.cc:2152
 msgid ""
 "partition contains open LUKS encryption for a create file system only step"
 msgstr ""
 "skaidinyje yra atviras LUKS šifravimas tik failų sistemos sukūrimo žingsnyje"
 
 #. TO TRANSLATORS: looks like create new ext3 file system
-#: src/GParted_Core.cc:1956
+#: src/GParted_Core.cc:2159
 msgid "create new %1 file system"
 msgstr "kurti naują %1 failų sistemą"
 
-#: src/GParted_Core.cc:1989
+#: src/GParted_Core.cc:2192
 msgid ""
 "partition contains open LUKS encryption for a format file system only step"
 msgstr ""
 "skaidinyje yra atviras LUKS šifravimas tik failų sistemos formatavimo "
 "žingsnyje"
 
-#: src/GParted_Core.cc:2005
+#: src/GParted_Core.cc:2208
 msgid "delete partition"
 msgstr "trinti skaidinį"
 
-#: src/GParted_Core.cc:2049
+#: src/GParted_Core.cc:2252
 msgid ""
 "partition contains open LUKS encryption for a delete file system only step"
 msgstr ""
 "skaidinyje yra atviras LUKS šifravimas tik failų sistemos trynimo žingsnyje"
 
-#: src/GParted_Core.cc:2064
+#: src/GParted_Core.cc:2267
 msgid "delete %1 file system"
 msgstr "trinti %1 failų sistemą"
 
-#: src/GParted_Core.cc:2082
+#: src/GParted_Core.cc:2285
 msgid ""
 "partition contains open LUKS encryption for a label file system only step"
 msgstr ""
@@ -1023,35 +1047,35 @@ msgstr ""
 "žingsnyje"
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: src/GParted_Core.cc:2089 src/OperationLabelFileSystem.cc:54
+#: src/GParted_Core.cc:2292 src/OperationLabelFileSystem.cc:54
 msgid "Clear file system label on %1"
 msgstr "Ieškoti %1 failų sistemą"
 
-#: src/GParted_Core.cc:2092
+#: src/GParted_Core.cc:2295
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Nustatyti %2 failų sistemos užrašą į „%1“"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: src/GParted_Core.cc:2120 src/OperationNamePartition.cc:53
+#: src/GParted_Core.cc:2323 src/OperationNamePartition.cc:53
 msgid "Clear partition name on %1"
 msgstr "Išvalyti %1 skaidinio užrašą"
 
-#: src/GParted_Core.cc:2123
+#: src/GParted_Core.cc:2326
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Nustatyti %2 skaidinio užrašą į „%1“"
 
-#: src/GParted_Core.cc:2148
+#: src/GParted_Core.cc:2351
 msgid ""
 "partition contains open LUKS encryption for a change file system UUID only "
 "step"
 msgstr ""
 "skaidinyje yra atviras LUKS šifravimas tik failų sistemos UUID žingsnyje"
 
-#: src/GParted_Core.cc:2155
+#: src/GParted_Core.cc:2358
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Pusę %1 UUID nustatyti nauja, atsitiktine verte"
 
-#: src/GParted_Core.cc:2160
+#: src/GParted_Core.cc:2363
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Nustatyti %1 UUID nauja, atsitiktine verte"
 
@@ -1060,27 +1084,27 @@ msgstr "Nustatyti %1 UUID nauja, atsitiktine verte"
 #. * to change the size of a partition when performing a move only
 #. * step which is not permitted to change the partition size.
 #.
-#: src/GParted_Core.cc:2245
+#: src/GParted_Core.cc:2448
 msgid "size of the partition is changing for a move only step"
 msgstr "skaidinio dydis yra keičiamas tik perkėlimo žingsnyje"
 
-#: src/GParted_Core.cc:2276
+#: src/GParted_Core.cc:2479
 msgid "rollback last change to the partition"
 msgstr "atšaukti paskutinį skaidinių lentelės pakeitimą"
 
-#: src/GParted_Core.cc:2325
+#: src/GParted_Core.cc:2528
 msgid "move file system to the left"
 msgstr "perkelti failų sistemą į kairę"
 
-#: src/GParted_Core.cc:2327
+#: src/GParted_Core.cc:2530
 msgid "move file system to the right"
 msgstr "perkelti failų sistemą į dešinę"
 
-#: src/GParted_Core.cc:2330
+#: src/GParted_Core.cc:2533
 msgid "move file system"
 msgstr "perkelti failų sistemą"
 
-#: src/GParted_Core.cc:2332
+#: src/GParted_Core.cc:2535
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1088,7 +1112,7 @@ msgstr ""
 "nauja ir sena failų sistemos yra toje pačioje pozicijoje.  Ši operacija "
 "praleidžiama"
 
-#: src/GParted_Core.cc:2396
+#: src/GParted_Core.cc:2599
 msgid "using libparted"
 msgstr "naudojama libparted"
 
@@ -1098,63 +1122,63 @@ msgstr "naudojama libparted"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: src/GParted_Core.cc:2471
+#: src/GParted_Core.cc:2674
 msgid "start of the partition is changing for a resize only step"
 msgstr "skaidinio pradžia yra keičiami tik dydžio keitimo žingsniui"
 
-#: src/GParted_Core.cc:2489
+#: src/GParted_Core.cc:2692
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr "skaidinys neturi LUKS šifravimo tik šifravimo dydžio keitimo žingsniui"
 
-#: src/GParted_Core.cc:2499
+#: src/GParted_Core.cc:2702
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr "neįmanoma sumažinti užverto LUKS šifravimo tomo"
 
-#: src/GParted_Core.cc:2558
+#: src/GParted_Core.cc:2761
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
 "skaidinyje yra atviras LUKS šifravimas tik failų sistemos dydžio keitimo "
 "žingsniui"
 
-#: src/GParted_Core.cc:2628
+#: src/GParted_Core.cc:2831
 msgid "resize/move partition"
 msgstr "keisti dydį / perkelti skaidinį"
 
-#: src/GParted_Core.cc:2631
+#: src/GParted_Core.cc:2834
 msgid "move partition to the right"
 msgstr "perkelti skaidinį į dešinę"
 
-#: src/GParted_Core.cc:2634
+#: src/GParted_Core.cc:2837
 msgid "move partition to the left"
 msgstr "perkelti skaidinį į kairę"
 
-#: src/GParted_Core.cc:2637
+#: src/GParted_Core.cc:2840
 msgid "grow partition from %1 to %2"
 msgstr "didinti skaidinį nuo %1 iki %2"
 
-#: src/GParted_Core.cc:2640
+#: src/GParted_Core.cc:2843
 msgid "shrink partition from %1 to %2"
 msgstr "mažinti skaidinį nuo %1 iki %2"
 
-#: src/GParted_Core.cc:2643
+#: src/GParted_Core.cc:2846
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "perkelti skaidinį į dešinę ir padidinti nuo %1 iki %2"
 
-#: src/GParted_Core.cc:2646
+#: src/GParted_Core.cc:2849
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "perkelti skaidinį į dešinę ir sumažinti nuo %1 iki %2"
 
-#: src/GParted_Core.cc:2649
+#: src/GParted_Core.cc:2852
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "perkelti skaidinį į kairę ir padidinti nuo %1 iki %2"
 
-#: src/GParted_Core.cc:2652
+#: src/GParted_Core.cc:2855
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "perkelti skaidinį į kairę ir sumažinti nuo %1 iki %2"
 
-#: src/GParted_Core.cc:2667
+#: src/GParted_Core.cc:2870
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1162,59 +1186,59 @@ msgstr ""
 "senas ir naujas skaidiniai yra to paties dydžio ir toje pačioje vietoje.  "
 "Operacija praleidžiama"
 
-#: src/GParted_Core.cc:2677
+#: src/GParted_Core.cc:2880
 msgid "old start: %1"
 msgstr "ankstesnė pradžia: %1"
 
-#: src/GParted_Core.cc:2678
+#: src/GParted_Core.cc:2881
 msgid "old end: %1"
 msgstr "ankstesnė pabaiga: %1"
 
-#: src/GParted_Core.cc:2679
+#: src/GParted_Core.cc:2882
 msgid "old size: %1 (%2)"
 msgstr "ankstesnis dydis: %1 (%2)"
 
-#: src/GParted_Core.cc:2694 src/GParted_Core.cc:3733
+#: src/GParted_Core.cc:2897 src/GParted_Core.cc:3936
 msgid "new start: %1"
 msgstr "nauja pradžia: %1"
 
-#: src/GParted_Core.cc:2695 src/GParted_Core.cc:3734
+#: src/GParted_Core.cc:2898 src/GParted_Core.cc:3937
 msgid "new end: %1"
 msgstr "nauja pabaiga: %1"
 
-#: src/GParted_Core.cc:2696 src/GParted_Core.cc:3735
+#: src/GParted_Core.cc:2899 src/GParted_Core.cc:3938
 msgid "new size: %1 (%2)"
 msgstr "naujas dydis: %1 (%2)"
 
-#: src/GParted_Core.cc:2710 src/GParted_Core.cc:3686
+#: src/GParted_Core.cc:2913 src/GParted_Core.cc:3889
 msgid "requested start: %1"
 msgstr "paprašyta pradžia: %1"
 
-#: src/GParted_Core.cc:2711 src/GParted_Core.cc:3687
+#: src/GParted_Core.cc:2914 src/GParted_Core.cc:3890
 msgid "requested end: %1"
 msgstr "paprašyta pabaiga: %1"
 
-#: src/GParted_Core.cc:2712 src/GParted_Core.cc:3688
+#: src/GParted_Core.cc:2915 src/GParted_Core.cc:3891
 msgid "requested size: %1 (%2)"
 msgstr "paprašytas dydis: %1 (%2)"
 
-#: src/GParted_Core.cc:2724
+#: src/GParted_Core.cc:2927
 msgid "attempt to rollback failed change to the partition"
 msgstr "bandyti atšaukti paskutinį skaidinių lentelės pakeitimą"
 
-#: src/GParted_Core.cc:2745
+#: src/GParted_Core.cc:2948
 msgid "original start: %1"
 msgstr "ankstesnė pradžia: %1"
 
-#: src/GParted_Core.cc:2746
+#: src/GParted_Core.cc:2949
 msgid "original end: %1"
 msgstr "ankstesnė pabaiga: %1"
 
-#: src/GParted_Core.cc:2747
+#: src/GParted_Core.cc:2950
 msgid "original size: %1 (%2)"
 msgstr "ankstesnis dydis: %1 (%2)"
 
-#: src/GParted_Core.cc:2829
+#: src/GParted_Core.cc:3032
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
@@ -1222,11 +1246,11 @@ msgstr ""
 "skaidinys neturi atviro LUKS šifravimo tik šifravimo srities sumažinimo "
 "žingsnyje"
 
-#: src/GParted_Core.cc:2834
+#: src/GParted_Core.cc:3037
 msgid "shrink encryption volume"
 msgstr "sumažinti šifruojamą tomą"
 
-#: src/GParted_Core.cc:2845
+#: src/GParted_Core.cc:3048
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
@@ -1234,15 +1258,15 @@ msgstr ""
 "skaidinys neturi atviro LUKS šifravimas tik failų sistemos išdidinimo "
 "žingsnyje"
 
-#: src/GParted_Core.cc:2850
+#: src/GParted_Core.cc:3053
 msgid "grow encryption volume to fill the partition"
 msgstr "didinti failų sistemą, kad užpildytų skaidinį"
 
-#: src/GParted_Core.cc:2860
+#: src/GParted_Core.cc:3063
 msgid "growing is not available for this encryption volume"
 msgstr "šio šifravimo tomo didinti negalima"
 
-#: src/GParted_Core.cc:2878
+#: src/GParted_Core.cc:3081
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
@@ -1254,48 +1278,48 @@ msgstr ""
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: src/GParted_Core.cc:2890
+#: src/GParted_Core.cc:3093
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr "naujas skaidinio dydis yra didesnis arba toks pat sumažinimo žingsnyje"
 
-#: src/GParted_Core.cc:2895
+#: src/GParted_Core.cc:3098
 msgid "shrink file system"
 msgstr "mažinti failų sistemą"
 
-#: src/GParted_Core.cc:2906
+#: src/GParted_Core.cc:3109
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
 "skaidinyje yra atviras LUKS šifravimas tik failų sistemos išdidinimo "
 "žingsnyje"
 
-#: src/GParted_Core.cc:2911
+#: src/GParted_Core.cc:3114
 msgid "grow file system to fill the partition"
 msgstr "didinti failų sistemą, kad užpildytų skaidinį"
 
-#: src/GParted_Core.cc:2922
+#: src/GParted_Core.cc:3125
 msgid "growing is not available for this file system"
 msgstr "šios failų sistemos didinti negalima"
 
-#: src/GParted_Core.cc:2930
+#: src/GParted_Core.cc:3133
 msgid "growing the file system is currently disallowed"
 msgstr "failų sistemos didinimas šiuo metu neleidžiamas"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: src/GParted_Core.cc:2954
+#: src/GParted_Core.cc:3157
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr "ne %1 failų sistema tik %1 perkūrimo žingsnyje"
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: src/GParted_Core.cc:2966
+#: src/GParted_Core.cc:3169
 msgid "recreate %1 file system"
 msgstr "perkurti %1 failų sistemą"
 
-#: src/GParted_Core.cc:3033
+#: src/GParted_Core.cc:3236
 msgid "the destination is smaller than the source partition"
 msgstr "paskirties vieta mažesnė negu šaltinio skaidinys"
 
-#: src/GParted_Core.cc:3086
+#: src/GParted_Core.cc:3289
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
@@ -1303,7 +1327,7 @@ msgstr ""
 "šaltinio skaidinys turi atvirą LUKS šifravimą tik failų sistemos kopijavimo "
 "žingsnyje"
 
-#: src/GParted_Core.cc:3093
+#: src/GParted_Core.cc:3296
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
@@ -1311,112 +1335,112 @@ msgstr ""
 "paskirties skaidinys turi atvirą LUKS šifravimą tik failų sistemos "
 "kopijavimo žingsnyje"
 
-#: src/GParted_Core.cc:3099
+#: src/GParted_Core.cc:3302
 msgid "copy file system from %1 to %2"
 msgstr "kopijuoti failų sistemą iš %1 į %2"
 
-#: src/GParted_Core.cc:3180
+#: src/GParted_Core.cc:3383
 msgid "using internal algorithm"
 msgstr "naudojamas vidinis algoritmas"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: src/GParted_Core.cc:3183
+#: src/GParted_Core.cc:3386
 msgid "copy %1"
 msgstr "kopijuoti %1"
 
-#: src/GParted_Core.cc:3186
+#: src/GParted_Core.cc:3389
 msgid "finding optimal block size"
 msgstr "skaičiuojamas optimalus blokų dydis"
 
 #. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
-#: src/GParted_Core.cc:3217 src/GParted_Core.cc:3263
+#: src/GParted_Core.cc:3420 src/GParted_Core.cc:3466
 msgid "copy %1 using a block size of %2"
 msgstr "nukopijuota %1 naudojant bloko dydį %2"
 
-#: src/GParted_Core.cc:3235
+#: src/GParted_Core.cc:3438
 msgid "%1 seconds"
 msgstr "%1 sekundžių"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: src/GParted_Core.cc:3254
+#: src/GParted_Core.cc:3457
 msgid "optimal block size is %1"
 msgstr "optimalus bloko dydis yra %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: src/GParted_Core.cc:3281
+#: src/GParted_Core.cc:3484
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) nukopijuota"
 
-#: src/GParted_Core.cc:3320
+#: src/GParted_Core.cc:3523
 msgid "rollback failed file system move"
 msgstr "nepavyko atšaukti failų sistemos perkėlimo"
 
-#: src/GParted_Core.cc:3343
+#: src/GParted_Core.cc:3546
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr ""
 "skaidinys turi atvirą LUKS šifravimą tik failų sistemos tikrinimo žingsnyje"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: src/GParted_Core.cc:3355
+#: src/GParted_Core.cc:3558
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "patikrinti %1 esančią failų sistemą ir (jei įmanoma) ištaisyti klaidas"
 
-#: src/GParted_Core.cc:3364
+#: src/GParted_Core.cc:3567
 msgid "checking is not available for this file system"
 msgstr "šios failų sistemos patikrinti negalima"
 
-#: src/GParted_Core.cc:3429
+#: src/GParted_Core.cc:3632
 msgid "set partition type on %1"
 msgstr "nustatyti %1 skaidinio tipą"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: src/GParted_Core.cc:3507
+#: src/GParted_Core.cc:3710
 msgid "new partition flag: %1"
 msgstr "naujas skaidinio požymis: %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: src/GParted_Core.cc:3553
+#: src/GParted_Core.cc:3756
 msgid "new partition type: %1"
 msgstr "naujas skaidinio tipas: %1"
 
-#: src/GParted_Core.cc:3583
+#: src/GParted_Core.cc:3786
 msgid "calibrate %1"
 msgstr "kalibruoti %1"
 
-#: src/GParted_Core.cc:3648
+#: src/GParted_Core.cc:3851
 msgid "device"
 msgstr "įrenginys"
 
-#: src/GParted_Core.cc:3662
+#: src/GParted_Core.cc:3865
 msgid "encryption path: %1"
 msgstr "šifravimo kelias: %1"
 
-#: src/GParted_Core.cc:3682
+#: src/GParted_Core.cc:3885
 msgid "calculate new size and position of %1"
 msgstr "paskaičiuoti naują %1 dydį ir poziciją"
 
-#: src/GParted_Core.cc:3810
+#: src/GParted_Core.cc:4013
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
 msgstr ""
 "skaidinys turi atvirą LUKS šifravimą tik failų sistemos parašų žingsnyje"
 
-#: src/GParted_Core.cc:3817
+#: src/GParted_Core.cc:4020
 msgid "clear old file system signatures in %1"
 msgstr "išvalyti senus failų sistemų parašus iš %1"
 
-#: src/GParted_Core.cc:4028
+#: src/GParted_Core.cc:4231
 msgid "flush operating system cache of %1"
 msgstr "ištuštinti operacinės sistemos %1 podėlį"
 
 #. TO TRANSLATORS: looks like   update boot sector of ntfs file system on /dev/sdd1
-#: src/GParted_Core.cc:4069
+#: src/GParted_Core.cc:4272
 msgid "update boot sector of %1 file system on %2"
 msgstr "atnaujinti %1 failų sistemos paleidimo sektorių skaidinyje %2"
 
-#: src/GParted_Core.cc:4082
+#: src/GParted_Core.cc:4285
 msgid ""
 "Partition start (%1) is beyond sector 4294967295 (2^32-1).\n"
 "Windows will not be able to boot from this file system."
@@ -1424,103 +1448,103 @@ msgstr ""
 "Skaidinio pradžia (%1) yra už sektoriaus 4294967295 (2^32-1).\n"
 "Windows negalės būti paleista iš šios failų sistemos."
 
-#: src/GParted_Core.cc:4095
+#: src/GParted_Core.cc:4298
 msgid "Error trying to open %1"
 msgstr "Klaida atveriant %1"
 
-#: src/GParted_Core.cc:4106
+#: src/GParted_Core.cc:4309
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Klaida ieškant pozicijos 0x1c skaidinyje %1"
 
-#: src/GParted_Core.cc:4121
+#: src/GParted_Core.cc:4324
 msgid "Error trying to write to boot sector in %1"
 msgstr "Klaida rašant į paleidimo sektorių skaidinyje %1"
 
-#: src/GParted_Core.cc:4139
+#: src/GParted_Core.cc:4342
 msgid "libparted messages"
 msgstr "libparted pranešimai"
 
-#: src/GParted_Core.cc:4303
+#: src/GParted_Core.cc:4506
 msgid "Libparted Information"
 msgstr "Libparted informacija"
 
-#: src/GParted_Core.cc:4307
+#: src/GParted_Core.cc:4510
 msgid "Libparted Warning"
 msgstr "Libparted įspėjimas"
 
-#: src/GParted_Core.cc:4311
+#: src/GParted_Core.cc:4514
 msgid "Libparted Error"
 msgstr "Libparted klaida"
 
-#: src/GParted_Core.cc:4314
+#: src/GParted_Core.cc:4517
 msgid "Libparted Fatal"
 msgstr "Libparted kritinė"
 
-#: src/GParted_Core.cc:4317
+#: src/GParted_Core.cc:4520
 msgid "Libparted Bug"
 msgstr "Libparted klaida"
 
-#: src/GParted_Core.cc:4320
+#: src/GParted_Core.cc:4523
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted nepalaikoma savybė"
 
-#: src/GParted_Core.cc:4323
+#: src/GParted_Core.cc:4526
 msgid "Libparted unknown exception"
 msgstr "Libparted nežinoma klaida"
 
-#: src/GParted_Core.cc:4327
+#: src/GParted_Core.cc:4530
 msgid "Fix"
 msgstr "Taisyti"
 
-#: src/GParted_Core.cc:4329
+#: src/GParted_Core.cc:4532
 msgid "Yes"
 msgstr "Taip"
 
-#: src/GParted_Core.cc:4331
+#: src/GParted_Core.cc:4534
 msgid "Ok"
 msgstr "Gerai"
 
-#: src/GParted_Core.cc:4333
+#: src/GParted_Core.cc:4536
 msgid "Retry"
 msgstr "Bandyti dar kartą"
 
-#: src/GParted_Core.cc:4335
+#: src/GParted_Core.cc:4538
 msgid "No"
 msgstr "Ne"
 
-#: src/GParted_Core.cc:4337
+#: src/GParted_Core.cc:4540
 msgid "Cancel"
 msgstr "Nutraukti"
 
-#: src/GParted_Core.cc:4339
+#: src/GParted_Core.cc:4542
 msgid "Ignore"
 msgstr "Nepaisyti"
 
-#: src/HBoxOperations.cc:52 src/Win_GParted.cc:198
+#: src/HBoxOperations.cc:52 src/Win_GParted.cc:200
 msgid "_Undo Last Operation"
 msgstr "_Atšaukti paskutinę operaciją"
 
-#: src/HBoxOperations.cc:59 src/Win_GParted.cc:206
+#: src/HBoxOperations.cc:59 src/Win_GParted.cc:208
 msgid "_Clear All Operations"
 msgstr "_Išvalyti operacijų sąrašą"
 
-#: src/HBoxOperations.cc:66 src/Win_GParted.cc:213
+#: src/HBoxOperations.cc:66 src/Win_GParted.cc:215
 msgid "_Apply All Operations"
 msgstr "_Vykdyti visas operacijas"
 
-#: src/LVM2_PV_Info.cc:198
+#: src/LVM2_Info.cc:328
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr "Trūksta vieno ar kelių fizinių tomų, priklausančių tomų grupei."
 
-#: src/LVM2_PV_Info.cc:326
+#: src/LVM2_Info.cc:524
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "Skaitant LVM2 konfigūraciją įvyko klaida!"
 
-#: src/LVM2_PV_Info.cc:328
+#: src/LVM2_Info.cc:526
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "Kai kurios ar visos detalės gali būti netinkamos arba jų išvis nėra."
 
-#: src/LVM2_PV_Info.cc:330
+#: src/LVM2_Info.cc:528
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "NETURĖTUMĖTE keisti LVM2 fizinių tomų skaidinių."
 
@@ -1559,21 +1583,6 @@ msgstr "Kurti %1 #%2 (%3, %4) %5"
 #: src/OperationDelete.cc:119
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Trinti %1 (%2, %3) iš %4"
-
-#. TO TRANSLATORS:
-#. * means that GParted has encountered a programming bug.  More
-#. * information about a step is being added after the step was
-#. * marked as complete.  This bug description as well as the
-#. * information being added will be visible in the details of the
-#. * applied operations.
-#.
-#: src/OperationDetail.cc:243
-msgid ""
-"Adding more information to the results of this step after it has been marked "
-"as completed"
-msgstr ""
-"Pridedama daugiau informacijos prie šio žingsnio rezultatų po to, kai jis "
-"pažymimas baigtu"
 
 #. Bug: Not initialised by constructor or reset later
 #. Bug: Not initialised by constructor or reset later
@@ -1681,19 +1690,23 @@ msgstr "nukopijuota %1 iš %2 (liko %3)"
 msgid "(%1 remaining)"
 msgstr "(liko %1)"
 
-#: src/TreeView_Detail.cc:46
+#. Add column 1: Name
+#: src/TreeView_Detail.cc:65
 msgid "Name"
 msgstr "Pavadinimas"
 
-#: src/TreeView_Detail.cc:50
+#. Add column 5: Size
+#: src/TreeView_Detail.cc:99
 msgid "Size"
 msgstr "Dydis"
 
-#: src/TreeView_Detail.cc:51
+#. Add column 6: Used
+#: src/TreeView_Detail.cc:107
 msgid "Used"
 msgstr "Naudojama"
 
-#: src/TreeView_Detail.cc:52
+#. Add column 7: Unused
+#: src/TreeView_Detail.cc:115
 msgid "Unused"
 msgstr "Laisva"
 
@@ -1702,7 +1715,7 @@ msgstr "Laisva"
 #. * outside any partition, so is in other words
 #. * unallocated.
 #.
-#: src/Utils.cc:398
+#: src/Utils.cc:399
 msgid "unallocated"
 msgstr "nepaskirstyta"
 
@@ -1711,7 +1724,7 @@ msgstr "nepaskirstyta"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: src/Utils.cc:405
+#: src/Utils.cc:406
 msgid "unknown"
 msgstr "nežinoma"
 
@@ -1720,7 +1733,7 @@ msgstr "nežinoma"
 #. * GParted the space within it will not be formatted
 #. * with a file system.
 #.
-#: src/Utils.cc:412
+#: src/Utils.cc:413
 msgid "unformatted"
 msgstr "nesuženklintas"
 
@@ -1729,7 +1742,7 @@ msgstr "nesuženklintas"
 #. * actions which can be performed on other file systems
 #. * not specifically listed as supported.
 #.
-#: src/Utils.cc:419
+#: src/Utils.cc:420
 msgid "other"
 msgstr "kita"
 
@@ -1737,276 +1750,312 @@ msgstr "kita"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: src/Utils.cc:425
+#: src/Utils.cc:426
 msgid "cleared"
 msgstr "išvalyta"
 
-#: src/Utils.cc:461
+#: src/Utils.cc:463
 msgid "used"
 msgstr "užimta"
 
-#: src/Utils.cc:462
+#: src/Utils.cc:464
 msgid "unused"
 msgstr "laisva"
 
 #. TO TRANSLATORS: means that this is an encrypted file system
-#: src/Utils.cc:470
+#: src/Utils.cc:472
 msgid "Encrypted"
 msgstr "Užšifruota"
 
-#: src/Utils.cc:621
+#: src/Utils.cc:623
 msgid "%1 B"
 msgstr "%1 B"
 
-#: src/Utils.cc:628
+#: src/Utils.cc:630
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: src/Utils.cc:633
+#: src/Utils.cc:635
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: src/Utils.cc:638
+#: src/Utils.cc:640
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: src/Utils.cc:643
+#: src/Utils.cc:645
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: src/Win_GParted.cc:172
+#: src/Win_GParted.cc:174
 msgid "_Refresh Devices"
 msgstr "_Atnaujinti įrenginius"
 
-#: src/Win_GParted.cc:180
+#: src/Win_GParted.cc:182
 msgid "_Devices"
 msgstr "Į_renginiai"
 
-#: src/Win_GParted.cc:192
+#: src/Win_GParted.cc:194
 msgid "_GParted"
 msgstr "_GParted"
 
-#: src/Win_GParted.cc:221
+#: src/Win_GParted.cc:223
 msgid "_Edit"
 msgstr "_Taisa"
 
-#: src/Win_GParted.cc:229
+#: src/Win_GParted.cc:231 src/Win_GParted.cc:802
 msgid "Device _Information"
 msgstr "Įrenginio _informacija"
 
-#: src/Win_GParted.cc:234
+#: src/Win_GParted.cc:236
 msgid "Pending _Operations"
 msgstr "Neįvykdytos _operacijos"
 
-#: src/Win_GParted.cc:239
+#: src/Win_GParted.cc:241
 msgid "_View"
 msgstr "_Rodymas"
 
-#: src/Win_GParted.cc:246
+#: src/Win_GParted.cc:248
 msgid "_File System Support"
 msgstr "_Failų sistemų palaikymas"
 
-#: src/Win_GParted.cc:254
+#: src/Win_GParted.cc:256
 msgid "_Create Partition Table"
 msgstr "_Kurti skaidinių lentelę"
 
-#: src/Win_GParted.cc:259
+#: src/Win_GParted.cc:262 src/Win_GParted.cc:799
 msgid "_Device"
 msgstr "Į_renginys"
 
-#: src/Win_GParted.cc:267
+#: src/Win_GParted.cc:270 src/Win_GParted.cc:800
 msgid "_Partition"
 msgstr "_Skaidinys"
 
-#: src/Win_GParted.cc:275
+#: src/Win_GParted.cc:278
 msgid "_Contents"
 msgstr "_Turinys"
 
-#: src/Win_GParted.cc:289
+#: src/Win_GParted.cc:292
 msgid "_Help"
 msgstr "_Žinynas"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: src/Win_GParted.cc:303
+#: src/Win_GParted.cc:306
 msgid "New"
 msgstr "Naujas"
 
-#: src/Win_GParted.cc:308
+#: src/Win_GParted.cc:311
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Sukurti naują skaidinį pažymėtoje nepaskirstytoje vietoje"
 
-#: src/Win_GParted.cc:316
+#: src/Win_GParted.cc:319
 msgid "Delete the selected partition"
 msgstr "Ištrinti pažymėtą skaidinį"
 
-#: src/Win_GParted.cc:338
+#: src/Win_GParted.cc:341
 msgid "Resize/Move the selected partition"
 msgstr "Keisti dydį / perkelti pažymėtą skaidinį"
 
-#: src/Win_GParted.cc:350
+#: src/Win_GParted.cc:353
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopijuoti pažymėtą skaidinį į iškarpinę"
 
-#: src/Win_GParted.cc:358
+#: src/Win_GParted.cc:361
 msgid "Paste the partition from the clipboard"
 msgstr "Įkelti skaidinį iš iškarpinės"
 
-#: src/Win_GParted.cc:373
+#: src/Win_GParted.cc:376
 msgid "Undo Last Operation"
 msgstr "Atšaukti paskutinę operaciją"
 
-#: src/Win_GParted.cc:384
+#: src/Win_GParted.cc:387
 msgid "Apply All Operations"
 msgstr "Vykdyti visas operacijas"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: src/Win_GParted.cc:408
+#: src/Win_GParted.cc:411
 msgid "_New"
 msgstr "_Naujas"
 
-#: src/Win_GParted.cc:427
+#: src/Win_GParted.cc:430
 msgid "_Resize/Move"
 msgstr "_Keisti dydį / perkelti"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with file systems..
-#: src/Win_GParted.cc:454
+#: src/Win_GParted.cc:457
 msgid "_Format to"
 msgstr "_Suženklinti kaip"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with mount points..
-#: src/Win_GParted.cc:479
+#: src/Win_GParted.cc:482
 msgid "_Mount on"
 msgstr "_Prijungti"
 
-#: src/Win_GParted.cc:487
+#: src/Win_GParted.cc:490
 msgid "_Name Partition"
 msgstr "_Pavadinti skaidinį"
 
-#: src/Win_GParted.cc:493
+#: src/Win_GParted.cc:496
 msgid "M_anage Flags"
 msgstr "_Tvarkyti žymes"
 
-#: src/Win_GParted.cc:499
+#: src/Win_GParted.cc:502
 msgid "C_heck"
 msgstr "_Tikrinti"
 
-#: src/Win_GParted.cc:505
+#: src/Win_GParted.cc:508
 msgid "_Label File System"
 msgstr "_Pavadinti failų sistemą"
 
-#: src/Win_GParted.cc:511
+#: src/Win_GParted.cc:514
 msgid "New UU_ID"
 msgstr "Naujas UUI_D"
 
-#: src/Win_GParted.cc:577
+#: src/Win_GParted.cc:799
+msgid "_Volume Group"
+msgstr "_Tomų grupė"
+
+#: src/Win_GParted.cc:800
+msgid "_Logical Volume"
+msgstr "_Loginis tomas"
+
+#: src/Win_GParted.cc:802
+msgid "Volume Group _Information"
+msgstr "Tomų grupės _informacija"
+
+#: src/Win_GParted.cc:829 src/Win_GParted.cc:848
 msgid "Device Information"
 msgstr "Įrenginio informacija"
 
-#: src/Win_GParted.cc:879
+#: src/Win_GParted.cc:869
+msgid "Volume Group Information"
+msgstr "Tomų grupės informacija"
+
+#: src/Win_GParted.cc:881
+msgid "PE size:"
+msgstr "PE dydis:"
+
+#: src/Win_GParted.cc:882
+msgid "Total PE:"
+msgstr "Iš viso PE:"
+
+#: src/Win_GParted.cc:883
+msgid "Allocated PE:"
+msgstr "Paskirstytų PE:"
+
+#: src/Win_GParted.cc:884
+msgid "Free PE:"
+msgstr "Laisvų PE:"
+
+#: src/Win_GParted.cc:885
+msgid "LV count:"
+msgstr "LT skaičius:"
+
+#: src/Win_GParted.cc:911
 msgid "Could not add this operation to the list"
 msgstr "Nepavyko įtraukti šios operacijos į sąrašą"
 
-#: src/Win_GParted.cc:1061
+#: src/Win_GParted.cc:1093
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "Liko %1 operacija"
 msgstr[1] "Liko %1 operacijos"
 msgstr[2] "Liko %1 operacijų"
 
-#: src/Win_GParted.cc:1169
+#: src/Win_GParted.cc:1201
 msgid "Quit GParted?"
 msgstr "Išeiti iš GParted?"
 
-#: src/Win_GParted.cc:1175
+#: src/Win_GParted.cc:1207
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "Šiuo metu likus %1 operacija."
 msgstr[1] "Šiuo metu likę %1 operacijos."
 msgstr[2] "Šiuo metu likę %1 operacijų."
 
-#: src/Win_GParted.cc:1597
+#: src/Win_GParted.cc:1643
 msgid "%1 - GParted"
 msgstr "%1 – GParted"
 
-#: src/Win_GParted.cc:1650
+#: src/Win_GParted.cc:1699
 msgid "Scanning all devices..."
 msgstr "Peržvelgiami visi įrenginiai..."
 
-#: src/Win_GParted.cc:1698
+#: src/Win_GParted.cc:1750
 msgid "No devices detected"
 msgstr "Įrenginių nerasta"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: src/Win_GParted.cc:1787
+#: src/Win_GParted.cc:1839
 msgid "No partition table found on device %1"
 msgstr "Nerasta skaidinių lentelė įrenginyje %1"
 
-#: src/Win_GParted.cc:1792
+#: src/Win_GParted.cc:1844
 msgid "A partition table is required before partitions can be added."
 msgstr "Reikalinga skaidinių lentelė, tik tada galima pridėti skaidinius."
 
-#: src/Win_GParted.cc:1794
+#: src/Win_GParted.cc:1846
 msgid "To create a new partition table choose the menu item:"
 msgstr "Norėdami sukurti naują skaidinių lentelę, pasirinkite menių punktą:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: src/Win_GParted.cc:1797
+#: src/Win_GParted.cc:1849
 msgid "Device --> Create Partition Table."
 msgstr "Įrenginys --> Sukurti skaidinių lentelę."
 
 #. TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1
-#: src/Win_GParted.cc:1806
+#: src/Win_GParted.cc:1858
 msgid "Unable to resize read-only file system %1"
 msgstr "Nepavyko pakeisti failų sistemos tik skaidymui %1 dydžio"
 
-#: src/Win_GParted.cc:1811
+#: src/Win_GParted.cc:1863
 msgid "The file system can not be resized while it is mounted read-only."
 msgstr ""
 "Failų sistema dydžio negalima pakeisti, kol ji prijungta tik skaitymui."
 
-#: src/Win_GParted.cc:1813
+#: src/Win_GParted.cc:1865
 msgid "Either unmount the file system or remount it read-write."
 msgstr "Atjunkite failų sistemą arba ją prijunkite skaitymui ir rašymui."
 
-#: src/Win_GParted.cc:1835
+#: src/Win_GParted.cc:1887
 msgid "Unable to open GParted Manual help file"
 msgstr "Nepavyko atverti GParted žinyno pagalbos failo"
 
-#: src/Win_GParted.cc:1837
+#: src/Win_GParted.cc:1889
 msgid "Command yelp not found."
 msgstr "Komanda yelp nerasta."
 
-#: src/Win_GParted.cc:1840
+#: src/Win_GParted.cc:1892
 msgid "Install yelp and try again."
 msgstr "Įdiekite yelp ir bandykite vėl."
 
-#: src/Win_GParted.cc:1861
+#: src/Win_GParted.cc:1913
 msgid "Failed to open GParted Manual help file"
 msgstr "Nepavyko atverti GParted žinyno failo"
 
-#: src/Win_GParted.cc:1881
+#: src/Win_GParted.cc:1933
 msgid "Documentation is not available"
 msgstr "Dokumentacija nepasiekiama"
 
-#: src/Win_GParted.cc:1886
+#: src/Win_GParted.cc:1938
 msgid "This build of gparted is configured without documentation."
 msgstr "Šis gparted sukonfigūruotas be dokumentacijos."
 
-#: src/Win_GParted.cc:1888
+#: src/Win_GParted.cc:1940
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentacija prieinama projekto tinklapyje."
 
-#: src/Win_GParted.cc:1892
+#: src/Win_GParted.cc:1944
 msgid "GParted Manual"
 msgstr "GParted žinynas"
 
-#: src/Win_GParted.cc:1907
+#: src/Win_GParted.cc:1959
 msgid "GNOME Partition Editor"
 msgstr "GNOME skaidinių redaktorius"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: src/Win_GParted.cc:1942
+#: src/Win_GParted.cc:1995
 msgid "translator-credits"
 msgstr ""
 "Aurimas Černius <aurimas.cernius@mailo.com>\n"
@@ -2014,14 +2063,14 @@ msgstr ""
 "Žygimantas Beručka <zygis@gnome.org>\n"
 "Algimantas Margevičius <margevicius.algimantas@gmail.com>"
 
-#: src/Win_GParted.cc:1992
+#: src/Win_GParted.cc:2045
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Negalima sukurti daugiau negu %1 pirminio (primary) skaidinio"
 msgstr[1] "Negalima sukurti daugiau negu %1 pirminių (primary) skaidinių"
 msgstr[2] "Negalima sukurti daugiau negu %1 pirminių (primary) skaidinių"
 
-#: src/Win_GParted.cc:2002
+#: src/Win_GParted.cc:2055
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -2033,20 +2082,20 @@ msgstr ""
 "skaidinys tuo pačiu yra ir pirminis (primary) skaidinys, gali reikėti prieš "
 "tai ištrinti vieną iš pirminių skaidinių."
 
-#: src/Win_GParted.cc:2111
+#: src/Win_GParted.cc:2164
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "Atlikus skaidinio perkėlimo operaciją gali nepavykti įkelti jūsų operacinės "
 "sistemos"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: src/Win_GParted.cc:2118
+#: src/Win_GParted.cc:2171
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Jūs į atliktinų veiksmų sąrašą įtraukėte skaidinio %1 pradžios sektoriaus "
 "perkėlimo operaciją."
 
-#: src/Win_GParted.cc:2120
+#: src/Win_GParted.cc:2173
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -2055,87 +2104,87 @@ msgstr ""
 "skaidinį, kuriame yra /boot, arba jei perkeliate Windows sistemos skaidinį "
 "C:."
 
-#: src/Win_GParted.cc:2122
+#: src/Win_GParted.cc:2175
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "Galite sužinoti, kaip pataisyti įkelties konfigūraciją, GParted DUK."
 
-#: src/Win_GParted.cc:2126
+#: src/Win_GParted.cc:2179
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Skaidinio perkėlimas gali užtrukti labai ilgai."
 
 #. TO TRANSLATORS: looks like   Enter LUKS passphrase to resize /dev/sda1
-#: src/Win_GParted.cc:2167
+#: src/Win_GParted.cc:2220
 msgid "Enter LUKS passphrase to resize %1"
 msgstr "Įveskite LUKS slaptafrazę %1 dydžiui keisti"
 
-#: src/Win_GParted.cc:2196
+#: src/Win_GParted.cc:2249
 msgid "LUKS encryption passphrase check failed"
 msgstr "LUKS šifravimo slaptafrazės tikrinimo klaida"
 
-#: src/Win_GParted.cc:2277
+#: src/Win_GParted.cc:2330
 msgid "Copy of %1"
 msgstr "%1 kopija"
 
-#: src/Win_GParted.cc:2383
+#: src/Win_GParted.cc:2436
 msgid "You have pasted into an existing partition"
 msgstr "Įdėjote į esamą skaidinį"
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: src/Win_GParted.cc:2391
+#: src/Win_GParted.cc:2444
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Jei atliksite šį veiksmą, %1 esantys duomenys bus prarasti."
 
-#: src/Win_GParted.cc:2467
+#: src/Win_GParted.cc:2520
 msgid "Unable to delete %1!"
 msgstr "Nepavyko ištrinti %1!"
 
-#: src/Win_GParted.cc:2474
+#: src/Win_GParted.cc:2527
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Atjunkite visus loginius skaidinius, kurių numeris didesnis nei %1"
 
-#: src/Win_GParted.cc:2485
+#: src/Win_GParted.cc:2538
 msgid "Are you sure you want to delete %1?"
 msgstr "Ar tikrai norite ištrinti %1?"
 
-#: src/Win_GParted.cc:2492
+#: src/Win_GParted.cc:2545
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Šio skaidinio negalima kopijuoti, nes jis ištrintas."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: src/Win_GParted.cc:2495
+#: src/Win_GParted.cc:2548
 msgid "Delete %1 (%2, %3)"
 msgstr "Trinti %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: src/Win_GParted.cc:2654
+#: src/Win_GParted.cc:2707
 msgid "Cannot format this file system to %1"
 msgstr "Negalima suženklinti šios failų sistemos kaip %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: src/Win_GParted.cc:2666
+#: src/Win_GParted.cc:2719
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Failų sistemos %1 skaidinys turi būti ne mažesnis negu %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: src/Win_GParted.cc:2674
+#: src/Win_GParted.cc:2727
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Failų sistemos %1 skaidinys turi būti ne didesnis negu %2."
 
-#: src/Win_GParted.cc:2729
+#: src/Win_GParted.cc:2782
 msgid "Opening encryption on %1"
 msgstr "Atveriamas %1 šifravimas"
 
-#: src/Win_GParted.cc:2743
+#: src/Win_GParted.cc:2796
 msgid "Failed to open LUKS encryption"
 msgstr "Nepavyko atverti LUKS šifravimo"
 
-#: src/Win_GParted.cc:2765
+#: src/Win_GParted.cc:2818
 msgid ""
 "The close encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2143,15 +2192,15 @@ msgstr ""
 "Šifravimo užvėrimo veiksmo negalima atlikti, jei skaidiniui dar yra likę "
 "neatliktų veiksmų."
 
-#: src/Win_GParted.cc:2766
+#: src/Win_GParted.cc:2819
 msgid "Closing encryption on %1"
 msgstr "Užveriamas %1 šifravimas"
 
-#: src/Win_GParted.cc:2767
+#: src/Win_GParted.cc:2820
 msgid "Could not close encryption"
 msgstr "Nepavyko užverti šifravimo"
 
-#: src/Win_GParted.cc:2772
+#: src/Win_GParted.cc:2825
 msgid ""
 "The open encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2162,15 +2211,15 @@ msgstr ""
 #. TO TRANSLATORS: looks like
 #. * Enter LUKS passphrase to open /dev/sda1
 #.
-#: src/Win_GParted.cc:2812
+#: src/Win_GParted.cc:2865
 msgid "Enter LUKS passphrase to open %1"
 msgstr "Įveskite LUKS slaptafrazę %1 atverti"
 
-#: src/Win_GParted.cc:2883
+#: src/Win_GParted.cc:2936
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Šio skaidinio nepavyko atjungti šiose prijungimo vietose:"
 
-#: src/Win_GParted.cc:2885
+#: src/Win_GParted.cc:2938
 msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
@@ -2179,18 +2228,18 @@ msgstr ""
 "vietose.  Patartina atjungti juos rankiniu būdu."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: src/Win_GParted.cc:2898
+#: src/Win_GParted.cc:2951
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "Šiuo metu yra likusi %1 operacija skaidiniui %2"
 msgstr[1] "Šiuo metu yra likusios %1 operacijos skaidiniui %2"
 msgstr[2] "Šiuo metu yra likę %1 operacijų skaidiniui %2"
 
-#: src/Win_GParted.cc:2913
+#: src/Win_GParted.cc:2966
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr "Naudokite meniu „Taisa“ atšaukimo, išvalymo ar pritaikymo veiksmus."
 
-#: src/Win_GParted.cc:2956
+#: src/Win_GParted.cc:3009
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
@@ -2198,15 +2247,15 @@ msgstr ""
 "Mainų srities įjungimo (swapon) veiksmo negalima atlikti, jei skaidiniui dar "
 "yra likę taikytinų veiksmų."
 
-#: src/Win_GParted.cc:2957
+#: src/Win_GParted.cc:3010
 msgid "Deactivating swap on %1"
 msgstr "Išjungiamas mainų skaidinys (swap) %1"
 
-#: src/Win_GParted.cc:2958
+#: src/Win_GParted.cc:3011
 msgid "Could not deactivate swap"
 msgstr "Nepavyko išjungti mainų skaidinio (swap)"
 
-#: src/Win_GParted.cc:2963
+#: src/Win_GParted.cc:3016
 msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
@@ -2214,15 +2263,15 @@ msgstr ""
 "Mainų srities įjungimo (swapon) veiksmo negalima atlikti, jei skaidiniui dar "
 "yra likę taikytinų veiksmų."
 
-#: src/Win_GParted.cc:2964
+#: src/Win_GParted.cc:3017
 msgid "Activating swap on %1"
 msgstr "Įjungiamas mainų skaidinys (swap) %1"
 
-#: src/Win_GParted.cc:2965
+#: src/Win_GParted.cc:3018
 msgid "Could not activate swap"
 msgstr "Nepavyko įjungti mainų skaidinio (swap)"
 
-#: src/Win_GParted.cc:2970
+#: src/Win_GParted.cc:3023
 msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2230,16 +2279,16 @@ msgstr ""
 "Tomų grupės išjungimo veiksmo negalima atlikti, jei yra likę skaidiniui "
 "taikytinų veiksmų."
 
-#: src/Win_GParted.cc:2971
+#: src/Win_GParted.cc:3024
 msgid "Deactivating Volume Group %1"
 msgstr "Išjungiama tomų grupė %1"
 
 #. VGNAME from point point
-#: src/Win_GParted.cc:2973
+#: src/Win_GParted.cc:3026
 msgid "Could not deactivate Volume Group"
 msgstr "Nepavyko išjungti tomų grupės"
 
-#: src/Win_GParted.cc:2978
+#: src/Win_GParted.cc:3031
 msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2247,16 +2296,16 @@ msgstr ""
 "Tomų grupės aktyvavimo veiksmo negalima atlikti, jei yra likę skaidiniui "
 "taikytinų veiksmų."
 
-#: src/Win_GParted.cc:2979
+#: src/Win_GParted.cc:3032
 msgid "Activating Volume Group %1"
 msgstr "Įjungiama tomų grupė %1"
 
 #. VGNAME from point point
-#: src/Win_GParted.cc:2981
+#: src/Win_GParted.cc:3034
 msgid "Could not activate Volume Group"
 msgstr "Nepavyko įjungti tomų grupės"
 
-#: src/Win_GParted.cc:2986
+#: src/Win_GParted.cc:3039
 msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
@@ -2264,17 +2313,17 @@ msgstr ""
 "Atjungimo veiksmas negali būti atliktas, jei yra likę skaidiniui taikytinų "
 "veiksmų."
 
-#: src/Win_GParted.cc:2987
+#: src/Win_GParted.cc:3040
 msgid "Unmounting %1"
 msgstr "Atjungiamas %1"
 
-#: src/Win_GParted.cc:2988
+#: src/Win_GParted.cc:3041
 msgid "Could not unmount %1"
 msgstr "Nepavyko atjungti %1"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: src/Win_GParted.cc:3052
+#: src/Win_GParted.cc:3105
 msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
@@ -2282,28 +2331,28 @@ msgstr ""
 "Prijungimo veiksmas negali būti atliktas, jei yra likę skaidiniui taikytinų "
 "veiksmų."
 
-#: src/Win_GParted.cc:3065
+#: src/Win_GParted.cc:3118
 msgid "mounting %1 on %2"
 msgstr "prijungiamas %1 vietoje %2"
 
-#: src/Win_GParted.cc:3093
+#: src/Win_GParted.cc:3146
 msgid "Could not mount %1 on %2"
 msgstr "Nepavyko prijungti %1 vietoje %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: src/Win_GParted.cc:3112
+#: src/Win_GParted.cc:3174
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 skaidinys šiuo metu yra aktyvus įrenginyje %2"
 msgstr[1] "%1 skaidiniai šiuo metu yra aktyvūs įrenginyje %2"
 msgstr[2] "%1 skaidinių šiuo metu yra aktyvūs įrenginyje %2"
 
-#: src/Win_GParted.cc:3127
+#: src/Win_GParted.cc:3189
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "Naujos skaidinių lentelės negalima sukurti, kol yra aktyvių skaidinių."
 
-#: src/Win_GParted.cc:3129
+#: src/Win_GParted.cc:3191
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2311,7 +2360,7 @@ msgstr ""
 "Aktyvūs skaidiniai – tai tokie skaidiniai, kurie esamu metu yra naudojami, "
 "pavyzdžiui, prijungta failų sistema ar įjungta mainų sritis."
 
-#: src/Win_GParted.cc:3131
+#: src/Win_GParted.cc:3193
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2319,20 +2368,20 @@ msgstr ""
 "Prieš kurdami naują skaidinių lentelę pasinaudokite meniu „Skaidinys“ "
 "prieinamais atjungimo, mainų srities išjungimo veiksmais."
 
-#: src/Win_GParted.cc:3143
+#: src/Win_GParted.cc:3205
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "Šiuo metu likus %1 operacija"
 msgstr[1] "Šiuo metu likę %1 operacijos"
 msgstr[2] "Šiuo metu likę %1 operacijų"
 
-#: src/Win_GParted.cc:3156
+#: src/Win_GParted.cc:3218
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Naujos skaidinių lentelės negalima sukurti, kol yra nebaigtų operacijų."
 
-#: src/Win_GParted.cc:3158
+#: src/Win_GParted.cc:3220
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2340,40 +2389,40 @@ msgstr ""
 "Prieš kurdami naują skaidinių lentelę pasinaudokite meniu „Taisa“ "
 "prieinamomis visų operacijų išvalymo ar pritaikymo operacijomis."
 
-#: src/Win_GParted.cc:3173
+#: src/Win_GParted.cc:3235
 msgid "Error while creating partition table"
 msgstr "Klaida kuriant skaidinių lentelę"
 
-#: src/Win_GParted.cc:3451
+#: src/Win_GParted.cc:3513
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Ar tikrai norite vykdyti dar neatliktas operacijas?"
 
-#: src/Win_GParted.cc:3457
+#: src/Win_GParted.cc:3519
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Redaguodami skaidinius rizikuojate PRARASTI DUOMENIS."
 
-#: src/Win_GParted.cc:3459
+#: src/Win_GParted.cc:3521
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "Prieš tęsiant rekomenduojama sukurti atsarginę vertingų duomenų kopiją."
 
-#: src/Win_GParted.cc:3461
+#: src/Win_GParted.cc:3523
 msgid "Apply operations to device"
 msgstr "Atlikti operacijas įrenginyje"
 
-#: src/Win_GParted.cc:3504
+#: src/Win_GParted.cc:3566
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Trinate netuščią LVM2 fizinį tomą %1"
 
-#: src/Win_GParted.cc:3508
+#: src/Win_GParted.cc:3570
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Formatuojate netuščia LVM2 fizinį tomą %1"
 
-#: src/Win_GParted.cc:3512
+#: src/Win_GParted.cc:3574
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Įdedate į netuščia LVM2 fizinį tomą %1"
 
-#: src/Win_GParted.cc:3521
+#: src/Win_GParted.cc:3583
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2381,7 +2430,7 @@ msgstr ""
 "Fizinio tomo trynimas ar perrašymas yra neatstatomas ir sunaikins arba "
 "sugadins tomų grupę."
 
-#: src/Win_GParted.cc:3524
+#: src/Win_GParted.cc:3586
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2391,7 +2440,7 @@ msgstr ""
 "naudoti išorines LVM komandas fiziniam tomui atlaisvinti prie bandant šį "
 "veiksmą."
 
-#: src/Win_GParted.cc:3527
+#: src/Win_GParted.cc:3589
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Ar norite tęsti ir priverstinai ištrinti fizinį tomą?"
 
@@ -2549,6 +2598,13 @@ msgid ""
 "mkudffs prior to version 1.1 does not support non-ASCII characters in the "
 "label."
 msgstr "mkudffs versija prieš 1.1 nepalaiko ne ASCII simbolių užrašuose."
+
+#~ msgid ""
+#~ "Adding more information to the results of this step after it has been "
+#~ "marked as completed"
+#~ msgstr ""
+#~ "Pridedama daugiau informacijos prie šio žingsnio rezultatų po to, kai jis "
+#~ "pažymimas baigtu"
 
 #~ msgid "Search disk for file systems"
 #~ msgstr "Ieškoti diske failų sistemų"
