@@ -3779,6 +3779,42 @@ bool GParted_Core::set_partition_type_using_fstype(PedPartition* lp_partition,
 
 bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail & operationdetail ) 
 {
+	// A Logical Volume in an LVM Volume Group has no partition table entry
+	// which libparted could read.  Its path and boundaries are managed by LVM
+	// and unchanged since the last scan, so just confirm the path still exists
+	// (the Logical Volume could have been deactivated or removed).  (#328)
+	if (LVM2_Info::is_vg_name(partition.device_path))
+	{
+		operationdetail.add_child(OperationDetail(
+		        Glib::ustring::compose(_("calibrate %1"), partition.get_path())));
+
+		bool success = Glib::file_test(partition.get_path(), Glib::FILE_TEST_EXISTS);
+		if (success)
+		{
+			// Report the path and size only.  A Logical Volume's start and
+			// end are fictitious values for graphic display purposes and are
+			// already excluded from the Information dialog.
+			operationdetail.get_last_child().add_child(OperationDetail(
+				Glib::ustring::compose(_("path: %1 (%2)"),
+				                       partition.get_path(), _("logical volume")) + "\n" +
+				Glib::ustring::compose(_("size: %1 (%2)"),
+						       partition .get_sector_length(),
+						       Utils::format_size(partition.get_sector_length(), partition.sector_size)),
+				STATUS_NONE,
+				FONT_ITALIC));
+
+			if (partition.fstype == FS_LUKS && partition.busy)
+			{
+				const Partition& encrypted = dynamic_cast<const PartitionLUKS *>(&partition)->get_encrypted();
+				operationdetail.get_last_child().add_child(OperationDetail(
+					Glib::ustring::compose(_("encryption path: %1"), encrypted.get_path()),
+					STATUS_NONE, FONT_ITALIC));
+			}
+		}
+		operationdetail.get_last_child().set_success_and_capture_errors(success);
+		return success;
+	}
+
 	if ( partition.type == TYPE_PRIMARY  || partition.type == TYPE_LOGICAL       ||
 	     partition.type == TYPE_EXTENDED || partition.type == TYPE_UNPARTITIONED    )
 	{

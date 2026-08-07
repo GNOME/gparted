@@ -1286,16 +1286,29 @@ void Win_GParted::set_valid_operations()
 	}
 
 	// LVM2 read-only support: a Volume Group's Logical Volumes are displayed but
-	// never modified.  Permit viewing information only and leave every other action
-	// disabled (as initialised at the top of this function), whether or not the
-	// Logical Volume is busy and whether a Logical Volume or unallocated space within
-	// the Volume Group is selected.  Returning here also prevents the early returns
-	// in the busy and unallocated paths below from leaving an action such as New,
-	// swapoff or unmount enabled on a Volume Group.
+	// never modified.  Permit viewing information, and copying from a Logical
+	// Volume (#328) which reads the source without making any LVM changes, and
+	// leave every other action disabled (as initialised at the top of this
+	// function), whether or not the Logical Volume is busy and whether a Logical
+	// Volume or unallocated space within the Volume Group is selected.  Returning
+	// here also prevents the early returns in the busy and unallocated paths below
+	// from leaving an action such as New, swapoff or unmount enabled on a Volume
+	// Group.
 	if (m_current_device            <  m_devices.size()            &&
 	    m_devices[m_current_device] != nullptr                     &&
 	    ! m_devices[m_current_device]->is_partition_table_device()   )
 	{
+		// Mirror the conditions for copying a partition: only real, not busy
+		// Logical Volumes (on disk devices busy partitions are excluded from
+		// copying by the busy early return below), excluding closed
+		// encryption (which are only copied while open), with a file system
+		// supporting copying.
+		if (selected_partition_ptr->type   == TYPE_PRIMARY &&
+		    selected_partition_ptr->status == STAT_REAL    &&
+		    ! selected_filesystem.busy                     &&
+		    selected_filesystem.fstype     != FS_LUKS      &&
+		    fs_cap.copy                                      )
+			allow_copy(true);
 		return;
 	}
 
