@@ -223,6 +223,7 @@ Glib::ustring Utils::get_color(FSType fstype)
 	{
 		case FS_UNSUPPORTED:     return "#000000";  // Black (never displayed)
 		case FS_UNALLOCATED:     return "#A9A9A9";  // Medium Grey [*]
+		case FS_INACTIVE:        return "#555555";  // Shadow Grey [*]
 		case FS_UNKNOWN:         return "#000000";  // Black
 		case FS_UNFORMATTED:     return "#000000";  // Black
 		case FS_CLEARED:         return "#000000";  // Black
@@ -397,6 +398,13 @@ const Glib::ustring Utils::get_filesystem_string(FSType fstype)
 		                          * unallocated.
 		                          */
 		                         return _("unallocated");
+		case FS_INACTIVE:
+		                         /* TO TRANSLATORS:  Inactive
+		                          * means that this Logical Volume is not active so
+		                          * its content cannot be read to recognise what it
+		                          * contains.
+		                          */
+		                         return "[" + Glib::ustring(_("Inactive")) + "]";
 		case FS_UNKNOWN:
 		                         /* TO TRANSLATORS:  unknown
 		                          * means that this space within this partition does

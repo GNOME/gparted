@@ -1120,7 +1120,10 @@ Partition* GParted_Core::make_lv_partition(const VGDevice& vg_device, const Glib
 	char segtype = LVM2_Info::get_lv_segtype(lv_path);
 	bool is_thin_pool = (segtype == 't');
 
-	FSType fstype = FS_UNKNOWN;
+	// An inactive Logical Volume's content cannot be read, unlike unknown on a
+	// disk device where the block special device was read but its content was
+	// not recognised, so report the separate [inactive] type.
+	FSType fstype = FS_INACTIVE;
 	if (is_thin_pool)
 	{
 		fstype = FS_LVM2_THINPOOL;

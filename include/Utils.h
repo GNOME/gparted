@@ -66,54 +66,55 @@ enum FSType
 	// Special partition types and functions
 	FS_UNSUPPORTED     = 0,  // Type with no supported actions
 	FS_UNALLOCATED     = 1,  // Unallocated space on a partitioned drive
-	FS_UNKNOWN         = 2,  // Unrecognised content in a drive or partition
-	FS_UNFORMATTED     = 3,  // Create a partition without a file system
-	FS_CLEARED         = 4,  // Clear existing file system signatures
-	FS_OTHER           = 5,  // Just for showing in the File System Support dialog
-	FS_EXTENDED        = 6,
+	FS_INACTIVE        = 2,  // Inactive Logical Volume whose content cannot be read
+	FS_UNKNOWN         = 3,  // Unrecognised content in a drive or partition
+	FS_UNFORMATTED     = 4,  // Create a partition without a file system
+	FS_CLEARED         = 5,  // Clear existing file system signatures
+	FS_OTHER           = 6,  // Just for showing in the File System Support dialog
+	FS_EXTENDED        = 7,
 
 	// Fully supported file system types
-	FS_BCACHEFS        = 7,
-	FS_BTRFS           = 8,
-	FS_EXFAT           = 9, /* Also known as fat64 */
-	FS_EXT2            = 10,
-	FS_EXT3            = 11,
-	FS_EXT4            = 12,
-	FS_F2FS            = 13,
-	FS_FAT16           = 14,
-	FS_FAT32           = 15,
-	FS_HFS             = 16,
-	FS_HFSPLUS         = 17,
-	FS_JFS             = 18,
-	FS_LINUX_SWAP      = 19,
-	FS_LUKS            = 20,
-	FS_LVM2_PV         = 21,
-	FS_MINIX           = 22,
-	FS_NILFS2          = 23,
-	FS_NTFS            = 24,
-	FS_REISER4         = 25,
-	FS_REISERFS        = 26,
-	FS_UDF             = 27,
-	FS_XFS             = 28,
+	FS_BCACHEFS        = 8,
+	FS_BTRFS           = 9,
+	FS_EXFAT           = 10, /* Also known as fat64 */
+	FS_EXT2            = 11,
+	FS_EXT3            = 12,
+	FS_EXT4            = 13,
+	FS_F2FS            = 14,
+	FS_FAT16           = 15,
+	FS_FAT32           = 16,
+	FS_HFS             = 17,
+	FS_HFSPLUS         = 18,
+	FS_JFS             = 19,
+	FS_LINUX_SWAP      = 20,
+	FS_LUKS            = 21,
+	FS_LVM2_PV         = 22,
+	FS_MINIX           = 23,
+	FS_NILFS2          = 24,
+	FS_NTFS            = 25,
+	FS_REISER4         = 26,
+	FS_REISERFS        = 27,
+	FS_UDF             = 28,
+	FS_XFS             = 29,
 
 	// Other recognised file system types
-	FS_APFS            = 29,
-	FS_ATARAID         = 30,
-	FS_BCACHE          = 31,
-	FS_BITLOCKER       = 32,
-	FS_GRUB2_CORE_IMG  = 33,
-	FS_ISO9660         = 34,
-	FS_JBD             = 35,
-	FS_LINUX_SWRAID    = 36,
-	FS_LINUX_SWSUSPEND = 37,
-	FS_LVM2_THINPOOL   = 38,  // LVM2 thin pool LV (read-only: displayed as a flat LV)
-	FS_REFS            = 39,
-	FS_UFS             = 40,
-	FS_ZFS             = 41,
+	FS_APFS            = 30,
+	FS_ATARAID         = 31,
+	FS_BCACHE          = 32,
+	FS_BITLOCKER       = 33,
+	FS_GRUB2_CORE_IMG  = 34,
+	FS_ISO9660         = 35,
+	FS_JBD             = 36,
+	FS_LINUX_SWRAID    = 37,
+	FS_LINUX_SWSUSPEND = 38,
+	FS_LVM2_THINPOOL   = 39,  // LVM2 thin pool LV (read-only: displayed as a flat LV)
+	FS_REFS            = 40,
+	FS_UFS             = 41,
+	FS_ZFS             = 42,
 
 	// Partition space usage colours
-	FS_USED            = 42,
-	FS_UNUSED          = 43
+	FS_USED            = 43,
+	FS_UNUSED          = 44
 } ;
 
 enum SIZE_UNIT
