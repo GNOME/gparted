@@ -169,6 +169,16 @@ bool CopyBlocks::copy()
 
 	lp_device_src = ped_device_get( src_device.c_str() );
 	lp_device_dst = src_device != dst_device ? ped_device_get( dst_device.c_str() ) : lp_device_src;
+	if (lp_device_src == nullptr || lp_device_dst == nullptr)
+	{
+		operationdetail.get_last_child().add_child(OperationDetail(
+				Glib::ustring::compose(_("Error opening %1"),
+				                       lp_device_src == nullptr ? src_device : dst_device),
+				STATUS_NONE, FONT_ITALIC));
+		operationdetail.stop_progressbar();
+		return false;
+	}
+
 	//add an empty sub which we will constantly update in the loop
 	operationdetail.get_last_child().add_child( OperationDetail( "", STATUS_NONE ) );
 

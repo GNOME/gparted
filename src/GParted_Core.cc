@@ -3336,23 +3336,67 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 	return success;
 }
 
+
+// Return the device path, start sector and sector size with which to open a
+// partition for internal block copying.  A Partition object for a Logical
+// Volume records the Volume Group name as its device and fictitious sector
+// values for graphic display purposes, which libparted cannot open.
+// Substitute the Logical Volume block device itself: its path as the device
+// to open, starting from sector zero, with the device's real sector size.
+// (#328)
+bool GParted_Core::get_copy_target(const Partition& partition,
+                                   Glib::ustring&   device_path,
+                                   Sector&          sector_start,
+                                   Byte_Value&      sector_size)
+{
+	if (! LVM2_Info::is_vg_name(partition.device_path))
+	{
+		device_path  = partition.device_path;
+		sector_start = partition.sector_start;
+		sector_size  = partition.sector_size;
+		return true;
+	}
+
+	device_path  = partition.get_path();
+	sector_start = 0;
+	PedDevice* lp_device = nullptr;
+	if (! get_device(device_path, lp_device))
+		return false;
+	sector_size = lp_device->sector_size;
+	PedDisk* lp_disk = nullptr;
+	destroy_device_and_disk(lp_device, lp_disk);
+	return true;
+}
+
+
 bool GParted_Core::copy_filesystem_internal( const Partition & partition_src,
                                              const Partition & partition_dst,
                                              OperationDetail & operationdetail,
                                              bool cancel_safe )
 {
+	Glib::ustring src_device;
+	Sector        src_start       = 0;
+	Byte_Value    src_sector_size = 0;
+	Glib::ustring dst_device;
+	Sector        dst_start       = 0;
+	Byte_Value    dst_sector_size = 0;
+	if (! get_copy_target(partition_src, src_device, src_start, src_sector_size) ||
+	    ! get_copy_target(partition_dst, dst_device, dst_start, dst_sector_size)   )
+		return false;
+
 	Sector dummy ;
-	return copy_blocks( partition_src.device_path,
-	                    partition_dst.device_path,
-	                    partition_src.sector_start,
-	                    partition_dst.sector_start,
-	                    partition_src.sector_size,
-	                    partition_dst.sector_size,
+	return copy_blocks( src_device,
+	                    dst_device,
+	                    src_start,
+	                    dst_start,
+	                    src_sector_size,
+	                    dst_sector_size,
 	                    partition_src.get_byte_length(),
 	                    operationdetail,
 	                    dummy,
 	                    cancel_safe );
 }
+
 
 bool GParted_Core::copy_filesystem_internal( const Partition & partition_src,
                                              const Partition & partition_dst,
@@ -3360,18 +3404,29 @@ bool GParted_Core::copy_filesystem_internal( const Partition & partition_src,
                                              Byte_Value & total_done,
                                              bool cancel_safe )
 {
-	return copy_blocks( partition_src.device_path,
-	                    partition_dst.device_path,
-	                    partition_src.sector_start,
-	                    partition_dst.sector_start,
-	                    partition_src.sector_size,
-	                    partition_dst.sector_size,
+	Glib::ustring src_device;
+	Sector        src_start       = 0;
+	Byte_Value    src_sector_size = 0;
+	Glib::ustring dst_device;
+	Sector        dst_start       = 0;
+	Byte_Value    dst_sector_size = 0;
+	if (! get_copy_target(partition_src, src_device, src_start, src_sector_size) ||
+	    ! get_copy_target(partition_dst, dst_device, dst_start, dst_sector_size)   )
+		return false;
+
+	return copy_blocks( src_device,
+	                    dst_device,
+	                    src_start,
+	                    dst_start,
+	                    src_sector_size,
+	                    dst_sector_size,
 	                    partition_src.get_byte_length(),
 	                    operationdetail,
 	                    total_done,
 	                    cancel_safe );
 }
-	
+
+
 bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
                                 const Glib::ustring & dst_device,
                                 Sector src_start,

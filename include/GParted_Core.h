@@ -186,6 +186,10 @@ private:
 	bool copy_filesystem( const Partition & partition_src,
 	                      Partition & partition_dst,
 	                      OperationDetail & operationdetail );
+	bool get_copy_target(const Partition& partition,
+	                     Glib::ustring&   device_path,
+	                     Sector&          sector_start,
+	                     Byte_Value&      sector_size);
 	bool copy_filesystem_internal( const Partition & partition_src,
 	                               const Partition & partition_dst,
 	                               OperationDetail & operationdetail,
