@@ -255,7 +255,7 @@ Glib::ustring Utils::get_color(FSType fstype)
 		case FS_ATARAID:         return "#5A4733";  // Brown Dark [+]
 		case FS_BCACHE:          return "#E0C39E";  // Face Skin Medium
 		case FS_BITLOCKER:       return "#494066";  // Purple Shadow
-		case FS_GRUB2_CORE_IMG:  return "#666666";  // Dark Gray [*]
+		case FS_GRUB2_CORE_IMG:  return "#7F7F7F";  // Dark Gray [*]
 		case FS_ISO9660:         return "#D3D3D3";  // Light Gray [*]
 		case FS_JBD:             return "#314E6C";  // Blue Shadow
 		case FS_LINUX_SWRAID:    return "#826647";  // Face Skin Shadow
