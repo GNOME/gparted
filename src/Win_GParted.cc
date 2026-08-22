@@ -1326,6 +1326,14 @@ void Win_GParted::set_valid_operations()
 		    fs_cap.write_uuid                                )
 			allow_change_uuid(true);
 
+		// Only allow checking of real, not busy Logical Volumes whose file
+		// system supports checking.
+		if (selected_partition_ptr->type   == TYPE_PRIMARY &&
+		    selected_partition_ptr->status == STAT_REAL    &&
+		    ! selected_filesystem.busy                     &&
+		    fs_cap.check                                     )
+			allow_check(true);
+
 		return;
 	}
 
