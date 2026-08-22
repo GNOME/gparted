@@ -1309,6 +1309,15 @@ void Win_GParted::set_valid_operations()
 		    selected_filesystem.fstype     != FS_LUKS      &&
 		    fs_cap.copy                                      )
 			allow_copy(true);
+
+		// Only allow labelling of real, not busy Logical Volumes whose file
+		// system supports labelling.
+		if (selected_partition_ptr->type   == TYPE_PRIMARY &&
+		    selected_partition_ptr->status == STAT_REAL    &&
+		    ! selected_filesystem.busy                     &&
+		    fs_cap.write_label                               )
+			allow_label_filesystem(true);
+
 		return;
 	}
 
