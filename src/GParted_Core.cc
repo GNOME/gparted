@@ -2591,9 +2591,9 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 }
 
 
-bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & partition_old,
-		  	      		            	   const Partition & partition_new,
-						    	   OperationDetail & operationdetail ) 
+bool GParted_Core::resize_filesystem_using_libparted(const Partition& partition_old,
+                                                     const Partition& partition_new,
+                                                     OperationDetail& operationdetail)
 {
 	operationdetail .add_child( OperationDetail( _("using libparted"), STATUS_NONE ) ) ;
 
@@ -2630,9 +2630,6 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 					                          &return_value ),
 					                      false );
 					Gtk::Main::run();
-
-					if ( return_value )
-						commit( lp_disk ) ;
 
 					ped_geometry_destroy( lp_geom );
 				}
@@ -3207,9 +3204,9 @@ bool GParted_Core::resize_filesystem_implement( const Partition & partition_old,
 		case FS::GPARTED:
 			break;
 		case FS::LIBPARTED:
-			success = resize_move_filesystem_using_libparted( partition_old,
-			                                                  partition_new,
-			                                                  operationdetail.get_last_child() );
+			success = resize_filesystem_using_libparted(partition_old,
+			                                            partition_new,
+			                                            operationdetail.get_last_child());
 			break;
 		case FS::EXTERNAL:
 			success = (p_filesystem = get_filesystem_object(partition_new.fstype)) &&

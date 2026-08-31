@@ -142,9 +142,9 @@ private:
 	bool move_filesystem( const Partition & partition_old,
 			      const Partition & partition_new,
 			      OperationDetail & operationdetail ) ;
-	bool resize_move_filesystem_using_libparted( const Partition & partition_old,
-				      		     const Partition & partition_new,
-					      	     OperationDetail & operationdetail ) ;
+	bool resize_filesystem_using_libparted(const Partition& partition_old,
+	                                       const Partition& partition_new,
+	                                       OperationDetail& operationdetail);
 	void thread_lp_ped_file_system_resize( PedFileSystem * fs,
 	                                       PedGeometry * lp_geom,
 	                                       bool * return_value );
