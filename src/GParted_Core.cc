@@ -2600,26 +2600,27 @@ bool GParted_Core::resize_filesystem_using_libparted(const Partition& partition_
 	bool return_value = false ;
 	PedDevice* lp_device = nullptr;
 	PedDisk* lp_disk = nullptr;
-	if ( get_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
+	if (get_device(partition_old.get_path(), lp_device))
 	{
-		PedFileSystem* fs = nullptr;
-		PedGeometry* lp_geom = nullptr;
-
-		lp_geom = ped_geometry_new( lp_device,
-					    partition_old .sector_start,
-					    partition_old .get_sector_length() ) ;
+		PedGeometry* lp_geom = ped_geometry_new(lp_device,
+		                                        0,
+		                                        // Can't use partition_old.get_sector_length() or
+		                                        // partition_old.sector_size as for Logical Volumes
+		                                        // that is in units of or the size of the LVM PE
+		                                        // (Physical Extent) size, which defaults to 4 MiB.
+		                                        partition_old.get_byte_length() / lp_device->sector_size);
 		if ( lp_geom )
 		{
-			fs = ped_file_system_open( lp_geom );
+			PedFileSystem* fs = ped_file_system_open(lp_geom);
 
 			ped_geometry_destroy( lp_geom );
 			lp_geom = nullptr;
 
 			if ( fs )
 			{
-				lp_geom = ped_geometry_new( lp_device,
-							    partition_new .sector_start,
-							    partition_new .get_sector_length() ) ;
+				lp_geom = ped_geometry_new(lp_device,
+				                           0,
+				                           partition_new.get_byte_length() / lp_device->sector_size);
 				if ( lp_geom )
 				{
 					// Use thread for libparted FS resize call to avoid blocking GUI
