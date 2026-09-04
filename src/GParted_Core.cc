@@ -4121,17 +4121,31 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	bool device_is_open = false ;
 	Byte_Value bufsize = 4LL * KIBIBYTE ;
 	std::vector<char> buf;  // Default construct 0 sized.
-	if ( get_device( partition.device_path, lp_device ) )
+
+	bool is_lv = LVM2_Info::is_vg_name(partition.device_path);
+	Glib::ustring device_path;
+	if (is_lv)
+		// Use the Logical Volume itself
+		device_path = partition.get_path();
+	else
+		// Use the whole disk device
+		device_path = partition.device_path;
+
+	if (get_device(device_path, lp_device))
 	{
 		bufsize = std::max(bufsize, lp_device->sector_size);
 		buf.resize(bufsize, 0);  // Set size and initialise contents to 0.
 
-		if ( partition.type == TYPE_UNPARTITIONED )
+		if (partition.type == TYPE_UNPARTITIONED || is_lv)
 		{
-			// Whole disk device; create a matching geometry
+			// Whole disk device or Logical Volume; create a matching
+			// geometry from the start of the device.  Can't use
+			// partition.get_sector_length() or partition.sector_size as
+			// for Logical Volumes those are in units of the LVM PE
+			// (Physical Extent) size, which defaults to 4 MiB.
 			lp_geom = ped_geometry_new(lp_device,
-			                           partition.sector_start,
-			                           partition.get_sector_length());
+			                           0,
+			                           partition.get_byte_length() / lp_device->sector_size);
 		}
 		else if ( get_disk( lp_device, lp_disk ) )
 		{
