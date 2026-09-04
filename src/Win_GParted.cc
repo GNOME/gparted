@@ -1286,18 +1286,25 @@ void Win_GParted::set_valid_operations()
 	}
 
 	// LVM2 read-only support: a Volume Group's Logical Volumes are displayed but
-	// never modified.  Permit viewing information, and copying from a Logical
-	// Volume (#328) which reads the source without making any LVM changes, and
-	// leave every other action disabled (as initialised at the top of this
-	// function), whether or not the Logical Volume is busy and whether a Logical
-	// Volume or unallocated space within the Volume Group is selected.  Returning
-	// here also prevents the early returns in the busy and unallocated paths below
-	// from leaving an action such as New, swapoff or unmount enabled on a Volume
-	// Group.
+	// never modified.  Permit viewing information, and operations which don't make
+	// LVM changes.  Leave every other operation disabled (as initialised at the top
+	// of this function), whether or not the Logical Volume is busy and whether a
+	// Logical Volume or unallocated space within the Volume Group is selected.
+	// Returning here also prevents the early returns in the busy and unallocated
+	// paths below from leaving an action such as New, Delete or Resize/Move enabled
+	// on a Volume Group.
 	if (m_current_device            <  m_devices.size()            &&
 	    m_devices[m_current_device] != nullptr                     &&
 	    ! m_devices[m_current_device]->is_partition_table_device()   )
 	{
+		// Only allow opening and closing encryption on real Logical Volumes
+		// whose file system is not mounted.
+		if (selected_partition_ptr->type   == TYPE_PRIMARY &&
+		    selected_partition_ptr->status == STAT_REAL    &&
+		    selected_partition_ptr->fstype == FS_LUKS      &&
+		    ! selected_filesystem.busy                       )
+			allow_toggle_crypt_busy_state(true);
+
 		// Only allow mount, unmount, swapon and swapoff of file systems and swap
 		// spaces in existing Logical Volumes.  Activate and deactivate of Volume
 		// Groups is not allowed here, by toggle_fs_busy_state_supported()
