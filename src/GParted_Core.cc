@@ -4382,18 +4382,26 @@ bool GParted_Core::update_bootsector(const Partition& partition, OperationDetail
 			                       Utils::get_filesystem_string(partition.fstype),
 			                      partition.get_path())));
 
+	// A Logical Volume's start is purely for display ordering purposes and does not
+	// represent a position on the drive.  There is zero change that Windows will boot
+	// from an NTFS file system within a Linux LVM Logical Volume so the Hidden
+	// Sectors never needs to be correct.  Regardless, set the Hidden Sectors figure
+	// to zero when an NTFS is copied into a Logical Volume.
+	Sector sector_start = LVM2_Info::is_vg_name(partition.device_path) ? 0LL
+	                                                                   : partition.sector_start;
+
 	uint32_t hidden_sectors = 0;
 	bool beyond_32bit = false;
-	if ((partition.sector_start >> 32) == 0)
+	if ((sector_start >> 32) == 0)
 	{
-		hidden_sectors = htole32(static_cast<uint32_t>(partition.sector_start & 0xFFFFFFFF));
+		hidden_sectors = htole32(static_cast<uint32_t>(sector_start & 0xFFFFFFFF));
 	}
 	else
 	{
 		operationdetail.get_last_child().add_child(OperationDetail(
 				Glib::ustring::compose(_("Partition start (%1) is beyond sector 4294967295 (2^32-1).\n"
 				                         "Windows will not be able to boot from this file system."),
-				                       partition.sector_start),
+				                       sector_start),
 				STATUS_NONE, FONT_ITALIC));
 		beyond_32bit = true;
 	}
