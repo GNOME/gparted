@@ -3336,18 +3336,20 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 
 
 // Return the device path, start sector and sector size with which to open a
-// partition for internal block copying.  A Partition object for a Logical
-// Volume records the Volume Group name as its device and fictitious sector
-// values for graphic display purposes, which libparted cannot open.
-// Substitute the Logical Volume block device itself: its path as the device
-// to open, starting from sector zero, with the device's real sector size.
-// (#328)
+// partition for internal block copying.  A partition in a partition table is
+// copied through the whole disk device.  A Partition object spanning a whole
+// block device of its own (an unpartitioned whole disk device, an encryption
+// mapping or a Logical Volume) is copied through that device from sector zero,
+// with the sector size queried from it.  Can't use partition.sector_size as for a
+// Logical Volume, and for an encryption mapping within one, that is the LVM PE
+// (Physical Extent) size, which defaults to 4 MiB.
 bool GParted_Core::get_copy_target(const Partition& partition,
                                    Glib::ustring&   device_path,
                                    Sector&          sector_start,
                                    Byte_Value&      sector_size)
 {
-	if (! LVM2_Info::is_vg_name(partition.device_path))
+	if (partition.type != TYPE_UNPARTITIONED           &&
+	    ! LVM2_Info::is_vg_name(partition.device_path)   )
 	{
 		device_path  = partition.device_path;
 		sector_start = partition.sector_start;
