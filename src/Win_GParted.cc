@@ -1309,6 +1309,18 @@ void Win_GParted::set_valid_operations()
 		    toggle_fs_busy_state_supported(selected_filesystem)   )
 			allow_toggle_fs_busy_state(true);
 
+		// Only allow formatting of real, not busy Logical Volumes.  Exclude
+		// Logical Volumes in an inactive Volume Group because they aren't
+		// currently accessible, and LVM thin pools which are LVM containers
+		// and not an accessible Logical Volume themselves.  Thin pools only
+		// have a block device name for display purposes in GParted.
+		if (selected_partition_ptr->type   == TYPE_PRIMARY     &&
+		    selected_partition_ptr->status == STAT_REAL        &&
+		    ! selected_filesystem.busy                         &&
+		    selected_filesystem.fstype     != FS_INACTIVE      &&
+		    selected_filesystem.fstype     != FS_LVM2_THINPOOL   )
+			allow_format(true);
+
 		// Mirror the conditions for copying a partition: only real, not busy
 		// Logical Volumes (on disk devices busy partitions are excluded from
 		// copying by the busy early return below), excluding closed
