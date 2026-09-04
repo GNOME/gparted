@@ -1352,20 +1352,9 @@ void Win_GParted::set_valid_operations()
 		allow_toggle_crypt_busy_state( true );
 
 	// Only permit file system mount/unmount and swapon/swapoff when available
-	if (    selected_partition_ptr->status == STAT_REAL
-	     && selected_partition_ptr->type   != TYPE_EXTENDED
-	     && selected_filesystem.fstype     != FS_LVM2_PV
-	     && selected_filesystem.fstype     != FS_LINUX_SWRAID
-	     && selected_filesystem.fstype     != FS_ATARAID
-	     && selected_filesystem.fstype     != FS_LUKS
-	     && selected_filesystem.fstype     != FS_BCACHE
-	     && selected_filesystem.fstype     != FS_JBD
-	     && selected_filesystem.fstype     != FS_ZFS
-	     && (    selected_filesystem.busy
-	          || selected_filesystem.get_mountpoints().size() /* Have mount point(s) */
-	          || selected_filesystem.fstype == FS_LINUX_SWAP
-	        )
-	   )
+	if (selected_partition_ptr->status == STAT_REAL         &&
+	    selected_partition_ptr->type   != TYPE_EXTENDED     &&
+	    toggle_fs_busy_state_supported(selected_filesystem)   )
 		allow_toggle_fs_busy_state( true );
 
 	// Only permit LVM VG activate/deactivate if the PV is busy or a member of a VG.
@@ -1572,6 +1561,25 @@ void Win_GParted::set_valid_operations()
 		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.check )
 			allow_check( true ) ;
 	}
+}
+
+
+// Report whether mount, unmount, swapon or swapoff can be offered for this file
+// system.  Excludes the types for which GParted borrows the mount point to display
+// something else, types which are never mounted, and file systems with nowhere to
+// be mounted from.
+bool Win_GParted::toggle_fs_busy_state_supported(const Partition& filesystem_ptn)
+{
+	return filesystem_ptn.fstype != FS_LVM2_PV          &&
+	       filesystem_ptn.fstype != FS_LINUX_SWRAID     &&
+	       filesystem_ptn.fstype != FS_ATARAID          &&
+	       filesystem_ptn.fstype != FS_LUKS             &&
+	       filesystem_ptn.fstype != FS_BCACHE           &&
+	       filesystem_ptn.fstype != FS_JBD              &&
+	       filesystem_ptn.fstype != FS_ZFS              &&
+	       (filesystem_ptn.busy                     ||
+	        filesystem_ptn.get_mountpoints().size() ||  // Have mount point(s)
+	        filesystem_ptn.fstype == FS_LINUX_SWAP    );
 }
 
 
