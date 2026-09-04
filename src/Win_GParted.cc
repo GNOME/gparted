@@ -1365,6 +1365,20 @@ void Win_GParted::set_valid_operations()
 		    fs_cap.check                                     )
 			allow_check(true);
 
+		// Only allow pasting into real, not busy Logical Volumes which are
+		// large enough.  Unallocated space in a Volume Group is never a
+		// destination; creating a Logical Volume there would change LVM.
+		if (selected_partition_ptr->type   == TYPE_PRIMARY                    &&
+		    selected_partition_ptr->status == STAT_REAL                       &&
+		    ! selected_filesystem.busy                                        &&
+		    selected_filesystem.fstype     != FS_INACTIVE                     &&
+		    selected_filesystem.fstype     != FS_LVM2_THINPOOL                &&
+		    copied_partition               != nullptr                         &&
+		    copied_partition->get_filesystem_partition().get_byte_length() <=
+		            selected_filesystem.get_byte_length()                     &&
+		    *copied_partition              != *selected_partition_ptr           )
+			allow_paste(true);
+
 		// Generate Mount on submenu for unmounted Logical Volumes with mount
 		// points.
 		if (selected_partition_ptr->type   == TYPE_PRIMARY      &&
