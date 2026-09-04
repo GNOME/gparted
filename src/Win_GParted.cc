@@ -1558,28 +1558,7 @@ void Win_GParted::set_valid_operations()
 		if (selected_filesystem.fstype != FS_LVM2_PV     &&
 		    selected_filesystem.fstype != FS_LUKS        &&
 		    selected_filesystem.get_mountpoints().size()   )
-		{
-			partitionmenu_items[MENU_MOUNT]->unset_submenu();
-
-			Gtk::Menu* menu = Gtk::manage(new Gtk::Menu());
-			const std::vector<Glib::ustring>& temp_mountpoints = selected_filesystem.get_mountpoints();
-			for ( unsigned int t = 0 ; t < temp_mountpoints.size() ; t++ )
-			{
-				Gtk::MenuItem *item;
-
-				item = Gtk::manage(new
-					GParted::Menu_Helpers::MenuElem(
-						temp_mountpoints[t],
-						sigc::bind<unsigned int>(sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t)));
-				menu->append(*item);
-
-				dynamic_cast<Gtk::Label *>(item->get_child())->set_use_underline(false);
-			}
-			partitionmenu_items[MENU_MOUNT]->set_submenu(*menu);
-
-			partitionmenu_items[MENU_TOGGLE_FS_BUSY]->hide();
-			partitionmenu_items[MENU_MOUNT]->show();
-		}
+			show_mount_submenu(selected_filesystem);
 
 		// See if there is a partition to be copied and it fits inside this selected partition
 		if ( copied_partition != nullptr                                           &&
@@ -1593,6 +1572,30 @@ void Win_GParted::set_valid_operations()
 		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.check )
 			allow_check( true ) ;
 	}
+}
+
+
+// Replace the "Mount on" menu item with a submenu of the file system's mount
+// points and hide the file system activate/deactivate item.
+void Win_GParted::show_mount_submenu(const Partition& filesystem_ptn)
+{
+	partitionmenu_items[MENU_MOUNT]->unset_submenu();
+
+	Gtk::Menu* menu = Gtk::manage(new Gtk::Menu());
+	const std::vector<Glib::ustring>& mountpoints = filesystem_ptn.get_mountpoints();
+	for (unsigned int i = 0; i < mountpoints.size(); i++)
+	{
+		Gtk::MenuItem* item = Gtk::manage(new GParted::Menu_Helpers::MenuElem(
+				mountpoints[i],
+				sigc::bind<unsigned int>(sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), i)));
+		menu->append(*item);
+
+		dynamic_cast<Gtk::Label *>(item->get_child())->set_use_underline(false);
+	}
+	partitionmenu_items[MENU_MOUNT]->set_submenu(*menu);
+
+	partitionmenu_items[MENU_TOGGLE_FS_BUSY]->hide();
+	partitionmenu_items[MENU_MOUNT]->show();
 }
 
 

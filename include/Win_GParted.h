@@ -86,6 +86,7 @@ private:
 	bool valid_display_partition_ptr( const Partition * partition_ptr );
 	bool Quit_Check_Operations();
 	void set_valid_operations() ;
+	void show_mount_submenu(const Partition& filesystem_ptn);
 	void show_operationslist() ;
 	
 	//convenience functions
