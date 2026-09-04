@@ -1298,6 +1298,17 @@ void Win_GParted::set_valid_operations()
 	    m_devices[m_current_device] != nullptr                     &&
 	    ! m_devices[m_current_device]->is_partition_table_device()   )
 	{
+		// Only allow mount, unmount, swapon and swapoff of file systems and swap
+		// spaces in existing Logical Volumes.  Activate and deactivate of Volume
+		// Groups is not allowed here, by toggle_fs_busy_state_supported()
+		// rejecting FS_LVM2_PV.  This matches LVM not allowing the creation
+		// of Physical Volumes inside Logical Volumes, preventing nested Volume
+		// Groups.
+		if (selected_partition_ptr->type   == TYPE_PRIMARY      &&
+		    selected_partition_ptr->status == STAT_REAL         &&
+		    toggle_fs_busy_state_supported(selected_filesystem)   )
+			allow_toggle_fs_busy_state(true);
+
 		// Mirror the conditions for copying a partition: only real, not busy
 		// Logical Volumes (on disk devices busy partitions are excluded from
 		// copying by the busy early return below), excluding closed
@@ -1341,6 +1352,15 @@ void Win_GParted::set_valid_operations()
 		    ! selected_filesystem.busy                     &&
 		    fs_cap.check                                     )
 			allow_check(true);
+
+		// Generate Mount on submenu for unmounted Logical Volumes with mount
+		// points.
+		if (selected_partition_ptr->type   == TYPE_PRIMARY      &&
+		    selected_partition_ptr->status == STAT_REAL         &&
+		    ! selected_filesystem.busy                          &&
+		    toggle_fs_busy_state_supported(selected_filesystem) &&
+		    selected_filesystem.get_mountpoints().size()          )
+			show_mount_submenu(selected_filesystem);
 
 		return;
 	}
