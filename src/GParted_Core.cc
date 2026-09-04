@@ -3677,11 +3677,14 @@ bool GParted_Core::check_repair_maximize( const Partition & partition,
 	}
 }
 
+
 bool GParted_Core::set_partition_type( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.type == TYPE_UNPARTITIONED )
+	if (partition.type == TYPE_UNPARTITIONED         ||
+	    LVM2_Info::is_vg_name(partition.device_path)   )
 		// Trying to set the type of a partition on a non-partitioned whole disk
-		// device is a successful non-operation.
+		// device, or of a Logical Volume, neither of which has a partition table
+		// entry, is a successful non-operation.
 		return true;
 
 	operationdetail .add_child( OperationDetail(
