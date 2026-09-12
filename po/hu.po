@@ -4,20 +4,21 @@
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2006, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2017.
 # Balázs Úr <ur.balazs at fsf dot hu>, 2014, 2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2026.
+# Balázs Meskó <mesko.balazs at fsf dot hu>, 2026.
 # grx005 <hunorjani17 at gmail dot com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2026-01-26 17:02+0000\n"
-"PO-Revision-Date: 2026-02-22 18:54+0100\n"
+"POT-Creation-Date: 2026-08-05 07:56+0000\n"
+"PO-Revision-Date: 2026-09-12 19:04+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.12.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: gparted.appdata.xml.in:7
@@ -61,8 +62,8 @@ msgid "The GParted Project"
 msgstr "A GParted projekt"
 
 #. ==== GUI =========================
-#: gparted.desktop.in.in:2 src/Win_GParted.cc:96 src/Win_GParted.cc:1666
-#: src/Win_GParted.cc:1895
+#: gparted.desktop.in.in:2 src/Win_GParted.cc:91 src/Win_GParted.cc:1728
+#: src/Win_GParted.cc:1960
 msgid "GParted"
 msgstr "GParted"
 
@@ -94,19 +95,19 @@ msgstr "(Félig új UUID - véletlenszerűen lesz előállítva)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
-#: src/CopyBlocks.cc:76 src/CopyBlocks.cc:180 src/ProgressBar.cc:107
+#: src/CopyBlocks.cc:76 src/CopyBlocks.cc:187 src/ProgressBar.cc:101
 msgid "%1 of %2 copied"
 msgstr "%1 / %2 másolva"
 
-#: src/CopyBlocks.cc:216
+#: src/CopyBlocks.cc:223
 msgid "Operation Canceled"
 msgstr "Művelet megszakítva"
 
-#: src/CopyBlocks.cc:228
+#: src/CopyBlocks.cc:235
 msgid "Error while writing block at sector %1"
 msgstr "Hiba a(z) %1. szektornál található blokk írásakor"
 
-#: src/CopyBlocks.cc:233
+#: src/CopyBlocks.cc:240
 msgid "Error while reading block at sector %1"
 msgstr "Hiba a(z) %1. szektornál található blokk olvasásakor"
 
@@ -124,40 +125,40 @@ msgstr "Jelmondat:"
 msgid "Unlock"
 msgstr "Feloldás"
 
-#. Add spinbutton_before
-#: src/Dialog_Base_Partition.cc:81
+#. Add m_spinbutton_before
+#: src/Dialog_Base_Partition.cc:77
 msgid "Free space preceding (MiB):"
 msgstr "Szabad hely előtte (MiB):"
 
-#. Add spinbutton_size
-#: src/Dialog_Base_Partition.cc:91
+#. Add m_spinbutton_size
+#: src/Dialog_Base_Partition.cc:88
 msgid "New size (MiB):"
 msgstr "Új méret (MiB):"
 
-#. Add spinbutton_after
-#: src/Dialog_Base_Partition.cc:101
+#. Add m_spinbutton_after
+#: src/Dialog_Base_Partition.cc:99
 msgid "Free space following (MiB):"
 msgstr "Szabad hely utána (MiB):"
 
 #. Add alignment
 #. TO TRANSLATORS: used as label for a list of choices.  Align to: <combo box with choices>
-#: src/Dialog_Base_Partition.cc:131
+#: src/Dialog_Base_Partition.cc:130
 msgid "Align to:"
 msgstr "Igazítás ehhez:"
 
 #. Fill partition alignment combo
 #. TO TRANSLATORS: Option for combo box "Align to:"
-#: src/Dialog_Base_Partition.cc:137
+#: src/Dialog_Base_Partition.cc:136
 msgid "Cylinder"
 msgstr "Cilinder"
 
 #. TO TRANSLATORS: Option for combo box "Align to:"
-#: src/Dialog_Base_Partition.cc:139
+#: src/Dialog_Base_Partition.cc:138
 msgid "MiB"
 msgstr "MiB"
 
 #. TO TRANSLATORS: Option for combo box "Align to:"
-#: src/Dialog_Base_Partition.cc:141
+#: src/Dialog_Base_Partition.cc:140
 msgid "None"
 msgstr "Semmi"
 
@@ -165,7 +166,7 @@ msgstr "Semmi"
 msgid "Resize"
 msgstr "Átméretezés"
 
-#: src/Dialog_Base_Partition.cc:496 src/Win_GParted.cc:327
+#: src/Dialog_Base_Partition.cc:496 src/Win_GParted.cc:325
 msgid "Resize/Move"
 msgstr "Átméretezés/Mozgatás"
 
@@ -178,16 +179,16 @@ msgid "Maximum size: %1 MiB"
 msgstr "Legnagyobb méret: %1 MiB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
-#: src/Dialog_Disklabel.cc:32
+#: src/Dialog_Disklabel.cc:42
 msgid "Create partition table on %1"
 msgstr "Partíciós tábla létrehozása a következőn: %1"
 
 #. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
-#: src/Dialog_Disklabel.cc:56
+#: src/Dialog_Disklabel.cc:66
 msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
 msgstr "FIGYELMEZTETÉS: EZ MINDEN ADATOT TÖRÖL A KÖVETKEZŐN: %1"
 
-#: src/Dialog_Disklabel.cc:62
+#: src/Dialog_Disklabel.cc:72
 msgid "Select new partition table type:"
 msgstr "Válassza ki az új partícióstábla-típust:"
 
@@ -198,7 +199,7 @@ msgstr "Fájlrendszercímke beállítása a következőn: %1"
 
 #. Only line: "Label: [EXISTINGLABEL ]"
 #. Label
-#: src/Dialog_FileSystem_Label.cc:47 src/Dialog_Partition_Info.cc:273
+#: src/Dialog_FileSystem_Label.cc:47 src/Dialog_Partition_Info.cc:297
 #: src/Dialog_Partition_New.cc:175
 msgid "Label:"
 msgstr "Címke:"
@@ -209,50 +210,53 @@ msgstr "%1 beillesztése"
 
 #. Minimum 370 to avoid scrolling on Fedora 20
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: src/Dialog_Partition_Info.cc:52
+#: src/Dialog_Partition_Info.cc:67
 msgid "Information about %1"
 msgstr "Információ a következőről: %1"
 
+#. WH: ... / m_info_msg_vbox / frame / label_hbox / "Warning"
 #. WH: ... / vbox / reserve_vbox / m_warning_frame / label_hbox / "Warning:"
-#: src/Dialog_Partition_Info.cc:91 src/DialogManageFlags.cc:85
+#: src/Dialog_Partition_Info.cc:116 src/DialogManageFlags.cc:84
 msgid "Warning:"
 msgstr "Figyelmeztetés:"
 
 #. FILE SYSTEM DETAIL SECTION
 #. File system headline
-#: src/Dialog_Partition_Info.cc:251 src/Dialog_Progress.cc:478
-#: src/DialogFeatures.cc:60 src/TreeView_Detail.cc:48
+#. Create "File System" column object
+#: src/Dialog_Partition_Info.cc:275 src/Dialog_Progress.cc:492
+#: src/DialogFeatures.cc:60 src/TreeView_Detail.cc:68
 msgid "File System"
 msgstr "Fájlrendszer"
 
 #. Left field & value pair area
 #. File system
 #. File systems to choose from
-#: src/Dialog_Partition_Info.cc:258 src/Dialog_Partition_New.cc:163
+#: src/Dialog_Partition_Info.cc:282 src/Dialog_Partition_New.cc:163
 msgid "File system:"
 msgstr "Fájlrendszer:"
 
 #. LUKS uuid
-#: src/Dialog_Partition_Info.cc:289 src/Dialog_Partition_Info.cc:572
+#: src/Dialog_Partition_Info.cc:313 src/Dialog_Partition_Info.cc:600
+#: src/Win_GParted.cc:875
 msgid "UUID:"
 msgstr "UUID:"
 
 #. TO TRANSLATORS:   Open
 #. * means that the LUKS encryption is open and the encrypted data within is accessible.
 #.
-#: src/Dialog_Partition_Info.cc:304
+#: src/Dialog_Partition_Info.cc:328
 msgid "Open"
 msgstr "Nyitott"
 
 #. TO TRANSLATORS:   Closed
 #. * means that the LUKS encryption is closed and the encrypted data within is not accessible.
 #.
-#: src/Dialog_Partition_Info.cc:308
+#: src/Dialog_Partition_Info.cc:332
 msgid "Closed"
 msgstr "Zárt"
 
 #. LUKS status
-#: src/Dialog_Partition_Info.cc:315 src/Dialog_Partition_Info.cc:580
+#: src/Dialog_Partition_Info.cc:339 src/Dialog_Partition_Info.cc:608
 msgid "Status:"
 msgstr "Állapot:"
 
@@ -260,7 +264,7 @@ msgstr "Állapot:"
 #. * means that the data in encrypted and hasn't been made
 #. * accessible by opening it with the passphrase.
 #.
-#: src/Dialog_Partition_Info.cc:324
+#: src/Dialog_Partition_Info.cc:348
 msgid "Not accessible (Encrypted)"
 msgstr "Nem hozzáférhető (titkosított)"
 
@@ -268,7 +272,7 @@ msgstr "Nem hozzáférhető (titkosított)"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: src/Dialog_Partition_Info.cc:334
+#: src/Dialog_Partition_Info.cc:358
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Foglalt (Legalább egy logikai partíció csatolva van)"
 
@@ -276,12 +280,12 @@ msgstr "Foglalt (Legalább egy logikai partíció csatolva van)"
 #. * means that this linux swap, linux software raid partition, or
 #. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: src/Dialog_Partition_Info.cc:347
+#: src/Dialog_Partition_Info.cc:371
 msgid "Active"
 msgstr "Aktív"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: src/Dialog_Partition_Info.cc:361
+#: src/Dialog_Partition_Info.cc:385
 msgid "Mounted on %1"
 msgstr "Csatolva: %1"
 
@@ -289,7 +293,7 @@ msgstr "Csatolva: %1"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: src/Dialog_Partition_Info.cc:371
+#: src/Dialog_Partition_Info.cc:395
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Nem foglalt (Nincsenek csatolt logikai partíciók)"
 
@@ -301,7 +305,7 @@ msgstr "Nem foglalt (Nincsenek csatolt logikai partíciók)"
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: src/Dialog_Partition_Info.cc:383 src/Dialog_Partition_Info.cc:412
+#: src/Dialog_Partition_Info.cc:407 src/Dialog_Partition_Info.cc:436
 msgid "Not active"
 msgstr "Nem aktív"
 
@@ -310,7 +314,7 @@ msgstr "Nem aktív"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: src/Dialog_Partition_Info.cc:398
+#: src/Dialog_Partition_Info.cc:422
 msgid "Not active (Not a member of any volume group)"
 msgstr "Nem aktív (nem tagja egy kötetcsoportnak sem)"
 
@@ -320,106 +324,130 @@ msgstr "Nem aktív (nem tagja egy kötetcsoportnak sem)"
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: src/Dialog_Partition_Info.cc:406
+#: src/Dialog_Partition_Info.cc:430
 msgid "Not active and exported"
 msgstr "Nem aktív és exportálva"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: src/Dialog_Partition_Info.cc:419
+#: src/Dialog_Partition_Info.cc:443
 msgid "Not mounted"
 msgstr "Nincs csatolva"
 
 #. Volume Group
+#. GENERAL DEVICE INFO
 #. Single copy of each string for translation purposes
-#: src/Dialog_Partition_Info.cc:432 src/Win_GParted.cc:3525
+#: src/Dialog_Partition_Info.cc:456 src/Win_GParted.cc:874
+#: src/Win_GParted.cc:3601
 msgid "Volume Group:"
 msgstr "Kötetcsoport:"
 
 #. Members
-#: src/Dialog_Partition_Info.cc:445 src/Win_GParted.cc:3526
+#. DETAILED DEVICE INFO
+#: src/Dialog_Partition_Info.cc:469 src/Win_GParted.cc:880
+#: src/Win_GParted.cc:3602
 msgid "Members:"
 msgstr "Tagok:"
 
 #. Logical Volumes
-#: src/Dialog_Partition_Info.cc:472
+#: src/Dialog_Partition_Info.cc:496
 msgid "Logical Volumes:"
 msgstr "Logikai kötetek:"
 
 #. Used
-#: src/Dialog_Partition_Info.cc:494
+#: src/Dialog_Partition_Info.cc:518
 msgid "Used:"
 msgstr "Használt:"
 
 #. Unused
-#: src/Dialog_Partition_Info.cc:504
+#: src/Dialog_Partition_Info.cc:529
 msgid "Unused:"
 msgstr "Szabad:"
 
-#: src/Dialog_Partition_Info.cc:518
+#: src/Dialog_Partition_Info.cc:544
 msgid "Unallocated:"
 msgstr "Lefoglalatlan:"
 
 #. Size
-#: src/Dialog_Partition_Info.cc:531 src/Win_GParted.cc:606
+#: src/Dialog_Partition_Info.cc:558 src/Win_GParted.cc:834
+#: src/Win_GParted.cc:855 src/Win_GParted.cc:876
 msgid "Size:"
 msgstr "Méret:"
 
 #. ENCRYPTION DETAIL SECTION
 #. Encryption headline
-#: src/Dialog_Partition_Info.cc:548
+#: src/Dialog_Partition_Info.cc:575
 msgid "Encryption"
 msgstr "Titkosítás"
 
 #. Encryption
-#: src/Dialog_Partition_Info.cc:552
+#: src/Dialog_Partition_Info.cc:579
 msgid "Encryption:"
 msgstr "Titkosítás:"
 
 #. LUKS path
 #. Left field & value pair area
 #. Path
-#: src/Dialog_Partition_Info.cc:561 src/Dialog_Partition_Info.cc:606
-#: src/Win_GParted.cc:614
+#: src/Dialog_Partition_Info.cc:588 src/Dialog_Partition_Info.cc:639
+#: src/Win_GParted.cc:835 src/Win_GParted.cc:856
 msgid "Path:"
 msgstr "Útvonal:"
 
-#. PARTITION DETAIL SECTION
 #. Partition headline
-#. append columns
-#: src/Dialog_Partition_Info.cc:598 src/Dialog_Progress.cc:472
-#: src/TreeView_Detail.cc:46
+#. Relabel the first column header in the partition/LV list to match.
+#: src/Dialog_Partition_Info.cc:631 src/Win_GParted.cc:805
+#| msgid "Logical Volumes:"
+msgid "Logical Volume"
+msgstr "Logikai kötet"
+
+#. Add column 0: Partition
+#: src/Dialog_Partition_Info.cc:631 src/Dialog_Progress.cc:486
+#: src/TreeView_Detail.cc:59 src/Win_GParted.cc:805
 msgid "Partition"
 msgstr "Partíció"
 
 #. Name
 #. Only line: "Name: [EXISTINGNAME  ]"
-#: src/Dialog_Partition_Info.cc:615 src/Dialog_Partition_Name.cc:47
+#: src/Dialog_Partition_Info.cc:648 src/Dialog_Partition_Name.cc:47
 msgid "Name:"
 msgstr "Név:"
 
 #. Flags
-#: src/Dialog_Partition_Info.cc:622
+#: src/Dialog_Partition_Info.cc:655
 msgid "Flags:"
 msgstr "Jelzők:"
 
-#. Right field & value pair area
 #. First sector
-#: src/Dialog_Partition_Info.cc:633
+#: src/Dialog_Partition_Info.cc:668
 msgid "First sector:"
 msgstr "Első szektor:"
 
 #. Last sector
-#: src/Dialog_Partition_Info.cc:641
+#: src/Dialog_Partition_Info.cc:677
 msgid "Last sector:"
 msgstr "Utolsó szektor:"
 
 #. Total sectors
-#: src/Dialog_Partition_Info.cc:649 src/Dialog_Progress.cc:452
-#: src/Win_GParted.cc:664
+#: src/Dialog_Partition_Info.cc:686 src/Dialog_Progress.cc:466
+#: src/Win_GParted.cc:842 src/Win_GParted.cc:863
 msgid "Total sectors:"
 msgstr "Szektorok összesen:"
+
+#. A Logical Volume is measured in Volume Group extents, so its
+#. sectors are extents: show the logical extent (LE) size and count
+#. rather than first/last sector offsets.
+#. LE size
+#: src/Dialog_Partition_Info.cc:699
+#| msgid "Size:"
+msgid "LE size:"
+msgstr "Logikai kiterjedés mérete:"
+
+#. Total LE
+#: src/Dialog_Partition_Info.cc:708
+#| msgid "Total sectors:"
+msgid "Total LE:"
+msgstr "Logikai egységek összesen:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
 #: src/Dialog_Partition_Name.cc:38
@@ -469,63 +497,63 @@ msgstr "%1 átméretezése/mozgatása"
 msgid "Resize %1"
 msgstr "%1 átméretezése"
 
-#: src/Dialog_Progress.cc:54
+#: src/Dialog_Progress.cc:53
 msgid "Applying pending operations"
 msgstr "Függő műveletek alkalmazása"
 
 #. WH: this->get_content_area() / vbox / "Depending on the number..."
-#: src/Dialog_Progress.cc:64
+#: src/Dialog_Progress.cc:63
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr ""
 "A műveletek mennyiségétől és típusától függően ez hosszú ideig tarthat."
 
 #. WH: this->get_content_area() / vbox / "Completed Operations:"
-#: src/Dialog_Progress.cc:82
+#: src/Dialog_Progress.cc:81
 msgid "Completed Operations:"
 msgstr "Befejezett műveletek:"
 
 #. WH: this->get_content_area() / vbox / m_expander_details
-#: src/Dialog_Progress.cc:90
+#: src/Dialog_Progress.cc:89
 msgid "Details"
 msgstr "Részletek"
 
-#: src/Dialog_Progress.cc:237
+#: src/Dialog_Progress.cc:236
 msgid "%1 of %2 operations completed"
 msgstr "%1 / %2 művelet befejezve"
 
 #. add save button
-#: src/Dialog_Progress.cc:255
+#: src/Dialog_Progress.cc:254
 msgid "_Save Details"
 msgstr "Részletek me_ntése"
 
-#: src/Dialog_Progress.cc:267
+#: src/Dialog_Progress.cc:266
 msgid "Operation cancelled"
 msgstr "Művelet megszakítva"
 
-#: src/Dialog_Progress.cc:281
+#: src/Dialog_Progress.cc:280
 msgid "All operations successfully completed"
 msgstr "Minden művelet sikeresen befejezve"
 
-#: src/Dialog_Progress.cc:286
+#: src/Dialog_Progress.cc:285
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "%1 figyelmeztetés"
 msgstr[1] "%1 figyelmeztetés"
 
-#: src/Dialog_Progress.cc:301
+#: src/Dialog_Progress.cc:300
 msgid "An error occurred while applying the operations"
 msgstr "Hiba történt a műveletek alkalmazása közben"
 
-#: src/Dialog_Progress.cc:306
+#: src/Dialog_Progress.cc:305
 msgid "See the details for more information."
 msgstr "További információkért lásd a részleteket."
 
-#: src/Dialog_Progress.cc:308
+#: src/Dialog_Progress.cc:307
 msgid "IMPORTANT"
 msgstr "FONTOS"
 
-#: src/Dialog_Progress.cc:309
+#: src/Dialog_Progress.cc:308
 msgid "If you want support, you need to provide the saved details!"
 msgstr ""
 "Amennyiben támogatásra van szüksége, meg kell adnia a mentett részleteket!"
@@ -533,111 +561,111 @@ msgstr ""
 #. TO TRANSLATORS: looks like
 #. * See https://gparted.org/save-details.htm for more information.
 #.
-#: src/Dialog_Progress.cc:315
+#: src/Dialog_Progress.cc:314
 msgid "See %1 for more information."
 msgstr "További információkat itt talál: %1."
 
 #. TO TRANSLATORS: looks like  Force Cancel (5)
 #. *  where the number represents a count down in seconds until the button is enabled
-#: src/Dialog_Progress.cc:338 src/Dialog_Progress.cc:372
+#. TO TRANSLATORS: looks like   Force Cancel (5)
+#. * where the number represents a count down in seconds until the button is enabled
+#: src/Dialog_Progress.cc:337 src/Dialog_Progress.cc:372
 msgid "Force Cancel (%1)"
 msgstr "Megszakítás kényszerítése (%1)"
 
-#: src/Dialog_Progress.cc:342 src/Dialog_Progress.cc:378
+#: src/Dialog_Progress.cc:341
 msgid "Force Cancel"
 msgstr "Megszakítás kényszerítése"
 
-#: src/Dialog_Progress.cc:353
+#: src/Dialog_Progress.cc:381
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Biztosan meg akarja szakítani a jelenlegi műveletet?"
 
-#: src/Dialog_Progress.cc:359
+#: src/Dialog_Progress.cc:386
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr "A művelet megszakítása a fájlrendszer SÚLYOS károsodását okozhatja."
 
-#: src/Dialog_Progress.cc:361
+#: src/Dialog_Progress.cc:387
 msgid "Continue Operation"
 msgstr "Művelet folytatása"
 
-#: src/Dialog_Progress.cc:362
+#: src/Dialog_Progress.cc:388
 msgid "Cancel Operation"
 msgstr "Művelet megszakítása"
 
-#: src/Dialog_Progress.cc:388
+#: src/Dialog_Progress.cc:402
 msgid "Save Details"
 msgstr "Részletek mentése"
 
-#: src/Dialog_Progress.cc:407
+#: src/Dialog_Progress.cc:421
 msgid "GParted Details"
 msgstr "A GParted részletei"
 
 #. Device overview information
-#: src/Dialog_Progress.cc:448
+#: src/Dialog_Progress.cc:462
 msgid "Device:"
 msgstr "Eszköz:"
 
-#. Model
-#: src/Dialog_Progress.cc:449 src/Win_GParted.cc:590
+#. GENERAL DEVICE INFO
+#: src/Dialog_Progress.cc:463 src/Win_GParted.cc:832 src/Win_GParted.cc:853
 msgid "Model:"
 msgstr "Modell:"
 
-#. Serial number
-#: src/Dialog_Progress.cc:450 src/Win_GParted.cc:598
+#: src/Dialog_Progress.cc:464 src/Win_GParted.cc:833 src/Win_GParted.cc:854
 msgid "Serial:"
 msgstr "Sorozatszám:"
 
-#. Sector size
-#: src/Dialog_Progress.cc:451 src/Win_GParted.cc:672
+#: src/Dialog_Progress.cc:465 src/Win_GParted.cc:843 src/Win_GParted.cc:864
 msgid "Sector size:"
 msgstr "Szektorméret:"
 
-#. Heads
-#: src/Dialog_Progress.cc:456 src/Win_GParted.cc:640
+#: src/Dialog_Progress.cc:470 src/Win_GParted.cc:839 src/Win_GParted.cc:860
 msgid "Heads:"
 msgstr "Fejek:"
 
-#. Sectors / track
-#: src/Dialog_Progress.cc:457 src/Win_GParted.cc:648
+#: src/Dialog_Progress.cc:471 src/Win_GParted.cc:840 src/Win_GParted.cc:861
 msgid "Sectors/track:"
 msgstr "Szektorok/sávok:"
 
-#. Cylinders
-#: src/Dialog_Progress.cc:458 src/Win_GParted.cc:656
+#: src/Dialog_Progress.cc:472 src/Win_GParted.cc:841 src/Win_GParted.cc:862
 msgid "Cylinders:"
 msgstr "Cilinderek:"
 
 #. Partition table type
-#. Disktype
-#: src/Dialog_Progress.cc:463 src/Win_GParted.cc:632
+#. DETAILED DEVICE INFO
+#: src/Dialog_Progress.cc:477 src/Win_GParted.cc:838 src/Win_GParted.cc:859
 msgid "Partition table:"
 msgstr "Partíciós tábla:"
 
-#: src/Dialog_Progress.cc:473
+#: src/Dialog_Progress.cc:487
 msgid "Type"
 msgstr "Típus"
 
-#: src/Dialog_Progress.cc:474
+#: src/Dialog_Progress.cc:488
 msgid "Start"
 msgstr "Indítás"
 
-#: src/Dialog_Progress.cc:475
+#: src/Dialog_Progress.cc:489
 msgid "End"
 msgstr "Befejezés"
 
-#: src/Dialog_Progress.cc:476 src/TreeView_Detail.cc:54
+#. Add column 8: Unused
+#: src/Dialog_Progress.cc:490 src/TreeView_Detail.cc:123
 msgid "Flags"
 msgstr "Jelölők"
 
-#: src/Dialog_Progress.cc:477
+#: src/Dialog_Progress.cc:491
 msgid "Partition Name"
 msgstr "Partíció neve"
 
-#: src/Dialog_Progress.cc:479 src/DialogFeatures.cc:73
-#: src/TreeView_Detail.cc:50
+#. Add column 4: Label
+#: src/Dialog_Progress.cc:493 src/DialogFeatures.cc:73
+#: src/TreeView_Detail.cc:96
 msgid "Label"
 msgstr "Címke"
 
-#: src/Dialog_Progress.cc:480 src/TreeView_Detail.cc:49
+#. Add column 3: Mount Point
+#: src/Dialog_Progress.cc:494 src/TreeView_Detail.cc:89
 msgid "Mount Point"
 msgstr "Csatolási pont"
 
@@ -645,7 +673,7 @@ msgstr "Csatolási pont"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: src/Dialog_Progress.cc:546
+#: src/Dialog_Progress.cc:560
 msgid "EXECUTING"
 msgstr "VÉGREHAJTÁS"
 
@@ -653,7 +681,7 @@ msgstr "VÉGREHAJTÁS"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: src/Dialog_Progress.cc:554
+#: src/Dialog_Progress.cc:568
 msgid "SUCCESS"
 msgstr "SIKER"
 
@@ -661,7 +689,7 @@ msgstr "SIKER"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: src/Dialog_Progress.cc:562
+#: src/Dialog_Progress.cc:576
 msgid "ERROR"
 msgstr "HIBA"
 
@@ -670,7 +698,7 @@ msgstr "HIBA"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: src/Dialog_Progress.cc:571
+#: src/Dialog_Progress.cc:585
 msgid "INFO"
 msgstr "INFO"
 
@@ -681,7 +709,7 @@ msgstr "INFO"
 #. * partition, or the operation failed but it does
 #. * not matter that it failed.
 #.
-#: src/Dialog_Progress.cc:582
+#: src/Dialog_Progress.cc:596
 msgid "WARNING"
 msgstr "FIGYELMEZTETÉS"
 
@@ -773,7 +801,7 @@ msgstr "Jelmagyarázat"
 msgid "Rescan For Supported Actions"
 msgstr "Támogatott műveletek ismételt keresése"
 
-#: src/DialogManageFlags.cc:43
+#: src/DialogManageFlags.cc:42
 msgid "Manage flags on %1"
 msgstr "Jelzők kezelése a következőn: %1"
 
@@ -812,48 +840,56 @@ msgstr "_Leválasztás"
 msgid "Removed directory %1"
 msgstr "%1 könyvtár törölve"
 
-#. Adding a child after this OperationDetail has been set to prevent it is
-#. a programming bug.  However the best way to report it is by adding yet
-#. another child containing the bug report, and allowing the child to be
-#. added anyway.
-#: src/GParted_Core.cc:74 src/OperationDetail.cc:227
+#: src/GParted_Core.cc:77
 msgid "GParted Bug"
 msgstr "GParted hiba"
 
-#. TO TRANSLATORS: looks like Scanning /dev/sda
-#: src/GParted_Core.cc:184 src/GParted_Core.cc:193
+#. TO TRANSLATORS: looks like   Scanning /dev/sda
+#: src/GParted_Core.cc:185 src/GParted_Core.cc:196
 msgid "Scanning %1"
 msgstr "%1 vizsgálata"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: src/GParted_Core.cc:212 src/GParted_Core.cc:237
+#: src/GParted_Core.cc:210 src/GParted_Core.cc:257
 msgid "Confirming %1"
 msgstr "%1 megerősítése"
 
+#. Get useable Volume Group names
+#: src/GParted_Core.cc:222 src/GParted_Core.cc:245
+#| msgid "Scanning %1"
+msgid "Scanning LVM"
+msgstr "LVM vizsgálata"
+
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: src/GParted_Core.cc:272
+#: src/GParted_Core.cc:291
 msgid "Searching %1 partitions"
 msgstr "%1 partíciók keresése"
 
+#. TO TRANSLATORS: looks like   Searching rootvg logical volumes
+#: src/GParted_Core.cc:308
+#| msgid "Searching %1 partitions"
+msgid "Searching %1 logical volumes"
+msgstr "%1 logikai kötet keresése"
+
 #. TO TRANSLATORS: looks like   A partition cannot start (-2048)
 #. * before the start of the device
-#: src/GParted_Core.cc:304
+#: src/GParted_Core.cc:346
 msgid "A partition cannot start (%1) before the start of the device"
 msgstr "Egy partíció nem kezdődhet (%1) az eszköz kezdete előtt"
 
 #. TO TRANSLATORS: looks like   A partition cannot end (2099199)
 #. * after the end of the device (2097151)
-#: src/GParted_Core.cc:314
+#: src/GParted_Core.cc:356
 msgid "A partition cannot end (%1) after the end of the device (%2)"
 msgstr "Egy partíció nem végződhet (%1) az eszköz vége után (%2)"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: src/GParted_Core.cc:325
+#: src/GParted_Core.cc:368
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Egyetlen partíció sem lehet %1 szektor hosszú"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: src/GParted_Core.cc:336
+#: src/GParted_Core.cc:379
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
@@ -864,61 +900,61 @@ msgstr ""
 #. * means that the partition table for this disk device is unknown
 #. * or not recognized.
 #.
-#: src/GParted_Core.cc:697
+#: src/GParted_Core.cc:743
 msgid "unrecognized"
 msgstr "azonosítatlan"
 
 #. no file system found....
-#: src/GParted_Core.cc:1315
+#: src/GParted_Core.cc:1513
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "A fájlrendszer nem ismerhető fel! A lehetséges okok:"
 
-#: src/GParted_Core.cc:1317
+#: src/GParted_Core.cc:1515
 msgid "The file system is damaged"
 msgstr "A fájlrendszer sérült"
 
-#: src/GParted_Core.cc:1319
+#: src/GParted_Core.cc:1517
 msgid "The file system is unknown to GParted"
 msgstr "A fájlrendszer ismeretlen a GParted előtt"
 
-#: src/GParted_Core.cc:1321
+#: src/GParted_Core.cc:1519
 msgid "There is no file system available (unformatted)"
 msgstr "Nem áll rendelkezésre fájlrendszer (formázatlan)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: src/GParted_Core.cc:1324
+#: src/GParted_Core.cc:1522
 msgid "The device entry %1 is missing"
 msgstr "A(z) %1 eszközbejegyzés hiányzik"
 
 #. TO TRANSLATORS: "logical" refers to a logical partition within an
 #. * extended partition on an MSDOS / MBR partition table.
 #.
-#: src/GParted_Core.cc:1425
+#: src/GParted_Core.cc:1628
 msgid ""
 "UEFI firmware does not support booting from a logical EFI System Partition "
 "(ESP)"
 msgstr ""
-"Az UEFI belső vezérlőprogram nem támogatja a logikai EFI-rendszerpartícióról ("
-"ESP) való rendszerindítást"
+"Az UEFI belső vezérlőprogram nem támogatja a logikai EFI-rendszerpartícióról "
+"(ESP) való rendszerindítást"
 
-#: src/GParted_Core.cc:1543
+#: src/GParted_Core.cc:1746
 msgid "Unable to find mount point"
 msgstr "Nem található a csatolási pont"
 
-#: src/GParted_Core.cc:1677
+#: src/GParted_Core.cc:1884
 msgid "Unable to read the contents of this file system!"
 msgstr "A fájlrendszer tartalma nem olvasható be!"
 
-#: src/GParted_Core.cc:1679
+#: src/GParted_Core.cc:1886
 msgid "Because of this some operations may be unavailable."
 msgstr "Emiatt néhány művelet nem lesz elérhető."
 
-#: src/GParted_Core.cc:1683
+#: src/GParted_Core.cc:1890
 msgid "The cause might be a missing software package."
 msgstr "Ezt egy hiányzó szoftvercsomag okozhatja."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: src/GParted_Core.cc:1686
+#: src/GParted_Core.cc:1893
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -927,7 +963,7 @@ msgstr ""
 "%2."
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: src/GParted_Core.cc:1696
+#: src/GParted_Core.cc:1903
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 lefoglalatlan terület van a partíción belül."
 
@@ -935,7 +971,7 @@ msgstr "%1 lefoglalatlan terület van a partíción belül."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: src/GParted_Core.cc:1706
+#: src/GParted_Core.cc:1913
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -943,11 +979,11 @@ msgstr ""
 "A fájlrendszer megnöveléséhez, hogy kitöltse a partíciót, válassza ki a "
 "partíciót, majd a következő menüpontot:"
 
-#: src/GParted_Core.cc:1708
+#: src/GParted_Core.cc:1915
 msgid "Partition --> Check."
 msgstr "Partíció → Ellenőrzés."
 
-#: src/GParted_Core.cc:1829
+#: src/GParted_Core.cc:2036
 msgid "create empty partition"
 msgstr "üres partíció létrehozása"
 
@@ -961,27 +997,27 @@ msgstr "üres partíció létrehozása"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: src/GParted_Core.cc:1905 src/GParted_Core.cc:3637
+#: src/GParted_Core.cc:2112 src/GParted_Core.cc:3848
 msgid "path: %1 (%2)"
 msgstr "útvonal: %1 (%2)"
 
-#: src/GParted_Core.cc:1906 src/GParted_Core.cc:3641
+#: src/GParted_Core.cc:2113 src/GParted_Core.cc:3852
 msgid "partition"
 msgstr "partíció"
 
-#: src/GParted_Core.cc:1907 src/GParted_Core.cc:3642
+#: src/GParted_Core.cc:2114 src/GParted_Core.cc:3853
 msgid "start: %1"
 msgstr "kezdet: %1"
 
-#: src/GParted_Core.cc:1908 src/GParted_Core.cc:3643
+#: src/GParted_Core.cc:2115 src/GParted_Core.cc:3854
 msgid "end: %1"
 msgstr "vég: %1"
 
-#: src/GParted_Core.cc:1909 src/GParted_Core.cc:3644
+#: src/GParted_Core.cc:2116 src/GParted_Core.cc:3855
 msgid "size: %1 (%2)"
 msgstr "méret: %1 (%2)"
 
-#: src/GParted_Core.cc:1941
+#: src/GParted_Core.cc:2148
 msgid ""
 "partition contains open LUKS encryption for a create file system only step"
 msgstr ""
@@ -989,33 +1025,33 @@ msgstr ""
 "létrehozási lépésnél"
 
 #. TO TRANSLATORS: looks like create new ext3 file system
-#: src/GParted_Core.cc:1948
+#: src/GParted_Core.cc:2155
 msgid "create new %1 file system"
 msgstr "új %1 fájlrendszer létrehozása"
 
-#: src/GParted_Core.cc:1981
+#: src/GParted_Core.cc:2188
 msgid ""
 "partition contains open LUKS encryption for a format file system only step"
 msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak fájlrendszer "
 "formázási lépésnél"
 
-#: src/GParted_Core.cc:1997
+#: src/GParted_Core.cc:2204
 msgid "delete partition"
 msgstr "partíció törlése"
 
-#: src/GParted_Core.cc:2041
+#: src/GParted_Core.cc:2248
 msgid ""
 "partition contains open LUKS encryption for a delete file system only step"
 msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak fájlrendszer törlési "
 "lépésnél"
 
-#: src/GParted_Core.cc:2056
+#: src/GParted_Core.cc:2263
 msgid "delete %1 file system"
 msgstr "%1 fájlrendszer törlése"
 
-#: src/GParted_Core.cc:2074
+#: src/GParted_Core.cc:2281
 msgid ""
 "partition contains open LUKS encryption for a label file system only step"
 msgstr ""
@@ -1023,24 +1059,24 @@ msgstr ""
 "címkézési lépésnél"
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: src/GParted_Core.cc:2081 src/OperationLabelFileSystem.cc:54
+#: src/GParted_Core.cc:2288 src/OperationLabelFileSystem.cc:54
 msgid "Clear file system label on %1"
 msgstr "Fájlrendszercímke törlése a következőn: %1"
 
-#: src/GParted_Core.cc:2084
+#: src/GParted_Core.cc:2291
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Fájlrendszercímke beállítása „%1” értékre a következőn: %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: src/GParted_Core.cc:2112 src/OperationNamePartition.cc:53
+#: src/GParted_Core.cc:2319 src/OperationNamePartition.cc:53
 msgid "Clear partition name on %1"
 msgstr "Partíciónév törlése a következőn: %1"
 
-#: src/GParted_Core.cc:2115
+#: src/GParted_Core.cc:2322
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Partíciónév beállítása „%1” értékre a következőn: %2"
 
-#: src/GParted_Core.cc:2140
+#: src/GParted_Core.cc:2347
 msgid ""
 "partition contains open LUKS encryption for a change file system UUID only "
 "step"
@@ -1048,11 +1084,11 @@ msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak fájlrendszer UUID "
 "módosítási lépésnél"
 
-#: src/GParted_Core.cc:2147
+#: src/GParted_Core.cc:2354
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Az UUID felének új, véletlenszerű értékre állítása ezen: %1"
 
-#: src/GParted_Core.cc:2152
+#: src/GParted_Core.cc:2359
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Az UUID új, véletlenszerű értékre állítása ezen: %1"
 
@@ -1061,34 +1097,34 @@ msgstr "Az UUID új, véletlenszerű értékre állítása ezen: %1"
 #. * to change the size of a partition when performing a move only
 #. * step which is not permitted to change the partition size.
 #.
-#: src/GParted_Core.cc:2237
+#: src/GParted_Core.cc:2444
 msgid "size of the partition is changing for a move only step"
 msgstr "a partíció mérete változik egy csak mozgatási lépésnél"
 
-#: src/GParted_Core.cc:2268
+#: src/GParted_Core.cc:2475
 msgid "rollback last change to the partition"
 msgstr "a partíció utolsó módosításának visszagörgetése"
 
-#: src/GParted_Core.cc:2317
+#: src/GParted_Core.cc:2524
 msgid "move file system to the left"
 msgstr "fájlrendszer áthelyezése balra"
 
-#: src/GParted_Core.cc:2319
+#: src/GParted_Core.cc:2526
 msgid "move file system to the right"
 msgstr "fájlrendszer áthelyezése jobbra"
 
-#: src/GParted_Core.cc:2322
+#: src/GParted_Core.cc:2529
 msgid "move file system"
 msgstr "fájlrendszer áthelyezése"
 
-#: src/GParted_Core.cc:2324
+#: src/GParted_Core.cc:2531
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr ""
-"Az új és a régi fájlrendszer pozíciója megegyezik, emiatt a művelet kihagyva"
+"az új és a régi fájlrendszer pozíciója megegyezik, emiatt a művelet kihagyva"
 
-#: src/GParted_Core.cc:2388
+#: src/GParted_Core.cc:2595
 msgid "using libparted"
 msgstr "a libparted segítségével"
 
@@ -1098,125 +1134,125 @@ msgstr "a libparted segítségével"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: src/GParted_Core.cc:2463
+#: src/GParted_Core.cc:2674
 msgid "start of the partition is changing for a resize only step"
 msgstr "a partíció kezdete változik egy csak átméretezési lépésnél"
 
-#: src/GParted_Core.cc:2481
+#: src/GParted_Core.cc:2692
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak titkosítás "
 "átméretezési lépésnél"
 
-#: src/GParted_Core.cc:2491
+#: src/GParted_Core.cc:2702
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr "nem lehetséges a zárt LUKS titkosítási kötet zsugorítása"
 
-#: src/GParted_Core.cc:2550
+#: src/GParted_Core.cc:2761
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak fájlrendszer "
 "átméretezési lépésnél"
 
-#: src/GParted_Core.cc:2620
+#: src/GParted_Core.cc:2831
 msgid "resize/move partition"
 msgstr "partíció átméretezése/áthelyezése"
 
-#: src/GParted_Core.cc:2623
+#: src/GParted_Core.cc:2834
 msgid "move partition to the right"
 msgstr "partíció mozgatása jobbra"
 
-#: src/GParted_Core.cc:2626
+#: src/GParted_Core.cc:2837
 msgid "move partition to the left"
 msgstr "partíció mozgatása balra"
 
-#: src/GParted_Core.cc:2629
+#: src/GParted_Core.cc:2840
 msgid "grow partition from %1 to %2"
 msgstr "partíció megnövelése (%1 → %2)"
 
-#: src/GParted_Core.cc:2632
+#: src/GParted_Core.cc:2843
 msgid "shrink partition from %1 to %2"
 msgstr "partíció zsugorítása (%1 → %2)"
 
-#: src/GParted_Core.cc:2635
+#: src/GParted_Core.cc:2846
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "partíció mozgatása jobbra és megnövelése (%1 → %2)"
 
-#: src/GParted_Core.cc:2638
+#: src/GParted_Core.cc:2849
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "partíció mozgatása jobbra és zsugorítása (%1 → %2)"
 
-#: src/GParted_Core.cc:2641
+#: src/GParted_Core.cc:2852
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "partíció mozgatása balra és megnövelése (%1 → %2)"
 
-#: src/GParted_Core.cc:2644
+#: src/GParted_Core.cc:2855
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "partíció mozgatása balra és zsugorítása (%1 → %2)"
 
-#: src/GParted_Core.cc:2659
+#: src/GParted_Core.cc:2870
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr ""
-"Az új és a régi partíció mérete és pozíciója megegyezik, emiatt a művelet "
+"az új és a régi partíció mérete és pozíciója megegyezik, emiatt a művelet "
 "kihagyva"
 
-#: src/GParted_Core.cc:2669
+#: src/GParted_Core.cc:2880
 msgid "old start: %1"
 msgstr "régi kezdet: %1"
 
-#: src/GParted_Core.cc:2670
+#: src/GParted_Core.cc:2881
 msgid "old end: %1"
 msgstr "régi vég: %1"
 
-#: src/GParted_Core.cc:2671
+#: src/GParted_Core.cc:2882
 msgid "old size: %1 (%2)"
 msgstr "régi méret: %1 (%2)"
 
-#: src/GParted_Core.cc:2686 src/GParted_Core.cc:3725
+#: src/GParted_Core.cc:2897 src/GParted_Core.cc:3936
 msgid "new start: %1"
 msgstr "új kezdet: %1"
 
-#: src/GParted_Core.cc:2687 src/GParted_Core.cc:3726
+#: src/GParted_Core.cc:2898 src/GParted_Core.cc:3937
 msgid "new end: %1"
 msgstr "új vég: %1"
 
-#: src/GParted_Core.cc:2688 src/GParted_Core.cc:3727
+#: src/GParted_Core.cc:2899 src/GParted_Core.cc:3938
 msgid "new size: %1 (%2)"
 msgstr "új méret: %1 (%2)"
 
-#: src/GParted_Core.cc:2702 src/GParted_Core.cc:3678
+#: src/GParted_Core.cc:2913 src/GParted_Core.cc:3889
 msgid "requested start: %1"
 msgstr "kért kezdet: %1"
 
-#: src/GParted_Core.cc:2703 src/GParted_Core.cc:3679
+#: src/GParted_Core.cc:2914 src/GParted_Core.cc:3890
 msgid "requested end: %1"
 msgstr "kért vég: %1"
 
-#: src/GParted_Core.cc:2704 src/GParted_Core.cc:3680
+#: src/GParted_Core.cc:2915 src/GParted_Core.cc:3891
 msgid "requested size: %1 (%2)"
 msgstr "kért méret: %1 (%2)"
 
-#: src/GParted_Core.cc:2716
+#: src/GParted_Core.cc:2927
 msgid "attempt to rollback failed change to the partition"
 msgstr "próbálkozás a partíció sikertelen módosításának visszagörgetésére"
 
-#: src/GParted_Core.cc:2737
+#: src/GParted_Core.cc:2948
 msgid "original start: %1"
 msgstr "eredeti kezdet: %1"
 
-#: src/GParted_Core.cc:2738
+#: src/GParted_Core.cc:2949
 msgid "original end: %1"
 msgstr "eredeti vég: %1"
 
-#: src/GParted_Core.cc:2739
+#: src/GParted_Core.cc:2950
 msgid "original size: %1 (%2)"
 msgstr "eredeti méret: %1 (%2)"
 
-#: src/GParted_Core.cc:2821
+#: src/GParted_Core.cc:3032
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
@@ -1224,11 +1260,11 @@ msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak titkosító kötet "
 "zsugorítási lépésnél"
 
-#: src/GParted_Core.cc:2826
+#: src/GParted_Core.cc:3037
 msgid "shrink encryption volume"
 msgstr "titkosítási kötet zsugorítása"
 
-#: src/GParted_Core.cc:2837
+#: src/GParted_Core.cc:3048
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
@@ -1236,15 +1272,15 @@ msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak titkosítási kötet "
 "maximalizálási lépésnél"
 
-#: src/GParted_Core.cc:2842
+#: src/GParted_Core.cc:3053
 msgid "grow encryption volume to fill the partition"
 msgstr "titkosítási kötet növelése, hogy kitöltse a partíciót"
 
-#: src/GParted_Core.cc:2852
+#: src/GParted_Core.cc:3063
 msgid "growing is not available for this encryption volume"
 msgstr "a titkosítási köteten nem érhető el a növelés művelet"
 
-#: src/GParted_Core.cc:2870
+#: src/GParted_Core.cc:3081
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
@@ -1256,50 +1292,50 @@ msgstr ""
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: src/GParted_Core.cc:2882
+#: src/GParted_Core.cc:3093
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr ""
 "az új partícióméret nagyobb, vagy megegyezik a régivel egy csak zsugorítási "
 "lépésnél"
 
-#: src/GParted_Core.cc:2887
+#: src/GParted_Core.cc:3098
 msgid "shrink file system"
 msgstr "fájlrendszer zsugorítása"
 
-#: src/GParted_Core.cc:2898
+#: src/GParted_Core.cc:3109
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak fájlrendszer "
 "maximalizálási lépésnél"
 
-#: src/GParted_Core.cc:2903
+#: src/GParted_Core.cc:3114
 msgid "grow file system to fill the partition"
 msgstr "fájlrendszer növelése, hogy kitöltse a partíciót"
 
-#: src/GParted_Core.cc:2914
+#: src/GParted_Core.cc:3125
 msgid "growing is not available for this file system"
 msgstr "a fájlrendszeren nem érhető el a növelés művelet"
 
-#: src/GParted_Core.cc:2922
+#: src/GParted_Core.cc:3133
 msgid "growing the file system is currently disallowed"
-msgstr "A fájlrendszer növelése jelenleg nem engedélyezett"
+msgstr "a fájlrendszer növelése jelenleg nem engedélyezett"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: src/GParted_Core.cc:2946
+#: src/GParted_Core.cc:3157
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr "nem %1 fájlrendszer lett megadva egy csak %1 újra létrehozási lépésnél"
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: src/GParted_Core.cc:2958
+#: src/GParted_Core.cc:3169
 msgid "recreate %1 file system"
 msgstr "%1 fájlrendszer újra létrehozása"
 
-#: src/GParted_Core.cc:3025
+#: src/GParted_Core.cc:3236
 msgid "the destination is smaller than the source partition"
 msgstr "a cél kisebb, mint a forrás partíció"
 
-#: src/GParted_Core.cc:3078
+#: src/GParted_Core.cc:3289
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
@@ -1307,7 +1343,7 @@ msgstr ""
 "a forráspartíció LUKS titkosítás feloldást tartalmaz egy csak fájlrendszer "
 "másolási lépésnél"
 
-#: src/GParted_Core.cc:3085
+#: src/GParted_Core.cc:3296
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
@@ -1315,47 +1351,47 @@ msgstr ""
 "a célpartíció LUKS titkosítás feloldást tartalmaz egy csak fájlrendszer "
 "másolási lépésnél"
 
-#: src/GParted_Core.cc:3091
+#: src/GParted_Core.cc:3302
 msgid "copy file system from %1 to %2"
 msgstr "fájlrendszer másolása innen: %1, ide: %2"
 
-#: src/GParted_Core.cc:3172
+#: src/GParted_Core.cc:3383
 msgid "using internal algorithm"
 msgstr "belső algoritmus használata"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: src/GParted_Core.cc:3175
+#: src/GParted_Core.cc:3386
 msgid "copy %1"
 msgstr "%1 másolása"
 
-#: src/GParted_Core.cc:3178
+#: src/GParted_Core.cc:3389
 msgid "finding optimal block size"
 msgstr "optimális blokkméret keresése"
 
 #. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
-#: src/GParted_Core.cc:3209 src/GParted_Core.cc:3255
+#: src/GParted_Core.cc:3420 src/GParted_Core.cc:3466
 msgid "copy %1 using a block size of %2"
 msgstr "%1 másolása %2 blokkméret használatával"
 
-#: src/GParted_Core.cc:3227
+#: src/GParted_Core.cc:3438
 msgid "%1 seconds"
 msgstr "%1 másodperc"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: src/GParted_Core.cc:3246
+#: src/GParted_Core.cc:3457
 msgid "optimal block size is %1"
 msgstr "az optimális blokkméret %1 szektor"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: src/GParted_Core.cc:3273
+#: src/GParted_Core.cc:3484
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) másolva"
 
-#: src/GParted_Core.cc:3312
+#: src/GParted_Core.cc:3523
 msgid "rollback failed file system move"
 msgstr "sikertelen fájlrendszer áthelyezés visszagörgetése"
 
-#: src/GParted_Core.cc:3335
+#: src/GParted_Core.cc:3546
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr ""
@@ -1363,45 +1399,45 @@ msgstr ""
 "ellenőrzési lépésnél"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: src/GParted_Core.cc:3347
+#: src/GParted_Core.cc:3558
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "%1 fájlrendszerhibáinak keresése és azok javítása (ha lehetséges)"
 
-#: src/GParted_Core.cc:3356
+#: src/GParted_Core.cc:3567
 msgid "checking is not available for this file system"
 msgstr "az ellenőrzés nem érhető el ezen a fájlrendszeren"
 
-#: src/GParted_Core.cc:3421
+#: src/GParted_Core.cc:3632
 msgid "set partition type on %1"
 msgstr "partíciótípus beállítása a következőn: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: src/GParted_Core.cc:3499
+#: src/GParted_Core.cc:3710
 msgid "new partition flag: %1"
 msgstr "új partíció jelző: %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: src/GParted_Core.cc:3545
+#: src/GParted_Core.cc:3756
 msgid "new partition type: %1"
 msgstr "új partíciótípus: %1"
 
-#: src/GParted_Core.cc:3575
+#: src/GParted_Core.cc:3786
 msgid "calibrate %1"
 msgstr "%1 kalibrálása"
 
-#: src/GParted_Core.cc:3640
+#: src/GParted_Core.cc:3851
 msgid "device"
 msgstr "eszköz"
 
-#: src/GParted_Core.cc:3654
+#: src/GParted_Core.cc:3865
 msgid "encryption path: %1"
 msgstr "titkosítási útvonal: %1"
 
-#: src/GParted_Core.cc:3674
+#: src/GParted_Core.cc:3885
 msgid "calculate new size and position of %1"
 msgstr "%1 új méretének és pozíciójának kiszámítása"
 
-#: src/GParted_Core.cc:3802
+#: src/GParted_Core.cc:4013
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
@@ -1409,20 +1445,20 @@ msgstr ""
 "a partíció LUKS titkosítás feloldást tartalmaz egy csak fájlrendszer-aláírás "
 "törlési lépésnél"
 
-#: src/GParted_Core.cc:3809
+#: src/GParted_Core.cc:4020
 msgid "clear old file system signatures in %1"
 msgstr "régi fájlrendszer-aláírások törlése innen: %1"
 
-#: src/GParted_Core.cc:4020
+#: src/GParted_Core.cc:4231
 msgid "flush operating system cache of %1"
 msgstr "az operációs rendszer gyorsítótárának törlése ehhez: %1"
 
 #. TO TRANSLATORS: looks like   update boot sector of ntfs file system on /dev/sdd1
-#: src/GParted_Core.cc:4061
+#: src/GParted_Core.cc:4272
 msgid "update boot sector of %1 file system on %2"
 msgstr "%1 fájlrendszer boot szektorának frissítése a következőn: %2"
 
-#: src/GParted_Core.cc:4074
+#: src/GParted_Core.cc:4285
 msgid ""
 "Partition start (%1) is beyond sector 4294967295 (2^32-1).\n"
 "Windows will not be able to boot from this file system."
@@ -1430,103 +1466,103 @@ msgstr ""
 "A partíció kezdete (%1) a 4294967295-ös (2^32-1) szektor mögött van.\n"
 "A Windows nem lesz képes elindulni erről a fájlrendszerről."
 
-#: src/GParted_Core.cc:4087
+#: src/GParted_Core.cc:4298
 msgid "Error trying to open %1"
 msgstr "Hiba az eszköz (%1) megnyitásakor"
 
-#: src/GParted_Core.cc:4098
+#: src/GParted_Core.cc:4309
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Hiba a 0x1c pozícióra álláskor a következőn: %1"
 
-#: src/GParted_Core.cc:4113
+#: src/GParted_Core.cc:4324
 msgid "Error trying to write to boot sector in %1"
 msgstr "Hiba a(z) %1 boot szektorába írásakor"
 
-#: src/GParted_Core.cc:4131
+#: src/GParted_Core.cc:4342
 msgid "libparted messages"
 msgstr "libparted üzenetek"
 
-#: src/GParted_Core.cc:4295
+#: src/GParted_Core.cc:4506
 msgid "Libparted Information"
 msgstr "Libparted információk"
 
-#: src/GParted_Core.cc:4299
+#: src/GParted_Core.cc:4510
 msgid "Libparted Warning"
 msgstr "Libparted figyelmeztetés"
 
-#: src/GParted_Core.cc:4303
+#: src/GParted_Core.cc:4514
 msgid "Libparted Error"
 msgstr "Libparted hiba"
 
-#: src/GParted_Core.cc:4306
+#: src/GParted_Core.cc:4517
 msgid "Libparted Fatal"
 msgstr "Libparted végzetes"
 
-#: src/GParted_Core.cc:4309
+#: src/GParted_Core.cc:4520
 msgid "Libparted Bug"
 msgstr "Libparted hiba"
 
-#: src/GParted_Core.cc:4312
+#: src/GParted_Core.cc:4523
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted nem támogatott szolgáltatás"
 
-#: src/GParted_Core.cc:4315
+#: src/GParted_Core.cc:4526
 msgid "Libparted unknown exception"
 msgstr "Libparted ismeretlen kivétel"
 
-#: src/GParted_Core.cc:4319
+#: src/GParted_Core.cc:4530
 msgid "Fix"
 msgstr "Javítás"
 
-#: src/GParted_Core.cc:4321
+#: src/GParted_Core.cc:4532
 msgid "Yes"
 msgstr "Igen"
 
-#: src/GParted_Core.cc:4323
+#: src/GParted_Core.cc:4534
 msgid "Ok"
 msgstr "OK"
 
-#: src/GParted_Core.cc:4325
+#: src/GParted_Core.cc:4536
 msgid "Retry"
 msgstr "Újra"
 
-#: src/GParted_Core.cc:4327
+#: src/GParted_Core.cc:4538
 msgid "No"
 msgstr "Nem"
 
-#: src/GParted_Core.cc:4329
+#: src/GParted_Core.cc:4540
 msgid "Cancel"
 msgstr "Mégse"
 
-#: src/GParted_Core.cc:4331
+#: src/GParted_Core.cc:4542
 msgid "Ignore"
 msgstr "Mellőzés"
 
-#: src/HBoxOperations.cc:52 src/Win_GParted.cc:203
+#: src/HBoxOperations.cc:52 src/Win_GParted.cc:200
 msgid "_Undo Last Operation"
 msgstr "_Utolsó művelet visszavonása"
 
-#: src/HBoxOperations.cc:59 src/Win_GParted.cc:211
+#: src/HBoxOperations.cc:59 src/Win_GParted.cc:208
 msgid "_Clear All Operations"
 msgstr "_Minden művelet törlése"
 
-#: src/HBoxOperations.cc:66 src/Win_GParted.cc:218
+#: src/HBoxOperations.cc:66 src/Win_GParted.cc:215
 msgid "_Apply All Operations"
 msgstr "Minden művelet _alkalmazása"
 
-#: src/LVM2_PV_Info.cc:198
+#: src/LVM2_Info.cc:328
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr "A kötetcsoporthoz tartozó legalább egy fizikai kötet hiányzik."
 
-#: src/LVM2_PV_Info.cc:326
+#: src/LVM2_Info.cc:524
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "Hiba történt az LVM2 beállítások olvasása közben!"
 
-#: src/LVM2_PV_Info.cc:328
+#: src/LVM2_Info.cc:526
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "A részletek némelyike vagy akár az összes hiányozhat vagy téves lehet."
 
-#: src/LVM2_PV_Info.cc:330
+#: src/LVM2_Info.cc:528
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "NE módosítsa az LVM2 fizikai kötet partícióit."
 
@@ -1567,21 +1603,6 @@ msgstr "%1 #%2 létrehozása (%3, %4) ezen az eszközön: %5"
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "%1 törlése (%2, %3) a következőről: %4"
 
-#. TO TRANSLATORS:
-#. * means that GParted has encountered a programming bug.  More
-#. * information about a step is being added after the step was
-#. * marked as complete.  This bug description as well as the
-#. * information being added will be visible in the details of the
-#. * applied operations.
-#.
-#: src/OperationDetail.cc:235
-msgid ""
-"Adding more information to the results of this step after it has been marked "
-"as completed"
-msgstr ""
-"További információk hozzáadása ennek a lépésnek az eredményeihez, miután "
-"befejezettként lett megjelölve"
-
 #. Bug: Not initialised by constructor or reset later
 #. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
@@ -1608,7 +1629,7 @@ msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
 msgstr ""
-"Az új és régi partíciók mérete és pozíciója azonos, emiatt mégis folytatásra "
+"az új és régi partíciók mérete és pozíciója azonos, emiatt mégis folytatásra "
 "kerül"
 
 #: src/OperationResizeMove.cc:110
@@ -1646,61 +1667,65 @@ msgstr "%1 mozgatása balra és zsugorítása (%2 → %3)"
 #. TO TRANSLATORS: Primary
 #. * A "Primary" type of partition on a partitioned drive.
 #.
-#: src/Partition.cc:462
+#: src/Partition.cc:471
 msgid "Primary"
 msgstr "Elsődleges"
 
 #. TO TRANSLATORS: Logical
 #. * A "Logical" type of partition on a partitioned drive.
 #.
-#: src/Partition.cc:467
+#: src/Partition.cc:476
 msgid "Logical"
 msgstr "Logikai"
 
 #. TO TRANSLATORS: Extended
 #. * An "Extended" type of partition on a partitioned drive.
 #.
-#: src/Partition.cc:472
+#: src/Partition.cc:481
 msgid "Extended"
 msgstr "Kiterjesztett"
 
 #. TO TRANSLATORS: Unallocated
 #. * Unused space outside of any partition on a partitioned drive.
 #.
-#: src/Partition.cc:477
+#: src/Partition.cc:486
 msgid "Unallocated"
 msgstr "Lefoglalatlan"
 
 #. TO TRANSLATORS: Unpartitioned
 #. * A drive which has no partition table.
 #.
-#: src/Partition.cc:482
+#: src/Partition.cc:491
 msgid "Unpartitioned"
 msgstr "Particionálatlan"
 
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: src/ProgressBar.cc:99
+#: src/ProgressBar.cc:93
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 / %2 másolva (%3 van hátra)"
 
 #. TO TRANSLATORS: looks like   (00:01:59 remaining)
-#: src/ProgressBar.cc:123
+#: src/ProgressBar.cc:117
 msgid "(%1 remaining)"
 msgstr "(%1 van hátra)"
 
-#: src/TreeView_Detail.cc:47
+#. Add column 1: Name
+#: src/TreeView_Detail.cc:65
 msgid "Name"
 msgstr "Név"
 
-#: src/TreeView_Detail.cc:51
+#. Add column 5: Size
+#: src/TreeView_Detail.cc:99
 msgid "Size"
 msgstr "Méret"
 
-#: src/TreeView_Detail.cc:52
+#. Add column 6: Used
+#: src/TreeView_Detail.cc:107
 msgid "Used"
 msgstr "Használt"
 
-#: src/TreeView_Detail.cc:53
+#. Add column 7: Unused
+#: src/TreeView_Detail.cc:115
 msgid "Unused"
 msgstr "Szabad"
 
@@ -1709,7 +1734,7 @@ msgstr "Szabad"
 #. * outside any partition, so is in other words
 #. * unallocated.
 #.
-#: src/Utils.cc:398
+#: src/Utils.cc:399
 msgid "unallocated"
 msgstr "lefoglalatlan"
 
@@ -1718,7 +1743,7 @@ msgstr "lefoglalatlan"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: src/Utils.cc:405
+#: src/Utils.cc:406
 msgid "unknown"
 msgstr "ismeretlen"
 
@@ -1727,7 +1752,7 @@ msgstr "ismeretlen"
 #. * GParted the space within it will not be formatted
 #. * with a file system.
 #.
-#: src/Utils.cc:412
+#: src/Utils.cc:413
 msgid "unformatted"
 msgstr "formázatlan"
 
@@ -1736,7 +1761,7 @@ msgstr "formázatlan"
 #. * actions which can be performed on other file systems
 #. * not specifically listed as supported.
 #.
-#: src/Utils.cc:419
+#: src/Utils.cc:420
 msgid "other"
 msgstr "egyéb"
 
@@ -1744,287 +1769,330 @@ msgstr "egyéb"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: src/Utils.cc:425
+#: src/Utils.cc:426
 msgid "cleared"
 msgstr "törölve"
 
-#: src/Utils.cc:461
+#: src/Utils.cc:463
 msgid "used"
 msgstr "használt"
 
-#: src/Utils.cc:462
+#: src/Utils.cc:464
 msgid "unused"
 msgstr "szabad"
 
 #. TO TRANSLATORS: means that this is an encrypted file system
-#: src/Utils.cc:470
+#: src/Utils.cc:472
 msgid "Encrypted"
 msgstr "Titkosított"
 
-#: src/Utils.cc:621
+#: src/Utils.cc:623
 msgid "%1 B"
 msgstr "%1 B"
 
-#: src/Utils.cc:628
+#: src/Utils.cc:630
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: src/Utils.cc:633
+#: src/Utils.cc:635
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: src/Utils.cc:638
+#: src/Utils.cc:640
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: src/Utils.cc:643
+#: src/Utils.cc:645
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: src/Win_GParted.cc:177
+#: src/Win_GParted.cc:174
 msgid "_Refresh Devices"
 msgstr "Eszközök _frissítése"
 
-#: src/Win_GParted.cc:185
+#: src/Win_GParted.cc:182
 msgid "_Devices"
 msgstr "_Eszközök"
 
-#: src/Win_GParted.cc:197
+#: src/Win_GParted.cc:194
 msgid "_GParted"
 msgstr "_GParted"
 
-#: src/Win_GParted.cc:226
+#: src/Win_GParted.cc:223
 msgid "_Edit"
 msgstr "S_zerkesztés"
 
-#: src/Win_GParted.cc:234
+#: src/Win_GParted.cc:231 src/Win_GParted.cc:802
 msgid "Device _Information"
 msgstr "Esz_közinformációk"
 
-#: src/Win_GParted.cc:239
+#: src/Win_GParted.cc:236
 msgid "Pending _Operations"
 msgstr "Függő mű_veletek"
 
-#: src/Win_GParted.cc:244
+#: src/Win_GParted.cc:241
 msgid "_View"
 msgstr "_Nézet"
 
-#: src/Win_GParted.cc:251
+#: src/Win_GParted.cc:248
 msgid "_File System Support"
 msgstr "_Fájlrendszer-támogatás"
 
-#: src/Win_GParted.cc:259
+#: src/Win_GParted.cc:256
 msgid "_Create Partition Table"
 msgstr "_Partíciós tábla létrehozása"
 
-#: src/Win_GParted.cc:264
+#: src/Win_GParted.cc:262 src/Win_GParted.cc:799
 msgid "_Device"
 msgstr "_Eszköz"
 
-#: src/Win_GParted.cc:272
+#: src/Win_GParted.cc:270 src/Win_GParted.cc:800
 msgid "_Partition"
 msgstr "_Partíció"
 
-#: src/Win_GParted.cc:280
+#: src/Win_GParted.cc:278
 msgid "_Contents"
 msgstr "_Tartalom"
 
-#: src/Win_GParted.cc:294
+#: src/Win_GParted.cc:292
 msgid "_Help"
 msgstr "_Súgó"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: src/Win_GParted.cc:308
+#: src/Win_GParted.cc:306
 msgid "New"
 msgstr "Új"
 
-#: src/Win_GParted.cc:313
+#: src/Win_GParted.cc:311
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Új partíció létrehozása a kijelölt lefoglalatlan területen"
 
-#: src/Win_GParted.cc:321
+#: src/Win_GParted.cc:319
 msgid "Delete the selected partition"
 msgstr "A kijelölt partíció törlése"
 
-#: src/Win_GParted.cc:343
+#: src/Win_GParted.cc:341
 msgid "Resize/Move the selected partition"
 msgstr "A kijelölt partíció átméretezése/mozgatása"
 
-#: src/Win_GParted.cc:355
+#: src/Win_GParted.cc:353
 msgid "Copy the selected partition to the clipboard"
 msgstr "A kijelölt partíció másolása a vágólapra"
 
-#: src/Win_GParted.cc:363
+#: src/Win_GParted.cc:361
 msgid "Paste the partition from the clipboard"
 msgstr "Partíció beillesztése a vágólapról"
 
-#: src/Win_GParted.cc:378
+#: src/Win_GParted.cc:376
 msgid "Undo Last Operation"
 msgstr "Utolsó művelet visszavonása"
 
-#: src/Win_GParted.cc:389
+#: src/Win_GParted.cc:387
 msgid "Apply All Operations"
 msgstr "Minden művelet alkalmazása"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: src/Win_GParted.cc:413
+#: src/Win_GParted.cc:411
 msgid "_New"
 msgstr "Ú_j"
 
-#: src/Win_GParted.cc:432
+#: src/Win_GParted.cc:430
 msgid "_Resize/Move"
-msgstr "Átméretezés/M_ozgatás"
+msgstr "Átméretezés/át_helyezés"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with file systems..
-#: src/Win_GParted.cc:459
+#: src/Win_GParted.cc:457
 msgid "_Format to"
 msgstr "_Formázás"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with mount points..
-#: src/Win_GParted.cc:484
+#: src/Win_GParted.cc:482
 msgid "_Mount on"
 msgstr "_Csatolás"
 
-#: src/Win_GParted.cc:492
+#: src/Win_GParted.cc:490
 msgid "_Name Partition"
 msgstr "_Partíció elnevezése"
 
-#: src/Win_GParted.cc:498
+#: src/Win_GParted.cc:496
 msgid "M_anage Flags"
 msgstr "_Jelzők kezelése"
 
-#: src/Win_GParted.cc:504
+#: src/Win_GParted.cc:502
 msgid "C_heck"
 msgstr "_Ellenőrzés"
 
-#: src/Win_GParted.cc:510
+#: src/Win_GParted.cc:508
 msgid "_Label File System"
 msgstr "Fájl_rendszer címkézése"
 
-#: src/Win_GParted.cc:516
+#: src/Win_GParted.cc:514
 msgid "New UU_ID"
 msgstr "Új UU_ID"
 
-#: src/Win_GParted.cc:582
+#: src/Win_GParted.cc:799
+#| msgid "Volume Group:"
+msgid "_Volume Group"
+msgstr "_Kötetcsoport"
+
+#: src/Win_GParted.cc:800
+#| msgid "Logical Volumes:"
+msgid "_Logical Volume"
+msgstr "_Logikai kötet"
+
+#: src/Win_GParted.cc:802
+#| msgid "Device _Information"
+msgid "Volume Group _Information"
+msgstr "Kötet_csoport-információk"
+
+#: src/Win_GParted.cc:829 src/Win_GParted.cc:848
 msgid "Device Information"
 msgstr "Eszközinformációk"
 
-#: src/Win_GParted.cc:878
+#: src/Win_GParted.cc:869
+#| msgid "Volume Group:"
+msgid "Volume Group Information"
+msgstr "Kötetcsoport-információk"
+
+#: src/Win_GParted.cc:881
+#| msgid "Size:"
+msgid "PE size:"
+msgstr "Fizikai kiterjedés mérete:"
+
+#: src/Win_GParted.cc:882
+#| msgid "Total sectors:"
+msgid "Total PE:"
+msgstr "Fizikai egységek összesen:"
+
+#: src/Win_GParted.cc:883
+#| msgid "Unallocated:"
+msgid "Allocated PE:"
+msgstr "Foglalt fizikai egységek:"
+
+#: src/Win_GParted.cc:884
+msgid "Free PE:"
+msgstr "Szabad fizikai egységek:"
+
+#: src/Win_GParted.cc:885
+msgid "LV count:"
+msgstr "Logikai kötetek száma:"
+
+#: src/Win_GParted.cc:911
 msgid "Could not add this operation to the list"
 msgstr "Ez a művelet nem adható a listához"
 
-#: src/Win_GParted.cc:1060
+#: src/Win_GParted.cc:1093
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 művelet függőben"
 msgstr[1] "%1 művelet függőben"
 
-#: src/Win_GParted.cc:1168
+#: src/Win_GParted.cc:1201
 msgid "Quit GParted?"
 msgstr "Kilép a GPartedből?"
 
-#: src/Win_GParted.cc:1174
+#: src/Win_GParted.cc:1207
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "Jelenleg 1 művelet van függőben."
 msgstr[1] "Jelenleg 1 művelet van függőben."
 
-#: src/Win_GParted.cc:1588
+#: src/Win_GParted.cc:1643
 msgid "%1 - GParted"
 msgstr "%1 – GParted"
 
-#: src/Win_GParted.cc:1641
+#: src/Win_GParted.cc:1703
 msgid "Scanning all devices..."
 msgstr "Eszközök letapogatása..."
 
-#: src/Win_GParted.cc:1689
+#: src/Win_GParted.cc:1754
 msgid "No devices detected"
 msgstr "Nem érzékeltem eszközöket"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: src/Win_GParted.cc:1778
+#: src/Win_GParted.cc:1843
 msgid "No partition table found on device %1"
 msgstr "Nem található partíciós tábla a következőn: %1"
 
-#: src/Win_GParted.cc:1783
+#: src/Win_GParted.cc:1848
 msgid "A partition table is required before partitions can be added."
 msgstr "A partíciók hozzáadása előtt léteznie kell partíciós táblának."
 
-#: src/Win_GParted.cc:1785
+#: src/Win_GParted.cc:1850
 msgid "To create a new partition table choose the menu item:"
 msgstr "Új partíciós tábla létrehozásához válassza a következő menüpontot:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: src/Win_GParted.cc:1788
+#: src/Win_GParted.cc:1853
 msgid "Device --> Create Partition Table."
 msgstr "Eszköz → Partíciós tábla létrehozása."
 
 #. TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1
-#: src/Win_GParted.cc:1797
+#: src/Win_GParted.cc:1862
 msgid "Unable to resize read-only file system %1"
 msgstr "Nem lehet átméretezni a csak olvasható fájlrendszert: %1"
 
-#: src/Win_GParted.cc:1802
+#: src/Win_GParted.cc:1867
 msgid "The file system can not be resized while it is mounted read-only."
 msgstr ""
 "A fájlrendszer nem méretezhető át, mivel csak olvashatóan van csatolva."
 
-#: src/Win_GParted.cc:1804
+#: src/Win_GParted.cc:1869
 msgid "Either unmount the file system or remount it read-write."
 msgstr ""
 "Vagy válassza le a fájlrendszert, vagy csatolja újra írható-olvasható módon."
 
-#: src/Win_GParted.cc:1826
+#: src/Win_GParted.cc:1891
 msgid "Unable to open GParted Manual help file"
 msgstr "Nem nyitható meg a GParted súgófájlja"
 
-#: src/Win_GParted.cc:1828
+#: src/Win_GParted.cc:1893
 msgid "Command yelp not found."
 msgstr "A yelp parancs nem található."
 
-#: src/Win_GParted.cc:1831
+#: src/Win_GParted.cc:1896
 msgid "Install yelp and try again."
 msgstr "Telepítse a Yelp alkalmazást, majd próbálja újra."
 
-#: src/Win_GParted.cc:1852
+#: src/Win_GParted.cc:1917
 msgid "Failed to open GParted Manual help file"
 msgstr "Nem nyitható meg a GParted kézikönyv súgófájlja"
 
-#: src/Win_GParted.cc:1872
+#: src/Win_GParted.cc:1937
 msgid "Documentation is not available"
 msgstr "A dokumentáció nem érhető el"
 
-#: src/Win_GParted.cc:1877
+#: src/Win_GParted.cc:1942
 msgid "This build of gparted is configured without documentation."
 msgstr "A GParted ezen változata nem tartalmazza a dokumentációt."
 
-#: src/Win_GParted.cc:1879
+#: src/Win_GParted.cc:1944
 msgid "Documentation is available at the project web site."
 msgstr "A dokumentáció a projekt weboldalán érhető el."
 
-#: src/Win_GParted.cc:1883
+#: src/Win_GParted.cc:1948
 msgid "GParted Manual"
 msgstr "GParted kézikönyv"
 
-#: src/Win_GParted.cc:1898
+#: src/Win_GParted.cc:1963
 msgid "GNOME Partition Editor"
 msgstr "GNOME partíciószerkesztő"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: src/Win_GParted.cc:1933
+#: src/Win_GParted.cc:1999
 msgid "translator-credits"
 msgstr ""
 "Kelemen Gábor <kelemeng@gnome.hu>\n"
-"Meskó Balázs <meskobalazs at fedoraproject dot org>"
+"Meskó Balázs <mesko dot balazs at fsf dot hu>"
 
-#: src/Win_GParted.cc:1983
+#: src/Win_GParted.cc:2049
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Nem lehet %1 darabnál több elsődleges partíciót létrehozni"
 msgstr[1] "Nem lehet %1 darabnál több elsődleges partíciót létrehozni"
 
-#: src/Win_GParted.cc:1993
+#: src/Win_GParted.cc:2059
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -2036,19 +2104,19 @@ msgstr ""
 "partíció maga is egy elsődleges partíció, így először szükséges lehet egy "
 "elsődleges partíció törlése."
 
-#: src/Win_GParted.cc:2102
+#: src/Win_GParted.cc:2168
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "A partíciók mozgatásának hatására az operációs rendszer képtelen lehet "
 "elindulni"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: src/Win_GParted.cc:2109
+#: src/Win_GParted.cc:2175
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Sorba állított egy műveletet a(z) %1 partíció kezdőszektorának mozgatására."
 
-#: src/Win_GParted.cc:2111
+#: src/Win_GParted.cc:2177
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -2057,88 +2125,88 @@ msgstr ""
 "könyvtárat tartalmazó Linux partíciót, vagy ha áthelyezi a C: Windows "
 "rendszerpartíciót."
 
-#: src/Win_GParted.cc:2113
+#: src/Win_GParted.cc:2179
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "A rendszerindító beállításainak javításáról a GParted FAQ-ban olvashat."
 
-#: src/Win_GParted.cc:2117
+#: src/Win_GParted.cc:2183
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Egy partíció áthelyezése sokáig is tarthat."
 
 #. TO TRANSLATORS: looks like   Enter LUKS passphrase to resize /dev/sda1
-#: src/Win_GParted.cc:2158
+#: src/Win_GParted.cc:2224
 msgid "Enter LUKS passphrase to resize %1"
 msgstr "Adja meg a LUKS jelmondatot a(z) %1 átméretezéséhez"
 
-#: src/Win_GParted.cc:2187
+#: src/Win_GParted.cc:2253
 msgid "LUKS encryption passphrase check failed"
 msgstr "A LUKS titkosítási jelmondat ellenőrzése sikertelen"
 
-#: src/Win_GParted.cc:2268
+#: src/Win_GParted.cc:2334
 msgid "Copy of %1"
 msgstr "%1 másolása"
 
-#: src/Win_GParted.cc:2374
+#: src/Win_GParted.cc:2440
 msgid "You have pasted into an existing partition"
 msgstr "Meglévő partícióba illesztett be"
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: src/Win_GParted.cc:2382
+#: src/Win_GParted.cc:2448
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Ezen művelet alkalmazásakor a(z) %1 adatai el fognak veszni."
 
-#: src/Win_GParted.cc:2458
+#: src/Win_GParted.cc:2524
 msgid "Unable to delete %1!"
 msgstr "%1 nem törölhető!"
 
-#: src/Win_GParted.cc:2465
+#: src/Win_GParted.cc:2531
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Válasszon le minden logikai partíciót, melyek száma nagyobb, mint %1"
 
-#: src/Win_GParted.cc:2476
+#: src/Win_GParted.cc:2542
 msgid "Are you sure you want to delete %1?"
 msgstr "Valóban törölni akarja ezt: %1?"
 
-#: src/Win_GParted.cc:2483
+#: src/Win_GParted.cc:2549
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Törlés után ezt a partíciót többé nem másolhatja."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: src/Win_GParted.cc:2486
+#: src/Win_GParted.cc:2552
 msgid "Delete %1 (%2, %3)"
 msgstr "%1 törlése (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: src/Win_GParted.cc:2644
+#: src/Win_GParted.cc:2711
 msgid "Cannot format this file system to %1"
 msgstr "Ez a fájlrendszer nem formázható a következő típusúra: %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: src/Win_GParted.cc:2656
+#: src/Win_GParted.cc:2723
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "A(z) %1 típusú fájlrendszerhez legalább %2 méretű partíció szükséges."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: src/Win_GParted.cc:2664
+#: src/Win_GParted.cc:2731
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "A(z) %1 típusú fájlrendszert tartalmazó partíció legnagyobb mérete %2."
 
-#: src/Win_GParted.cc:2719
+#: src/Win_GParted.cc:2786
 msgid "Opening encryption on %1"
 msgstr "Titkosítás megnyitása ezen: %1"
 
-#: src/Win_GParted.cc:2733
+#: src/Win_GParted.cc:2800
 msgid "Failed to open LUKS encryption"
 msgstr "Nem sikerült megnyitni a LUKS titkosítást"
 
-#: src/Win_GParted.cc:2755
+#: src/Win_GParted.cc:2822
 msgid ""
 "The close encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2146,15 +2214,15 @@ msgstr ""
 "A titkosítás lezárása művelet nem hajtható végre, ha a partíción műveletek "
 "vannak függőben."
 
-#: src/Win_GParted.cc:2756
+#: src/Win_GParted.cc:2823
 msgid "Closing encryption on %1"
 msgstr "Titkosítás lezárása ezen: %1"
 
-#: src/Win_GParted.cc:2757
+#: src/Win_GParted.cc:2824
 msgid "Could not close encryption"
 msgstr "Nem sikerült lezárni a titkosítást"
 
-#: src/Win_GParted.cc:2762
+#: src/Win_GParted.cc:2829
 msgid ""
 "The open encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2165,15 +2233,15 @@ msgstr ""
 #. TO TRANSLATORS: looks like
 #. * Enter LUKS passphrase to open /dev/sda1
 #.
-#: src/Win_GParted.cc:2802
+#: src/Win_GParted.cc:2869
 msgid "Enter LUKS passphrase to open %1"
 msgstr "Adja meg a LUKS jelmondatot a(z) %1 megnyitásához"
 
-#: src/Win_GParted.cc:2873
+#: src/Win_GParted.cc:2940
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Nem választható le a partíció a következő csatolási pontokról:"
 
-#: src/Win_GParted.cc:2875
+#: src/Win_GParted.cc:2942
 msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
@@ -2182,19 +2250,19 @@ msgstr ""
 "csatolva. Javasoljuk, hogy ezeket saját kezűleg válassza le."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: src/Win_GParted.cc:2888
+#: src/Win_GParted.cc:2955
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "Jelenleg %1 művelet van függőben a(z) %2 partícióhoz"
 msgstr[1] "Jelenleg %1 művelet van függőben a(z) %2 partícióhoz"
 
-#: src/Win_GParted.cc:2903
+#: src/Win_GParted.cc:2970
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
 "A Szerkesztés menü használatával vonja vissza, törölje vagy alkalmazza a "
 "függőben lévő műveleteket."
 
-#: src/Win_GParted.cc:2946
+#: src/Win_GParted.cc:3013
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
@@ -2202,15 +2270,15 @@ msgstr ""
 "A swapoff művelet nem hajtható végre, ha a partíción műveletek vannak "
 "függőben."
 
-#: src/Win_GParted.cc:2947
+#: src/Win_GParted.cc:3014
 msgid "Deactivating swap on %1"
 msgstr "Swap kikapcsolása a következőn: %1"
 
-#: src/Win_GParted.cc:2948
+#: src/Win_GParted.cc:3015
 msgid "Could not deactivate swap"
 msgstr "A swap nem kapcsolható ki"
 
-#: src/Win_GParted.cc:2953
+#: src/Win_GParted.cc:3020
 msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
@@ -2218,15 +2286,15 @@ msgstr ""
 "A swapon művelet nem hajtható végre, ha a partíción műveletek vannak "
 "függőben."
 
-#: src/Win_GParted.cc:2954
+#: src/Win_GParted.cc:3021
 msgid "Activating swap on %1"
 msgstr "Swap bekapcsolása a következőn: %1"
 
-#: src/Win_GParted.cc:2955
+#: src/Win_GParted.cc:3022
 msgid "Could not activate swap"
 msgstr "A swap nem kapcsolható be"
 
-#: src/Win_GParted.cc:2960
+#: src/Win_GParted.cc:3027
 msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2234,16 +2302,16 @@ msgstr ""
 "A kötetcsoport deaktiválása művelet nem hajtható végre, ha a partíción "
 "műveletek vannak függőben."
 
-#: src/Win_GParted.cc:2961
+#: src/Win_GParted.cc:3028
 msgid "Deactivating Volume Group %1"
 msgstr "Ezen kötetcsoport kikapcsolása: %1"
 
 #. VGNAME from point point
-#: src/Win_GParted.cc:2963
+#: src/Win_GParted.cc:3030
 msgid "Could not deactivate Volume Group"
 msgstr "A kötetcsoport nem kapcsolható ki"
 
-#: src/Win_GParted.cc:2968
+#: src/Win_GParted.cc:3035
 msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2251,16 +2319,16 @@ msgstr ""
 "A kötetcsoport aktiválása művelet nem hajtható végre, ha a partíción "
 "műveletek vannak függőben."
 
-#: src/Win_GParted.cc:2969
+#: src/Win_GParted.cc:3036
 msgid "Activating Volume Group %1"
 msgstr "Ezen kötetcsoport bekapcsolása: %1"
 
 #. VGNAME from point point
-#: src/Win_GParted.cc:2971
+#: src/Win_GParted.cc:3038
 msgid "Could not activate Volume Group"
 msgstr "A kötetcsoport nem kapcsolható be"
 
-#: src/Win_GParted.cc:2976
+#: src/Win_GParted.cc:3043
 msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
@@ -2268,17 +2336,17 @@ msgstr ""
 "A leválasztás művelet nem hajtható végre, ha a partíción műveletek vannak "
 "függőben."
 
-#: src/Win_GParted.cc:2977
+#: src/Win_GParted.cc:3044
 msgid "Unmounting %1"
 msgstr "%1 leválasztása"
 
-#: src/Win_GParted.cc:2978
+#: src/Win_GParted.cc:3045
 msgid "Could not unmount %1"
 msgstr "Nem sikerült leválasztani a következőt: %1"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: src/Win_GParted.cc:3042
+#: src/Win_GParted.cc:3109
 msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
@@ -2286,27 +2354,27 @@ msgstr ""
 "A csatolás művelet nem hajtható végre, ha a partíción műveletek vannak "
 "függőben."
 
-#: src/Win_GParted.cc:3055
+#: src/Win_GParted.cc:3122
 msgid "mounting %1 on %2"
 msgstr "%1 csatolása ide: %2"
 
-#: src/Win_GParted.cc:3083
+#: src/Win_GParted.cc:3150
 msgid "Could not mount %1 on %2"
 msgstr "Nem csatolható a következő: %1 ide: %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: src/Win_GParted.cc:3102
+#: src/Win_GParted.cc:3178
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "Jelenleg %1 partíció aktív a(z) %2 eszközön"
 msgstr[1] "Jelenleg %1 partíció aktív a(z) %2 eszközön"
 
-#: src/Win_GParted.cc:3117
+#: src/Win_GParted.cc:3193
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "Nem hozható létre új partíciós tábla, amíg aktív partíciók vannak."
 
-#: src/Win_GParted.cc:3119
+#: src/Win_GParted.cc:3195
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2314,7 +2382,7 @@ msgstr ""
 "Aktív partíciónak a használatban lévőket, például a csatolt fájlrendszereket "
 "és a bekapcsolt lapozóterületeket nevezzük."
 
-#: src/Win_GParted.cc:3121
+#: src/Win_GParted.cc:3197
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2322,18 +2390,18 @@ msgstr ""
 "A Partíció menü használatával válassza le vagy kapcsolja ki az összes "
 "partíciót az eszközön az új partíciós tábla létrehozása előtt."
 
-#: src/Win_GParted.cc:3133
+#: src/Win_GParted.cc:3209
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "Jelenleg 1 művelet van függőben"
 msgstr[1] "Jelenleg 1 művelet van függőben"
 
-#: src/Win_GParted.cc:3146
+#: src/Win_GParted.cc:3222
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr "Nem hozható létre új partíciós tábla, amíg műveletek vannak függőben."
 
-#: src/Win_GParted.cc:3148
+#: src/Win_GParted.cc:3224
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2341,39 +2409,39 @@ msgstr ""
 "A Szerkesztés menü használatával törölje vagy alkalmazza az összes műveletet "
 "az új partíciós tábla létrehozása előtt."
 
-#: src/Win_GParted.cc:3163
+#: src/Win_GParted.cc:3239
 msgid "Error while creating partition table"
 msgstr "Hiba a partíciós tábla létrehozása közben"
 
-#: src/Win_GParted.cc:3441
+#: src/Win_GParted.cc:3517
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Biztosan alkalmazni akarja a függőben lévő műveleteket?"
 
-#: src/Win_GParted.cc:3447
+#: src/Win_GParted.cc:3523
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "A partíciók szerkesztése ADATVESZTÉST is okozhat."
 
-#: src/Win_GParted.cc:3449
+#: src/Win_GParted.cc:3525
 msgid "You are advised to backup your data before proceeding."
 msgstr "A folytatás előtt tanácsos biztonsági mentést készíteni az adatokról."
 
-#: src/Win_GParted.cc:3451
+#: src/Win_GParted.cc:3527
 msgid "Apply operations to device"
 msgstr "Műveletek alkalmazása merevlemezre"
 
-#: src/Win_GParted.cc:3494
+#: src/Win_GParted.cc:3570
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "A(z) %1 nem üres LVM2 fizikai kötetet törli"
 
-#: src/Win_GParted.cc:3498
+#: src/Win_GParted.cc:3574
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "A(z) %1 nem üres LVM2 fizikai kötetet formázza le"
 
-#: src/Win_GParted.cc:3502
+#: src/Win_GParted.cc:3578
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "A(z) %1 nem üres LVM2 fizikai kötetbe illeszt be"
 
-#: src/Win_GParted.cc:3511
+#: src/Win_GParted.cc:3587
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2381,7 +2449,7 @@ msgstr ""
 "A fizikai kötet törlése vagy felülírása helyreállíthatatlan, és megsemmisíti "
 "vagy károsítja a kötetcsoportot."
 
-#: src/Win_GParted.cc:3514
+#: src/Win_GParted.cc:3590
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2392,34 +2460,46 @@ msgstr ""
 "parancsokat a fizikai kötet felszabadításához ezen művelet megkísérlése "
 "előtt."
 
-#: src/Win_GParted.cc:3517
+#: src/Win_GParted.cc:3593
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Szeretné folytatni a fizikai kötet kényszerített törlését?"
 
-#: src/btrfs.cc:280
+#: src/bcachefs.cc:51
+#| msgid "Set file system label on %1"
+msgid "set file system label"
+msgstr "fájlrendszer-címke beállítása"
+
+#: src/btrfs.cc:285
 msgid "Failed to find devid for path %1"
 msgstr "Nem sikerült megtalálni az eszközazonosítót a következő útvonalhoz: %1"
 
-#: src/btrfs.cc:304
+#: src/btrfs.cc:309
 msgid "No directory mount point found in %1"
 msgstr "Nem található könyvtárcsatolási pont ebben: %1"
 
-#: src/ext2.cc:283
+#: src/ext2.cc:287
 msgid ""
 "Failed to determine whether the ext4 file system has the 64bit feature "
 "enabled"
 msgstr ""
-"Nem sikerült meghatározni, hogy az ext4 fájlrendszeren a 64 bites funkció enge"
-"délyezve van-e"
+"Nem sikerült meghatározni, hogy az ext4 fájlrendszeren a 64 bites funkció "
+"engedélyezve van-e"
 
-#: src/fat16.cc:33 src/ntfs.cc:37
+#. Report the FS needs log replay, including the unclean unmount message.  This is
+#. to indicate why the following FS mount and unmount is needed.  (Log replay only
+#. happens when the f2fs kernel code mounts the FS).
+#: src/f2fs.cc:172
+msgid "File system needs log replay"
+msgstr "A fájlrendszernek naplóvisszajátszásra van szüksége"
+
+#: src/fat16.cc:38 src/ntfs.cc:40
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr ""
 "Az UUID módosítása érvénytelenné teheti a Windows termékaktiváló (WPA) "
 "kulcsát"
 
-#: src/fat16.cc:35 src/ntfs.cc:39
+#: src/fat16.cc:40 src/ntfs.cc:42
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2431,7 +2511,7 @@ msgstr ""
 "C:) érvénytelenítheti a WPA-kulcsot. Az érvénytelen WPA-kulcs megakadályozza "
 "a bejelentkezést a Windows ismételt aktiválásáig."
 
-#: src/fat16.cc:39 src/ntfs.cc:45
+#: src/fat16.cc:44 src/ntfs.cc:48
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2440,16 +2520,16 @@ msgstr ""
 "általában biztonságos, de erre nincs garancia."
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: src/linux_swap.cc:37
+#: src/linux_swap.cc:43
 msgid "_Swapon"
 msgstr "S_wap bekapcsolása"
 
-#: src/linux_swap.cc:38
+#: src/linux_swap.cc:44
 msgid "_Swapoff"
 msgstr "S_wap kikapcsolása"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: src/linux_swap.cc:209
+#: src/linux_swap.cc:215
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2457,7 +2537,7 @@ msgstr ""
 "tartalmaz adatokat"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: src/linux_swap.cc:228
+#: src/linux_swap.cc:234
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2465,15 +2545,15 @@ msgstr ""
 "tartalmaz adatokat"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: src/lvm2_pv.cc:32
+#: src/lvm2_pv.cc:37
 msgid "Ac_tivate"
 msgstr "A_ktiválás"
 
-#: src/lvm2_pv.cc:33
+#: src/lvm2_pv.cc:38
 msgid "Deac_tivate"
 msgstr "_Deaktiválás"
 
-#: src/lvm2_pv.cc:36
+#: src/lvm2_pv.cc:41
 msgid ""
 "The LVM2 Physical Volume can not currently be resized because it is a member "
 "of an exported Volume Group."
@@ -2482,15 +2562,15 @@ msgstr ""
 "tagja."
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: src/luks.cc:34
+#: src/luks.cc:39
 msgid "Open Encryption"
 msgstr "Titkosítás megnyitása"
 
-#: src/luks.cc:35
+#: src/luks.cc:40
 msgid "Close Encryption"
 msgstr "Titkosítás lezárása"
 
-#: src/luks.cc:147
+#: src/luks.cc:152
 msgid ""
 "Maximize closed LUKS encryption skipped because it will automatically fill "
 "the partition when opened"
@@ -2498,11 +2578,11 @@ msgstr ""
 "A zárt LUKS titkosítás maximalizálása ki lett hagyva, mert megnyitáskor "
 "automatikusan ki fogja tölteni a partíciót"
 
-#: src/main.cc:47
+#: src/main.cc:50
 msgid "Root privileges are required for running GParted"
 msgstr "Root jogosultság szükséges a GParted futtatásához"
 
-#: src/main.cc:52
+#: src/main.cc:55
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
@@ -2510,7 +2590,7 @@ msgstr ""
 "Mivel a GParted képes partíciós táblákat és hatalmas adatmennyiségeket "
 "tönkretenni, csak rendszergazdai jogosultsággal futtatható."
 
-#: src/ntfs.cc:43
+#: src/ntfs.cc:46
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
@@ -2520,24 +2600,24 @@ msgstr ""
 "értékre."
 
 #. simulation..
-#: src/ntfs.cc:214
+#: src/ntfs.cc:211
 msgid "run simulation"
 msgstr "szimuláció futtatása"
 
 #. Real resize
-#: src/ntfs.cc:223
+#: src/ntfs.cc:220
 msgid "real resize"
 msgstr "valódi átméretezés"
 
-#: src/udf.cc:199
+#: src/udf.cc:202
 msgid "Partition is too large, maximum size is %1"
 msgstr "A partíció túl nagy, a maximális méret: %1"
 
-#: src/udf.cc:207
+#: src/udf.cc:210
 msgid "Partition is too small, minimum size is %1"
 msgstr "A partíció túl kicsi, a minimális méret: %1"
 
-#: src/udf.cc:224
+#: src/udf.cc:227
 msgid ""
 "mkudffs prior to version 1.1 does not support non-ASCII characters in the "
 "label."
