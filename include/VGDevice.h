@@ -33,7 +33,7 @@ namespace GParted
 class VGDevice : public Device
 {
 public:
-	VGDevice() = default;
+	VGDevice();
 	virtual VGDevice* clone() const;
 	virtual VGDevice* clone_without_partitions() const;
 

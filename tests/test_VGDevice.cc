@@ -44,7 +44,7 @@ TEST(VGDeviceTest, DefaultValues)
 	EXPECT_EQ(vg.length,       0);
 	EXPECT_EQ(vg.sector_size,  0);
 	EXPECT_EQ(vg.cylinders,    0);
-	EXPECT_TRUE(vg.disktype.empty());
+	EXPECT_EQ(vg.disktype, "lvm2");
 }
 
 
@@ -103,6 +103,7 @@ TEST(VGDeviceTest, ClonePreservesAllFields)
 	EXPECT_FALSE(vg2->partial);
 	EXPECT_EQ(vg2->length,          100);
 	EXPECT_EQ(vg2->sector_size,     4194304);
+	EXPECT_EQ(vg2->disktype,        "lvm2");
 }
 
 
@@ -205,6 +206,7 @@ TEST(VGDeviceTest, CloneWithoutPartitionsPreservesAllFields)
 	EXPECT_FALSE(vg2->partial);
 	EXPECT_EQ(vg2->length,            100);
 	EXPECT_EQ(vg2->sector_size,       4194304);
+	EXPECT_EQ(vg2->disktype,          "lvm2");
 	EXPECT_EQ(vg2->partitions.size(), 0u);
 }
 
@@ -226,8 +228,9 @@ TEST(VGDeviceTest, CloneWithoutPartitionsViaBasePointerNoSlicing)
 	const VGDevice * vgcp = dynamic_cast<const VGDevice *>(cp.get());
 	ASSERT_NE(vgcp, nullptr) << "Slicing detected: clone_without_partitions() "
 	                            "via Device* did not produce a VGDevice";
-	EXPECT_EQ(vgcp->vg_name, "Test_VG");
-	EXPECT_EQ(vgcp->pe_size, 4194304);
+	EXPECT_EQ(vgcp->vg_name,           "Test_VG");
+	EXPECT_EQ(vgcp->pe_size,           4194304);
+	EXPECT_EQ(vgcp->disktype,          "lvm2");
 	EXPECT_EQ(vgcp->partitions.size(), 0u);
 }
 

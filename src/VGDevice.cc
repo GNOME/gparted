@@ -23,6 +23,12 @@ namespace GParted
 {
 
 
+VGDevice::VGDevice()
+{
+	disktype = "lvm2";
+}
+
+
 VGDevice* VGDevice::clone() const
 {
 	return new VGDevice(*this);
